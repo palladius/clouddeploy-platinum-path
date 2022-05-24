@@ -3,7 +3,7 @@ README:
 	cat Makefile
 
 status:
-	@echo TODO kubectl get pods (TODO first add correct context)
+	bash 04-status.sh
 
 build:
 	skaffold build --module=app01
