@@ -14,9 +14,8 @@ echo gsutil mb "gs://$SKAFFOLD_BUCKET"
 touch /tmp/EmptyFile
 
 ls apps/| grep -v README | while read MODULE ; do
-  # echo skip if not dir
-  #red Skippa se non DIR test -d $MODULE
-  echo gsutil cp /tmp/EmptyFile gs://$SKAFFOLD_BUCKET/skaffold-cache/$MODULE.txt
+  #TODO Skip if not DIR test -d $MODULE
+  gsutil cp /tmp/EmptyFile gs://$SKAFFOLD_BUCKET/skaffold-cache/$MODULE.txt
 done
 
 

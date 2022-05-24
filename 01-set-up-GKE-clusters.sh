@@ -7,7 +7,7 @@ set -e
 
 # Add your code here:
 
-echo Here we set up two clusters, one for prod and one for everything else. We set up everything in region $REGION | lolcat
+echo "Here we set up two clusters, cicd-dev/cicd-prod (one for prod and one for everything else). We set up everything in region $REGION" | lolcat
 
 
 gcloud container --project "$PROJECT_ID" clusters create-auto "cicd-prod" --region "$REGION" \
