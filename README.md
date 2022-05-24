@@ -17,9 +17,15 @@ single scripts with a catchy name.
 
 You should be good to go!
 
-for more shenaningans you might need to install `lolcat` (gem install lolcat) as
+For more shenaningans you might need to install `lolcat` (gem install lolcat) as
 it colors my life and most likely yours too. If you insist on a gray life, just
 rename lolcat to cat :)
+
+## The app
+
+The app is really the NON-interesting part here. I tried to keep it as simple as
+possible. You can complicate it as long as you have a Dockerfile or a Buildpack
+to build it.
 
 ## Credits
 
