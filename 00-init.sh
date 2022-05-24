@@ -13,6 +13,7 @@ PROJECT_ID=$(gcloud config get-value project)
 gcloud services enable logging.googleapis.com
 gcloud services enable compute
 gcloud services enable run.googleapis.com
+gcloud services enable artifactregistry.googleapis.com
 
 gcloud services enable \
   sourcerepo.googleapis.com \

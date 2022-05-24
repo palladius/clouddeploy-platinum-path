@@ -5,6 +5,12 @@ README:
 status:
 	bash 04-status.sh
 
-build:
-	skaffold build --module=app01
-	skaffold build
+def:
+	echo Only works after step 4..
+	skaffold dev
+# build:
+# 	skaffold build --module=app01
+# 	skaffold build
+
+cloud-build-locally:
+	./06-cloud-build-locally.sh

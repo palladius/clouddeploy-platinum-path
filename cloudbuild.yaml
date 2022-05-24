@@ -1,0 +1,29 @@
+# For this cloud build I'd like to thank Alex Bielski!
+# Parameters from external:
+# - _DEPLOY_UNIT (module / appname)
+# - _ARTIFACT_REPONAME (AR reponame, dflt to "cicd-plat")
+# - LOCATION otherwise a personal _REGION :)
+
+steps:
+  - name: gcr.io/cloud-builders/gsutil
+    args: ['cp', 'gs://$PROJECT_ID-skaffoldcache/$_DEPLOY_UNIT/cache', '/workspace/cache']
+  - name: gcr.io/k8s-skaffold/skaffold:v1.37.1-lts
+    args:
+      - "skaffold"
+      - "build"
+      - "--file-output=/workspace/artifacts.json"
+      - "--default-repo=$LOCATION-docker.pkg.dev/$PROJECT_ID/$_ARTIFACT_REPONAME"
+      - "--cache-file=/workspace/cache"
+      - "--module=$_DEPLOY_UNIT"
+  - name: gcr.io/cloud-builders/gsutil
+    args: ['cp', '/workspace/cache',  'gs://$PROJECT_ID-skaffoldcache/$_DEPLOY_UNIT/cache']
+  - name: gcr.io/cloud-builders/gcloud
+    args:
+      - "deploy"
+      - "releases"
+      - "create"
+      - "$_DEPLOY_UNIT-$SHORT_SHA"
+      - "--delivery-pipeline=$_DEPLOY_UNIT"
+      - "--build-artifacts=/workspace/artifacts.json"
+      - "--skaffold-file=src/$_DEPLOY_UNIT/skaffold.yaml"
+      - "--region=$LOCATION"
