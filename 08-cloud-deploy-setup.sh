@@ -6,8 +6,9 @@ set -x
 set -e
 
 # Add your code here:
+CLOUD_DEPLOY_REGION="europe-west1"
 
-CLOUD_DEPLOY_TEMPLATING_VER="0.9alpha"
+CLOUD_DEPLOY_TEMPLATING_VER="1-1b"
 cat clouddeploy.yaml.template |
   sed -e "s/MY_PROJECT_ID/$PROJECT_ID/g" |
   sed -e "s/MY_REGION/$REGION/g" |
@@ -16,7 +17,9 @@ cat clouddeploy.yaml.template |
   egrep 'cluster|VER' |
   sverda
 
-yellow TODO gcloud --project $PROJECT_ID deploy apply --file clouddeploy.yaml --region $REGION
+#yellow TODO
+# Zurich doesnt work, :( euw6
+gcloud --project $PROJECT_ID deploy apply --file clouddeploy.yaml --region $CLOUD_DEPLOY_REGION
 
 
 

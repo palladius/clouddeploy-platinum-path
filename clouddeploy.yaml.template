@@ -1,8 +1,19 @@
+###############################################################################
+# Note: this is a template YAML which the 08 shell script transforms
+#       into a proper YAML. This file is not needed server-side, just from
+#       script 08 to create first 2 Pipelines and N targets (currently 4)
+# GKE is regional, we chose everything except prod to be in DEV cluster
+# and PROD to be in PROD cluster. We want to use this set up to showcase
+# Canary behaviour through Edward Thiele idea.
+###############################################################################
+
 apiVersion: deploy.cloud.google.com/v1
 kind: DeliveryPipeline
 metadata:
- name: App01 (python) CDTv._MY_VERSION_
-description: Delivery pipeline for Accounts deploy unit
+ name: app01
+description: |
+   App01 in Python CDTv _MY_VERSION_
+   Delivery pipeline for Accounts deploy unit
 serialPipeline:
  stages:
  - targetId: dev
@@ -17,10 +28,10 @@ serialPipeline:
 apiVersion: deploy.cloud.google.com/v1
 kind: DeliveryPipeline
 metadata:
- name: App02 (ruby) CDTv._MY_VERSION_
+ name: app02 # -ruby-v_MY_VERSION_
 description: |
-    Delivery pipeline for CICD deploy unit App01 which is
-    (CloudDeploy template version: _MY_VERSION_)
+    Delivery pipeline for CICD deploy unit App02 (in ruby) which is based on
+    CloudDeploy template version: _MY_VERSION_
 serialPipeline:
  stages:
  - targetId: dev
@@ -36,16 +47,23 @@ apiVersion: deploy.cloud.google.com/v1
 kind: Target
 metadata:
  name: dev
-description: development cluster (autopush)
+description: 01 Development cluster (internal, autopush)
 gke:
-  # regional
  cluster: projects/MY_PROJECT_ID/locations/MY_REGION/clusters/cicd-dev
 ---
 apiVersion: deploy.cloud.google.com/v1
 kind: Target
 metadata:
  name: staging
-description: Staging cluster
+description: 02 Staging cluster (internal, more testing)
+gke:
+ cluster: projects/MY_PROJECT_ID/locations/MY_REGION/clusters/cicd-dev
+---
+apiVersion: deploy.cloud.google.com/v1
+kind: Target
+metadata:
+ name: canary
+description: 03 canary cluster (external, rather stable)
 gke:
  cluster: projects/MY_PROJECT_ID/locations/MY_REGION/clusters/cicd-dev
 ---
@@ -53,6 +71,6 @@ apiVersion: deploy.cloud.google.com/v1
 kind: Target
 metadata:
  name: production
-description: production cluster
+description: 04 production cluster (external, as stable as it can be)
 gke:
  cluster: projects/MY_PROJECT_ID/locations/MY_REGION/clusters/cicd-prod
