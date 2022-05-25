@@ -14,7 +14,9 @@ TEAMS[1]='T2rb;app02;cloudbuild.yaml;apps/app02/;green'
 #TEAMS[2]='T3;frontend;cloudbuild-super-parametric.yaml;src/frontend/;yellow'
 #TEAMS[3]='T4;loadgenerator;cloudbuild-super-parametric.yaml;src/loadgenerator/;red'
 
-TRIGGERVERSION="1-1"
+TRIGGERVERSION="1-3"
+# 1.2 Made better substitutions.
+# 1.3 Made from regional to GLOBAL
 
 touch /tmp/MyEmptyFile
 
@@ -34,11 +36,13 @@ for TEAM_ARR in "${TEAMS[@]}"; do
     #gray $TEAMS
     gsutil cp /tmp/MyEmptyFile gs://$SKAFFOLD_BUCKET/skaffold-cache/$TEAM_NAME.txt
 
+    SUBSTIUTIONS="_DEPLOY_UNIT=$TEAM_NAME,_REGION=$REGION,_ARTIFACT_REPONAME=$ARTIFACT_REPONAME"
+
     # This sets up on GCR
     gcloud alpha builds triggers create github --repo-owner="$GITHUB_REPO_OWNER" --repo-name="$GITHUB_REPO_NAME" --branch-pattern='.*' \
       --description="[$TEAM_NUMBER] CB trigger from CLI for $TEAM_NAME module" --included-files="${SRC_SUBFOLDER}**,*.yaml" \
-      --build-config cloudbuild.yaml --substitutions="_DEPLOY_UNIT=$TEAM_NAME,_FAVORITE_COLOR=$FAV_COLOR" \
-      --region=$REGION --name $TEAM_NUMBER-CLIv$TRIGGERVERSION-$TEAM_NAME
+      --build-config cloudbuild.yaml --substitutions="$SUBSTIUTIONS" \
+      --name $TEAM_NUMBER-CLIv$TRIGGERVERSION-$TEAM_NAME
     # echo NOT_THIS gcloud alpha builds triggers create cloud-source-repositories --repo=palladius/clouddeploy-platinum-path --branch-pattern='.*' \
     #   --description="[$TEAM_NUMBER] CB trigger from CLI for $TEAM_NAME module" --included-files="${SRC_SUBFOLDER}**,*.yaml" \
     #   --build-config cloudbuild.yaml --substitutions="_DEPLOY_UNIT=$TEAM_NAME,_FAVORITE_COLOR=$FAV_COLOR" \
