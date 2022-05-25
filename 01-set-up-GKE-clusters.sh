@@ -8,11 +8,11 @@ set -e
 # Add your code here:
 
 echo "Here we set up two clusters, cicd-dev/cicd-prod (one for prod and one for everything else). We set up everything in region $REGION" | lolcat
+gcloud auth configure-docker $REGION-docker.pkg.dev
 
 
 gcloud --project "$PROJECT_ID" artifacts repositories create $ARTIFACT_REPONAME \
     --location="$REGION" --repository-format=docker
-exit 42
 
 gcloud container --project "$PROJECT_ID" clusters create-auto "cicd-prod" --region "$REGION" \
   --release-channel "regular" --network "projects/$PROJECT_ID/global/networks/default" --subnetwork "projects/$PROJECT_ID/regions/$REGION/subnetworks/default" \
@@ -20,10 +20,6 @@ gcloud container --project "$PROJECT_ID" clusters create-auto "cicd-prod" --regi
 gcloud container --project "$PROJECT_ID" clusters create-auto "cicd-dev" --region "$REGION" \
   --release-channel "regular" --network "projects/$PROJECT_ID/global/networks/default" --subnetwork "projects/$PROJECT_ID/regions/$REGION/subnetworks/default" \
   --cluster-ipv4-cidr "/17" --services-ipv4-cidr "/22"
-
-gcloud auth configure-docker $REGION-docker.pkg.dev
-
-
 
 
 

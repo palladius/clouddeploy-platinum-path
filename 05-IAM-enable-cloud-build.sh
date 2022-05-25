@@ -21,6 +21,7 @@ GCE_SVC_ACCT="${PROJECT_NUMBER}-compute@developer.gserviceaccount.com"
 
 # 1. Add roles to normal Cloud Build SvcAcct
 for SUCCINT_ROLE in \
+    artifactregistry.writer \
     container.developer \
     iam.serviceAccountUser \
     clouddeploy.jobRunner \
