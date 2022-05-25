@@ -5,6 +5,11 @@
 # GKE is regional, we chose everything except prod to be in DEV cluster
 # and PROD to be in PROD cluster. We want to use this set up to showcase
 # Canary behaviour through Edward Thiele idea.
+#
+# Schema is well documented here:
+# https://cloud.google.com/deploy/docs/api/reference/rest/v1/projects.locations.deliveryPipelines
+# Tags/Labels/Annotations are documented here:
+# https://cloud.google.com/deploy/docs/labels-annotations
 ###############################################################################
 
 apiVersion: deploy.cloud.google.com/v1
@@ -35,7 +40,13 @@ serialPipeline:
 apiVersion: deploy.cloud.google.com/v1
 kind: DeliveryPipeline
 metadata:
- name: app02 # -ruby-v_MY_VERSION_
+  name: app02
+  annotations:
+    ricc: was also here and loves ruby
+  labels:
+    lang: ruby
+    CDT_VER: _MY_VERSION_
+    ricc_app_id: '02'
 description: |
     Delivery pipeline for CICD deploy unit App02 (in ruby) which is based on
     CloudDeploy template version: _MY_VERSION_
