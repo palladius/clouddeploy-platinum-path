@@ -10,11 +10,8 @@ gcloud container clusters get-credentials cicd-dev --region $REGION --project $P
 
 gcloud auth configure-docker $REGION-docker.pkg.dev
 
-# one off
-#skaffold dev --default-repo $REGION-docker.pkg.dev/$PROJECT_ID/$ARTIFACT_REPONAME
-
 # Skaffold auto-config
-skaffold config set default-repo $REGION-docker.pkg.dev/$PROJECT_ID/$ARTIFACT_REPONAME
+skaffold config set default-repo "$REGION-docker.pkg.dev/$PROJECT_ID/$ARTIFACT_REPONAME"
 
 
 

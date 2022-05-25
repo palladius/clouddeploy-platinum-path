@@ -21,6 +21,7 @@ dev-app02:
 	skaffold dev --module app02
 
 cloud-build-locally:
-	./06-cloud-build-locally.sh
+	./06-cloud-build-locally.sh app01
+	./06-cloud-build-locally.sh app02
 
 build: cloud-build-locally
