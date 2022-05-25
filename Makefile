@@ -14,3 +14,5 @@ def:
 
 cloud-build-locally:
 	./06-cloud-build-locally.sh
+
+build: cloud-build-locally

@@ -10,7 +10,7 @@ set -e
 
 # Add your code here:
 cloud-build-local --config="cloudbuild.yaml" --dryrun=false \
-  --substitutions "_DEPLOY_UNIT=$MODULE_TO_BUILD,_FAVORITE_COLOR=$COLOR",_REGION=$REGION \
+  --substitutions "_DEPLOY_UNIT=$MODULE_TO_BUILD,_REGION=$REGION" \
   --push boa-cicd/
 
 

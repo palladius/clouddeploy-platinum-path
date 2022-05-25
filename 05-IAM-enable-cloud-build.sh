@@ -19,18 +19,25 @@ CLOUD_BUILD_SVC_ACCT="${PROJECT_NUMBER}@cloudbuild.gserviceaccount.com"
 GCE_SVC_ACCT="${PROJECT_NUMBER}-compute@developer.gserviceaccount.com"
 
 
-# 1. Add roles to notrmal SvcAcct
-for ROLE in \
-    roles/container.developer \
-    roles/iam.serviceAccountUser \
-    roles/clouddeploy.jobRunner \
-    roles/clouddeploy.releaser \
-    roles/source.reader \
-    roles/cloudbuild.builds.builder \
-    roles/storage.objectAdmin ; do
-  gcloud projects add-iam-policy-binding --member="serviceAccount:${CLOUD_BUILD_SVC_ACCT}" --role "$ROLE" "$PROJECT_ID"
+# 1. Add roles to normal Cloud Build SvcAcct
+for SUCCINT_ROLE in \
+    container.developer \
+    iam.serviceAccountUser \
+    clouddeploy.jobRunner \
+    clouddeploy.releaser \
+    source.reader \
+    cloudbuild.builds.builder \
+    storage.objectAdmin ; do
+  gcloud projects add-iam-policy-binding --member="serviceAccount:${CLOUD_BUILD_SVC_ACCT}" --role "roles/$SUCCINT_ROLE" "$PROJECT_ID"
 done
 
+
+# 2. Add roles to service account for the GKE nodes (which is usually the default compute account)
+for SUCCINT_ROLE in \
+    artifactregistry.reader \
+    container.nodeServiceAgent ; do
+  gcloud projects add-iam-policy-binding --member="serviceAccount:${GCE_SVC_ACCT}" --role "roles/$SUCCINT_ROLE" "$PROJECT_ID"
+done
 
 echo [wow] SuperDuper query on roles for your Cloud Build SvcAcct:
 # https://fabianlee.org/2021/01/29/gcp-analyzing-members-of-iam-role-using-gcloud-filtering-and-jq/

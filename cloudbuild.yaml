@@ -2,7 +2,8 @@
 # Parameters from external:
 # - _DEPLOY_UNIT (module / appname)
 # - _ARTIFACT_REPONAME (AR reponame, dflt to "cicd-plat")
-# - LOCATION otherwise a personal _REGION :)
+# - LOCATION otherwise a personal _REGION :) - only works online
+# - _REGION as the above fix :)
 
 steps:
   - name: gcr.io/cloud-builders/gsutil
@@ -12,7 +13,7 @@ steps:
       - "skaffold"
       - "build"
       - "--file-output=/workspace/artifacts.json"
-      - "--default-repo=$LOCATION-docker.pkg.dev/$PROJECT_ID/$_ARTIFACT_REPONAME"
+      - "--default-repo=${_REGION}-docker.pkg.dev/$PROJECT_ID/$_ARTIFACT_REPONAME"
       - "--cache-file=/workspace/cache"
       - "--module=$_DEPLOY_UNIT"
   - name: gcr.io/cloud-builders/gsutil
@@ -26,4 +27,4 @@ steps:
       - "--delivery-pipeline=$_DEPLOY_UNIT"
       - "--build-artifacts=/workspace/artifacts.json"
       - "--skaffold-file=src/$_DEPLOY_UNIT/skaffold.yaml"
-      - "--region=$LOCATION"
+      - "--region=${_REGION}"
