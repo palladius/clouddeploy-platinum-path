@@ -29,5 +29,5 @@ steps:
 #      - "$_DEPLOY_UNIT-$SHORT_SHA" # This is better in PROD, but if you dont do a new git commit it will fail
       - "--delivery-pipeline=$_DEPLOY_UNIT"
       - "--build-artifacts=/workspace/artifacts.json"
-      - "--skaffold-file=src/$_DEPLOY_UNIT/skaffold.yaml"
+      - "--skaffold-file=apps/$_DEPLOY_UNIT/skaffold.yaml"
       - "--region=${_REGION}"
