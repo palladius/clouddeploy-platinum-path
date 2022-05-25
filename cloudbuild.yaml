@@ -4,10 +4,12 @@
 # - _ARTIFACT_REPONAME (AR reponame, dflt to "cicd-plat")
 # - LOCATION otherwise a personal _REGION :) - only works online
 # - _REGION as the above fix :)
-
+#
+# Cache is in format: gs://$SKAFFOLD_BUCKET/skaffold-cache/$MODULE.txt
+# Note $SKAFFOLD_BUCKET defaults to "${PROJECT_ID}-skaffoldcache"
 steps:
   - name: gcr.io/cloud-builders/gsutil
-    args: ['cp', 'gs://$PROJECT_ID-skaffoldcache/$_DEPLOY_UNIT/cache', '/workspace/cache']
+    args: ['cp', 'gs://$PROJECT_ID-skaffoldcache/skaffold-cache/$_DEPLOY_UNIT.txt', '/workspace/cache']
   - name: gcr.io/k8s-skaffold/skaffold:v1.37.1-lts
     args:
       - "skaffold"
@@ -17,13 +19,14 @@ steps:
       - "--cache-file=/workspace/cache"
       - "--module=$_DEPLOY_UNIT"
   - name: gcr.io/cloud-builders/gsutil
-    args: ['cp', '/workspace/cache',  'gs://$PROJECT_ID-skaffoldcache/$_DEPLOY_UNIT/cache']
+    args: ['cp', '/workspace/cache',  'gs://$PROJECT_ID-skaffoldcache/skaffold-cache/$_DEPLOY_UNIT.txt']
   - name: gcr.io/cloud-builders/gcloud
     args:
       - "deploy"
       - "releases"
       - "create"
-      - "$_DEPLOY_UNIT-$SHORT_SHA"
+      - "$_DEPLOY_UNIT-$$DATE-$$TIME" # tip from Edward: this is more human readable
+#      - "$_DEPLOY_UNIT-$SHORT_SHA" # This is better in PROD, but if you dont do a new git commit it will fail
       - "--delivery-pipeline=$_DEPLOY_UNIT"
       - "--build-artifacts=/workspace/artifacts.json"
       - "--skaffold-file=src/$_DEPLOY_UNIT/skaffold.yaml"

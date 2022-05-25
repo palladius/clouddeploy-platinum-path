@@ -44,7 +44,7 @@ echo [wow] SuperDuper query on roles for your Cloud Build SvcAcct:
 white "1. Roles for CLOUD_BUILD_SVC_ACCT $CLOUD_BUILD_SVC_ACCT:"
 _sniff_roles_for_service_account $CLOUD_BUILD_SVC_ACCT
 
-white "3. Roles for GCE_SVC_ACCT $GCE_SVC_ACCT:"
+white "2. Roles for GCE_SVC_ACCT $GCE_SVC_ACCT:"
 _sniff_roles_for_service_account $GCE_SVC_ACCT
 
 # End of your code here

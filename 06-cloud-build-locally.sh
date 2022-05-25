@@ -1,6 +1,6 @@
 #!/bin/bash
 
-MODULE_TO_BUILD="${1:-frontend}"
+MODULE_TO_BUILD="${1:-app01}"
 COLOR=${2:-orange}
 
 # Created with codelabba.rb v.1.4a
@@ -10,8 +10,8 @@ set -e
 
 # Add your code here:
 cloud-build-local --config="cloudbuild.yaml" --dryrun=false \
-  --substitutions "_DEPLOY_UNIT=$MODULE_TO_BUILD,_REGION=$REGION" \
-  --push boa-cicd/
+  --substitutions "_DEPLOY_UNIT=$MODULE_TO_BUILD,_REGION=$REGION,_ARTIFACT_REPONAME=$ARTIFACT_REPONAME" \
+  --push apps/app01/
 
 
 
