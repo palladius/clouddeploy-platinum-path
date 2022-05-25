@@ -1,5 +1,7 @@
 apiVersion: skaffold/v2beta28
 kind: Config
+metadata:
+  name: app01
 build:
   artifacts:
   - image: skaffold-buildpacks
