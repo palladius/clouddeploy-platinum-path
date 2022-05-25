@@ -7,6 +7,10 @@
 #
 # Cache is in format: gs://$SKAFFOLD_BUCKET/skaffold-cache/$MODULE.txt
 # Note $SKAFFOLD_BUCKET defaults to "${PROJECT_ID}-skaffoldcache"
+#
+# v1.2 25may22: Changed REGION to _DEPLOY_REGION for step 4 since my original
+#               region wasnt big enough. In turn this forced me to change Build
+#               triggers
 steps:
   - name: gcr.io/cloud-builders/gsutil
     args: ['cp', 'gs://$PROJECT_ID-skaffoldcache/skaffold-cache/$_DEPLOY_UNIT.txt', '/workspace/cache']
@@ -30,4 +34,4 @@ steps:
       - "--delivery-pipeline=$_DEPLOY_UNIT"
       - "--build-artifacts=/workspace/artifacts.json"
       - "--skaffold-file=apps/$_DEPLOY_UNIT/skaffold.yaml"
-      - "--region=${_REGION}"
+      - "--region=${_DEPLOY_REGION}"

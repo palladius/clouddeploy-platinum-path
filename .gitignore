@@ -1,3 +1,4 @@
 .env.sh
 .cicd-platinum-codelab.appname
 clouddeploy.yaml
+.tmp.clouddeploy.yaml

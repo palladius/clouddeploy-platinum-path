@@ -14,10 +14,10 @@ TEAMS[1]='T2rb;app02;cloudbuild.yaml;apps/app02/;green'
 #TEAMS[2]='T3;frontend;cloudbuild-super-parametric.yaml;src/frontend/;yellow'
 #TEAMS[3]='T4;loadgenerator;cloudbuild-super-parametric.yaml;src/loadgenerator/;red'
 
-TRIGGERVERSION="1-3"
+TRIGGERVERSION="1-4"
 # 1.2 Made better substitutions.
 # 1.3 Made from regional to GLOBAL
-
+# 1.4 Added DEPLOY_REGION as per CD necessity.
 touch /tmp/MyEmptyFile
 
 GCR_REPO="palladius/clouddeploy-platinum-path"
@@ -36,7 +36,7 @@ for TEAM_ARR in "${TEAMS[@]}"; do
     #gray $TEAMS
     gsutil cp /tmp/MyEmptyFile gs://$SKAFFOLD_BUCKET/skaffold-cache/$TEAM_NAME.txt
 
-    SUBSTIUTIONS="_DEPLOY_UNIT=$TEAM_NAME,_REGION=$REGION,_ARTIFACT_REPONAME=$ARTIFACT_REPONAME"
+    SUBSTIUTIONS="_DEPLOY_UNIT=$TEAM_NAME,_REGION=$REGION,_ARTIFACT_REPONAME=$ARTIFACT_REPONAME,_DEPLOY_REGION=$DEPLOY_REGION"
 
     # This sets up on GCR
     gcloud alpha builds triggers create github --repo-owner="$GITHUB_REPO_OWNER" --repo-name="$GITHUB_REPO_NAME" --branch-pattern='.*' \
