@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source .env.sh
+source .env.sh || fatal "Config doesnt exist please create .env.sh"
 
 gcloud config configurations create $GCLOUD_CONFIG |
 gcloud config configurations activate $GCLOUD_CONFIG ||
@@ -9,20 +9,19 @@ gcloud config set account $ACCOUNT
 gcloud config set project $PROJECT_ID
 PROJECT_ID=$(gcloud config get-value project)
 
-    # Enable APIs...
-gcloud services enable logging.googleapis.com
-gcloud services enable compute
-gcloud services enable run.googleapis.com
-gcloud services enable artifactregistry.googleapis.com
-
+# Enable APIs...
 gcloud services enable \
-  sourcerepo.googleapis.com \
+  artifactregistry.googleapis.com \
   cloudbuild.googleapis.com \
   clouddeploy.googleapis.com \
-  container.googleapis.com \
-  redis.googleapis.com \
   cloudresourcemanager.googleapis.com \
-  servicenetworking.googleapis.com
+  compute.googleapis.com \
+  container.googleapis.com \
+  logging.googleapis.com \
+  redis.googleapis.com \
+  run.googleapis.com \
+  servicenetworking.googleapis.com \
+  sourcerepo.googleapis.com
 
 # Set defaults..
 gcloud config set run/region $REGION
@@ -41,5 +40,10 @@ gcloud config list | lolcat
 #
 # gcloud auth login --update-adc
 #
+
+# Needed on a new computer
+gcloud components install cloud-build-local
+gcloud components install skaffold
+
 
 touch ".$APPNAME.appname"

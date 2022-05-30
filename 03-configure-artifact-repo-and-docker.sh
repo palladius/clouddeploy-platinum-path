@@ -14,6 +14,5 @@ gcloud auth configure-docker $REGION-docker.pkg.dev
 skaffold config set default-repo "$REGION-docker.pkg.dev/$PROJECT_ID/$ARTIFACT_REPONAME"
 
 
-
 # End of your code here
 verde Tutto ok.

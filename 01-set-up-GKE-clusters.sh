@@ -10,6 +10,7 @@ set -e
 echo "Here we set up two clusters, cicd-dev/cicd-prod (one for prod and one for everything else). We set up everything in region $REGION" | lolcat
 gcloud auth configure-docker $REGION-docker.pkg.dev
 
+echo 'If the error is generic::already_exists then youre good :)'
 
 gcloud --project "$PROJECT_ID" artifacts repositories create $ARTIFACT_REPONAME \
     --location="$REGION" --repository-format=docker

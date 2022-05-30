@@ -8,6 +8,9 @@ status:
 dev:
 	echo Only works after step 4..
 	skaffold dev
+
+all: 
+	bash 0*.sh
 # build:
 # 	skaffold build --module=app01
 # 	skaffold build
