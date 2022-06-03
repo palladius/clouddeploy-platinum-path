@@ -25,7 +25,7 @@ spec:
     spec:
       containers:
       - name: ruby
-        image: ruby-example
+        image: ricc-app01-ruby-example    # ruby-example
         ports:
         - containerPort: 9292
         env:

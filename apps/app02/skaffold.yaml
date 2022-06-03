@@ -4,14 +4,16 @@ metadata:
   name: app02
 build:
   artifacts:
-  - image: ruby-example
+#  - image: ruby-example
+  - image: ricc-app01-ruby-example   
     context: backend
     sync:
       # Sync app.rb file, being watch with rack-unreloader
       # or add any other rb file to your application
       infer:
       - '*.rb'
-# deploy:
-#   kubectl:
-#     manifests:
-#       - ./deploy/k8s/*
+deploy:
+  kubectl:
+    manifests:
+#    - ./deploy/k8s/*
+    - ./k8s/*yaml

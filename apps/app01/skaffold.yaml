@@ -4,7 +4,8 @@ metadata:
   name: app01
 build:
   artifacts:
-  - image: skaffold-buildpacks
+#  - image: skaffold-buildpacks
+  - image: ricc-app01-python-buildpacks
     buildpacks:
       builder: "gcr.io/buildpacks/builder:v1"
       trustBuilder: true

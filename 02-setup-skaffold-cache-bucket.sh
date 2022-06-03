@@ -19,7 +19,7 @@ ls apps/| grep -v README | while read MODULE ; do
 done
 
 # Note this export wont work..
-export SKAFFOLD_DEFAULT_REPO="${REGION}-docker.pkg.dev/$PROJECT_ID/$ARTIFACT_REPONAME"
+#export SKAFFOLD_DEFAULT_REPO="${REGION}-docker.pkg.dev/$PROJECT_ID/$ARTIFACT_REPONAME"
 echodo skaffold config set default-repo "$SKAFFOLD_DEFAULT_REPO"
 
 # End of your code here

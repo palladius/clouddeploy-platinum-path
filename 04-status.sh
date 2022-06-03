@@ -6,15 +6,17 @@ set -x
 set -e
 
 # Add your code here:
+VERBOSE="false"
 
-#echo TODO kubectl get pods (TODO first add correct context)
-gsutil ls -l "gs://$SKAFFOLD_BUCKET/skaffold-cache/"
+echo REGION: $REGION
+
+# Docs: https://cloud.google.com/sdk/gcloud/reference/beta/artifacts/docker
+echodo gcloud artifacts docker images list "$ARTIFACT_LONG_REPO_PATH" 
+
+$VERBOSE && gsutil ls -l "gs://$SKAFFOLD_BUCKET/skaffold-cache/"
 kubectl get pods,service
-gcloud beta builds triggers list --region europe-west6
-skaffold config list
-
-
-
+$VERBOSE && gcloud beta builds triggers list --region europe-west6
+$VERBOSE && skaffold config list
 
 
 # End of your code here

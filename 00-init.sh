@@ -41,9 +41,10 @@ gcloud config list | lolcat
 # gcloud auth login --update-adc
 #
 
-# Needed on a new computer
-gcloud components install cloud-build-local
-gcloud components install skaffold
-
+# Needed on a new computer. Smartly installs if needed.
+which cloud-build-local >/dev/null  && echo cloud-build-local exists. All good. ||
+  gcloud components install cloud-build-local
+which skaffold >/dev/null && echo skaffold exists. All good. ||
+  gcloud components install skaffold
 
 touch ".$APPNAME.appname"
