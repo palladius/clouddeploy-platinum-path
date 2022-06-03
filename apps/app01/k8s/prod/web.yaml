@@ -30,8 +30,8 @@ spec:
           - name: PORT
             value: "8080"
           - name: TEST_RICCARDO
-            value: Changing just because. This should NOT appear anymore.
+            value: Changing just because.
           - name: FAVORITE_COLOR
-            value: brown-banana
+            value: magenta
         ports:
           - containerPort: 8080
