@@ -2,4 +2,4 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: cicd-internal
+  name: cicd-customer-traffic
