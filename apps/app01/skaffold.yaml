@@ -4,8 +4,8 @@ metadata:
   name: app01
 build:
   artifacts:
-#  - image: skaffold-buildpacks
-  - image: ricc-app01-python-buildpacks
+  - image: skaffold-buildpacks
+#  - image: ricc-app01-python-buildpacks
     #context: my-python-app # not sure what this is for.. 
     # sync:
     #   infer:
@@ -14,11 +14,11 @@ build:
       builder: "gcr.io/buildpacks/builder:v1"
 #      builder: "gcr.io/buildpacks/builder:654808d82f3ac18d40a5ac189600514ed6947491"
       trustBuilder: true
-# profiles:
-#   # - name: gcb
-#   #   build:
-#   #     googleCloudBuild: {}
-#   - name: dev
+profiles:
+  - name: gcb
+    build:
+      googleCloudBuild: {}
+  - name: dev
 #     # activation:
 #     # - env: MAGIC_VAR=42
 #     #deploy:
