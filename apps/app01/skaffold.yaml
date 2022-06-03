@@ -6,6 +6,10 @@ build:
   artifacts:
 #  - image: skaffold-buildpacks
   - image: ricc-app01-python-buildpacks
+    #context: my-python-app # not sure what this is for.. 
+    sync:
+      infer:
+      - '*.py'
     buildpacks:
       builder: "gcr.io/buildpacks/builder:v1"
       trustBuilder: true
