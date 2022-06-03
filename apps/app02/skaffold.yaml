@@ -4,9 +4,8 @@ metadata:
   name: app02
 build:
   artifacts:
-#  - image: ruby-example
   - image: ricc-app01-ruby-example   
-    context: backend
+    context: ruby-app
     sync:
       # Sync app.rb file, being watch with rack-unreloader
       # or add any other rb file to your application
@@ -15,5 +14,21 @@ build:
 deploy:
   kubectl:
     manifests:
-#    - ./deploy/k8s/*
     - ./k8s/*yaml
+profiles:
+  - name: dev
+    deploy:
+      kustomize:
+        paths: ["k8s/01dev"] # should be dev but its the same so today ill be lazy...
+  - name: staging
+    deploy:
+      kustomize:
+        paths: ["k8s/02staging"]
+  - name: canary
+    deploy:
+      kustomize:
+        paths: ["k8s/03canary"]
+  - name: production
+    deploy:
+      kustomize:
+        paths: ["k8s/04production"]

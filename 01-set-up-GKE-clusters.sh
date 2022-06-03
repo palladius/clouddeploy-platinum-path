@@ -12,17 +12,22 @@ gcloud auth configure-docker $REGION-docker.pkg.dev
 
 echo 'If the error is generic::already_exists then youre good :)'
 
-gcloud --project "$PROJECT_ID" artifacts repositories create $ARTIFACT_REPONAME \
-    --location="$REGION" --repository-format=docker
-
+# CANARY (Similar to prod but smaller)
+gcloud container --project "$PROJECT_ID" clusters create-auto "cicd-canary" --region "$REGION" \
+  --release-channel "regular" --network "projects/$PROJECT_ID/global/networks/default" --subnetwork "projects/$PROJECT_ID/regions/$REGION/subnetworks/default" \
+  --cluster-ipv4-cidr "/17" --services-ipv4-cidr "/22" # --labels "env=prod"
+# PROD
 gcloud container --project "$PROJECT_ID" clusters create-auto "cicd-prod" --region "$REGION" \
   --release-channel "regular" --network "projects/$PROJECT_ID/global/networks/default" --subnetwork "projects/$PROJECT_ID/regions/$REGION/subnetworks/default" \
   --cluster-ipv4-cidr "/17" --services-ipv4-cidr "/22" # --labels "env=prod"
+# DEV
 gcloud container --project "$PROJECT_ID" clusters create-auto "cicd-dev" --region "$REGION" \
   --release-channel "regular" --network "projects/$PROJECT_ID/global/networks/default" --subnetwork "projects/$PROJECT_ID/regions/$REGION/subnetworks/default" \
   --cluster-ipv4-cidr "/17" --services-ipv4-cidr "/22"
 
+# Create Artifact Registry
+gcloud --project "$PROJECT_ID" artifacts repositories create $ARTIFACT_REPONAME \
+    --location="$REGION" --repository-format=docker
 
-
-# End of your code here
-verde Tutto ok.
+# End of your code here. verde script can be found in "palladius/sakura"
+verde Everything is ok.

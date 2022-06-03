@@ -24,7 +24,10 @@ gcloud services enable \
   sourcerepo.googleapis.com
 
 # Set defaults..
-gcloud config set run/region $REGION
+gcloud config set run/region "$REGION"
+#gcloud config set build/region "$REGION"
+gcloud config set deploy/region "$CLOUD_DEPLOY_REGION"
+
 #gcloud config set run/platform managed
 #gcloud config set eventarc/location $REGION
 

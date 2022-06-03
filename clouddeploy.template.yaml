@@ -83,7 +83,7 @@ metadata:
  name: canary
 description: 03 canary cluster (external, rather stable)
 gke:
- cluster: projects/MY_PROJECT_ID/locations/MY_REGION/clusters/cicd-dev
+ cluster: projects/MY_PROJECT_ID/locations/MY_REGION/clusters/cicd-canary
 ---
 apiVersion: deploy.cloud.google.com/v1
 kind: Target

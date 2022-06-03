@@ -1,0 +1,11 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../_base
+components:
+  - ../../../_kustomize/components/canary/common
+
+# How do i make the fav color to be yellow?!?
+#         - name: FAVORITE_COLOR
+#          value: pink # default bkg color, will make it white in prod and yellow in canary.  
+          
