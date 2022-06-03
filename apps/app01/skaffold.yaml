@@ -7,9 +7,9 @@ build:
   - image: skaffold-buildpacks
 #  - image: ricc-app01-python-buildpacks
     #context: my-python-app # not sure what this is for.. 
-    # sync:
-    #   infer:
-    #   - '*.py'
+    sync:
+      infer:
+      - '*.py'
     buildpacks:
       builder: "gcr.io/buildpacks/builder:v1"
 #      builder: "gcr.io/buildpacks/builder:654808d82f3ac18d40a5ac189600514ed6947491"
