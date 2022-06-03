@@ -3,7 +3,7 @@ app = Flask(__name__)
 
 @app.route('/')
 
-print("[ricc] Starting the super-duper vanilla server in python to say HelloWorld!\n")
+#print("[ricc] Starting the super-duper vanilla server in python to say HelloWorld!\n")
 
 def index():
   version = "1.0alpha"
