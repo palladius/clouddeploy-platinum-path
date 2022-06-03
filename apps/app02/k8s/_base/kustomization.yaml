@@ -4,5 +4,6 @@ commonLabels:
   tier: ricc-frontend-application
 resources:
   - deployment.yaml # ruby stuff
+  - namespace.yaml 
 components:
   - ../../../components/base/common

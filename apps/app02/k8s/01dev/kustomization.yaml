@@ -5,3 +5,15 @@ resources:
 components:
 #  - ../../../../components/production/common
   - ../../../components/base/common
+
+patches:
+- patch: |-
+    - op: add
+      path: "/spec/template/spec/containers/0/env/-"
+      value:
+        name: RICCARDO_KUSTOMIZE_ENV
+        value: "01 Dev (Development)"
+  target:
+    kind: Deployment
+#    namespace: myns
+    name: ricc-ruby

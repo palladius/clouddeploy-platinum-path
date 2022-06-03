@@ -2,7 +2,7 @@
 
 # Created with codelabba.rb v.1.4a
 source .env.sh || fatal 'Couldnt source this'
-set -x
+#set -x
 set -e
 
 # Add your code here:
@@ -10,22 +10,23 @@ SHOW_VERBOSE_STUFF="false"
 SHOW_GCLOUD_ENTITIES="true"
 SHOW_PANTHEON_LINKS="true"
 
-echo REGION: $REGION
+echo "+ REGION for DEPLOY:          $CLOUD_DEPLOY_REGION"
+echo "+ REGION for EVERYTHING ELSE: $REGION"
 
-
-if test "true" = "$SHOW_PANTHEON_LINKS" ; then 
-    echo "== DevConsole useful links START (if you are a UI kind of person) =="
+if [ "true" = "$SHOW_PANTHEON_LINKS" ]; then 
+    echo "== DevConsole useful links START (if you are a UI kind of person) ==" | lolcat
     echo "GKE Workloads: https://console.cloud.google.com/kubernetes/workload/overview?&project=$PROJECT_ID"
-    echo "Cloud Build: https://console.cloud.google.com/build?&project=$PROJECT_ID"
+    echo "Cloud Build: https://console.cloud.google.com/cloud-build/builds;regions=$REGION?&project=$PROJECT_ID"
+    echo "Cloud Deploy Pipelines: https://console.cloud.google.com/deploy/delivery-pipelines?project=$PROJECT_ID"
     echo "== DevConsole useful links END =="
 fi
-exit 42
 
 kubectl get pods,service
 
 # Docs: https://cloud.google.com/sdk/gcloud/reference/beta/artifacts/docker
 if $SHOW_GCLOUD_ENTITIES ; then
-    echodo gcloud artifacts docker images list "$ARTIFACT_LONG_REPO_PATH" 
+    echo "+ Let's count the images for each artifact:"
+    gcloud artifacts docker images list "$ARTIFACT_LONG_REPO_PATH" | awk '{print $1}' | sort | uniq -c
     gcloud deploy delivery-pipelines list | egrep "name:|targetId"
 fi 
 if $SHOW_VERBOSE_STUFF ; then
