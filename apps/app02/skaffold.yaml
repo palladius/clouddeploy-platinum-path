@@ -21,14 +21,14 @@ profiles:
       kustomize:
         paths: ["k8s/01dev"] # should be dev but its the same so today ill be lazy...
   - name: staging
-    deploy:
-      kustomize:
-        paths: ["k8s/02staging"]
+    # deploy:
+    #   kustomize:
+    #     paths: ["k8s/02staging"]
   - name: canary
-    deploy:
-      kustomize:
-        paths: ["k8s/03canary"]
+    # deploy:
+    #   kustomize:
+    #     paths: ["k8s/03canary"]
   - name: production
-    deploy:
-      kustomize:
-        paths: ["k8s/04production"]
+    # deploy:
+    #   kustomize:
+    #     paths: ["k8s/04production"]
