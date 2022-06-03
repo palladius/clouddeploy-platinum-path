@@ -14,10 +14,12 @@ TEAMS[1]='T2rb;app02;cloudbuild.yaml;apps/app02/;green'
 #TEAMS[2]='T3;frontend;cloudbuild-super-parametric.yaml;src/frontend/;yellow'
 #TEAMS[3]='T4;loadgenerator;cloudbuild-super-parametric.yaml;src/loadgenerator/;red'
 
-TRIGGERVERSION="1-5a"
-# 1.2 Made better substitutions.
-# 1.3 Made from regional to GLOBAL
-# 1.4 Added DEPLOY_REGION as per CD necessity.
+TRIGGERVERSION="1-5b"
+# 1.5b 20220603 I didnt change a thing but DESTROYED everything since i had 4 triggers, 2 in 1.5a and 2 in 1.3 so wanted to have a clean slate.
+# 1.5a          ????
+# 1.4           Added DEPLOY_REGION as per CD necessity.
+# 1.3           Made from regional to GLOBAL (local have QUOTA issues) #important
+# 1.2           Made better substitutions.
 touch /tmp/MyEmptyFile
 
 GCR_REPO="palladius/clouddeploy-platinum-path"
