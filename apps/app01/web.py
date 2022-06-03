@@ -7,4 +7,4 @@ print "[ricc] Starting the super-duper vanilla server in python to say HelloWorl
 
 def index():
   version = "1.0alpha"
-  return "[app01 vTODO] Hello world from Skaffold in python".format(version)
+  return "[app01 v<b>{}</b>] Hello world from Skaffold in python!".format(version)

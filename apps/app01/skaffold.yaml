@@ -19,7 +19,10 @@ profiles:
     build:
       googleCloudBuild: {}
   - name: dev
-#     # activation:
+  - name: staging
+  - name: canary
+  - name: production
+##     # activation:
 #     # - env: MAGIC_VAR=42
 #     #deploy:
 #       #kustomize:
