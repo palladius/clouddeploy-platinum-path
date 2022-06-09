@@ -32,7 +32,9 @@ spec:
         - name: RACK_ENV
           value: "development"
         - name: RICCARDO_MESSAGE
-          value: Hi! This is the default message if you dont customize to come to another target (dev, prod, ..) 
+          value: |
+            Hi! This is the default message if you dont customize to come to another target (dev, prod, ..)
+            Note that since v1.2_20220609 fav color has changed from pink to orange. Im testing a change to both code and k8s yaml here.. 
         - name: FAVORITE_COLOR
-          value: pink # default bkg color, will make it white in prod and yellow in canary.  
+          value: orange # default bkg color, will make it white in prod and yellow in canary.  
           
