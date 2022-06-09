@@ -57,3 +57,9 @@ steps:
 # gcloud deploy releases create r-$(date +%y%m%d-%s)
 # --delivery-pipeline=web-app-3 --build-artifacts=artifacts.json
 # --region=us-central1
+  - name: gcr.io/google.com/cloudsdktool/cloud-sdk
+    dir: cloud-build/
+    entrypoint: bash
+    args:
+      - '-c'
+      - 01-on-commit-build.sh
