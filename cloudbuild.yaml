@@ -49,7 +49,6 @@ steps:
     args:
       - '-c'
       - >
-        echo 
         gcloud deploy releases
         create "$_DEPLOY_UNIT-$$DATE-$$TIME-$(cat VERSION | tr '[:upper:]' '[:lower:]' )"
         --delivery-pipeline="$_DEPLOY_UNIT"
