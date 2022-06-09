@@ -34,5 +34,7 @@ spec:
             value: Changing just because. This should NOT appear anymore.
           - name: FAVORITE_COLOR
             value: brown-banana
+          - name: APP_CODE
+            value: app01
         ports:
           - containerPort: 8080

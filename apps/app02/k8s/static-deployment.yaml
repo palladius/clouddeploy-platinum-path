@@ -31,6 +31,8 @@ spec:
         env:
         - name: RACK_ENV
           value: "development"
+        - name: APP_CODE
+          value: app02
         - name: RICCARDO_MESSAGE
           value: |
             Hi! This is the default message if you dont customize to come to another target (dev, prod, ..)
