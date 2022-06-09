@@ -10,7 +10,7 @@ set -e
 #echo TODO kubectl get pods (TODO first add correct context)
 gsutil ls -l "gs://$SKAFFOLD_BUCKET/skaffold-cache/"
 kubectl get pods,service
-gcloud beta builds triggers list --region europe-west6
+gcloud beta builds triggers list --region $REGION
 skaffold config list
 
 
