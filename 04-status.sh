@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Created with codelabba.rb v.1.4a
-source .env.sh || fatal 'Couldnt source this'
+source .env.sh || fatal "Config doesnt exist please create .env.sh"
 #set -x
 set -e
 
@@ -32,7 +32,7 @@ if $SHOW_GCLOUD_ENTITIES ; then
 fi 
 if $SHOW_VERBOSE_STUFF ; then
     gsutil ls -l "gs://$SKAFFOLD_BUCKET/skaffold-cache/"
-    gcloud beta builds triggers list --region europe-west6
+    gcloud beta builds triggers list --region $REGION
     skaffold config list
 fi
 
