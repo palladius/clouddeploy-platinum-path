@@ -15,18 +15,20 @@ echo "CB_DATETIME2:      $CLOUDBUILD_DATETIME"
 echo "EdwardDATEIME:    $(date +%y%m%d-%s)"
 echo "MagicVersion:     $MAGIC_VERSION"
 echo "SuperMagicVersion: $(cat apps/$_DEPLOY_UNIT/VERSION )"
-
-gcloud deploy releases create "$_DEPLOY_UNIT-$$DATE-$$TIME-$MAGIC_VERSION" 
-        --delivery-pipeline="$_DEPLOY_UNIT"
-        --build-artifacts=/workspace/artifacts.json
-        --skaffold-file="apps/$_DEPLOY_UNIT/skaffold.yaml"
+echo "ARGV1:            $1"
+echo "ARGV2:            $2"
+echo "ARGV3:            $3"
+gcloud deploy releases create "$_DEPLOY_UNIT-$$DATE-$$TIME-$MAGIC_VERSION" \
+        --delivery-pipeline="$_DEPLOY_UNIT" \
+        --build-artifacts=/workspace/artifacts.json \
+        --skaffold-file="apps/$_DEPLOY_UNIT/skaffold.yaml" \
         --region="${_DEPLOY_REGION}"
 
 
-echo gcloud deploy releases create "$_DEPLOY_UNIT-$$DATE-$$TIME-$MAGIC_VERSION" 
-        --delivery-pipeline="$_DEPLOY_UNIT"
-        --build-artifacts=/workspace/artifacts.json
-        --skaffold-file="apps/$_DEPLOY_UNIT/skaffold.yaml"
-        --region="${_DEPLOY_REGION}"
+# echo gcloud deploy releases create "$_DEPLOY_UNIT-$$DATE-$$TIME-$MAGIC_VERSION" 
+#         --delivery-pipeline="$_DEPLOY_UNIT"
+#         --build-artifacts=/workspace/artifacts.json
+#         --skaffold-file="apps/$_DEPLOY_UNIT/skaffold.yaml"
+#         --region="${_DEPLOY_REGION}"
 
 echo All done.

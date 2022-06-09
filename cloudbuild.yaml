@@ -65,4 +65,4 @@ steps:
     entrypoint: bash
     args:
       - '-c'
-      - cloud-build/01-on-commit-build.sh "$$DATE-$$TIME"
+      - cloud-build/01-on-commit-build.sh "$$DATE-$$TIME" DU="$_DEPLOY_UNIT" "DR=$_DEPLOY_REGION"
