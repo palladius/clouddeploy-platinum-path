@@ -12,7 +12,7 @@ PIPELINE="${1:-app01}"
 LATEST_SUCCESSFUL_RELEASE=$(get_latest_successful_release_by_pipeline "$PIPELINE" )
 
 green "Now promoting DEV to STAG for PIPELINE=$PIPELINE (from ARGV1) and RELEASE=$LATEST_SUCCESSFUL_RELEASE.."
-gcloud deploy releases promote --to-target canary --region "$CLOUD_DEPLOY_REGION" \
+gcloud deploy releases promote --to-target staging --region "$CLOUD_DEPLOY_REGION" \
     --release "$LATEST_SUCCESSFUL_RELEASE" --delivery-pipeline=$PIPELINE --quiet
 
 
