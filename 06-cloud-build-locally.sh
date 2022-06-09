@@ -14,8 +14,9 @@ set -e
 
 # Add your code here:
 # docs for substitutions: https://cloud.google.com/build/docs/configuring-builds/substitute-variable-values
+PARTICULAR_VERSION_FOR_MODULE=$(cat apps/$MODULE_TO_BUILD/VERSION )
 cloud-build-local --config="cloudbuild.yaml" --dryrun=false \
-  --substitutions "_DEPLOY_UNIT=$MODULE_TO_BUILD,_REGION=$REGION,_ARTIFACT_REPONAME=$ARTIFACT_REPONAME,_DEPLOY_REGION=$CLOUD_DEPLOY_REGION" \
+  --substitutions "_DEPLOY_UNIT=$MODULE_TO_BUILD,_REGION=$REGION,_ARTIFACT_REPONAME=$ARTIFACT_REPONAME,_DEPLOY_REGION=$CLOUD_DEPLOY_REGION,_APP_VERSION=$PARTICULAR_VERSION_FOR_MODULE" \
   --push apps/app01/
 
 

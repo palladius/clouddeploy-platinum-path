@@ -4,6 +4,10 @@
 # - _ARTIFACT_REPONAME (AR reponame, dflt to "cicd-plat")
 # - LOCATION otherwise a personal _REGION :) - only works online
 # - _REGION as the above fix :)
+# - _VERSION addded on 9jun22
+#
+# Note for Ricc: when you add a _VARIABLE you need to change the invocation of build
+#                and issue a new building filosofy with different versions...
 #
 # Cache is in format: gs://$SKAFFOLD_BUCKET/skaffold-cache/$MODULE.txt
 # Note $SKAFFOLD_BUCKET defaults to "${PROJECT_ID}-skaffoldcache"
@@ -29,7 +33,8 @@ steps:
       - "deploy"
       - "releases"
       - "create"
-      - "$_DEPLOY_UNIT-$$DATE-$$TIME" # tip from Edward: this is more human readable
+      - "$_DEPLOY_UNIT-$$DATE-$$TIME-v$_APP_VERSION" # tip from Edward: this is more human readable
+#      - "$_DEPLOY_UNIT-$$DATE-$$TIME" # tip from Edward: this is more human readable
 #      - "$_DEPLOY_UNIT-$SHORT_SHA" # This is better in PROD, but if you dont do a new git commit it will fail
       - "--delivery-pipeline=$_DEPLOY_UNIT"
       - "--build-artifacts=/workspace/artifacts.json"
