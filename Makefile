@@ -37,3 +37,11 @@ hiroshima:
 show-latest-succesful-releases:
 	./09-show-latest-successful-releases.sh app01
 	./09-show-latest-successful-releases.sh app02
+
+tests:
+	@echo Ensuring tests pass for both applications.. as make test launched in their folder.
+#	@echo Testin app01...
+	make -C apps/app01/ test
+#	@echo Testin app02...
+	make -C apps/app02/ test
+	

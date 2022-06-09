@@ -14,3 +14,6 @@ test-profiles:
 	skaffold dev -p staging --no-prune=false --cache-artifacts=false
 	skaffold dev -p canary  --no-prune=false --cache-artifacts=false
 	skaffold dev -p prod    --no-prune=false --cache-artifacts=false
+
+test:
+	echo App01 Always OK.
