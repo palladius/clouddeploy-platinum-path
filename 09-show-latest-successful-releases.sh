@@ -7,6 +7,7 @@ source .env.sh || fatal 'Couldnt source this'
 
 PIPELINE="${1:-app01}"
 VERBOSE=false
+AUTO_PROMOTE_DEV_TO_STAGING=true
 
 # Add your code here:
 azure 10. INSPECTING CD PIPELINE="$PIPELINE"
