@@ -32,3 +32,8 @@ build-local: cloud-build-locally
 hiroshima:
 	@echo deleting all GKE resources...
 	kubectl delete all
+
+
+show-latest-succesful-releases:
+	./09-show-latest-successful-releases.sh app01
+	./09-show-latest-successful-releases.sh app02
