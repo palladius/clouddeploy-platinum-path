@@ -1,5 +1,5 @@
 # version 1:1
-$VERSION = '1.1_20220603'
+$VERSION = '1.2_20220609'
 $interesting_envs = %w{ RICCARDO_KUSTOMIZE_ENV RICCARDO_MESSAGE FAVORITE_COLOR PROJECT_ID RACK_ENV }
 
 
@@ -32,7 +32,7 @@ class App
 
     return [ 200, {
       "Content-Type" => "text/html"}, 
-      ["<h1>Hello Skaffold from Riccardo!</h1>  More exciting stuff coming soon from ENV vars.<br/>
+      ["<h1>[app02 in ruby] Hello from Riccardo!</h1>  More exciting stuff coming soon from ENV vars.<br/>
       
       Favorite Color: <b style='background-color:#{fav_color};' >#{fav_color}</b><br/>
       
