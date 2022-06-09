@@ -43,18 +43,19 @@ steps:
 # Thanks to abielski and Ed Thiele!! Remove previous when this works of course
 # https://cloud.google.com/build/docs/configuring-builds/run-bash-scripts#running_inline_bash_scripts
 
-  # - name: gcr.io/google.com/cloudsdktool/cloud-sdk
-  #   #dir: my-source-01 # TODO(ricc): maybe I can have /apps/$_DEPLOY_UNIT/ as dir :) wow!
-  #   entrypoint: bash
-  #   args:
-  #     - '-c'
-  #     - >
-  #       gcloud deploy releases
-  #       create "$_DEPLOY_UNIT-$$DATE-$$TIME-$(cat VERSION | tr '[:upper:]' '[:lower:]' )" 
-  #       --delivery-pipeline="$_DEPLOY_UNIT"
-  #       --build-artifacts=/workspace/artifacts.json
-  #       --skaffold-file=apps/"$_DEPLOY_UNIT"/skaffold.yaml
-  #       --region="${_DEPLOY_REGION}"
+  - name: gcr.io/google.com/cloudsdktool/cloud-sdk
+    #dir: my-source-01 # TODO(ricc): maybe I can have /apps/$_DEPLOY_UNIT/ as dir :) wow!
+    entrypoint: bash
+    args:
+      - '-c'
+      - >
+        echo 
+        gcloud deploy releases
+        create "$_DEPLOY_UNIT-$$DATE-$$TIME-$(cat VERSION | tr '[:upper:]' '[:lower:]' )" 
+        --delivery-pipeline="$_DEPLOY_UNIT"
+        --build-artifacts="/workspace/artifacts.json"
+        --skaffold-file="apps/$_DEPLOY_UNIT/skaffold.yaml"
+        --region="${_DEPLOY_REGION}"
 
 # gcloud deploy releases create r-$(date +%y%m%d-%s)
 # --delivery-pipeline=web-app-3 --build-artifacts=artifacts.json
