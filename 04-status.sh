@@ -36,5 +36,7 @@ if $SHOW_VERBOSE_STUFF ; then
     skaffold config list
 fi
 
+echo TODO get for both apps/pipelines, for every target the current release similar to https://screenshot.googleplex.com/AuKQWtQsfAvvdsb
+
 # End of your code here
 verde Tutto ok.

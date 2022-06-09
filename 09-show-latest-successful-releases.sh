@@ -5,9 +5,14 @@ source .env.sh || fatal 'Couldnt source this'
 #set -x
 #set -e
 
-PIPELINE="${1:-app01}"
+PIPELINE="${1:-dunno}"
 VERBOSE=false
 AUTO_PROMOTE_DEV_TO_STAGING=true
+
+if echo $PIPELINE | grep -q dunno ; then 
+    echo Give me app-01 or app02 in ARGV1 or for both just call: make show-latest-succesful-releases
+    exit 42
+fi
 
 # Add your code here:
 azure 10. INSPECTING CD PIPELINE="$PIPELINE"
