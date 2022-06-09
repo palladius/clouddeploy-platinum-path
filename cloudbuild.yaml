@@ -48,7 +48,7 @@ steps:
     args:
       - '-c'
       - >
-        gcloud deploy releasesreleases
+        gcloud deploy releases
         create "$_DEPLOY_UNIT-$$DATE-$$TIME-$(cat VERSION)" 
         --delivery-pipeline="$_DEPLOY_UNIT"
         --build-artifacts=/workspace/artifacts.json
