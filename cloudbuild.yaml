@@ -33,7 +33,7 @@ steps:
       - "deploy"
       - "releases"
       - "create"
-      - "$_DEPLOY_UNIT-$$DATE-$$TIME-v$(cat ./VERSION)" # tip from Edward: this is more human readable
+      - "$_DEPLOY_UNIT-$$DATE-$$TIME-v`cat ./VERSION`" # tip from Edward: this is more human readable
 #      - "$_DEPLOY_UNIT-$$DATE-$$TIME" # tip from Edward: this is more human readable
 #      - "$_DEPLOY_UNIT-$SHORT_SHA" # This is better in PROD, but if you dont do a new git commit it will fail
       - "--delivery-pipeline=$_DEPLOY_UNIT"
