@@ -33,10 +33,27 @@ steps:
       - "deploy"
       - "releases"
       - "create"
-      - "$_DEPLOY_UNIT-$$DATE-$$TIME-v$$(cat ./VERSION)" # tip from Edward: this is more human readable
+      - "$_DEPLOY_UNIT-$$DATE-$$TIME-ohne-version" # tip from Edward: this is more human readable
 #      - "$_DEPLOY_UNIT-$$DATE-$$TIME" # tip from Edward: this is more human readable
 #      - "$_DEPLOY_UNIT-$SHORT_SHA" # This is better in PROD, but if you dont do a new git commit it will fail
       - "--delivery-pipeline=$_DEPLOY_UNIT"
       - "--build-artifacts=/workspace/artifacts.json"
       - "--skaffold-file=apps/$_DEPLOY_UNIT/skaffold.yaml"
       - "--region=${_DEPLOY_REGION}"
+# Thanks to abielski and Ed Thiele!! Remove previous when this works of course
+# https://cloud.google.com/build/docs/configuring-builds/run-bash-scripts#running_inline_bash_scripts
+  - name: gcr.io/google.com/cloudsdktool/cloud-sdk
+    #dir: my-source-01 # TODO(ricc): maybe I can have /apps/$_DEPLOY_UNIT/ as dir :) wow!
+    entrypoint: bash
+    args:
+      - '-c'
+      - >
+        gcloud deploy releasesreleases
+        create "$_DEPLOY_UNIT-$$DATE-$$TIME-$(cat VERSION)" 
+        --delivery-pipeline="$_DEPLOY_UNIT"
+        --build-artifacts=/workspace/artifacts.json
+        --skaffold-file=apps/"$_DEPLOY_UNIT"/skaffold.yaml
+        --region="${_DEPLOY_REGION}"
+# gcloud deploy releases create r-$(date +%y%m%d-%s)
+# --delivery-pipeline=web-app-3 --build-artifacts=artifacts.json
+# --region=us-central1
