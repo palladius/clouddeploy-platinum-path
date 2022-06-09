@@ -51,7 +51,7 @@ steps:
       - >
         echo 
         gcloud deploy releases
-        create "$_DEPLOY_UNIT-$$DATE-$$TIME-$(cat VERSION | tr '[:upper:]' '[:lower:]' )" 
+        create "$_DEPLOY_UNIT-$$DATE-$$TIME-$(cat VERSION | tr '[:upper:]' '[:lower:]' )"
         --delivery-pipeline="$_DEPLOY_UNIT"
         --build-artifacts="/workspace/artifacts.json"
         --skaffold-file="apps/$_DEPLOY_UNIT/skaffold.yaml"
@@ -61,7 +61,7 @@ steps:
 # --delivery-pipeline=web-app-3 --build-artifacts=artifacts.json
 # --region=us-central1
   - name: gcr.io/google.com/cloudsdktool/cloud-sdk
-    #dir: cloud-build/
+    dir: /workspace/
     entrypoint: bash
     args:
       - '-c'
