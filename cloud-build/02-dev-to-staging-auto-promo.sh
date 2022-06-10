@@ -51,7 +51,7 @@ set -e
 
 # TODO
 # once
-cd /apps/$ARGV_DEPLOY_UNIT
+cd /workspace/apps/$ARGV_DEPLOY_UNIT
 make test
 
 echo 3. So far so good. Now approve from dev to STAGING. But I need the release name... is it...
