@@ -66,5 +66,5 @@ DESIRED_STAGE="staging"
 CLOUD_DEPLOY_REGION="$ARGV_DEPLOY_REGION"
 LATEST_SUCCESSFUL_RELEASE="$RELEASE_NAME"
 PIPELINE="$ARGV_DEPLOY_UNIT"
-echo gcloud deploy releases promote --to-target "$DESIRED_STAGE" --region "$CLOUD_DEPLOY_REGION" \
+gcloud deploy releases promote --to-target "$DESIRED_STAGE" --region "$CLOUD_DEPLOY_REGION" \
     --release "$LATEST_SUCCESSFUL_RELEASE" --delivery-pipeline=$PIPELINE --quiet
