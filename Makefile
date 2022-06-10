@@ -63,6 +63,8 @@ tests:
 	
 # I didnt know it was so straightfwd! Install: https://kubectl.docs.kubernetes.io/installation/kustomize/binaries/
 kustomize-build-ruby-prod-and-acanary:
-	kustomize build apps/app02/k8s/04prod/
-	kustomize build apps/app02/k8s/03canary/
+	kustomize build apps/app02/k8s/04prod/ >/dev/null
+	kustomize build apps/app02/k8s/03canary/ >/dev/null
+	kustomize build apps/app02/k8s/01dev/ >/dev/null
+	kustomize build apps/app02/k8s/02staging/ >/dev/null
 	echo Done. TODO ricc diff the two now.
