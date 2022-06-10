@@ -14,13 +14,8 @@ gcloud services enable \
   artifactregistry.googleapis.com \
   cloudbuild.googleapis.com \
   clouddeploy.googleapis.com \
-  cloudresourcemanager.googleapis.com \
   compute.googleapis.com \
   container.googleapis.com \
-  logging.googleapis.com \
-  redis.googleapis.com \
-  run.googleapis.com \
-  servicenetworking.googleapis.com \
   sourcerepo.googleapis.com
 
 # Set defaults..
@@ -45,8 +40,6 @@ gcloud config list | lolcat
 #
 
 # Needed on a new computer. Smartly installs if needed.
-which cloud-build-local >/dev/null  && echo cloud-build-local exists. All good. ||
-  gcloud components install cloud-build-local
 which skaffold >/dev/null && echo skaffold exists. All good. ||
   gcloud components install skaffold
 

@@ -3,7 +3,6 @@ kind: Kustomization
 resources:
   - ../_base
 components:
-#  - ../../../../components/production/common
   - ../../../components/base/common
 
 patches:

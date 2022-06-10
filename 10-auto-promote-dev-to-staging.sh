@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Created with codelabba.rb v.1.4a
-source .env.sh || fatal 'Couldnt source this'
+source .env.sh || fatal "Config doesnt exist please create .env.sh"
 #set -x
 set -e
 
@@ -16,8 +16,6 @@ LATEST_SUCCESSFUL_RELEASE=$(get_latest_successful_release_by_pipeline "$PIPELINE
 green "Now promoting DEV to STAG for PIPELINE=$PIPELINE (from ARGV1) and RELEASE=$LATEST_SUCCESSFUL_RELEASE.."
 gcloud deploy releases promote --to-target "$DESIRED_STAGE" --region "$CLOUD_DEPLOY_REGION" \
     --release "$LATEST_SUCCESSFUL_RELEASE" --delivery-pipeline=$PIPELINE --quiet
-
-
 
 
 

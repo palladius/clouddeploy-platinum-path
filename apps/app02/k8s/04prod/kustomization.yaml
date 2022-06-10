@@ -4,3 +4,6 @@ resources:
   - ../_base
 components:
   - ../../../../components/prod/common
+replicas: 
+  - name: ricc-ruby
+    count: 9 # turn it up to
