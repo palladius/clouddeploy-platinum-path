@@ -38,12 +38,14 @@ class App
       
       #{interesting_infos_htmlified}
 
-      Btw, I really love skaffold!
+      Btw, I really love skaffold! 
+      Note that the version below is now read by file since v1.3 and also properly associated to a Cloud Deploy 
+      release. If you want to steal my logic, feel free to check the code in github.com: palladius/clouddeploy-platinum-path.git
 
-      <hr/>
-
-      APP $APPNAME v.#{$VERSION}
-        
+      <hr/>    
+      <center>
+        APP $APPNAME v.#{$VERSION}
+      </center>  
       "]
     ]
   end
