@@ -20,7 +20,8 @@ def index():
         Hello world from Skaffold in python! This is a demonstrative app to demonstrate CI/CD with Cloud Deploy and Cloud Build<br/>
         Im so clever that now I read version from file and this ./VERSION file is actually read by the build pipeline
         into the Cloud Deploy release name - wOOOt!
-        FAVORITE_COLOR={col}
+        FAVORITE_COLOR={fav_color}
+        Favorite Color from v14: <b style='background-color:#{fav_color};' >#{fav_color}</b><br/>
   """.format(
     ver=version,
-    col=fav_color)
+    fav_color=fav_color)
