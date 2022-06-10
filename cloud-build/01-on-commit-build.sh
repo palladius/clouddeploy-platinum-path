@@ -12,16 +12,17 @@ ARGV_DEPLOY_UNIT="$1"
 ARGV_REGION="$2"
 ARGV_DATETIME="$3"
 
-echo "_DEPLOY_UNIT:     $_DEPLOY_UNIT"
-echo "_DEPLOY_REGION:   $_DEPLOY_REGION"
-echo "CB_DATETIME1:      $$DATE-$$TIME"
-echo "CB_DATETIME2:      $CLOUDBUILD_DATETIME"
-echo "EdwardDATEIME:    $(date +%y%m%d-%s)"
-echo "MagicVersion:     $MAGIC_VERSION"
-echo "SuperMagicVersion: $(cat apps/$_DEPLOY_UNIT/VERSION )"
-echo "ARGV1:            $1"
-echo "ARGV2:            $2"
-echo "ARGV3:            $3"
+# These dont work: https://screenshot.googleplex.com/ABKSubdGMi99Xy6
+#echo "_DEPLOY_UNIT:     $_DEPLOY_UNIT"
+#echo "_DEPLOY_REGION:   $_DEPLOY_REGION"
+echo "CB_DATETIME1:     $$DATE-$$TIME"
+echo "CB_DATETIME2:     $CLOUDBUILD_DATETIME"
+echo "BASH_DATETIME:    $(date +%y%m%d-%s)"             # from Edward
+echo "MAGIC_VERSION:    $MAGIC_VERSION"
+echo "SuperMagicVersion: $(cat apps/$ARGV_DEPLOY_UNIT/VERSION )" # The REAL thing
+echo "ARGV1:            $1" # 1. ARGV_DEPLOY_UNIT, eg 'app02'
+echo "ARGV2:            $2" # 2. ARGV_REGION, eg 'europe-west1'
+echo "ARGV3:            $3" # 3. ARGV_DATETIME - useless, eg '$DATE-£TIME' - useless
 echo "FOO:              $FOO"
 echo "CBENV_BUILD_ID:   $CBENV_BUILD_ID"
 echo "PROJECT_ID:       $PROJECT_ID"
@@ -32,7 +33,7 @@ echo "CBENV_DATETIME2:  $CBENV_DATETIME2"
 
 set -x 
 
-gcloud deploy releases create "$_DEPLOY_UNIT-$CBENV_DATETIME-$MAGIC_VERSION" \
+gcloud deploy releases create "$ARGV_DEPLOY_UNIT-$BASH_DATETIME-$SuperMagicVersion" \
         --delivery-pipeline="$_DEPLOY_UNIT" \
         --build-artifacts=/workspace/artifacts.json \
         --skaffold-file="apps/$_DEPLOY_UNIT/skaffold.yaml" \
