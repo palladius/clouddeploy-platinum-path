@@ -62,9 +62,16 @@ tests:
 	make -C apps/app02/ test
 	
 # I didnt know it was so straightfwd! Install: https://kubectl.docs.kubernetes.io/installation/kustomize/binaries/
-kustomize-build-ruby-prod-and-acanary:
+kustomize-test:
 	kustomize build apps/app02/k8s/04prod/ >/dev/null
 	kustomize build apps/app02/k8s/03canary/ >/dev/null
 	kustomize build apps/app02/k8s/01dev/ >/dev/null
 	kustomize build apps/app02/k8s/02staging/ >/dev/null
-	echo Done. TODO ricc diff the two now.
+	@echo Done. TODO ricc diff the two now.
+
+kustomize-ruby-diff-prod-and-canary:
+	kustomize build apps/app02/k8s/04prod/ > t.kust.prod
+	kustomize build apps/app02/k8s/03canary/ > t.kust.canary 
+	@echo Showing the diff between PROD and CANARY manifests:
+	diff t.kust.prod t.kust.canary
+	echo Done.
