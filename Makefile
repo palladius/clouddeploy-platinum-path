@@ -61,3 +61,8 @@ tests:
 #	@echo Testin app02...
 	make -C apps/app02/ test
 	
+# I didnt know it was so straightfwd! Install: https://kubectl.docs.kubernetes.io/installation/kustomize/binaries/
+kustomize-build-ruby-prod-and-acanary:
+	kustomize build apps/app02/k8s/04prod/
+	kustomize build apps/app02/k8s/03canary/
+	echo Done. TODO ricc diff the two now.
