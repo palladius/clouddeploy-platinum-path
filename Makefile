@@ -43,6 +43,17 @@ show-latest-succesful-releases:
 	./09-show-latest-successful-releases.sh app01
 	./09-show-latest-successful-releases.sh app02
 
+promote-all-dev-to-staging:
+	./10-auto-promote-dev-to-staging.sh app01
+	./10-auto-promote-dev-to-staging.sh app02
+promote-all-staging-to-canary:
+	./10-auto-promote-dev-to-staging.sh app01 staging canary
+	./10-auto-promote-dev-to-staging.sh app02 staging canary
+promote-all-canary-to-prod:
+	echo 'Are you crazy?!? This cannot be done, the world could explode. Use the UI instead!'
+	# Really i dont trust my scripts enough to possibly break PROD :)
+	/bin/false
+
 tests:
 	@echo Ensuring tests pass for both applications.. as make test launched in their folder.
 #	@echo Testin app01...
