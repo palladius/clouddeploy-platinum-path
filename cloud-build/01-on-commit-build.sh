@@ -18,6 +18,12 @@ echo "SuperMagicVersion: $(cat apps/$_DEPLOY_UNIT/VERSION )"
 echo "ARGV1:            $1"
 echo "ARGV2:            $2"
 echo "ARGV3:            $3"
+echo "FOO:              $FOO"
+echo "BUILD:            $BUILD"
+echo "PROJECT_ID:       $PROJECT_ID"
+echo "PROJECT_NUMBER:   $PROJECT_NUMBER"
+echo "REV:              $REV"
+echo "CBENV_DATETIME:   $CBENV_DATETIME"
 gcloud deploy releases create "$_DEPLOY_UNIT-$$DATE-$$TIME-$MAGIC_VERSION" \
         --delivery-pipeline="$_DEPLOY_UNIT" \
         --build-artifacts=/workspace/artifacts.json \
