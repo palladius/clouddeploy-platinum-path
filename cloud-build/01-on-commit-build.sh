@@ -23,23 +23,19 @@ echo "ARGV1:            $1"
 echo "ARGV2:            $2"
 echo "ARGV3:            $3"
 echo "FOO:              $FOO"
-echo "BUILD:            $BUILD"
+echo "CBENV_BUILD_ID:   $CBENV_BUILD_ID"
 echo "PROJECT_ID:       $PROJECT_ID"
 echo "PROJECT_NUMBER:   $PROJECT_NUMBER"
 echo "REV:              $REV"
-echo "CBENV_DATETIME:   $CBENV_DATETIME"
+echo "CBENV_DATETIME1:  $CBENV_DATETIME1"
+echo "CBENV_DATETIME2:  $CBENV_DATETIME2"
+
+set -x 
 
 gcloud deploy releases create "$_DEPLOY_UNIT-$CBENV_DATETIME-$MAGIC_VERSION" \
         --delivery-pipeline="$_DEPLOY_UNIT" \
         --build-artifacts=/workspace/artifacts.json \
         --skaffold-file="apps/$_DEPLOY_UNIT/skaffold.yaml" \
         --region="${_DEPLOY_REGION}"
-
-
-# echo gcloud deploy releases create "$_DEPLOY_UNIT-$$DATE-$$TIME-$MAGIC_VERSION" 
-#         --delivery-pipeline="$_DEPLOY_UNIT"
-#         --build-artifacts=/workspace/artifacts.json
-#         --skaffold-file="apps/$_DEPLOY_UNIT/skaffold.yaml"
-#         --region="${_DEPLOY_REGION}"
 
 echo All done.
