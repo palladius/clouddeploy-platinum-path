@@ -27,13 +27,11 @@ function cleanup_for_cloudbuild() {
   tr '[:upper:]' '[:lower:]' | sed -e 's/[^a-z0-9-]/-/g'
 }
 
-# remiove uppercase | tr '[:upper:]' '[:lower:]' 
-export APPROXIMATE_MAGIC_VERSION=$(cat VERSION  | tr '[:upper:]' '[:lower:]' )
-#
 export SUPERDUPER_MAGIC_VERSION=$(cat "apps/$ARGV_DEPLOY_UNIT/VERSION" | cleanup_for_cloudbuild )
 # need to pass from CLI since it wont expand within bash :/
 
 BASH_DATETIME=$(date +%Y%m%d-%H%M)
+
 
 echo "== Welcome to $0 v$SCRIPT_VERSION =="
 echo "We've been deploying stuff since 2022!"
@@ -41,7 +39,6 @@ echo "We've been deploying stuff since 2022!"
 # These dont work: https://screenshot.googleplex.com/ABKSubdGMi99Xy6
 echo "CB_DATE/TIME:     $DATE-$TIME"
 echo "BASH_DATETIME:    $BASH_DATETIME"             # Edward: +%y%m%d-%s but i dont like it
-echo "APPROXIMATE_MAGIC_VERSION: $APPROXIMATE_MAGIC_VERSION"    # fake version, local to here and not from a certain app
 echo "SUPERDUPER_MAGIC_VERSION:  $SUPERDUPER_MAGIC_VERSION" # The REAL thing, scrapes for VERSION number in proper apps/$MYAPP/VERSION :)
 echo "ARGV1:            $1" # 1. ARGV_DEPLOY_UNIT, eg 'app02'
 echo "ARGV2:            $2" # 2. ARGV_DEPLOY_REGION, eg 'europe-west1'
@@ -59,6 +56,7 @@ echo "REV:              $REV"
 #echo "_DEPLOY_REGION:   $_DEPLOY_REGION"
 
 set -x 
+#TODO when everything work put this and remove &&: set -e
 
 if [ "true" = "$FAKEIT" ]; then
         echo Faking it since probably you called me from CLI to troubleshoot me 
@@ -67,9 +65,11 @@ else
         GCLOUD="gcloud"
 fi
 
-$GCLOUD deploy releases create "$ARGV_DEPLOY_UNIT-$BASH_DATETIME-v$SUPERDUPER_MAGIC_VERSION" \
-                --delivery-pipeline="$ARGV_DEPLOY_UNIT" \
-                --build-artifacts=/workspace/artifacts.json \
-                --skaffold-file="apps/$ARGV_DEPLOY_UNIT/skaffold.yaml" \
-                --region="${ARGV_DEPLOY_REGION}"
+RELEASE_NAME="$ARGV_DEPLOY_UNIT-$BASH_DATETIME-v$SUPERDUPER_MAGIC_VERSION"
+$GCLOUD deploy releases create "$RELEASE_NAME"  \
+        --delivery-pipeline="$ARGV_DEPLOY_UNIT" \
+        --build-artifacts=/workspace/artifacts.json \
+        --skaffold-file="apps/$ARGV_DEPLOY_UNIT/skaffold.yaml" \
+        --region="${ARGV_DEPLOY_REGION}" && 
+        echo "$RELEASE_NAME" > "$RELEASE_FILE_PATH" # /workspace/.cb.releasename
 echo All done.

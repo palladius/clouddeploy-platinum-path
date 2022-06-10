@@ -60,9 +60,11 @@ steps:
 #       - "--skaffold-file=apps/$_DEPLOY_UNIT/skaffold.yaml"
 #       - "--region=${_DEPLOY_REGION}"
 
-# This instead is the one 
+#############################################################################
+# This instead is the MAGIC one which gives a VERSION file dependant name to the release 
+#############################################################################
   - name: gcr.io/google.com/cloudsdktool/cloud-sdk
-    id: PushToCloudDeployWithVersion # needs bash
+    id: PushToCloudDeployDEVWithVersion # needs bash
     waitFor:
     - PushCacheToGCS
     dir: /workspace/
@@ -76,6 +78,7 @@ steps:
     - 'REV=$REVISION_ID'
     - 'CBENV_DATETIME1=$$DATE-$$TIME'
     - "CBENV_DATETIME2=$$DATE-$$TIME"
+    - RELEASE_FILE_PATH=/workspace/.cb.releasename
     args:
       - '-c'
       - cloud-build/01-on-commit-build.sh "$_DEPLOY_UNIT" "$_DEPLOY_REGION" 'dt1-$$DATE-$$TIME' "dt2-$$DATE-$$TIME"
@@ -87,3 +90,25 @@ steps:
 # # set env variables for its execution
 # - name: 'ubuntu'
 #   args: ['bash', './myscript.sh']
+
+
+#- 
+  - name: gcr.io/google.com/cloudsdktool/cloud-sdk
+    id: IfTestPassPushToCloudDeployStaging
+    waitFor:
+    - PushToCloudDeployDEVWithVersion
+    dir: /workspace/
+    entrypoint: bash
+    env:
+    - FOO=bar
+    - 'CBENV_BUILD_ID=$BUILD_ID'
+    - 'PROJECT_ID=$PROJECT_ID'
+    #- 'PROJECT_NUMBER=$PROJECT_NUMBER' # doesnt work!
+    - 'REV=$REVISION_ID'
+    - 'CBENV_DATETIME1=$$DATE-$$TIME'
+    - "CBENV_DATETIME2=$$DATE-$$TIME"
+    - 'ABIELSKI_CBENV_DATETIME3=${PROJECT_NUMBER}'
+    - RELEASE_FILE_PATH=/workspace/.cb.releasename
+    args:
+      - '-c'
+      - cloud-build/02-dev-to-staging-auto-promo.sh "$_DEPLOY_UNIT" "$_DEPLOY_REGION"
