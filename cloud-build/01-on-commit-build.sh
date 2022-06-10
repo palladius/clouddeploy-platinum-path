@@ -11,9 +11,10 @@
 #
 #################################
 
-SCRIPT_VERSION="1.0c"
+SCRIPT_VERSION="1.0d"
 ## HISTORY
-# 2022-06-10 1.0  Still doesnt work.
+# 2022-06-10 1.0  Finally it works since 1.0d version!
+# 2022-06-10 0.9  Still doesnt work.
 
 # This will be called
 ARGV_DEPLOY_UNIT="$1"
