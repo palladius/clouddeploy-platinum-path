@@ -1,5 +1,9 @@
 #!/bin/bash
 
+SCRIPT_VERSION="1.0alpha"
+## HISTORY
+# 2022-06-10 1.0  Still doesnt work.
+
 # This will be called
 ARGV_DEPLOY_UNIT="$1"
 ARGV_DEPLOY_REGION="$2" # deploy region
@@ -11,8 +15,10 @@ export APPROXIMATE_MAGIC_VERSION=$(cat VERSION  | tr '[:upper:]' '[:lower:]' )
 export SUPERDUPER_MAGIC_VERSION=$(cat "apps/$ARGV_DEPLOY_UNIT/VERSION" )
 # need to pass from CLI since it wont expand within bash :/
 
-
 BASH_DATETIME=$(date +%Y%m%d-%H%M)
+
+echo "== Welcome to $0 v$SCRIPT_VERSION =="
+echo "We've been deploying stuff since 2022!"
 
 # These dont work: https://screenshot.googleplex.com/ABKSubdGMi99Xy6
 echo "CB_DATE/TIME:     $DATE-$TIME"
