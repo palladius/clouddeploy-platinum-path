@@ -12,14 +12,15 @@ ARGV_DEPLOY_UNIT="$1"
 ARGV_DEPLOY_REGION="$2" # deploy region
 ARGV_DATETIME="$3"
 
+BASH_DATETIME=$(date +%Y%m%d-%H%M)
 # These dont work: https://screenshot.googleplex.com/ABKSubdGMi99Xy6
 #echo "_DEPLOY_UNIT:     $_DEPLOY_UNIT"
 #echo "_DEPLOY_REGION:   $_DEPLOY_REGION"
 echo "CB_DATETIME1:     $$DATE-$$TIME"
 echo "CB_DATETIME2:     $CLOUDBUILD_DATETIME"
-echo "BASH_DATETIME:    $(date +%y%m%d-%s)"             # from Edward
-echo "MAGIC_VERSION:    $MAGIC_VERSION"
-echo "SuperMagicVersion: $(cat apps/$ARGV_DEPLOY_UNIT/VERSION )" # The REAL thing
+echo "BASH_DATETIME:    $BASH_DATETIME"             # Edward: +%y%m%d-%s but i dont like it
+echo "MAGIC_VERSION:    $MAGIC_VERSION"    # fake version, local to here and not from a certain app
+echo "SuperMagicVersion: $(cat "apps/$ARGV_DEPLOY_UNIT/VERSION" )" # The REAL thing, scrapes for VERSION number in proper apps/$MYAPP/VERSION :)
 echo "ARGV1:            $1" # 1. ARGV_DEPLOY_UNIT, eg 'app02'
 echo "ARGV2:            $2" # 2. ARGV_DEPLOY_REGION, eg 'europe-west1'
 echo "ARGV3:            $3" # 3. ARGV_DATETIME - useless, eg '$DATE-£TIME' - useless
