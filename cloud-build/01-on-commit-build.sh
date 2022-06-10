@@ -11,6 +11,7 @@ export SUPERDUPER_MAGIC_VERSION=$(cat "apps/$ARGV_DEPLOY_UNIT/VERSION" )
 ARGV_DEPLOY_UNIT="$1"
 ARGV_DEPLOY_REGION="$2" # deploy region
 ARGV_DATETIME="$3"
+ARGV_DATETIME2="$4"
 
 BASH_DATETIME=$(date +%Y%m%d-%H%M)
 
@@ -22,6 +23,7 @@ echo "SUPERDUPER_MAGIC_VERSION:  $SUPERDUPER_MAGIC_VERSION" # The REAL thing, sc
 echo "ARGV1:            $1" # 1. ARGV_DEPLOY_UNIT, eg 'app02'
 echo "ARGV2:            $2" # 2. ARGV_DEPLOY_REGION, eg 'europe-west1'
 echo "ARGV3:            $3" # 3. ARGV_DATETIME - useless, eg '$DATE-£TIME' - useless
+echo "ARGV4:            $4" # 3. ARGV_DATETIME - useless, eg '$DATE-£TIME' - useless
 echo "FOO:              $FOO"
 echo "CBENV_BUILD_ID:   $CBENV_BUILD_ID"
 echo "PROJECT_ID:       $PROJECT_ID"
@@ -30,7 +32,6 @@ echo "REV:              $REV"
 # This dont work:
 #echo "CBENV_DATETIME1:  $CBENV_DATETIME1"
 #echo "CBENV_DATETIME2:  $CBENV_DATETIME2"
-echo "CBENV_DATETIME3:  $CBENV_DATETIME3"
 #echo "_DEPLOY_UNIT:     $_DEPLOY_UNIT"
 #echo "_DEPLOY_REGION:   $_DEPLOY_REGION"
 
