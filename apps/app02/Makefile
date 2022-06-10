@@ -12,7 +12,7 @@ skaffold-run-canary:
 
 test:
 	echo Text fixed now all good
-	ruby ruby-app/app.rb
+	which ruby && ruby ruby-app/app.rb
 	echo Looks like Ruby app returns so looks like no Syntax Horrors.
 #	echo Lets pretend this doesnt build.
 #	/bin/false
