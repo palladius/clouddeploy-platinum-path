@@ -9,5 +9,14 @@ replicas:
     count: 1 
 # How do i make the fav color to be yellow?!?
 #         - name: FAVORITE_COLOR
-#          value: pink # default bkg color, will make it white in prod and yellow in canary.  
-          
+#          value: pink # default bkg color, will make it white in prod and yellow in canary.          
+patches:
+- patch: |-
+    - op: add
+      path: "/spec/template/spec/containers/0/env/-"
+      value:
+        name: FAVORITE_COLOR
+        value: brown
+  target:
+    kind: Deployment
+    name: ricc-ruby
