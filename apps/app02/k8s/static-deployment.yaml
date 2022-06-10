@@ -33,6 +33,8 @@ spec:
           value: "development"
         - name: APP_CODE
           value: app02
+        - name: APP_NAME
+          value: "[app02] RubyAppTwo"
         - name: RICCARDO_MESSAGE
           value: |
             Hi! This is the default message if you dont customize to come to another target (dev, prod, ..)

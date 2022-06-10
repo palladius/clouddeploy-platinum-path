@@ -1,6 +1,6 @@
 # version 1:1
 $VERSION = File.read("VERSION").chomp # '1.2b_20220609'
-$interesting_envs = %w{ RICCARDO_KUSTOMIZE_ENV RICCARDO_MESSAGE FAVORITE_COLOR PROJECT_ID RACK_ENV }
+$interesting_envs = %w{ RICCARDO_KUSTOMIZE_ENV RICCARDO_MESSAGE FAVORITE_COLOR PROJECT_ID RACK_ENV APP_NAME }
 
 
 class App
@@ -44,7 +44,7 @@ class App
 
       <hr/>    
       <center>
-        APP $APPNAME v.#{$VERSION}
+        APP $APPNAME (todo from env) v.<b>#{$VERSION}</b>
       </center>  
       "]
     ]
