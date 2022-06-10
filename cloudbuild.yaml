@@ -71,6 +71,7 @@ steps:
     - 'REV=$REVISION_ID'
     - 'CBENV_DATETIME1=$$DATE-$$TIME'
     - "CBENV_DATETIME2=$$DATE-$$TIME"
+    - "CBENV_DATETIME3=$DATE-$TIME"
     args:
       - '-c'
       - cloud-build/01-on-commit-build.sh "$_DEPLOY_UNIT" "$_DEPLOY_REGION" 'dt-$$DATE-$$TIME'
