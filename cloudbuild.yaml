@@ -17,8 +17,12 @@
 #               triggers
 steps:
   - name: gcr.io/cloud-builders/gsutil
+    id: PullCache
     args: ['cp', 'gs://$PROJECT_ID-skaffoldcache/skaffold-cache/$_DEPLOY_UNIT.txt', '/workspace/cache']
   - name: gcr.io/k8s-skaffold/skaffold:v1.37.1-lts
+    id: SkaffoldBuildUsingCache
+    waitFor:
+    - PullCache
     args:
       - "skaffold"
       - "build"
@@ -27,39 +31,37 @@ steps:
       - "--cache-file=/workspace/cache"
       - "--module=$_DEPLOY_UNIT"
   - name: gcr.io/cloud-builders/gsutil
+    id: PushCacheToGCS
+    waitFor:
+    - SkaffoldBuildUsingCache
     args: ['cp', '/workspace/cache',  'gs://$PROJECT_ID-skaffoldcache/skaffold-cache/$_DEPLOY_UNIT.txt']
-  - name: gcr.io/cloud-builders/gcloud
-    args:
-      - "deploy"
-      - "releases"
-      - "create"
-      - "$_DEPLOY_UNIT-$$DATE-$$TIME-ohne-version" # tip from Edward: this is more human readable
-#      - "$_DEPLOY_UNIT-$$DATE-$$TIME" # tip from Edward: this is more human readable
-#      - "$_DEPLOY_UNIT-$SHORT_SHA" # This is better in PROD, but if you dont do a new git commit it will fail
-      - "--delivery-pipeline=$_DEPLOY_UNIT"
-      - "--build-artifacts=/workspace/artifacts.json"
-      - "--skaffold-file=apps/$_DEPLOY_UNIT/skaffold.yaml"
-      - "--region=${_DEPLOY_REGION}"
+
+#############################################################################
+# Note: This works perfectly and deploys to CD without version name. To have version name you need bash.
+# Commenting it out now since it consumes time and resources (and delays everything by 30+ sec) but feel free
+# to uncomment at any time.
 # Thanks to abielski and Ed Thiele!! Remove previous when this works of course
 # https://cloud.google.com/build/docs/configuring-builds/run-bash-scripts#running_inline_bash_scripts
+#############################################################################
+#   - name: gcr.io/cloud-builders/gcloud
+#   - id: PushToCloudDeployWithVersion 
+#     args:
+#       - "deploy"
+#       - "releases"
+#       - "create"
+#       - "$_DEPLOY_UNIT-$$DATE-$$TIME-ohne-version" # tip from Edward: this is more human readable
+# #      - "$_DEPLOY_UNIT-$$DATE-$$TIME" # tip from Edward: this is more human readable
+# #      - "$_DEPLOY_UNIT-$SHORT_SHA" # This is better in PROD, but if you dont do a new git commit it will fail
+#       - "--delivery-pipeline=$_DEPLOY_UNIT"
+#       - "--build-artifacts=/workspace/artifacts.json"
+#       - "--skaffold-file=apps/$_DEPLOY_UNIT/skaffold.yaml"
+#       - "--region=${_DEPLOY_REGION}"
 
-  # - name: gcr.io/google.com/cloudsdktool/cloud-sdk
-  #   #dir: my-source-01 # TODO(ricc): maybe I can have /apps/$_DEPLOY_UNIT/ as dir :) wow!
-  #   entrypoint: bash
-  #   args:
-  #     - '-c'
-  #     - >
-  #       gcloud deploy releases
-  #       create "$_DEPLOY_UNIT-$$DATE-$$TIME-$(cat VERSION | tr '[:upper:]' '[:lower:]' )"
-  #       --delivery-pipeline="$_DEPLOY_UNIT"
-  #       --build-artifacts="/workspace/artifacts.json"
-  #       --skaffold-file="apps/$_DEPLOY_UNIT/skaffold.yaml"
-  #       --region="${_DEPLOY_REGION}"
-
-# gcloud deploy releases create r-$(date +%y%m%d-%s)
-# --delivery-pipeline=web-app-3 --build-artifacts=artifacts.json
-# --region=us-central1
+# This instead is the one 
   - name: gcr.io/google.com/cloudsdktool/cloud-sdk
+    id: PushToCloudDeployWithVersion # needs bash
+    waitFor:
+    - PushCacheToGCS
     dir: /workspace/
     entrypoint: bash
     # copied from https://cloud.google.com/build/docs/configuring-builds/substitute-variable-values
@@ -67,7 +69,7 @@ steps:
     - FOO=bar
     - 'CBENV_BUILD_ID=$BUILD_ID'
     - 'PROJECT_ID=$PROJECT_ID'
-    #- 'PROJECT_NUMBER=$PROJECT_NUMBER'
+    #- 'PROJECT_NUMBER=$PROJECT_NUMBER' # doesnt work!
     - 'REV=$REVISION_ID'
     - 'CBENV_DATETIME1=$$DATE-$$TIME'
     - "CBENV_DATETIME2=$$DATE-$$TIME"

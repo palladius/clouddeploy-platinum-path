@@ -1,10 +1,12 @@
 #!/bin/bash
 
 #################################
-# To invoke this script from LOCAL to see if everything is set up correctly, yty this:
+# To invoke this script from LOCAL to see if everything is set up correctly, try this:
 #
-# riccardo@host:~$ FAKEIT=true ./cloud-build/01-on-commit-build.sh app01 emilia-romagna-1
-# or simply
+# $ FAKEIT=true ./cloud-build/01-on-commit-build.sh blah blah blah..
+#
+# or simply (DRY):
+#
 # $ make fake-build-shell-script
 #
 #################################
