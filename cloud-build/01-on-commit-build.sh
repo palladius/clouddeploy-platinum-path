@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SCRIPT_VERSION="1.0alpha"
+SCRIPT_VERSION="1.0beta"
 ## HISTORY
 # 2022-06-10 1.0  Still doesnt work.
 
@@ -42,7 +42,7 @@ echo "REV:              $REV"
 
 set -x 
 
-gcloud deploy releases create "$ARGV_DEPLOY_UNIT-$BASH_DATETIME-$SUPERDUPER_MAGIC_VERSION" \
+gcloud deploy releases create "$ARGV_DEPLOY_UNIT-$BASH_DATETIME-v$SUPERDUPER_MAGIC_VERSION" \
         --delivery-pipeline="$ARGV_DEPLOY_UNIT" \
         --build-artifacts=/workspace/artifacts.json \
         --skaffold-file="apps/$ARGV_DEPLOY_UNIT/skaffold.yaml" \
