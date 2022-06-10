@@ -3,4 +3,4 @@ kind: Kustomization
 resources:
   - ../_base
 components:
-      -  ../../../../components/prod/common
+  - ../../../../components/prod/common
