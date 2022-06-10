@@ -12,6 +12,8 @@
 # Cache is in format: gs://$SKAFFOLD_BUCKET/skaffold-cache/$MODULE.txt
 # Note $SKAFFOLD_BUCKET defaults to "${PROJECT_ID}-skaffoldcache"
 #
+# v1.3 10jun22: Added bash script. Also added IDs and dependencies as per
+#               https://cloud.google.com/build/docs/configuring-builds/configure-build-step-order
 # v1.2 25may22: Changed REGION to _DEPLOY_REGION for step 4 since my original
 #               region wasnt big enough. In turn this forced me to change Build
 #               triggers
@@ -19,7 +21,8 @@ steps:
   - name: gcr.io/cloud-builders/gsutil
     id: PullCache
     args: ['cp', 'gs://$PROJECT_ID-skaffoldcache/skaffold-cache/$_DEPLOY_UNIT.txt', '/workspace/cache']
-  - name: gcr.io/k8s-skaffold/skaffold:v1.37.1-lts
+#  - name: gcr.io/k8s-skaffold/skaffold:v1.37.1-lts
+  - name: gcr.io/k8s-skaffold/skaffold:v1.38.0
     id: SkaffoldBuildUsingCache
     waitFor:
     - PullCache
