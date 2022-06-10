@@ -4,10 +4,12 @@
 # To invoke this script from LOCAL to see if everything is set up correctly, yty this:
 #
 # riccardo@host:~$ FAKEIT=true ./cloud-build/01-on-commit-build.sh app01 emilia-romagna-1
+# or simply
+# $ make fake-build-shell-script
 #
 #################################
 
-SCRIPT_VERSION="1.0beta"
+SCRIPT_VERSION="1.0c"
 ## HISTORY
 # 2022-06-10 1.0  Still doesnt work.
 
@@ -56,12 +58,13 @@ echo "REV:              $REV"
 
 set -x 
 
-if [ "$FAKEIT" -eq "true" ]; then
+if [ "true" = "$FAKEIT" ]; then
         echo Faking it since probably you called me from CLI to troubleshoot me 
-        GCLOUD="echo GcLoUd"
+        GCLOUD="echo [FAKING] GcLoUd"
 else 
-         GCLOUD="gcloud"
-fi 
+        GCLOUD="gcloud"
+fi
+
 $GCLOUD deploy releases create "$ARGV_DEPLOY_UNIT-$BASH_DATETIME-v$SUPERDUPER_MAGIC_VERSION" \
                 --delivery-pipeline="$ARGV_DEPLOY_UNIT" \
                 --build-artifacts=/workspace/artifacts.json \
