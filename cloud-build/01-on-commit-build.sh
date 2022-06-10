@@ -1,5 +1,12 @@
 #!/bin/bash
 
+#################################
+# To invoke this script from LOCAL to see if everything is set up correctly, yty this:
+#
+# riccardo@host:~$ FAKEIT=true ./cloud-build/01-on-commit-build.sh app01 emilia-romagna-1
+#
+#################################
+
 SCRIPT_VERSION="1.0beta"
 ## HISTORY
 # 2022-06-10 1.0  Still doesnt work.
@@ -10,9 +17,16 @@ ARGV_DEPLOY_REGION="$2" # deploy region
 ARGV_DATETIME="$3"
 ARGV_DATETIME2="$4"
 
-#  | tr '[:upper:]' '[:lower:]' 
+# Fixing this error:
+# ERROR: (gcloud.deploy.releases.create) INVALID_ARGUMENT: resource ids must be lower-case letters, numbers, and hyphens, with the first character a letter, the last a letter or a number, and a 63 character maximum
+function cleanup_for_cloudbuild() {
+  tr '[:upper:]' '[:lower:]' | sed -e 's/[^a-z0-9-]/-/g'
+}
+
+# remiove uppercase | tr '[:upper:]' '[:lower:]' 
 export APPROXIMATE_MAGIC_VERSION=$(cat VERSION  | tr '[:upper:]' '[:lower:]' )
-export SUPERDUPER_MAGIC_VERSION=$(cat "apps/$ARGV_DEPLOY_UNIT/VERSION" )
+#
+export SUPERDUPER_MAGIC_VERSION=$(cat "apps/$ARGV_DEPLOY_UNIT/VERSION" | cleanup_for_cloudbuild )
 # need to pass from CLI since it wont expand within bash :/
 
 BASH_DATETIME=$(date +%Y%m%d-%H%M)
@@ -42,10 +56,15 @@ echo "REV:              $REV"
 
 set -x 
 
-gcloud deploy releases create "$ARGV_DEPLOY_UNIT-$BASH_DATETIME-v$SUPERDUPER_MAGIC_VERSION" \
-        --delivery-pipeline="$ARGV_DEPLOY_UNIT" \
-        --build-artifacts=/workspace/artifacts.json \
-        --skaffold-file="apps/$ARGV_DEPLOY_UNIT/skaffold.yaml" \
-        --region="${ARGV_DEPLOY_REGION}"
-
+if [ "$FAKEIT" -eq "true" ]; then
+        echo Faking it since probably you called me from CLI to troubleshoot me 
+        GCLOUD="echo GcLoUd"
+else 
+         GCLOUD="gcloud"
+fi 
+$GCLOUD deploy releases create "$ARGV_DEPLOY_UNIT-$BASH_DATETIME-v$SUPERDUPER_MAGIC_VERSION" \
+                --delivery-pipeline="$ARGV_DEPLOY_UNIT" \
+                --build-artifacts=/workspace/artifacts.json \
+                --skaffold-file="apps/$ARGV_DEPLOY_UNIT/skaffold.yaml" \
+                --region="${ARGV_DEPLOY_REGION}"
 echo All done.
