@@ -10,10 +10,13 @@ spec:
   selector:
 #    app: app01-web
 #    app: webapp01-python
-    app: web
+    #app: web
     # dice Daniel che posso usare il chiave valoerw che voglio come selettore.
 #    app-selettore: app01-in-python 
 #    app: app02-ruby-static
+    ricc-awesome-selector: canary-or-prod
+
+
 ---
 kind: ServiceExport
 apiVersion: net.gke.io/v1

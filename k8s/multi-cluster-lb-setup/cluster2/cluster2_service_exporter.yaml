@@ -8,7 +8,8 @@ spec:
   - port: 9292
     targetPort: 9292
   selector:
-    app: app02-ruby
+    #app: app02-ruby
+    ricc-awesome-selector: canary-or-prod
 ---
 kind: ServiceExport
 apiVersion: net.gke.io/v1
