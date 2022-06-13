@@ -62,6 +62,9 @@ tests:
 	make -C apps/app02/ test
 	
 # I didnt know it was so straightfwd! Install: https://kubectl.docs.kubernetes.io/installation/kustomize/binaries/
+kustomize-install:
+	curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash
+
 kustomize-test:
 	kustomize build apps/app02/k8s/04prod/ >/dev/null
 	kustomize build apps/app02/k8s/03canary/ >/dev/null

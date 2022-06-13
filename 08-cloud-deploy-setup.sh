@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Created with codelabba.rb v.1.4a
-source .env.sh || fatal 'Couldnt source this'
+source .env.sh || fatal "Config doesnt exist please create .env.sh"
 set -x
 set -e
 
@@ -25,11 +25,6 @@ cat clouddeploy.template.yaml |
 #yellow TODO
 # Zurich doesnt work, :( euw6
 gcloud --project $PROJECT_ID deploy apply --file .tmp.clouddeploy.yaml --region $CLOUD_DEPLOY_REGION
-
-
-
-
-
 
 
 # End of your code here
