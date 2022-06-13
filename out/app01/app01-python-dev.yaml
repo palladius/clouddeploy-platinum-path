@@ -1,0 +1,60 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    application: riccardo-cicd-platinum-path
+    github-repo: palladius-colon-cicd-platinum-path
+    tier: ricc-frontend-application
+  name: web
+spec:
+  ports:
+  - name: http
+    port: 8080
+  selector:
+    app: web
+    application: riccardo-cicd-platinum-path
+    github-repo: palladius-colon-cicd-platinum-path
+    tier: ricc-frontend-application
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    application: riccardo-cicd-platinum-path
+    github-repo: palladius-colon-cicd-platinum-path
+    tier: ricc-frontend-application
+  name: web
+spec:
+  selector:
+    matchLabels:
+      app: web
+      application: riccardo-cicd-platinum-path
+      github-repo: palladius-colon-cicd-platinum-path
+      tier: ricc-frontend-application
+  template:
+    metadata:
+      labels:
+        app: web
+        application: riccardo-cicd-platinum-path
+        github-repo: palladius-colon-cicd-platinum-path
+        tier: ricc-frontend-application
+    spec:
+      containers:
+      - env:
+        - name: PORT
+          value: "8080"
+        - name: TEST_RICCARDO
+          value: |
+            I copied and pasted web.yaml inside base and now Im trying to use kustomize instead.
+            Not sure if Ill survive but whatever happens we'll see.
+        - name: FAVORITE_COLOR
+          value: fbf4e2
+        - name: USE_KUSTOMIZE
+          value: "true"
+        - name: APP_CODE
+          value: app01-kustomize
+        image: skaffold-buildpacks
+        name: web
+        ports:
+        - containerPort: 8080
