@@ -20,4 +20,4 @@ export TF_VAR_gcp_credentials_json='../private/tf-cd-sa.key'
 
 TF_OPTS="-no-color -auto-approve -var foo=bar"
 
-TF_VAR_region="$REGION" terraform apply  # -var "gcp_region=pincopa"
+TF_VAR_region="$REGION" /usr/local/bin/terraform apply  # -var "gcp_region=pincopa"

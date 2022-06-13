@@ -2,7 +2,7 @@
 
 resource "google_clouddeploy_delivery_pipeline" "primary" {
   location = "us-west1"
-  name     = "tf-pipeline-pp01"
+  name     = "tf-pipeline-app01"
 
   annotations = {
     my_first_annotation = "example-annotation-1"
@@ -17,7 +17,7 @@ resource "google_clouddeploy_delivery_pipeline" "primary" {
   }
 
 #  project = "my-project-name"
-  project = "$project_id"
+  project = "${var.project_id}"
 
   serial_pipeline {
     stages {

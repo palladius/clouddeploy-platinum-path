@@ -9,14 +9,15 @@
 #   region      = var.gcp_region
 # }
 
-# terraform {
-#   # ... other configuration ...
-#   required_providers {
-#     google = {
-#       version = "~> 4.0.0"
-#     }
-#   }
-# }
+terraform {
+  # ... other configuration ...
+  required_providers {
+    google = {
+#      version = "~> 4.24.0"
+      version = ">= 4.24.0"
+    }
+  }
+}
 
 # doesnt support CD! 
 provider "google" {
