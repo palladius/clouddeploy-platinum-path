@@ -6,6 +6,9 @@ kustomize-app01:
 	mkdir -p app01/
 	@echo Python has not been kustomized yet sorry.
 	kustomize build   ../apps/app01/k8s/dev/     > app01/app01-python-dev.yaml
+	kustomize build   ../apps/app01/k8s/staging/ > app01/app01-python-staging.yaml
+	kustomize build   ../apps/app01/k8s/canary/  > app01/app01-python-canary.yaml
+	kustomize build   ../apps/app01/k8s/prod/    > app01/app01-python-prod.yaml
 
 	@echo Showing the NAME between PROD and CANARY manifests:
 #rgrep app: app01/

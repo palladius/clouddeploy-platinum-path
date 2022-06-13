@@ -1,0 +1,97 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  annotations:
+    developer: Riccardo Carlesso
+    oncallPager: 800-555-1212
+    riccNotes: |
+      This is common stuff which I include in my PROD manifests.
+      Thanks Daniel and Alex for their help on this!
+  labels:
+    app: bingo
+    application: riccardo-cicd-platinum-path
+    github-repo: palladius-colon-cicd-platinum-path
+    tier: ricc-frontend-application
+  name: cicd-app01-in-python
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    developer: Riccardo Carlesso
+    oncallPager: 800-555-1212
+    riccNotes: |
+      This is common stuff which I include in my PROD manifests.
+      Thanks Daniel and Alex for their help on this!
+  labels:
+    app: bingo
+    application: riccardo-cicd-platinum-path
+    github-repo: palladius-colon-cicd-platinum-path
+    tier: ricc-frontend-application
+  name: webapp01-python-prod
+spec:
+  ports:
+  - name: http
+    port: 8080
+  selector:
+    app: bingo
+    application: riccardo-cicd-platinum-path
+    github-repo: palladius-colon-cicd-platinum-path
+    tier: ricc-frontend-application
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    developer: Riccardo Carlesso
+    oncallPager: 800-555-1212
+    riccNotes: |
+      This is common stuff which I include in my PROD manifests.
+      Thanks Daniel and Alex for their help on this!
+  labels:
+    app: bingo
+    application: riccardo-cicd-platinum-path
+    github-repo: palladius-colon-cicd-platinum-path
+    tier: ricc-frontend-application
+  name: webapp01-python-prod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bingo
+      application: riccardo-cicd-platinum-path
+      github-repo: palladius-colon-cicd-platinum-path
+      tier: ricc-frontend-application
+  template:
+    metadata:
+      annotations:
+        developer: Riccardo Carlesso
+        oncallPager: 800-555-1212
+        riccNotes: |
+          This is common stuff which I include in my PROD manifests.
+          Thanks Daniel and Alex for their help on this!
+      labels:
+        app: bingo
+        application: riccardo-cicd-platinum-path
+        github-repo: palladius-colon-cicd-platinum-path
+        tier: ricc-frontend-application
+    spec:
+      containers:
+      - env:
+        - name: PORT
+          value: "8080"
+        - name: TEST_RICCARDO
+          value: |
+            I copied and pasted web.yaml inside base and now Im trying to use kustomize instead.
+            Not sure if Ill survive but whatever happens we'll see.
+        - name: FAVORITE_COLOR
+          value: fbf4e2
+        - name: USE_KUSTOMIZE
+          value: true
+        - name: APP_CODE
+          value: app01-kustomize
+        image: skaffold-buildpacks
+        name: webapp01-python
+        ports:
+        - containerPort: 8080
