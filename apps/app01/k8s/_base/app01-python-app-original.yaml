@@ -37,7 +37,7 @@ spec:
           - name: FAVORITE_COLOR
             value: fbf4e2 # NACRE madreperla
           - name: USE_KUSTOMIZE
-            value: true
+            value: "true"
           - name: APP_CODE
             value: app01-kustomize
         ports:
