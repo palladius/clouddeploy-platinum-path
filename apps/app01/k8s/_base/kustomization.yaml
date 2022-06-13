@@ -3,7 +3,8 @@ kind: Kustomization
 commonLabels:
   tier: ricc-frontend-application
 resources:
-  - deployment.yaml # Python stuff
+#  - deployment.yaml # Python stuff
   - namespace.yaml 
+  - app01-python-app-original.yaml
 components:
   - ../../../components/base/common
