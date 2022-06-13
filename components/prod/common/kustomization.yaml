@@ -5,7 +5,8 @@ kind: Component
 #namePrefix: dev-
 nameSuffix: "-prod"
 commonLabels:
-  app: bingo
+#  app: bingo
+  applicazione-in-produzione: bingo
 commonAnnotations:
   oncallPager: 800-555-1212
   developer: Riccardo Carlesso

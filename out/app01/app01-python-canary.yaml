@@ -8,8 +8,8 @@ metadata:
       This is common stuff which I include in my PROD manifests.
       Thanks Daniel and Alex for their help on this!
   labels:
-    app: bingo
     application: riccardo-cicd-platinum-path
+    applicazione-in-produzione: bingo
     github-repo: palladius-colon-cicd-platinum-path
     tier: ricc-frontend-application
   name: web-prod
@@ -18,8 +18,9 @@ spec:
   - name: http
     port: 8080
   selector:
-    app: bingo
+    app: web
     application: riccardo-cicd-platinum-path
+    applicazione-in-produzione: bingo
     github-repo: palladius-colon-cicd-platinum-path
     tier: ricc-frontend-application
   type: LoadBalancer
@@ -34,8 +35,8 @@ metadata:
       This is common stuff which I include in my PROD manifests.
       Thanks Daniel and Alex for their help on this!
   labels:
-    app: bingo
     application: riccardo-cicd-platinum-path
+    applicazione-in-produzione: bingo
     github-repo: palladius-colon-cicd-platinum-path
     tier: ricc-frontend-application
   name: web-prod
@@ -43,8 +44,9 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: bingo
+      app: web
       application: riccardo-cicd-platinum-path
+      applicazione-in-produzione: bingo
       github-repo: palladius-colon-cicd-platinum-path
       tier: ricc-frontend-application
   template:
@@ -56,8 +58,9 @@ spec:
           This is common stuff which I include in my PROD manifests.
           Thanks Daniel and Alex for their help on this!
       labels:
-        app: bingo
+        app: web
         application: riccardo-cicd-platinum-path
+        applicazione-in-produzione: bingo
         github-repo: palladius-colon-cicd-platinum-path
         tier: ricc-frontend-application
     spec:
