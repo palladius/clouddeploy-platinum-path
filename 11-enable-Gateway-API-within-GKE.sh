@@ -19,6 +19,9 @@ gcloud compute networks subnets create dmarzi-proxy \
 # End of your code here
 echo YAY. Tutto ok.
 
+# kubectl apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
+# kubectl get gatewayclass
+
 
 
 # WORKS ONLY WITH MULTIPLE CLUSTERS IN THE SAME REGION

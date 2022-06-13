@@ -5,10 +5,16 @@ source .env.sh || fatal "Config doesnt exist please create .env.sh"
 #set -x
 set -e
 
+function show_k8s_stuff() {
+    kubectl get pods,service
+    kubectl get gatewayclass
+}
+
 # Add your code here:
 SHOW_VERBOSE_STUFF="false"
-SHOW_GCLOUD_ENTITIES="true"
+SHOW_GCLOUD_ENTITIES="false"
 SHOW_PANTHEON_LINKS="true"
+SHOW_KUBERNETES_STUFF="true"
 
 echo "+ REGION for DEPLOY:          $CLOUD_DEPLOY_REGION"
 echo "+ REGION for EVERYTHING ELSE: $REGION"
@@ -22,15 +28,17 @@ if [ "true" = "$SHOW_PANTHEON_LINKS" ]; then
     echo "== DevConsole useful links END =="
 fi
 
-kubectl get pods,service
+if [ "true" = $SHOW_KUBERNETES_STUFF ] ; then
+    show_k8s_stuff
+fi 
 
 # Docs: https://cloud.google.com/sdk/gcloud/reference/beta/artifacts/docker
-if $SHOW_GCLOUD_ENTITIES ; then
+if [ "true" = "$SHOW_GCLOUD_ENTITIES" ] ; then
     echo "+ Let's count the images for each artifact:"
     gcloud artifacts docker images list "$ARTIFACT_LONG_REPO_PATH" | awk '{print $1}' | sort | uniq -c
     gcloud deploy delivery-pipelines list | egrep "name:|targetId"
 fi 
-if $SHOW_VERBOSE_STUFF ; then
+if [ "true" = "$SHOW_VERBOSE_STUFF" ] ; then
     gsutil ls -l "gs://$SKAFFOLD_BUCKET/skaffold-cache/"
     gcloud beta builds triggers list --region $REGION
     skaffold config list
