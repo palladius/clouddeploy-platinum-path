@@ -1,39 +1,43 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: web # webapp01-python
+  name: webapp01-python # was 'web' and it worked
 spec:
   ports:
   - port: 8080
     name: http
   type: LoadBalancer
   selector:
-    app: web # webapp01-python
+    app: webapp01-python # was 'web' and it worked
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: web # webapp01-python
+  name: webapp01-python # was 'web' and it worked
 spec:
   selector:
     matchLabels:
-      app: web # webapp01-python
+      app: webapp01-python # was 'web' and it worked
   template:
     metadata:
       labels:
-        app: web # webapp01-python
+        app: webapp01-python # was 'web' and it worked
     spec:
       containers:
-      - name: web # webapp01-python
+      - name: webapp01-python # was 'web' and it worked
         #image: ricc-app01-python-buildpacks # skaffold-buildpacks
         image: skaffold-buildpacks
         env:
           - name: PORT
             value: "8080"
           - name: TEST_RICCARDO
-            value: Changing just because. This should NOT appear anymore.
+            value: |
+              Changing just because. This should NOT appear anymore.
+              Note this code does NOT use Kustomize
           - name: FAVORITE_COLOR
             value: teal
+          - name: USE_KUSTOMIZE
+            value: false
           - name: APP_CODE
             value: app01
         ports:
