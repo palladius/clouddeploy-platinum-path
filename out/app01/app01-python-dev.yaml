@@ -1,26 +1,17 @@
 apiVersion: v1
-kind: Namespace
-metadata:
-  labels:
-    application: riccardo-cicd-platinum-path
-    github-repo: palladius-colon-cicd-platinum-path
-    tier: ricc-frontend-application
-  name: cicd-app01-in-python
----
-apiVersion: v1
 kind: Service
 metadata:
   labels:
     application: riccardo-cicd-platinum-path
     github-repo: palladius-colon-cicd-platinum-path
     tier: ricc-frontend-application
-  name: webapp01-python
+  name: web
 spec:
   ports:
   - name: http
     port: 8080
   selector:
-    app: webapp01-python
+    app: web
     application: riccardo-cicd-platinum-path
     github-repo: palladius-colon-cicd-platinum-path
     tier: ricc-frontend-application
@@ -33,18 +24,18 @@ metadata:
     application: riccardo-cicd-platinum-path
     github-repo: palladius-colon-cicd-platinum-path
     tier: ricc-frontend-application
-  name: webapp01-python
+  name: web
 spec:
   selector:
     matchLabels:
-      app: webapp01-python
+      app: web
       application: riccardo-cicd-platinum-path
       github-repo: palladius-colon-cicd-platinum-path
       tier: ricc-frontend-application
   template:
     metadata:
       labels:
-        app: webapp01-python
+        app: web
         application: riccardo-cicd-platinum-path
         github-repo: palladius-colon-cicd-platinum-path
         tier: ricc-frontend-application
@@ -60,10 +51,10 @@ spec:
         - name: FAVORITE_COLOR
           value: fbf4e2
         - name: USE_KUSTOMIZE
-          value: true
+          value: "true"
         - name: APP_CODE
           value: app01-kustomize
         image: skaffold-buildpacks
-        name: webapp01-python
+        name: web
         ports:
         - containerPort: 8080

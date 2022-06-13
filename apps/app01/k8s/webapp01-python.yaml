@@ -1,30 +1,30 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: web # was 'webapp01-python' and it worked
+  name: webapp01-python # was 'web' and it worked
 spec:
   ports:
   - port: 8080
     name: http
   type: LoadBalancer
   selector:
-    app: web 
+    app: webapp01-python # was 'web' and it worked
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: web
+  name: webapp01-python # was 'web' and it worked
 spec:
   selector:
     matchLabels:
-      app: web
+      app: webapp01-python # was 'web' and it worked
   template:
     metadata:
       labels:
-        app: web
+        app: webapp01-python # was 'web' and it worked
     spec:
       containers:
-      - name: web
+      - name: webapp01-python # was 'web' and it worked
         #image: ricc-app01-python-buildpacks # skaffold-buildpacks
         image: skaffold-buildpacks
         env:
@@ -33,9 +33,7 @@ spec:
           - name: TEST_RICCARDO
             value: |
               Changing just because. This should NOT appear anymore.
-              Note this code does NOT use Kustomize. If I call it WEB
-              it works, but if I rename it  webapp01-python it stops
-              working. I know..
+              Note this code does NOT use Kustomize
           - name: FAVORITE_COLOR
             value: teal
           - name: USE_KUSTOMIZE
