@@ -1,3 +1,5 @@
+# copied from https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/clouddeploy_delivery_pipeline
+
 resource "google_clouddeploy_delivery_pipeline" "primary" {
   location = "us-west1"
   name     = "tf-pipeline-pp01"
