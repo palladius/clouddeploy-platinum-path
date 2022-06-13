@@ -74,7 +74,6 @@ steps:
     - FOO=bar
     - 'CBENV_BUILD_ID=$BUILD_ID'
     - 'PROJECT_ID=$PROJECT_ID'
-    #- 'PROJECT_NUMBER=$PROJECT_NUMBER' # doesnt work!
     - 'REV=$REVISION_ID'
     - 'CBENV_DATETIME1=$$DATE-$$TIME'
     - "CBENV_DATETIME2=$$DATE-$$TIME"
@@ -103,11 +102,9 @@ steps:
     - FOO=bar
     - 'CBENV_BUILD_ID=$BUILD_ID'
     - 'PROJECT_ID=$PROJECT_ID'
-    #- 'PROJECT_NUMBER=$PROJECT_NUMBER' # doesnt work!
     - 'REV=$REVISION_ID'
     - 'CBENV_DATETIME1=$$DATE-$$TIME'
     - "CBENV_DATETIME2=$$DATE-$$TIME"
-    - 'ABIELSKI_CBENV_DATETIME3=${PROJECT_NUMBER}'
     - RELEASE_FILE_PATH=/workspace/.cb.releasename
     args:
       - '-c'
