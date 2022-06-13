@@ -1,20 +1,4 @@
 apiVersion: v1
-kind: Namespace
-metadata:
-  annotations:
-    developer: Riccardo Carlesso
-    oncallPager: 800-555-1212
-    riccNotes: |
-      This is common stuff which I include in my PROD manifests.
-      Thanks Daniel and Alex for their help on this!
-  labels:
-    app: bingo
-    application: riccardo-cicd-platinum-path
-    github-repo: palladius-colon-cicd-platinum-path
-    tier: ricc-frontend-application
-  name: cicd-app01-in-python
----
-apiVersion: v1
 kind: Service
 metadata:
   annotations:
@@ -28,7 +12,7 @@ metadata:
     application: riccardo-cicd-platinum-path
     github-repo: palladius-colon-cicd-platinum-path
     tier: ricc-frontend-application
-  name: webapp01-python-prod
+  name: web-prod
 spec:
   ports:
   - name: http
@@ -54,7 +38,7 @@ metadata:
     application: riccardo-cicd-platinum-path
     github-repo: palladius-colon-cicd-platinum-path
     tier: ricc-frontend-application
-  name: webapp01-python-prod
+  name: web-prod
 spec:
   replicas: 9
   selector:
@@ -88,10 +72,10 @@ spec:
         - name: FAVORITE_COLOR
           value: fbf4e2
         - name: USE_KUSTOMIZE
-          value: true
+          value: "true"
         - name: APP_CODE
           value: app01-kustomize
         image: skaffold-buildpacks
-        name: webapp01-python
+        name: web
         ports:
         - containerPort: 8080

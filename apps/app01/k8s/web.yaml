@@ -32,7 +32,6 @@ spec:
             value: "8080"
           - name: TEST_RICCARDO
             value: |
-              Changing just because. This should NOT appear anymore.
               Note this code does NOT use Kustomize. If I call it WEB
               it works, but if I rename it  webapp01-python it stops
               working. I know..
@@ -42,5 +41,7 @@ spec:
             value: "false"
           - name: APP_CODE
             value: app01
+          - name: LAST_REVISION
+            value: 2022-06-13 and were going for picanha with Eli. 
         ports:
           - containerPort: 8080

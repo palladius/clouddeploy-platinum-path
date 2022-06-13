@@ -33,7 +33,8 @@ spec:
           - name: TEST_RICCARDO
             value: |
               Changing just because. This should NOT appear anymore.
-              Note this code does NOT use Kustomize
+              Note this code does NOT use Kustomize.
+              Using Webapp01-python to be obvious.
           - name: FAVORITE_COLOR
             value: teal
           - name: USE_KUSTOMIZE

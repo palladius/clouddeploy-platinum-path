@@ -5,5 +5,5 @@ resources:
 components:
   - ../../../../components/prod/common
 replicas: 
-  - name: webapp01-python
+  - name: web #  webapp01-python
     count: 1
