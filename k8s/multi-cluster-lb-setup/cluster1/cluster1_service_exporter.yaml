@@ -9,7 +9,11 @@ spec:
     name: http
   selector:
 #    app: app01-web
-    app: app02-ruby-static
+#    app: webapp01-python
+    app: web
+    # dice Daniel che posso usare il chiave valoerw che voglio come selettore.
+#    app-selettore: app01-in-python 
+#    app: app02-ruby-static
 ---
 kind: ServiceExport
 apiVersion: net.gke.io/v1

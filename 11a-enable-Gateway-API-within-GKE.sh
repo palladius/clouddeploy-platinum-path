@@ -73,7 +73,7 @@ kubectl apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
 # I should see FOUR not TWO:
 kubectl get gatewayclass
 
-#5. enable GKE gateway controller
+#5. enable GKE gateway controller just in GKE01.
 gcloud container fleet ingress enable \
     --config-membership=/projects/$PROJECT_ID/locations/global/memberships/$CLUSTER_1 \
      --project=$PROJECT_ID
