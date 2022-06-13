@@ -34,20 +34,30 @@ gcloud services enable \
     --project=$PROJECT_ID
 
 
-# TODO(ricc): iterate through all clusters
-CLUSTER_1="cicd-canary"
-CLUSTER_2="cicd-prod"
+
 
 #2. register clusters to the fleet
-# gcloud container fleet memberships register "$CLUSTER_1" \
-#      --gke-cluster "$GCLOUD_REGION/$CLUSTER_1" \
-#      --enable-workload-identity \
-#      --project=$PROJECT_ID
+gcloud container fleet memberships register "$CLUSTER_1" \
+     --gke-cluster "$GCLOUD_REGION/$CLUSTER_1" \
+     --enable-workload-identity \
+     --project=$PROJECT_ID
 
-# gcloud container fleet memberships register $CLUSTER_2 \
-#      --gke-cluster $GCLOUD_REGION/$CLUSTER_2 \
-#      --enable-workload-identity \
-#      --project=$PROJECT_ID
+gcloud container fleet memberships register $CLUSTER_2 \
+     --gke-cluster $GCLOUD_REGION/$CLUSTER_2 \
+     --enable-workload-identity \
+     --project=$PROJECT_ID
+# Cluster 1
+echo lets recall that: CLUSTER_1="$CLUSTER_1"
+echo lets recall that: CLUSTER_2="$CLUSTER_2"
+#yellow "Try now for cluster1=$CLUSTER_1 kubectl apply -f  k8s/multi-cluster-lb-setup/cluster1/"
+
+gcloud container clusters get-credentials "$CLUSTER_1" --region "$GCLOUD_REGION" --project "$PROJECT_ID"
+kubectl config get-contexts
+kubectl apply -f  k8s/multi-cluster-lb-setup/cluster1/
+
+gcloud container clusters get-credentials "$CLUSTER_2" --region "$GCLOUD_REGION" --project "$PROJECT_ID"
+kubectl config get-contexts
+kubectl apply -f  k8s/multi-cluster-lb-setup/cluster2/
 
 #3. enable multi-cluster services
 gcloud container fleet multi-cluster-services enable \
@@ -73,14 +83,4 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
      --role "roles/container.admin" \
      --project=$PROJECT_ID
      
-#6.  apply the gateway configuration on CLUSTER_1 
-# apply to cluster 1 /2
-
-# Cluster 1
-gcloud container clusters get-credentials "$CLUSTER_1" --region "$GCLOUD_REGION" --project "$PROJECT_ID"
-kubectl config get-contexts
-yellow "Try now for cluster1=$CLUSTER_1 kubectl apply -f  k8s/multi-cluster-lb-setup/cluster1/"
-
-# 8. Apply to ?!?
-
-echo TODO.
+echo Done. Now proceed to 11b to execute upon kubectl on two clusters: ./11b-kubectl-apply-stuff.sh

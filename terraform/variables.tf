@@ -58,9 +58,19 @@ variable "gcp_credentials_json" {
 
 variable "terraform_prefix" {
   type = string
-  default = "" # empty string 
+  default = "tf-" # empty string 
   description = "names resources 'PREFIX-BLAH' TODO be implemented yet"
 }
+
+variable "code_repo" {
+  type = string
+  default = "https://github.com/palladius/clouddeploy-platinum-path/"
+  description = "GitHub Repo or place which points to the code"
+}
+
+
+
+
 
 #variable "terraform_state_prefix" {
 #  type = string
