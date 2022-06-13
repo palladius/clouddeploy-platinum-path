@@ -3,7 +3,7 @@ kind: Namespace
 metadata:
   labels:
     application: riccardo-cicd-platinum-path
-    favorite-icecream: pistacchio
+    github-repo: palladius-colon-cicd-platinum-path
     tier: ricc-frontend-application
   name: cicd-internal
 ---
@@ -12,7 +12,7 @@ kind: Service
 metadata:
   labels:
     application: riccardo-cicd-platinum-path
-    favorite-icecream: pistacchio
+    github-repo: palladius-colon-cicd-platinum-path
     tier: ricc-frontend-application
   name: ricc-ruby
 spec:
@@ -22,7 +22,7 @@ spec:
   selector:
     app: ricc-ruby
     application: riccardo-cicd-platinum-path
-    favorite-icecream: pistacchio
+    github-repo: palladius-colon-cicd-platinum-path
     tier: ricc-frontend-application
   type: LoadBalancer
 ---
@@ -31,7 +31,7 @@ kind: Deployment
 metadata:
   labels:
     application: riccardo-cicd-platinum-path
-    favorite-icecream: pistacchio
+    github-repo: palladius-colon-cicd-platinum-path
     tier: ricc-frontend-application
   name: ricc-ruby
 spec:
@@ -40,14 +40,14 @@ spec:
     matchLabels:
       app: ricc-ruby
       application: riccardo-cicd-platinum-path
-      favorite-icecream: pistacchio
+      github-repo: palladius-colon-cicd-platinum-path
       tier: ricc-frontend-application
   template:
     metadata:
       labels:
         app: ricc-ruby
         application: riccardo-cicd-platinum-path
-        favorite-icecream: pistacchio
+        github-repo: palladius-colon-cicd-platinum-path
         tier: ricc-frontend-application
     spec:
       containers:

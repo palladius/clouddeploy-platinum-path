@@ -4,7 +4,7 @@ resources:
   - ../_base
 components:
   - ../../../components/base/common
-
+  - ../../../../components/dev/common
 patches:
 - patch: |-
     - op: add

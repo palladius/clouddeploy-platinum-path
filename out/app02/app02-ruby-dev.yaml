@@ -1,0 +1,98 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  annotations:
+    developer: Riccardo Carlesso
+    riccNotes: |
+      This is common stuff which I include in my DEV manifests.
+      Testing thje -dev suffix but probably i wanna remove it in a while
+  labels:
+    application: riccardo-cicd-platinum-path
+    github-repo: palladius-colon-cicd-platinum-path
+    ricc-awesome-selector: dev-or-staging
+    ricc-env: dev
+    tier: ricc-frontend-application
+  name: cicd-internal
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    developer: Riccardo Carlesso
+    riccNotes: |
+      This is common stuff which I include in my DEV manifests.
+      Testing thje -dev suffix but probably i wanna remove it in a while
+  labels:
+    application: riccardo-cicd-platinum-path
+    github-repo: palladius-colon-cicd-platinum-path
+    ricc-awesome-selector: dev-or-staging
+    ricc-env: dev
+    tier: ricc-frontend-application
+  name: ricc-ruby-dev
+spec:
+  ports:
+  - port: 9292
+    targetPort: 9292
+  selector:
+    app: ricc-ruby
+    application: riccardo-cicd-platinum-path
+    github-repo: palladius-colon-cicd-platinum-path
+    ricc-awesome-selector: dev-or-staging
+    ricc-env: dev
+    tier: ricc-frontend-application
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    developer: Riccardo Carlesso
+    riccNotes: |
+      This is common stuff which I include in my DEV manifests.
+      Testing thje -dev suffix but probably i wanna remove it in a while
+  labels:
+    application: riccardo-cicd-platinum-path
+    github-repo: palladius-colon-cicd-platinum-path
+    ricc-awesome-selector: dev-or-staging
+    ricc-env: dev
+    tier: ricc-frontend-application
+  name: ricc-ruby-dev
+spec:
+  selector:
+    matchLabels:
+      app: ricc-ruby
+      application: riccardo-cicd-platinum-path
+      github-repo: palladius-colon-cicd-platinum-path
+      ricc-awesome-selector: dev-or-staging
+      ricc-env: dev
+      tier: ricc-frontend-application
+  template:
+    metadata:
+      annotations:
+        developer: Riccardo Carlesso
+        riccNotes: |
+          This is common stuff which I include in my DEV manifests.
+          Testing thje -dev suffix but probably i wanna remove it in a while
+      labels:
+        app: ricc-ruby
+        application: riccardo-cicd-platinum-path
+        github-repo: palladius-colon-cicd-platinum-path
+        ricc-awesome-selector: dev-or-staging
+        ricc-env: dev
+        tier: ricc-frontend-application
+    spec:
+      containers:
+      - env:
+        - name: RACK_ENV
+          value: development
+        - name: RICCARDO_MESSAGE
+          value: Hi! This is the default message if you dont customize to come to
+            another target (dev, prod, ..)
+        - name: FAVORITE_COLOR
+          value: pink
+        - name: RICCARDO_KUSTOMIZE_ENV
+          value: 01 Dev (Development)
+        image: ricc-app01-ruby-example
+        name: ricc-ruby
+        ports:
+        - containerPort: 9292
