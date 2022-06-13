@@ -91,9 +91,44 @@ spec:
             gateway: apps-http
 
 7. Export Services
+CLUSTER_1
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-web-01
+spec:
+  ports:
+  - port: 8080
+    name: http
+  selector:
+    app: app01-web
+---
+kind: ServiceExport
+apiVersion: net.gke.io/v1
+metadata:
+  name: app-web-01
+  namespace: default
 
+CLUSTER_2
 
-
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-web-02
+spec:
+  ports:
+  - port: 9292
+    targetPort: 9292
+  selector:
+    app: app02-ruby
+---
+kind: ServiceExport
+apiVersion: net.gke.io/v1
+metadata:
+  name: app-web-02
+  namespace: default
 
 
 8.
@@ -111,7 +146,7 @@ spec:
     namespace: default
     name: apps-http
   hostnames:
-  - "store.example.internal"
+  - "apps.example.internal"
   rules:
   - backendRefs:
     # 90% of traffic to store-west-1 ServiceImport
