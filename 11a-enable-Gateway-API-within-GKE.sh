@@ -35,7 +35,6 @@ gcloud services enable \
 
 
 
-
 #2. register clusters to the fleet
 gcloud container fleet memberships register "$CLUSTER_1" \
      --gke-cluster "$GCLOUD_REGION/$CLUSTER_1" \
@@ -71,6 +70,7 @@ gcloud projects add-iam-policy-binding "$PROJECT_ID" \
 
 #4.  enable gateway apis
 kubectl apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
+# I should see FOUR not TWO:
 kubectl get gatewayclass
 
 #5. enable GKE gateway controller
@@ -84,3 +84,5 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
      --project=$PROJECT_ID
      
 echo Done. Now proceed to 11b to execute upon kubectl on two clusters: ./11b-kubectl-apply-stuff.sh
+
+verde fatto tutto.
