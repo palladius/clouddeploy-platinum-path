@@ -1,44 +1,44 @@
-apiVersion: v1
-kind: Service
-metadata:
-  name: app02-ruby-static
-spec:
-  ports:
-  - port: 9292
-    targetPort: 9292
-  type: LoadBalancer
-  selector:
-    app: app02-ruby-static
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: app02-ruby-static
-spec:
-  selector:
-    matchLabels:
-      app: app02-ruby-static
-  template:
-    metadata:
-      labels:
-        app: app02-ruby-static
-    spec:
-      containers:
-      - name: app02-ruby-static
-        image: ricc-app01-ruby-example    # ruby-example
-        ports:
-        - containerPort: 9292
-        env:
-        - name: RACK_ENV
-          value: "development"
-        - name: APP_CODE
-          value: app02
-        - name: APP_NAME
-          value: "[app02] RubyAppTwo"
-        - name: RICCARDO_MESSAGE
-          value: |
-            Hi! This is the default message if you dont customize to come to another target (dev, prod, ..)
-            Note that since v1.2_20220609 fav color has changed from pink to orange. Im testing a change to both code and k8s yaml here.. 
-        - name: FAVORITE_COLOR
-          value: orange # default bkg color, will make it white in prod and yellow in canary.  
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: app02-ruby-static
+# spec:
+#   ports:
+#   - port: 9292
+#     targetPort: 9292
+#   type: LoadBalancer
+#   selector:
+#     app: app02-ruby-static
+# ---
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: app02-ruby-static
+# spec:
+#   selector:
+#     matchLabels:
+#       app: app02-ruby-static
+#   template:
+#     metadata:
+#       labels:
+#         app: app02-ruby-static
+#     spec:
+#       containers:
+#       - name: app02-ruby-static
+#         image: ricc-app01-ruby-example    # ruby-example
+#         ports:
+#         - containerPort: 9292
+#         env:
+#         - name: RACK_ENV
+#           value: "development"
+#         - name: APP_CODE
+#           value: app02
+#         - name: APP_NAME
+#           value: "[app02] RubyAppTwo"
+#         - name: RICCARDO_MESSAGE
+#           value: |
+#             Hi! This is the default message if you dont customize to come to another target (dev, prod, ..)
+#             Note that since v1.2_20220609 fav color has changed from pink to orange. Im testing a change to both code and k8s yaml here.. 
+#         - name: FAVORITE_COLOR
+#           value: orange # default bkg color, will make it white in prod and yellow in canary.  
           

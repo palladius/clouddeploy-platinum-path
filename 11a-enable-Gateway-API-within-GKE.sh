@@ -14,12 +14,12 @@ PROJECT_NUMBER=$(gcloud projects list --filter="$PROJECT_ID" --format="value(PRO
 
 # CREO IN europe-west6
 proceed_if_error_matches "already exists" \
-gcloud compute networks subnets create dmarzi-proxy \
-    --purpose=REGIONAL_MANAGED_PROXY \
-    --role=ACTIVE \
-    --region="$GCLOUD_REGION" \
-    --network='default' \
-    --range='192.168.0.0/24'
+     gcloud compute networks subnets create dmarzi-proxy \
+     --purpose=REGIONAL_MANAGED_PROXY \
+     --role=ACTIVE \
+     --region="$GCLOUD_REGION" \
+     --network='default' \
+     --range='192.168.0.0/24'
 
 # bingo! https://screenshot.googleplex.com/h5ZXAUgy5wWrvqh
 

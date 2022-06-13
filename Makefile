@@ -73,8 +73,10 @@ kustomize-test:
 	@echo Done. TODO ricc diff the two now.
 
 kustomize-ruby-diff-prod-and-canary:
-	kustomize build apps/app02/k8s/04prod/ > t.kust.prod
-	kustomize build apps/app02/k8s/03canary/ > t.kust.canary 
+	kustomize build apps/app02/k8s/01dev/     > t.app02-ruby.kust.dev
+	kustomize build apps/app02/k8s/02staging/ > t.app02-ruby.kust.stag
+	kustomize build apps/app02/k8s/03canary/  > t.app02-ruby.kust.cana
+	kustomize build apps/app02/k8s/04prod/    > t.app02-ruby.kust.prod
 	@echo Showing the diff between PROD and CANARY manifests:
-	diff t.kust.prod t.kust.canary
+	diff t.app02-ruby.kust.prod t.app02-ruby.kust.cana
 	echo Done.

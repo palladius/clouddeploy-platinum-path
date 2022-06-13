@@ -8,7 +8,8 @@ spec:
   - port: 8080
     name: http
   selector:
-    app: app01-web
+#    app: app01-web
+    app: app02-ruby-static
 ---
 kind: ServiceExport
 apiVersion: net.gke.io/v1

@@ -16,6 +16,7 @@ set -x
 # https://www.terraform.io/cli/config/environment-variables
 export TF_VAR_project_id="$PROJECT_ID"
 export TF_VAR_gcp_region="$CLOUD_DEPLOY_REGION"
+# To create this key, check code in `./13-create-Svc-Account-for-Terraform.sh`, its quite straightforward.
 export TF_VAR_gcp_credentials_json='../private/tf-cd-sa.key'
 
 TF_OPTS="-no-color -auto-approve -var foo=bar"
