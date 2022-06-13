@@ -7,3 +7,5 @@ components:
 replicas: 
   - name: webapp01-python
     count: 9
+patchesStrategicMerge:
+- increase_replicas.yaml
