@@ -1,6 +1,27 @@
+# * provider.google: version = "~> 3.65"
+# * provider.google-beta: version = "~> 3.65"
+
+# provider "google-beta" {
+#   version = "~> 4.0.0"
+
+#   project     = var.project_id # eg, "cicd-platinum-test001"
+#   credentials = var.gcp_credentials_json
+#   region      = var.gcp_region
+# }
+
+# terraform {
+#   # ... other configuration ...
+#   required_providers {
+#     google = {
+#       version = "~> 4.0.0"
+#     }
+#   }
+# }
+
+# doesnt support CD! 
 provider "google" {
   project     = var.project_id # eg, "cicd-platinum-test001"
   credentials = var.gcp_credentials_json
-  gcp_region      = var.gcp_region
+  region      = var.gcp_region
 }
 

@@ -1,22 +1,21 @@
 resource "google_clouddeploy_delivery_pipeline" "primary" {
   location = "us-west1"
-  name     = "pipeline"
+  name     = "tf-pipeline-pp01"
 
   annotations = {
     my_first_annotation = "example-annotation-1"
-
     my_second_annotation = "example-annotation-2"
   }
 
-  description = "basic description"
+  description = "[Created with Terraform] basic description"
 
   labels = {
     my_first_label = "example-label-1"
-
     my_second_label = "example-label-2"
   }
 
-  project = "my-project-name"
+#  project = "my-project-name"
+  project = "$project_id"
 
   serial_pipeline {
     stages {

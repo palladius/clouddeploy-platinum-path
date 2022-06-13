@@ -16,6 +16,8 @@ set -x
 # https://www.terraform.io/cli/config/environment-variables
 export TF_VAR_project_id="$PROJECT_ID"
 export TF_VAR_gcp_region="$REGION"
-TF_OPTS="-no-color -auto-approve -var 'foo=bar'"
+export TF_VAR_gcp_credentials_json='../private/tf-cd-sa.key'
 
-TF_VAR_region="$REGION" terraform apply  -var "gcp_region=pincopa"
+TF_OPTS="-no-color -auto-approve -var foo=bar"
+
+TF_VAR_region="$REGION" terraform apply  # -var "gcp_region=pincopa"
