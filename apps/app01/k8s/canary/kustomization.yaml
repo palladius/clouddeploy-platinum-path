@@ -3,7 +3,7 @@ kind: Kustomization
 resources:
   - ../_base
 components:
-  - ../../../../components/prod/common
+  - ../../../../components/canary/common
 replicas: 
   - name: web #  webapp01-python
     count: 1

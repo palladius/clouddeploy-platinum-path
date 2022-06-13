@@ -3,7 +3,7 @@ kind: Service
 metadata:
   annotations:
     developer: Riccardo Carlesso
-    oncallPager: 800-555-1212
+    oncallPager: 800-555-1234 (for Production outages only)
     riccNotes: |
       This is common stuff which I include in my PROD manifests.
       Thanks Daniel and Alex for their help on this!
@@ -11,6 +11,8 @@ metadata:
     application: riccardo-cicd-platinum-path
     applicazione-in-produzione: bingo
     github-repo: palladius-colon-cicd-platinum-path
+    ricc-awesome-selector: canary-or-prod
+    ricc-env: prod
     tier: ricc-frontend-application
   name: web-prod
 spec:
@@ -22,6 +24,8 @@ spec:
     application: riccardo-cicd-platinum-path
     applicazione-in-produzione: bingo
     github-repo: palladius-colon-cicd-platinum-path
+    ricc-awesome-selector: canary-or-prod
+    ricc-env: prod
     tier: ricc-frontend-application
   type: LoadBalancer
 ---
@@ -30,7 +34,7 @@ kind: Deployment
 metadata:
   annotations:
     developer: Riccardo Carlesso
-    oncallPager: 800-555-1212
+    oncallPager: 800-555-1234 (for Production outages only)
     riccNotes: |
       This is common stuff which I include in my PROD manifests.
       Thanks Daniel and Alex for their help on this!
@@ -38,6 +42,8 @@ metadata:
     application: riccardo-cicd-platinum-path
     applicazione-in-produzione: bingo
     github-repo: palladius-colon-cicd-platinum-path
+    ricc-awesome-selector: canary-or-prod
+    ricc-env: prod
     tier: ricc-frontend-application
   name: web-prod
 spec:
@@ -48,12 +54,14 @@ spec:
       application: riccardo-cicd-platinum-path
       applicazione-in-produzione: bingo
       github-repo: palladius-colon-cicd-platinum-path
+      ricc-awesome-selector: canary-or-prod
+      ricc-env: prod
       tier: ricc-frontend-application
   template:
     metadata:
       annotations:
         developer: Riccardo Carlesso
-        oncallPager: 800-555-1212
+        oncallPager: 800-555-1234 (for Production outages only)
         riccNotes: |
           This is common stuff which I include in my PROD manifests.
           Thanks Daniel and Alex for their help on this!
@@ -62,6 +70,8 @@ spec:
         application: riccardo-cicd-platinum-path
         applicazione-in-produzione: bingo
         github-repo: palladius-colon-cicd-platinum-path
+        ricc-awesome-selector: canary-or-prod
+        ricc-env: prod
         tier: ricc-frontend-application
     spec:
       containers:
