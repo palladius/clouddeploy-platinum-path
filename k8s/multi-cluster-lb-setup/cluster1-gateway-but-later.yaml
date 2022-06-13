@@ -1,0 +1,28 @@
+kind: HTTPRoute
+apiVersion: gateway.networking.k8s.io/v1alpha2
+metadata:
+  name: internal-store-route
+  namespace: default
+  labels:
+    gateway: apps-http
+spec:
+  parentRefs:
+  - kind: Gateway
+    namespace: default
+    name: apps-http
+  hostnames:
+  - "apps.example.internal"
+  rules:
+  - backendRefs:
+    # 90% of traffic to store-west-1 ServiceImport
+    - name: app-web-01
+      group: net.gke.io
+      kind: ServiceImport
+      port: 8080
+      weight: 90
+    # 10% of traffic to store-west-2 ServiceImport
+    - name: app-web-02
+      group: net.gke.io
+      kind: ServiceImport
+      port: 8080
+      weight: 10
