@@ -10,10 +10,10 @@ kustomize-app01:
 	kustomize build   ../apps/app01/k8s/canary/  > app01/t.python-canary.yaml
 	kustomize build   ../apps/app01/k8s/prod/    > app01/t.python-prod.yaml
 
-	@echo Showing the NAME between PROD and CANARY manifests:
+	#@echo Showing the NAME between PROD and CANARY manifests:
 #rgrep app: app01/
 	ls -al app01/*
-	cat app01/* | lolcat
+	#cat app01/* | lolcat
 	echo Done.
 
 kustomize-app02:
@@ -22,8 +22,9 @@ kustomize-app02:
 	kustomize build ../apps/app02/k8s/02staging/ > app02/t.ruby-stag.yaml
 	kustomize build ../apps/app02/k8s/03canary/  > app02/t.ruby-cana.yaml
 	kustomize build ../apps/app02/k8s/04prod/    > app02/t.ruby-prod.yaml
-	@echo Showing the NAME in all manifests:
-	rgrep app: app02/
+	#@echo Showing the NAME in all manifests:
+	#rgrep app: app02/
+	ls -al app02/*
 	echo Done.
 
 clean:

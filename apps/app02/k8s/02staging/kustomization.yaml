@@ -16,4 +16,5 @@ patches:
         value: "02 Staging (pls read with French accent)"
   target:
     kind: Deployment
+    namespace: staging
     name: app02-kuruby
