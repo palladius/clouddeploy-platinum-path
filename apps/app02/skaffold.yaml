@@ -1,4 +1,4 @@
-apiVersion: skaffold/v2beta28
+apiVersion: skaffold/v2beta26
 kind: Config
 metadata:
   name: app02
@@ -12,23 +12,22 @@ build:
       infer:
       - '*.rb'
 deploy:
-  kubectl:
-    manifests:
-    - ./k8s/*yaml
+  kustomize:
+    paths: [./k8s/_base]
 profiles:
   - name: dev
     deploy:
       kustomize:
         paths: ["k8s/01dev"] # should be dev but its the same so today ill be lazy...
   - name: staging
-    # deploy:
-    #   kustomize:
-    #     paths: ["k8s/02staging"]
+    deploy:
+      kustomize:
+        paths: ["k8s/02staging"]
   - name: canary
-    # deploy:
-    #   kustomize:
-    #     paths: ["k8s/03canary"]
+    deploy:
+      kustomize:
+        paths: ["k8s/03canary"]
   - name: production
-    # deploy:
-    #   kustomize:
-    #     paths: ["k8s/04production"]
+    deploy:
+      kustomize:
+        paths: ["k8s/04prod"]
