@@ -14,5 +14,7 @@ test:
 	echo Text fixed now all good
 	which ruby && ruby ruby-app/app.rb || echo Sorry no ruby pls install it.
 	echo Looks like Ruby app returns so looks like no Syntax Horrors.
+	echo 02. Now trying to skaffold build this gentleman..
+	./skaffold-wrapper.sh build
 #	echo Lets pretend this doesnt build.
 #	/bin/false
