@@ -5,6 +5,6 @@ commonLabels:
 resources:
 #  - deployment.yaml # Python stuff
 #  - namespace.yaml 
-  - app01-python-app-original.yaml
+  - app01-kupython.yaml
 components:
   - ../../../components/base/common
