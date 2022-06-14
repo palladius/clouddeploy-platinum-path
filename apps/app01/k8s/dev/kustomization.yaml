@@ -4,6 +4,7 @@ resources:
   - ../_base
 components:
   - ../../../components/base/common
+  - namespace.yaml
 
 # patches:
 # - patch: |-

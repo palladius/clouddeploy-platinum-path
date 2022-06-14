@@ -60,6 +60,8 @@ tests:
 	make -C apps/app01/ test
 #	@echo Testin app02...
 	make -C apps/app02/ test
+	@echo Testing kustomize for both apps..
+	make -C out all
 	
 # I didnt know it was so straightfwd! Install: https://kubectl.docs.kubernetes.io/installation/kustomize/binaries/
 kustomize-install:
