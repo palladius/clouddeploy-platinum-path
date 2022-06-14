@@ -5,7 +5,7 @@ resources:
 components:
   - ../../../../components/prod/common
 replicas: 
-  - name: web # webapp01-python
+  - name: app01-kupython
     count: 9
 patchesStrategicMerge:
 - increase_replicas.yaml

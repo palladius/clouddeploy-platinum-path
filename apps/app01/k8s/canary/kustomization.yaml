@@ -5,5 +5,5 @@ resources:
 components:
   - ../../../../components/canary/common
 replicas: 
-  - name: web #  webapp01-python
+  - name: app01-kupython
     count: 1

@@ -3,6 +3,6 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: web # webapp01-python
+  name: app01-kupython 
 spec:
   replicas: 8
