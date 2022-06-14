@@ -5,7 +5,7 @@ resources:
   - namespace.yaml
 components:
   - ../../../components/base/common
-
+  - ../../../../components/dev/common
 # patches:
 # - patch: |-
 #     - op: add

@@ -3,9 +3,9 @@ kind: Component
 # https://kubernetes.io/docs/tasks/manage-kubernetes-objects/kustomization/#setting-cross-cutting-fields
 #namespace: my-namespace
 #namePrefix: dev-
-nameSuffix: "-prod"
+nameSuffix: "-canary"
 commonLabels:
-  applicazione-in-produzione: bingo
+  #applicazione-in-produzione: bingo
   ricc-awesome-selector: canary-or-prod
   ricc-env: canary
 commonAnnotations:
