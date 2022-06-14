@@ -14,7 +14,9 @@ build:
 # abielski says: This is the issue. Either always pass a profile param to skaffold or change this to point to `./k8s/_base`
 deploy:
   kustomize:
-    paths: [./k8s/_base]
+    paths: 
+    - ./k8s/_base
+    - ./k8s/static
 profiles:
   - name: dev
     deploy:
