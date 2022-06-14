@@ -29,11 +29,13 @@ function getLoadBalancerIP() {
 # DEV K8s clusters: Dev, Staging
 #riccardo_only_setup_dns 34.65.143.83  app01-dev
 #riccardo_only_setup_dns 34.65.143.83  app01-stag
-riccardo_only_setup_dns "$(getLoadBalancerIP $GKE_DEV_CLUSTER_CONTEXT web)" app01-dev
+#riccardo_only_setup_dns "$(getLoadBalancerIP $GKE_DEV_CLUSTER_CONTEXT web)" app01-dev
+riccardo_only_setup_dns "$(getLoadBalancerIP $GKE_DEV_CLUSTER_CONTEXT app02-kuruby-dev)" app02-dev
 #riccardo_only_setup_dns "$(getLoadBalancerIP $GKE_DEV_CLUSTER_CONTEXT web)" app01-staging
 
 # CANARY K8s cluster
-riccardo_only_setup_dns "$(getLoadBalancerIP $GKE_CANARY_CLUSTER_CONTEXT web)" app01-canary # prod
+#riccardo_only_setup_dns "$(getLoadBalancerIP $GKE_CANARY_CLUSTER_CONTEXT web)" app01-canary # prod
+riccardo_only_setup_dns "$(getLoadBalancerIP $GKE_CANARY_CLUSTER_CONTEXT  app02-kuruby)" app02-canary # prod
 
 # PROD K8s cluster
 #IP_APP01_PROD=$(getLoadBalancerIP $GKE_PROD_CLUSTER_CONTEXT web)
