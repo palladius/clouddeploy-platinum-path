@@ -8,8 +8,8 @@ metadata:
   name: app02-ruby-static
 spec:
   ports:
-  - port: 80 
-    targetPort: 80
+  - port: 8080
+    targetPort: 8080
   type: LoadBalancer
   selector:
     app: app02-ruby-static
@@ -26,12 +26,13 @@ spec:
     metadata:
       labels:
         app: app02-ruby-static
+        ricc-awesome-selector: canary-or-prod # TODO(ricc): SBAJJATO! 
     spec:
       containers:
       - name: app02-ruby-static
         image: ricc-app01-ruby-example    # ruby-example
         ports:
-        - containerPort: 80
+        - containerPort: 8080
         env:
         - name: RACK_ENV
           value: "development"
@@ -46,4 +47,12 @@ spec:
             Since version 1.8a it runs on pt 80 for ease of DNS..
         - name: FAVORITE_COLOR
           value: orange # default bkg color, will make it white in prod and yellow in canary.  
-          
+
+        # https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+        # livenessProbe: # eseguito spesso, mentre readyiness solo una volta per apps lente a partitre.
+        #   exec:
+        #     command:
+        #     - cat
+        #     - /tmp/healthy
+        #   initialDelaySeconds: 5
+        #   periodSeconds: 5

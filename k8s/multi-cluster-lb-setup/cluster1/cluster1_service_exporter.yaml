@@ -13,10 +13,7 @@ spec:
     ricc-awesome-selector: canary-or-prod
 #    app: app01-web
 #    app: webapp01-python
-    #app: web
 #    app-selettore: app01-in-python 
-#    app: app02-ruby-static
-
 
 ---
 kind: ServiceExport
