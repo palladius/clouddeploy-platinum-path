@@ -31,7 +31,7 @@ class App
 
     return [ 200, {
       "Content-Type" => "text/html"}, 
-      ["<h1>[app02 in ruby] Hello from Riccardo!</h1>  More exciting stuff coming soon from ENV vars.<br/>
+      ["<h1>[app02 in ruby❤️] Hello from Riccardo!</h1>  More exciting stuff coming soon from ENV vars.<br/>
       
       Favorite Color: <b style='background-color:#{fav_color};' >#{fav_color}</b><br/>
       
@@ -43,9 +43,9 @@ class App
 
       <hr/>    
       <center>
-        APP $APPNAME (todo from env: 
+        APP 
         <b>#{ENV['APP_NAME']}</b>
-        ) v.<b>#{$VERSION}</b>
+        (from env)) v.<b>#{$VERSION}</b>
       </center>  
       "]
     ]

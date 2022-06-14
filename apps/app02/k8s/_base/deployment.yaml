@@ -4,8 +4,8 @@ metadata:
   name: ricc-ruby
 spec:
   ports:
-  - port: 9292
-    targetPort: 9292
+  - port: 80 
+    targetPort: 80
   type: LoadBalancer
   selector:
     app: ricc-ruby
@@ -27,10 +27,12 @@ spec:
       - name: ricc-ruby
         image: ricc-app01-ruby-example    # ruby-example
         ports:
-        - containerPort: 9292
+        - containerPort: 80
         env:
         - name: RACK_ENV
           value: "development"
+        - name: APP_NAME
+          value: A Wodnerful App in Ruby (app02)
         - name: RICCARDO_MESSAGE
           value: Hi! This is the default message if you dont customize to come to another target (dev, prod, ..) 
         - name: FAVORITE_COLOR
