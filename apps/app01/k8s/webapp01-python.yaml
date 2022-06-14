@@ -4,7 +4,7 @@ metadata:
   name: webapp01-python # was 'web' and it worked
 spec:
   ports:
-  - port: 8080
+  - port: 80
     name: http
   type: LoadBalancer
   selector:
