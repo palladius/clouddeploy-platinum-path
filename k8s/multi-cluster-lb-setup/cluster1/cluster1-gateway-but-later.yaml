@@ -4,24 +4,24 @@ metadata:
   name: internal-store-route
   namespace: default
   labels:
-    gateway: apps-http
+    gateway: dmarzi-apps-http
 spec:
   parentRefs:
   - kind: Gateway
     namespace: default
-    name: apps-http
+    name: dmarzi-apps-http
   hostnames:
   - "apps.example.internal"
   rules:
   - backendRefs:
     # 90% of traffic to store-west-1 ServiceImport
-    - name: app-web-01
+    - name: dmarzi-app-web-01
       group: net.gke.io
       kind: ServiceImport
       port: 8080
       weight: 90
     # 10% of traffic to store-west-2 ServiceImport
-    - name: app-web-02
+    - name: dmarzi-app-web-02
       group: net.gke.io
       kind: ServiceImport
       port: 8080
