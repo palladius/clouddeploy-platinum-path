@@ -5,7 +5,7 @@ resources:
 #components:
 #  - ../../../../components/staging/common
 replicas: 
-  - name: ricc-ruby
+  - name: app02-kuruby
     count: 1
 patches:
 - patch: |-
@@ -16,4 +16,4 @@ patches:
         value: "02 Staging (pls read with French accent)"
   target:
     kind: Deployment
-    name: ricc-ruby
+    name: app02-kuruby

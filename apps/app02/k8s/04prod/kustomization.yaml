@@ -5,5 +5,5 @@ resources:
 components:
   - ../../../../components/prod/common
 replicas: 
-  - name: ricc-ruby
+  - name: app02-kuruby
     count: 9 # turn it up to

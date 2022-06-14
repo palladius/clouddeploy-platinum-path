@@ -15,4 +15,4 @@ patches:
   target:
     kind: Deployment
 #    namespace: myns
-    name: ricc-ruby
+    name: app02-kuruby

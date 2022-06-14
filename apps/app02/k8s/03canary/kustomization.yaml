@@ -5,7 +5,7 @@ resources:
 components:
   - ../../../../components/canary/common
 replicas: 
-  - name: ricc-ruby
+  - name: app02-kuruby
     count: 1 
 # How do i make the fav color to be yellow?!?
 #         - name: FAVORITE_COLOR
@@ -19,4 +19,4 @@ patches:
         value: brown
   target:
     kind: Deployment
-    name: ricc-ruby
+    name: app02-kuruby
