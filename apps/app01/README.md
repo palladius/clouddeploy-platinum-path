@@ -11,8 +11,9 @@ This is an example demonstrating:
 * **tagging** using the default tagPolicy (`gitCommit`)
 * **deploying** a single container pod using `kubectl`
 
-## Hitsory
+## History
 
+* 20220614 1.7 Added python emoji 🐍 in frontend - to test GKE backend changes..
 * 20220610 1.4 changed fav color to TEAL and added in HTML as background to add some color to the app :) 
 * 20220610 1.3 Installed locally and finally fixed. (1) 
 * 20220609 1.2 was broken
