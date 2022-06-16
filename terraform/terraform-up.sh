@@ -5,11 +5,11 @@ set -e
 
 echo "PROJECT_ID: $PROJECT_ID" 
 
-# if [ -f .terraform/ ] ; then
-#     echo Terraform folder found. Skipping init.
-# else
-#     terraform init 
-# fi 
+if [ -f .terraform/ ] ; then
+    echo Terraform folder found. Skipping init.
+else
+    terraform init 
+fi 
 
 set -x
 
@@ -20,4 +20,4 @@ export TF_VAR_gcp_region="$CLOUD_DEPLOY_REGION"
 export TF_VAR_gcp_credentials_json='../private/tf-cd-sa.key'
 
 TF_OPTS="-no-color -auto-approve -var foo=bar"
-TF_VAR_region="$REGION" /usr/local/bin/terraform apply -auto-approve 
+TF_VAR_region="$REGION" terraform apply -auto-approve 
