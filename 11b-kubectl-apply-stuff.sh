@@ -24,3 +24,6 @@ kubectl apply -f  k8s/multi-cluster-lb-setup/cluster2/
 
 echo Restoring cluster 1.
 gcloud container clusters get-credentials "$CLUSTER_1"  --region "$GCLOUD_REGION" --project "$PROJECT_ID"
+
+
+echo Everything is ok.

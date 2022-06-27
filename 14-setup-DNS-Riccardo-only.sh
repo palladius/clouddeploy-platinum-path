@@ -43,6 +43,5 @@ riccardo_only_setup_dns "$(getLoadBalancerIP $GKE_PROD_CLUSTER_CONTEXT web)" app
 
 
 # End of your code here
-echo Tutto ok.
-
+echo Everything is ok.
 

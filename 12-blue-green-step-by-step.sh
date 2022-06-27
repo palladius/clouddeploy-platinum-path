@@ -19,4 +19,4 @@ PRD="gke_cicd-platinum-test001_europe-west6_cicd-prod"
 
 
 # End of your code here
-verde Tutto ok.
+echo Everything is ok.

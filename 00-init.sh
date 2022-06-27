@@ -44,3 +44,6 @@ which skaffold >/dev/null && echo skaffold exists. All good. ||
   gcloud components install skaffold
 
 touch ".$APPNAME.appname"
+
+# End of your code here
+echo Everything is ok.

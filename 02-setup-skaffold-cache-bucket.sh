@@ -19,4 +19,4 @@ ls apps/| grep -v README | while read MODULE ; do
 done
 
 # End of your code here
-verde Tutto ok.
+echo Everything is ok.

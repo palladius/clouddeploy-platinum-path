@@ -54,4 +54,4 @@ for TEAM_ARR in "${TEAMS[@]}"; do
 done
 
 # End of your code here
-echo Tutto ok.
+echo Everything is ok.

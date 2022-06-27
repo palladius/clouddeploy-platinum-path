@@ -54,5 +54,6 @@ fi
 #fatal 42 Debugging it..
 
 
+
 # End of your code here
-verde All good.
+echo Everything is ok.

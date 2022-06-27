@@ -16,4 +16,4 @@ skaffold config set default-repo "$REGION-docker.pkg.dev/$PROJECT_ID/$ARTIFACT_R
 
 
 # End of your code here
-verde Tutto ok.
+echo Everything is ok.

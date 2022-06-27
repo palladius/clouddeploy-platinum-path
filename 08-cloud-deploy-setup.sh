@@ -28,4 +28,4 @@ gcloud --project $PROJECT_ID deploy apply --file .tmp.clouddeploy.yaml --region 
 
 
 # End of your code here
-verde Tutto ok.
+echo Everything is ok.

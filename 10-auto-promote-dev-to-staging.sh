@@ -20,4 +20,4 @@ gcloud deploy releases promote --to-target "$DESIRED_STAGE" --region "$CLOUD_DEP
 
 
 # End of your code here
-verde Tutto ok.
+echo Everything is ok.

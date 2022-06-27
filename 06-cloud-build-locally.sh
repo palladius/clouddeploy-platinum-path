@@ -27,4 +27,4 @@ cloud-build-local --config="cloudbuild.yaml" --dryrun=false \
   --push apps/app01/
 
 # End of your code here
-verde Tutto ok.
+echo Everything is ok.

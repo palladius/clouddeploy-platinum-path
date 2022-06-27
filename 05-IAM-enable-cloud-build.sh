@@ -49,4 +49,4 @@ white "2. Roles for GCE_SVC_ACCT $GCE_SVC_ACCT:"
 _get_roles_for_service_account $GCE_SVC_ACCT
 
 # End of your code here
-verde Tutto ok.
+echo Everything is ok.

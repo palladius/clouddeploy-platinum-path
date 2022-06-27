@@ -35,4 +35,4 @@ ls -al private/
 
 
 # End of your code here
-verde Tutto ok.
+echo Everything is ok.
