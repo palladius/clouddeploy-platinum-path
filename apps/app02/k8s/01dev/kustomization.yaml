@@ -1,0 +1,18 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../_base
+components:
+  - ../../../components/base/common
+  - ../../../../components/dev/common
+patches:
+- patch: |-
+    - op: add
+      path: "/spec/template/spec/containers/0/env/-"
+      value:
+        name: RICCARDO_KUSTOMIZE_ENV
+        value: "01 Dev (Development)"
+  target:
+    kind: Deployment
+#    namespace: myns
+    name: app02-kuruby

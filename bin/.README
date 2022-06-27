@@ -1,0 +1,3 @@
+This is code Ricc uses across all of his projects. You can find it in github.com/palladius/sakura with a lot of other juicy oneliners.
+
+Also consider using `git-privatize` to privatize your .env.sh within your favorite private repo.

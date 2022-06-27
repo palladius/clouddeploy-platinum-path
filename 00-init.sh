@@ -14,17 +14,15 @@ gcloud services enable \
   artifactregistry.googleapis.com \
   cloudbuild.googleapis.com \
   clouddeploy.googleapis.com \
-  cloudresourcemanager.googleapis.com \
   compute.googleapis.com \
   container.googleapis.com \
-  logging.googleapis.com \
-  redis.googleapis.com \
-  run.googleapis.com \
-  servicenetworking.googleapis.com \
   sourcerepo.googleapis.com
 
 # Set defaults..
-gcloud config set run/region $REGION
+gcloud config set run/region "$REGION"
+#gcloud config set build/region "$REGION"
+gcloud config set deploy/region "$CLOUD_DEPLOY_REGION"
+
 #gcloud config set run/platform managed
 #gcloud config set eventarc/location $REGION
 
@@ -41,9 +39,8 @@ gcloud config list | lolcat
 # gcloud auth login --update-adc
 #
 
-# Needed on a new computer
-gcloud components install cloud-build-local
-gcloud components install skaffold
-
+# Needed on a new computer. Smartly installs if needed.
+which skaffold >/dev/null && echo skaffold exists. All good. ||
+  gcloud components install skaffold
 
 touch ".$APPNAME.appname"

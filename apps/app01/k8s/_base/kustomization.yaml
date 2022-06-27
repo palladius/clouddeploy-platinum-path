@@ -1,0 +1,10 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+commonLabels:
+  tier: ricc-frontend-application
+resources:
+#  - deployment.yaml # Python stuff
+#  - namespace.yaml 
+  - app01-kupython.yaml
+components:
+  - ../../../components/base/common

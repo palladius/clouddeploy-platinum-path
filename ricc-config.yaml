@@ -1,0 +1,11 @@
+# For now this is just an idea. Tomorrow this might become code :)
+requires:
+  file_must_exist:
+    ".env.sh": contains project id definition
+  file_should_exist:
+    "99-PRIVATE-dai-accesso-a-Riccardo.sh": Not really needed but nice to have through `git-privatize`
+  command_must_exist:
+    gcloud:  echo Follow install in https://cloud.google.com/sdk/docs/install
+    skaffold: gcloud components install skaffold
+    cloud-build-local: gcloud components install cloud-build-local
+    gke-gcloud-auth-plugin: gcloud components install gke-gcloud-auth-plugin # in G: sudo apt-get install google-cloud-sdk-gke-gcloud-auth-plugin

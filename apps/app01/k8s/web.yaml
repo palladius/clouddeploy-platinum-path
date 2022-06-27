@@ -1,35 +1,47 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: web
+  name: web-obsolete # obsolete. Can now use kustomize instead..
 spec:
   ports:
-  - port: 8080
+  - port: 80
     name: http
   type: LoadBalancer
   selector:
-    app: web
+    app: web-obsolete 
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: web
+  name: web-obsolete
 spec:
   selector:
     matchLabels:
-      app: web
+      app: web-obsolete
   template:
     metadata:
       labels:
-        app: web
+        app: web-obsolete
     spec:
       containers:
-      - name: web
+      - name: web-obsolete
+        #image: ricc-app01-python-buildpacks # skaffold-buildpacks
         image: skaffold-buildpacks
         env:
           - name: PORT
             value: "8080"
           - name: TEST_RICCARDO
-            value: Changing just because.
+            value: |
+              Note this code does NOT use Kustomize. If I call it WEB
+              it works, but if I rename it  webapp01-python it stops
+              working. I know..
+          - name: FAVORITE_COLOR
+            value: teal
+          - name: USE_KUSTOMIZE
+            value: "false"
+          - name: APP_CODE
+            value: app01
+          - name: LAST_REVISION
+            value: 2022-06-13 and were going for picanha with Eli. 
         ports:
           - containerPort: 8080

@@ -1,14 +1,25 @@
-apiVersion: skaffold/v2beta28
+apiVersion: skaffold/v2beta26
 kind: Config
 metadata:
   name: app01
 build:
   artifacts:
   - image: skaffold-buildpacks
+    #context: my-python-app # not sure what this is for.. this should point to the folder in which the Procfile resides, will default to . I believe
+    sync:
+      infer:
+      - '*.py'
     buildpacks:
       builder: "gcr.io/buildpacks/builder:v1"
       trustBuilder: true
+deploy:
+  kustomize:
+    paths: [./k8s/_base]
 profiles:
-- name: gcb
-  build:
-    googleCloudBuild: {}
+  - name: gcb
+    build:
+      googleCloudBuild: {}
+  - name: dev
+  - name: staging
+  - name: canary
+  - name: production

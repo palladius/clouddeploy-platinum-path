@@ -7,6 +7,7 @@ I've tried to simplify the app and the skaffold part and concentrated on
 automating the installation of Service Accounts, clusters, etc. all in
 single scripts with a catchy name.
 
+Self: 
 
 ## Install
 

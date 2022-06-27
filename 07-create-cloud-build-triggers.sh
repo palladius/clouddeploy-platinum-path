@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Created with codelabba.rb v.1.4a
-source .env.sh || fatal 'Couldnt source this'
+source .env.sh || fatal "Config doesnt exist please create .env.sh"
 #set -x
 set -e
 
@@ -14,10 +14,13 @@ TEAMS[1]='T2rb;app02;cloudbuild.yaml;apps/app02/;green'
 #TEAMS[2]='T3;frontend;cloudbuild-super-parametric.yaml;src/frontend/;yellow'
 #TEAMS[3]='T4;loadgenerator;cloudbuild-super-parametric.yaml;src/loadgenerator/;red'
 
-TRIGGERVERSION="1-5a"
-# 1.2 Made better substitutions.
-# 1.3 Made from regional to GLOBAL
-# 1.4 Added DEPLOY_REGION as per CD necessity.
+TRIGGERVERSION="1-6"
+# 1.6  20220610 Added 'cloud-build/**' to trigger changes.
+# 1.5b 20220603 I didnt change a thing but DESTROYED everything since i had 4 triggers, 2 in 1.5a and 2 in 1.3 so wanted to have a clean slate.
+# 1.5a          ????
+# 1.4           Added DEPLOY_REGION as per CD necessity.
+# 1.3           Made from regional to GLOBAL (local have QUOTA issues) #important
+# 1.2           Made better substitutions.
 touch /tmp/MyEmptyFile
 
 GCR_REPO="palladius/clouddeploy-platinum-path"
@@ -40,7 +43,7 @@ for TEAM_ARR in "${TEAMS[@]}"; do
 
     # This sets up on GCR
     gcloud alpha builds triggers create github --repo-owner="$GITHUB_REPO_OWNER" --repo-name="$GITHUB_REPO_NAME" --branch-pattern='.*' \
-      --description="[$TEAM_NUMBER] CB trigger from CLI for $TEAM_NAME module" --included-files="${SRC_SUBFOLDER}**,*.yaml" \
+      --description="[$TEAM_NUMBER] CB trigger from CLI for $TEAM_NAME module" --included-files="${SRC_SUBFOLDER}**,*.yaml,cloud-build/**" \
       --build-config cloudbuild.yaml --substitutions="$SUBSTIUTIONS" \
       --name $TEAM_NUMBER-CLIv$TRIGGERVERSION-$TEAM_NAME
     # echo NOT_THIS gcloud alpha builds triggers create cloud-source-repositories --repo=palladius/clouddeploy-platinum-path --branch-pattern='.*' \
@@ -51,4 +54,4 @@ for TEAM_ARR in "${TEAMS[@]}"; do
 done
 
 # End of your code here
-verde Tutto ok.
+echo Tutto ok.
