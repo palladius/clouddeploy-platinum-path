@@ -1,28 +1,53 @@
-kind: HTTPRoute
-apiVersion: gateway.networking.k8s.io/v1alpha2
+kind: Gateway
+apiVersion: networking.x-k8s.io/v1alpha1
 metadata:
-  name: internal-store-route
-  namespace: default
-  labels:
-    gateway: dmarzi-whereami
+  name: external-http
+  namespace: store
 spec:
-  parentRefs:
-  - kind: Gateway
-    namespace: default
-    name: dmarzi-whereami
+  gatewayClassName: gke-l7-gxlb-mc
+  listeners:
+  - protocol: HTTP
+    port: 80
+    routes:
+      kind: HTTPRoute
+      selector:
+        matchLabels:
+          gateway: external-http
+---
+kind: HTTPRoute
+apiVersion: networking.x-k8s.io/v1alpha1
+metadata:
+  name: public-store-route
+  namespace: store
+  labels:
+    gateway: external-http
+spec:
   hostnames:
-  - "apps.example.internal"
+  - "store.example.com"
   rules:
-  - backendRefs:
-    # 90% of traffic to store-west-1 ServiceImport
-    - name: dmarzi-app-web-01
-      group: net.gke.io
-      kind: ServiceImport
+  - forwardTo:
+    - backendRef:
+        group: net.gke.io
+        kind: ServiceImport
+        name: store
       port: 8080
-      weight: 90
-    # 10% of traffic to store-west-2 ServiceImport
-    - name: dmarzi-app-web-02
-      group: net.gke.io
-      kind: ServiceImport
+  - matches:
+    - path:
+        type: Prefix
+        value: /v1
+    forwardTo:
+    - backendRef:
+        group: net.gke.io
+        kind: ServiceImport
+        name: store-v1 # app-web-01
       port: 8080
-      weight: 10
+  - matches:
+    - path:
+        type: Prefix
+        value: /v2
+    forwardTo:
+    - backendRef:
+        group: net.gke.io
+        kind: ServiceImport
+        name: store-v2 # app-web-02
+      port: 8080
