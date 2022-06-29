@@ -1,13 +1,17 @@
 # clouddeploy-platinum-path
 
-This repo tries to demo an application (under `app/`) and it's path to
-deployment via Cloud Build + Cloud Deploy. Since a lot of setup is needed,
-I'm going to take inspiration from `willisc7` Golde Path repo.
-I've tried to simplify the app and the skaffold part and concentrated on
+This repo tries to demo a few applications (under `apps/`) and it's path to
+deployment via Google Cloud Platform's `Cloud Build` + `Cloud Deploy`.
+Since a lot of setup is needed, I took inspiration from `willisc7` Golde Path
+repo (see below).
+
+I've tried to simplify the app and the `skaffold` part and concentrated on
 automating the installation of Service Accounts, clusters, etc. all in
 single scripts with a catchy name.
 
-Self: 
+Note that EVERYTHING is automated except linking the external repo to Cloud
+Build (talked to the PM, this is currently possible in alpha API and it's
+among my TODOs).
 
 ## Install
 
