@@ -9,13 +9,14 @@ spec:
   - name: external-store-http
   hostnames:
   - "store.example.io"
+  - "store-bifido.palladius.it"
   rules:
   - backendRefs:
     - name: store-common-svc
       port: 8080
   - matches:
     - path:
-        value: /canary
+        value: /v2
     backendRefs:
     - name: store-v2
       port: 8080
