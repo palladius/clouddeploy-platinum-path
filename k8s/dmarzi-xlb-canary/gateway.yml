@@ -1,0 +1,35 @@
+kind: Gateway
+apiVersion: gateway.networking.k8s.io/v1alpha2
+metadata:
+  name: external-store-http
+spec:
+  gatewayClassName: gke-l7-gxlb
+  listeners:
+  - name: http
+    protocol: HTTP
+    port: 80
+    allowedRoutes:
+      kinds:
+      - kind: HTTPRoute
+---
+kind: HTTPRoute
+apiVersion: gateway.networking.k8s.io/v1alpha2
+metadata:
+  name: external-store
+  labels:
+    gateway: external-store-http
+spec:
+  parentRefs:
+  - name: external-store-http
+  hostnames:
+  - "store.example.io"
+  rules:
+  - backendRefs:
+    - name: store-v1
+      port: 8080
+  - matches:
+    - path:
+        value: /canary
+    backendRefs:
+    - name: store-v2
+      port: 8080
