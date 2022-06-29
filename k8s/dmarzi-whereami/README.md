@@ -15,4 +15,4 @@ Creates:
 
 # kubectl --context gke_cicd-platinum-test001_europe-west6_cicd-canary -n store get svc
 # ubectl --context gke_cicd-platinum-test001_europe-west6_cicd-canary -n store get gateways
-#kubectl --context gke_cicd-platinum-test001_europe-west6_cicd-canary -n store describe gateways/external-http
+# kubectl --context gke_cicd-platinum-test001_europe-west6_cicd-canary -n store describe gateways/external-http => gives error
