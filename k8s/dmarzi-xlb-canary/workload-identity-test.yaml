@@ -1,0 +1,14 @@
+# apiVersion: v1
+# kind: Pod
+# metadata:
+#   name: workload-identity-test
+# #  namespace: store
+# spec:
+#   containers:
+#   - image: google/cloud-sdk:slim
+#     name: workload-identity-test
+#     command: ["sleep","infinity"]
+# #  serviceAccountName: KSA_NAME
+#   serviceAccountName: gke-mcs-importer # 'cicd-platinum-test001.svc.id.goog[gke-mcs/gke-mcs-importer]'
+#   nodeSelector:
+#     iam.gke.io/gke-metadata-server-enabled: "true"
