@@ -24,7 +24,7 @@ proceed_if_error_matches "already exists" \
 # bingo! https://screenshot.googleplex.com/h5ZXAUgy5wWrvqh
 
 
-# 1. # enable required APIs
+# 1. # enable required APIs (project level)
 gcloud services enable \
     container.googleapis.com \
     gkehub.googleapis.com \
@@ -35,7 +35,7 @@ gcloud services enable \
 
 
 
-#2. register clusters to the fleet
+#2. register clusters to the fleet (cluster level)
 gcloud container fleet memberships register "$CLUSTER_1" \
      --gke-cluster "$GCLOUD_REGION/$CLUSTER_1" \
      --enable-workload-identity \
@@ -62,7 +62,7 @@ kubectl apply -f  k8s/multi-cluster-lb-setup/cluster2/
 gcloud container fleet multi-cluster-services enable \
     --project $PROJECT_ID
 
-# from https://cloud.google.com/kubernetes-engine/docs/how-to/multi-cluster-services
+#3.5 from https://cloud.google.com/kubernetes-engine/docs/how-to/multi-cluster-services
 gcloud projects add-iam-policy-binding "$PROJECT_ID" \
      --member "serviceAccount:$PROJECT_ID.svc.id.goog[gke-mcs/gke-mcs-importer]" \
      --role "roles/compute.networkViewer" \
