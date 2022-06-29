@@ -26,11 +26,25 @@ For more shenaningans you might need to install `lolcat` (gem install lolcat) as
 it colors my life and most likely yours too. If you insist on a gray life, just
 rename lolcat to cat :)
 
-## The app
+## The apps
 
-The app is really the NON-interesting part here. I tried to keep it as simple as
+The app part is really the NON-interesting part here. I tried to keep it as simple as
 possible. You can complicate it as long as you have a Dockerfile or a Buildpack
 to build it.
+
+* `apps/app01/` This is a sample Python app. 
+* `apps/app02/` This is a sample Ruby app. 
+
+They both expose a single Web page (`/`) with a lot of debug useful information, usually 
+surfaced by proper ENV vars.
+
+## Build philosophy
+
+* Every commit to TRUNK will trigger a Cloud Build, no matter what. In particular, any
+change to the code to app01 will trigger a build in the APP01 pipeline, and same for App02.
+Yes, it's that beautiful.
+* Promotion DEV -> STAGING. This is a second BUILD which also executes `make test` in the 
+`app/MYAPP` folder.
 
 ## Credits
 
