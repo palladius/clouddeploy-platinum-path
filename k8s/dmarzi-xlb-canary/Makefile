@@ -10,4 +10,11 @@ show:
 	${KUBECTL} describe gateways/external-store-http
 
 up:
+	@echo NOTE this is an AutoPilot cluster. Some MVC services might NOT work.
 	${KUBECTL} apply -f .
+
+
+# kubectl config get-contexts 
+#gcloud container clusters get-credentials tmp-manhouse --zone europe-west4-b --project cicd-platinum-test001
+up-in-static-cluster:
+	kubectl --context=gke_cicd-platinum-test001_europe-west4-b_tmp-manhouse apply -f .
