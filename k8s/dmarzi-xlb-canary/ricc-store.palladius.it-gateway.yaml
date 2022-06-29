@@ -24,12 +24,21 @@ spec:
   hostnames:
   - "ricc-store.palladius.it"
   rules:
-  - backendRefs:
+  - matches:
+    - path:
+        value: /storev1
+    backendRefs:
     - name: store-v1
       port: 8080
   - matches:
     - path:
-        value: /canary
+        value: /storev2
     backendRefs:
     - name: store-v2
+      port: 8080
+  - matches:
+    - path:
+        value: /
+    backendRefs:
+    - name: app02-kuruby-canary
       port: 8080
