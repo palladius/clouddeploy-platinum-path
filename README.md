@@ -13,6 +13,8 @@ Note that EVERYTHING is automated except linking the external repo to Cloud
 Build (talked to the PM, this is currently possible in alpha API and it's
 among my TODOs).
 
+Doc: go/ricc-cd-canary-doc
+
 ## Install
 
 * Create a project and assign billing to it. There gonna be clusterz :/
@@ -22,9 +24,10 @@ among my TODOs).
 
 You should be good to go!
 
-For more shenaningans you might need to install `lolcat` (gem install lolcat) as
+For more shenaningans you might need to install `lolcat` (`gem install lolcat`) as
 it colors my life and most likely yours too. If you insist on a gray life, just
-rename lolcat to cat :)
+rename lolcat to cat :) Other scripts can all be found in my Swiss-Army Knife repo: 
+https://github.com/palladius/sakura/
 
 ## The apps
 
@@ -46,9 +49,14 @@ Yes, it's that beautiful.
 * Promotion DEV -> STAGING. This is a second BUILD which also executes `make test` in the 
 `app/MYAPP` folder.
 
+## Deploy philosophy
+
+4 targets have been created:
+
 ## Credits
 
 * willisc7 for https://github.com/willisc7/next21-demo-golden-path and the
    inspiring `demo-startup.sh`.
-* Alex Bielski for his support in getting a CloudBuild to work with multiple
-  Skaffold modules, plus the caching.
+* dmarzi@ for incredible help on GKE manifests.
+* Alex Bielski for his support in getting a `Cloud Build` to work with multiple
+  Skaffold modules, plus Skaffold *caching*.

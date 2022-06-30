@@ -51,6 +51,8 @@ set -e
 # TODO
 # once
 cd /workspace/apps/$ARGV_DEPLOY_UNIT
+
+# Ensure the test passes. TODO(ricc): move to skaffrold testing capabilities.
 make test
 
 echo 3. So far so good. Now approve from dev to STAGING. But I need the release name... is it...

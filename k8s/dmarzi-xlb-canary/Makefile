@@ -17,6 +17,7 @@ show: curl-backend initialize-gke-auth
 	kubectl config get-contexts
 	${KUBECTL} get svc | grep store
 	${KUBECTL} get gateways
+	${KUBECTL} get httproutes
 # | grep store
 #kubectl --context gke_cicd-platinum-test001_europe-west6_cicd-canary -n store describe gateways/external-http
 	${KUBECTL} describe gateways/external-store-http

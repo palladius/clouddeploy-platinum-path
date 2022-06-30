@@ -37,7 +37,7 @@ _curl http://ricc-store.palladius.it/storev2 | grep pod_name
 echo "3. _curling Bifid Services (/v1 /v2 , while / is both):"
 _curl http://store-bifido.palladius.it/ | grep pod_name
 _curl http://store-bifido.palladius.it/v1/ | grep pod_name
-_curl http://store-bifido.palladius.it/v2/ | grep pod_name
+_curl http://store-bifido.palladius.it/v2/whereami/pod_name
 
 # dmarzi curl
 curl -H "host: store.example.io" 34.110.177.217/whereami/metadata
