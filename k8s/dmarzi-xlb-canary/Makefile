@@ -30,8 +30,8 @@ up-autopilot-DOESNTWORK:
 up-in-static-cluster:
 	kubectl --context="${GKE_CONTEXT_NOPILOT}" apply -f .
 
-curl-backend:
-	./curl-backends.sh
+curl-all-backends:
+	./curl-all-backends.sh
 
 # show alternance between the two..
 watch-curl-backend-bifidus:

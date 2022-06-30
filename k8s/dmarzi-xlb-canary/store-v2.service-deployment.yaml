@@ -1,3 +1,4 @@
+# Service 'store-v2' has 9x capacity than store-v1. We simulate it with 9x pods ands 9x capacity (max-rate-per-endpoint)
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -28,7 +29,7 @@ kind: Service
 metadata:
   name: store-v2
   annotations:
-    networking.gke.io/max-rate-per-endpoint: "10"
+    networking.gke.io/max-rate-per-endpoint: "90"
     cloud.google.com/neg: '{"exposed_ports": {"8080":{"name": "store-v2-neg"}}}'
 spec:
   selector:
