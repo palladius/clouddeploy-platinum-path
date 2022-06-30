@@ -1,12 +1,12 @@
 kind: HTTPRoute
 apiVersion: gateway.networking.k8s.io/v1alpha2
 metadata:
-  name: external-store
+  name: bifid-external-store
   labels:
-    gateway: external-store-http
+    gateway: bifid-external-store-http
 spec:
   parentRefs:
-  - name: external-store-http
+  - name: bifid-external-store-http
   hostnames:
   - "store.example.io"
   - "store-bifido.palladius.it"

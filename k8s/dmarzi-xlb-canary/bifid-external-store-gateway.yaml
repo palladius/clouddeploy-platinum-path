@@ -1,7 +1,7 @@
 kind: Gateway
 apiVersion: gateway.networking.k8s.io/v1alpha2
 metadata:
-  name: external-store-http
+  name: bifid-external-store-http
 spec:
   gatewayClassName: gke-l7-gxlb
   listeners:
