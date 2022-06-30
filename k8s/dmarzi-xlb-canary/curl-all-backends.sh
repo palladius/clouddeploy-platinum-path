@@ -16,7 +16,8 @@ function _oneoff_setup_dns() {
     dns-setup-palladius.sh ricc-store.palladius.it "$RICC_SERVICE_IP"
     RICC_SERVICE_IP2="$(gcloud compute forwarding-rules list | grep gkegw  | grep default-bifid-external-store | awk '{print $2}' )"
     dns-setup-palladius.sh store-bifido.palladius.it "$RICC_SERVICE_IP2"
-
+    # gkegw1-jkyr-default-bifid9010-prod-web-gw-q6mrsmmslexp                    34.111.12.6     TCP          gkegw1-jkyr-default-bifid9010-prod-web-gw-q6mrsmmslexp
+    dns-setup-palladius.sh bifid9010-foo.palladius.it 34.111.12.6
     #gcloud --quiet --project RICPROJECT beta dns record-sets create --rrdatas='34.117.142.130' --type=A --ttl=300 --zone=palladius-it ricc-store.palladius.it
     #gcloud --quiet --project RICPROJECT beta dns record-sets create --rrdatas='34.117.59.54' --type=A --ttl=300 --zone=palladius-it store-bifido.palladius.it
 }
@@ -37,6 +38,9 @@ echo "3. _curling Bifid Services (/v1 /v2 , while / is both):"
 _curl http://store-bifido.palladius.it/ | grep pod_name
 _curl http://store-bifido.palladius.it/v1/ | grep pod_name
 _curl http://store-bifido.palladius.it/v2/ | grep pod_name
+
+# dmarzi curl
+curl -H "host: store.example.io" 34.110.177.217/whereami/metadata
 
 echo THE END.
 

@@ -13,7 +13,7 @@ metadata:
     gateway: bifid9010-prod-web-gw
 spec:
   hostnames:
-  - foo.example.com
+#  - foo.example.com
   - bifid9010-foo.palladius.it
   rules:
   - backendRefs:
@@ -23,6 +23,32 @@ spec:
     - name: store-v2
       port: 8080
       weight: 10  
+      # matches:
+      # - path:
+      #     value: /
+#   - matches:
+#     - path:
+#         value: /v2
+#     backendRefs:
+#     - name: store-v2
+#       port: 8080
+# example to take inspiration
+#   - backendRefs:
+#     - name: store-common-svc
+#       port: 8080
+#   - matches:
+#     - path:
+#         value: /v2
+#     backendRefs:
+#     - name: store-v2
+#       port: 8080
+#   - matches:
+#     - path:
+#         value: /v1
+#     backendRefs:
+#     - name: store-v1
+#       port: 8080
+
 ---
 kind: Gateway
 apiVersion: gateway.networking.k8s.io/v1alpha2

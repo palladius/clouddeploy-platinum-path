@@ -22,7 +22,7 @@ spec:
   parentRefs:
   - name: ricc-external-store-http
   hostnames:
-  - "ricc-store.palladius.it"
+  - "ricc-ext-store.palladius.it"
   rules:
   - matches:
     - path:
