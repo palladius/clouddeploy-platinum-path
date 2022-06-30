@@ -30,13 +30,13 @@ echo "2. curling Ricc Services:"
 
 #curl -H "host: ricc-store.palladius.it" "http://$RICC_SERVICE_IP/"
 #curl http://ricc-store.palladius.it 2>/dev/null
-_curl http://ricc-store.palladius.it/storev1 
-_curl http://ricc-store.palladius.it/storev2 
+_curl http://ricc-store.palladius.it/storev1 | grep pod_name
+_curl http://ricc-store.palladius.it/storev2 | grep pod_name
 
 echo "3. _curling Bifid Services (/v1 /v2 , while / is both):"
-_curl http://store-bifido.palladius.it/ 
-_curl http://store-bifido.palladius.it/v1/ 
-_curl http://store-bifido.palladius.it/v2/ 
+_curl http://store-bifido.palladius.it/ | grep pod_name
+_curl http://store-bifido.palladius.it/v1/ | grep pod_name
+_curl http://store-bifido.palladius.it/v2/ | grep pod_name
 
 echo THE END.
 

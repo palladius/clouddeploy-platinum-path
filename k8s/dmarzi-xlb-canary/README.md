@@ -6,12 +6,10 @@ GXLB manage traffic but cannot manage traffic splitting
 
 In this example, in order to check the canary deployment, the /canary url should be used.
 
-* normal traffic
-```
-curl -H "host: store.example.io" VIP/
-```
+* normal traffic: `curl -H "host: store.example.io" VIP/`
+* canary traffic: `curl -H "host: store.example.io" VIP/canary`
 
-* canary traffic
-```
-curl -H "host: store.example.io" VIP/canary
-```
+## tests clusters:
+
+* Daniel:  canary-noauto
+* Ricc: STATIC (cicd-noauto-dev) and AUTOPILOT (cicd-canary)

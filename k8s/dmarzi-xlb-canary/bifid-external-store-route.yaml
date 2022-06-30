@@ -14,6 +14,7 @@ spec:
   - backendRefs:
     - name: store-common-svc
       port: 8080
+#      weight: 90
   - matches:
     - path:
         value: /v2

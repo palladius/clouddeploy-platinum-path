@@ -35,4 +35,5 @@ curl-all-backends:
 
 # show alternance between the two..
 watch-curl-backend-bifidus:
-	while true; do curl -s http://store-bifido.palladius.it/ | egrep 'pod_name"' ; sleep 1; done
+#	while true; do curl -s http://store-bifido.palladius.it/ | egrep 'pod_name"' ; sleep 1; done
+	./curl-bifidus-endpoint-continuously.sh 20

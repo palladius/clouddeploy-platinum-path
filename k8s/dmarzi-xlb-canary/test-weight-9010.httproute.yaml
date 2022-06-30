@@ -1,0 +1,39 @@
+# ######################################################
+# # copied from: https://gateway-api.sigs.k8s.io/v1alpha2/guides/traffic-splitting/
+# ######################################################
+
+# TODO(ricc): move from k8s/dmarzi-xlb-canary/bifid-external-store-route.yaml when it works.
+
+# test from https://gateway-api.sigs.k8s.io/v1alpha2/guides/traffic-splitting/
+apiVersion: gateway.networking.k8s.io/v1alpha2
+kind: HTTPRoute
+metadata:
+  name: bifid9010-foo-route
+  labels:
+    gateway: bifid9010-prod-web-gw
+spec:
+  hostnames:
+  - foo.example.com
+  - bifid9010-foo.palladius.it
+  rules:
+  - backendRefs:
+    - name: store-v1
+      port: 8080
+      weight: 90
+    - name: store-v2
+      port: 8080
+      weight: 10  
+---
+kind: Gateway
+apiVersion: gateway.networking.k8s.io/v1alpha2
+metadata:
+  name: bifid9010-prod-web-gw
+spec:
+  gatewayClassName: gke-l7-gxlb
+  listeners:
+  - name: http
+    protocol: HTTP
+    port: 80
+    allowedRoutes:
+      kinds:
+      - kind: HTTPRoute
