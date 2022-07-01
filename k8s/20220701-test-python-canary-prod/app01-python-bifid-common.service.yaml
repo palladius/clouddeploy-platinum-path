@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: app01-python-common-svc
+  annotations:
+    cloud.google.com/neg: '{"exposed_ports": {"8080":{"name": "app01-python-common-svc"}}}'
+spec:
+  selector:
+    # needs to BOTH select canary and prod.
+    app: app01-kupython
+  ports:
+  - port: 8080
+    targetPort: 8080
+
+
+# Canary instance 2.1:
+# https://console.cloud.google.com/kubernetes/service/europe-west6/cicd-canary/default/app01-kupython/yaml/view?project=cicd-platinum-test001
+  # selector:
+  #   app: app01-kupython
+  #   application: riccardo-cicd-platinum-path
+  #   github-repo: palladius-colon-cicd-platinum-path
+  #   tier: ricc-frontend-application
+
+# Prod instance v1.4 super old:
+  # selector:
+  #   app: web
+
+# manually injected

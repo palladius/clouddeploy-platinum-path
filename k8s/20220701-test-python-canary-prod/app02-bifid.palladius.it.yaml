@@ -1,0 +1,83 @@
+
+kind: Gateway
+apiVersion: gateway.networking.k8s.io/v1alpha2
+metadata:
+  name: bifid-app02-ruby-test-gw
+spec:
+  gatewayClassName: gke-l7-gxlb
+  listeners:
+  - name: http
+    protocol: HTTP
+    port: 80
+    allowedRoutes:
+      kinds:
+      - kind: HTTPRoute
+---
+kind: HTTPRoute
+apiVersion: gateway.networking.k8s.io/v1alpha2
+metadata:
+  name: bifid-app02-ruby-test
+  labels:
+    gateway: bifid-app02-ruby-test-gw
+spec:
+  parentRefs:
+  - name: bifid-app02-ruby-test-gw
+  hostnames:
+  - "app02-bifid.palladius.it"
+  rules:
+  - backendRefs:
+    - name: app02-ruby-common-svc
+      port: 8080
+  - matches:
+    - path:
+        value: /v2prod
+    backendRefs:
+    - name: web
+      port: 8080
+  - matches:
+    - path:
+        value: /v1canary
+    backendRefs:
+    # name of both service and deployment
+    - name: app02-kupython
+      port: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app02-ruby-common-svc
+  annotations:
+    cloud.google.com/neg: '{"exposed_ports": {"8080":{"name": "app02-ruby-common-svc"}}}'
+spec:
+  selector:
+    #
+    ricc-awesome-selector: canary-or-prod
+    app: app02-kuruby
+  ports:
+  - port: 8080
+    targetPort: 8080
+
+
+##################################
+# Canary instance:
+# https://console.cloud.google.com/kubernetes/service/europe-west6/cicd-canary/default/app02-kuruby-canary/overview?project=cicd-platinum-test001
+  # selector:
+  #   app: app02-kuruby
+  #   application: riccardo-cicd-platinum-path
+  #   github-repo: palladius-colon-cicd-platinum-path
+  #   ricc-awesome-selector: canary-or-prod
+  #   ricc-env: canary
+  #   tier: ricc-frontend-application
+
+##################################
+# Prod instance v1.4 super old:
+#https://console.cloud.google.com/kubernetes/service/europe-west6/cicd-prod/default/app02-kuruby-prod/yaml/view?project=cicd-platinum-test001
+
+  # selector:
+  #   app: app02-kuruby
+  #   application: riccardo-cicd-platinum-path
+  #   applicazione-in-produzione: bingo
+  #   github-repo: palladius-colon-cicd-platinum-path
+  #   ricc-awesome-selector: canary-or-prod
+  #   ricc-env: prod
+  #   tier: ricc-frontend-application

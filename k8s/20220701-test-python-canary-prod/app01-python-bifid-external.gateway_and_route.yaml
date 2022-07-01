@@ -28,7 +28,7 @@ spec:
   - "app01-bifid.palladius.it"
   rules:
   - backendRefs:
-    - name: store-common-svc
+    - name: app01-python-common-svc
       port: 8080
   - matches:
     - path:
@@ -37,6 +37,8 @@ spec:
     # PROD Service: called now Web
     # https://console.cloud.google.com/kubernetes/service/europe-west6/cicd-prod/default/web/yaml/view?project=cicd-platinum-test001
     # selector: "app: web"
+    # TODO(ricc): once upgrade the prod to 2.0+ it should solve itself..
+    #- name: app01-kupython
     - name: web
       port: 8080
   - matches:
@@ -44,5 +46,5 @@ spec:
         value: /v1canary
     backendRefs:
     # name of both service and deployment
-    - name: store-v1
+    - name: app01-kupython
       port: 8080
