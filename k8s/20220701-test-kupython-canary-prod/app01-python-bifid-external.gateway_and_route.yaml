@@ -1,0 +1,48 @@
+# Copying sth that seems to work :)
+# V1: canary
+# V2: prod
+kind: Gateway
+apiVersion: gateway.networking.k8s.io/v1alpha2
+metadata:
+  name: bifid-app01-python-test-gw
+spec:
+  gatewayClassName: gke-l7-gxlb
+  listeners:
+  - name: http
+    protocol: HTTP
+    port: 80
+    allowedRoutes:
+      kinds:
+      - kind: HTTPRoute
+---
+kind: HTTPRoute
+apiVersion: gateway.networking.k8s.io/v1alpha2
+metadata:
+  name: bifid-app01-python-test
+  labels:
+    gateway: bifid-app01-python-test-gw
+spec:
+  parentRefs:
+  - name: bifid-app01-python-test-gw
+  hostnames:
+  - "app01-bifid.palladius.it"
+  rules:
+  - backendRefs:
+    - name: store-common-svc
+      port: 8080
+  - matches:
+    - path:
+        value: /v2prod
+    backendRefs:
+    # PROD Service: called now Web
+    # https://console.cloud.google.com/kubernetes/service/europe-west6/cicd-prod/default/web/yaml/view?project=cicd-platinum-test001
+    # selector: "app: web"
+    - name: web
+      port: 8080
+  - matches:
+    - path:
+        value: /v1canary
+    backendRefs:
+    # name of both service and deployment
+    - name: store-v1
+      port: 8080

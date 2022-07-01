@@ -24,9 +24,9 @@ def index():
         Favorite Color from v14: <b style='background-color:#{fav_color};' >#{fav_color}</b><br/>
 
         <hr/>
-      <center>
-        App01 (🐍) v<b>{ver}</b>
-      </center>
+          <center>
+            App01 (🐍) v<b>{ver}</b>
+          </center>
   """.format(
     ver=version,
     fav_color=fav_color)
