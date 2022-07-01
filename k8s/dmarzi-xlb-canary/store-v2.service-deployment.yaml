@@ -4,7 +4,7 @@ kind: Deployment
 metadata:
   name: store-v2
 spec:
-  replicas: 9
+  replicas: 4
   selector:
     matchLabels:
       app: store
