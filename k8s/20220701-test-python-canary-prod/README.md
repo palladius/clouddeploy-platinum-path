@@ -9,6 +9,8 @@ Python had two rpoblems:
 
 # app02
 
+* Common Service  `app02-ruby-common-svc`: https://console.cloud.google.com/kubernetes/service/europe-west6/cicd-canary/default/app02-ruby-common-svc/overview?project=cicd-platinum-test001
+
 App02 has kustomize since the beginning and i built this awesome thing called
 
      ricc-awesome-selector: canary-or-prod
