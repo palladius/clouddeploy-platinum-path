@@ -101,13 +101,17 @@ done
 
 
 # Create a default url-map
-gcloud compute url-maps create "$URLMAP_NAME" --default-service "$SERVICE1"
+proceed_if_error_matches "The resource 'projects/$PROJECT_ID/global/urlMaps/$URLMAP_NAME' already exists" \
+  gcloud compute url-maps create "$URLMAP_NAME" --default-service "$SERVICE1"
 
 # Import traffic-split url-map (from file)
 #gcloud compute url-maps import "$URLMAP_NAME" --source='k8s/xlb-gfe3-traffic-split/step2/urlmap-split.yaml'
 
 # Import traffic-split url-map (from STDIN - so templating is trivially obvious)
-cat <<END_OF_URLMAP_GCLOUD_YAML_CONFIG
+{ 
+# this curly bracket doesnt open subshell. I didnt know! I used normal brackets before today.
+# https://unix.stackexchange.com/questions/88490/how-do-you-use-output-redirection-in-combination-with-here-documents-and-cat
+cat << END_OF_URLMAP_GCLOUD_YAML_CONFIG
 # This comment will be lost in a bash pipe, like tears in the rain...
 defaultService: https://www.googleapis.com/compute/v1/projects/$PROJECT_ID/global/backendServices/svc1-canary90
 hostRules:
@@ -132,12 +136,16 @@ pathMatchers:
     routeAction:
       weightedBackendServices:
       - backendService: https://www.googleapis.com/compute/v1/projects/$PROJECT_ID/global/backendServices/svc1-canary90
-        weight: 90
+        weight: 89
       - backendService: https://www.googleapis.com/compute/v1/projects/$PROJECT_ID/global/backendServices/svc2-prod10
-        weight: 10
-END_OF_URLMAP_GCLOUD_YAML_CONFIG | 
-    gcloud compute target-http-proxies create "$URLMAP_NAME" --url-map=- 
+        weight: 11
+END_OF_URLMAP_GCLOUD_YAML_CONFIG
+} | tee .urlmap.config.yaml && 
+  gcloud compute target-http-proxies create "$URLMAP_NAME" --url-map=.urlmap.config.yaml
+
+# TODO(ricc): change 89/11 to 90/10. Just to prove granularity :)
 # "$URLMAP_NAME"
+
 
 # Finalize
 gcloud compute forwarding-rules create http-content-rule \
@@ -156,4 +164,4 @@ gcloud compute forwarding-rules create http-content-rule \
 # End of your code here
 ########################
 #green 'Everything is ok. To use this amazing script, please download it from https://github.com/palladius/sakura'
-echo 'Everything is ok'
+green 'Everything is ok'

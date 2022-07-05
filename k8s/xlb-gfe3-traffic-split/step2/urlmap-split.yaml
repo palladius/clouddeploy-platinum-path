@@ -1,8 +1,3 @@
-# TODO change `cicd-platinum-test001` to PROJECT_ID
-# TODO change `palladius.it` to $MY_DOMAIN (which I just added to .env.sh and dist :] )
-
-#### OPK questo NON e' k8s e' gcloud
-
 defaultService: https://www.googleapis.com/compute/v1/projects/cicd-platinum-test001/global/backendServices/svc1-canary90
 hostRules:
 - hosts:
