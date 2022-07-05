@@ -19,7 +19,7 @@ SERVICE2="svc2-prod90"
 #
 yellow "Deploy the GKE manifests. This needs to happen first as it creates the NEGs which this script depends upon." 
 
-kubectl apply -f k8s/xlb-gfe3-traffic-split/
+kubectl apply -f k8s/xlb-gfe3-traffic-split/step1/
 
 # create health check for the backends
 proceed_if_error_matches "global/healthChecks/http-neg-check' already exists" \
@@ -111,7 +111,7 @@ gcloud compute forwarding-rules create http-content-rule \
     --ports=80
 
 
-
+kubectl apply -f k8s/xlb-gfe3-traffic-split/step2/
 
 
 
