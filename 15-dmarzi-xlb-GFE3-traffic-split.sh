@@ -27,6 +27,8 @@ set -e
 SERVICE1="svc1-canary90"
 SERVICE2="svc2-prod10"
 URLMAP_NAME="http-svc9010-lb"
+FWD_RULE="${URLMAP_NAME}-fwdrule"
+
 ########################
 # Add your code here
 ########################
@@ -140,15 +142,19 @@ pathMatchers:
       - backendService: https://www.googleapis.com/compute/v1/projects/$PROJECT_ID/global/backendServices/svc2-prod10
         weight: 11
 END_OF_URLMAP_GCLOUD_YAML_CONFIG
-} | tee .urlmap.config.yaml && 
-  gcloud compute target-http-proxies create "$URLMAP_NAME" --url-map=.urlmap.config.yaml
+} | gcloud compute url-maps import "$URLMAP_NAME" --source=- --quiet 
+  
+
+proceed_if_error_matches "The resource 'projects/cicd-platinum-test001/global/targetHttpProxies/http-svc9010-lb' already exists" \
+  gcloud compute target-http-proxies create "$URLMAP_NAME" --url-map="$URLMAP_NAME"
 
 # TODO(ricc): change 89/11 to 90/10. Just to prove granularity :)
 # "$URLMAP_NAME"
 
 
 # Finalize
-gcloud compute forwarding-rules create http-content-rule \
+proceed_if_error_matches "The resource 'projects/$PROJECT_ID/global/forwardingRules/$FWD_RULE' already exists" \
+  gcloud compute forwarding-rules create "$FWD_RULE" \
     --load-balancing-scheme=EXTERNAL_MANAGED \
     --global \
     --target-http-proxy="$URLMAP_NAME" \
