@@ -14,4 +14,7 @@
             deployment-strategy3/  # or half working
     
     They should have a Makefile in the root dir since some might have 2 subdirs for multicluster setup (eg MCS).
-            
+
+* P2. Make k8s/xlb-gfe3.../ truly parametric by removing project id in step2/ folder.
+
+* P3. Remove `palladius.it` and personal stuff from k8s manifests.

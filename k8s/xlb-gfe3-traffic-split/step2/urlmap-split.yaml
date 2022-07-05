@@ -1,7 +1,10 @@
-defaultService: https://www.googleapis.com/compute/v1/projects/cicd-platinum-test001/global/backendServices/whereami-v1
+# TODO change `cicd-platinum-test001` to PROJECT_ID
+# TODO change `palladius.it` to $MY_DOMAIN (which I just added to .env.sh and dist :] )
+defaultService: https://www.googleapis.com/compute/v1/projects/cicd-platinum-test001/global/backendServices/svc1-canary90
 hostRules:
 - hosts:
-  - host.example.io
+  - xlb-gfe3-host.example.io
+  - xlb-gfe3.palladius.it
   pathMatcher: path-matcher-1
 pathMatchers:
 - defaultRouteAction:
@@ -10,7 +13,7 @@ pathMatchers:
         httpStatus: 503
         percentage: 100.0
     weightedBackendServices:
-    - backendService: https://www.googleapis.com/compute/v1/projects/cicd-platinum-test001/global/backendServices/whereami-v1
+    - backendService: https://www.googleapis.com/compute/v1/projects/cicd-platinum-test001/global/backendServices/svc1-canary90
       weight: 1
   name: path-matcher-1
   routeRules:
@@ -19,7 +22,7 @@ pathMatchers:
     priority: 1
     routeAction:
       weightedBackendServices:
-      - backendService: https://www.googleapis.com/compute/v1/projects/cicd-platinum-test001/global/backendServices/whereami-v1
+      - backendService: https://www.googleapis.com/compute/v1/projects/cicd-platinum-test001/global/backendServices/svc1-canary90
         weight: 90
-      - backendService: https://www.googleapis.com/compute/v1/projects/cicd-platinum-test001/global/backendServices/whereami-v2
+      - backendService: https://www.googleapis.com/compute/v1/projects/cicd-platinum-test001/global/backendServices/svc2-prod10
         weight: 10

@@ -1,5 +1,16 @@
 #!/bin/bash
 
+################################################################################
+# WHAT IS THIS?!?
+################################################################################
+# This script ripercurs the footsteps of dmarzi@ script in `k8s/xlb-gfe3-traffic-split/`
+# It's a bit 'dirty' since it requires both k8s manifests and gcloud commands to be
+# glued together but is currently the ONLY solution to do Traffic Splitting with
+# external-facing public IP Load Balancing. When Gateway API will support TS on
+# ELB as well (currently only ILB are backed up Envoy) this effort will become 
+# useless but is still put here as an example to demonstrate the TS functionality. 
+################################################################################
+
 function _fatal() {
     echo "$*" >&1
     exit 42
@@ -11,8 +22,10 @@ set -x
 set -e
 
 #HEALTH_CHECK="http-neg-check" 
-SERVICE1="svc1-canary10"
-SERVICE2="svc2-prod90"
+
+# These two names need to be aligned with app1/app2 in the k8s.
+SERVICE1="svc1-canary90"
+SERVICE2="svc2-prod10"
 ########################
 # Add your code here
 ########################
