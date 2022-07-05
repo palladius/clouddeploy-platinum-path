@@ -1,5 +1,18 @@
-#
-Deploy the applications as usual
+## ricc reshuffle
+
+I chjanged name of resources to make sure they work from the ground up.
+
+Renames:
+
+* `whereami-v1` -> svc1-canary90
+* `whereami-v2` -> svc2-prod10
+
+## dmarzi instructions
+
+# Deploy the applications as usual
+
+#kubectl create namespace canary
+kubectl apply -f k8s/xlb-gfe3-traffic-split/
 
 # create health check for the backends
 gcloud compute health-checks create http http-neg-check --port 8080

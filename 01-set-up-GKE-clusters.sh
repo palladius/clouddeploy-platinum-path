@@ -54,5 +54,5 @@ gcloud container --project "$PROJECT_ID" clusters create-auto "cicd-dev" --regio
 gcloud --project "$PROJECT_ID" artifacts repositories create $ARTIFACT_REPONAME \
     --location="$REGION" --repository-format=docker
 
-# End of your code here. verde script can be found in "palladius/sakura"
+# End of your code here. `green` script can be found in "palladius/sakura" but also here in `bin/`
 echo Everything is ok.

@@ -10,14 +10,16 @@ source .env.sh || _fatal 'Couldnt source this'
 set -x
 set -e
 
-#HEALTH_CHECK="http-neg-check"
-SERVICE1="svc1-canary"
-SERVICE2="svc2-prod"
+#HEALTH_CHECK="http-neg-check" 
+SERVICE1="svc1-canary10"
+SERVICE2="svc2-prod90"
 ########################
 # Add your code here
 ########################
 #
-#Deploy the applications as usual
+yellow "Deploy the GKE manifests. This needs to happen first as it creates the NEGs which this script depends upon." 
+
+kubectl apply -f k8s/xlb-gfe3-traffic-split/
 
 # create health check for the backends
 proceed_if_error_matches "global/healthChecks/http-neg-check' already exists" \
@@ -33,7 +35,9 @@ proceed_if_error_matches "The resource 'projects/$PROJECT_ID/global/backendServi
         --global
 
 # grab the names of the NEGs for $SERVICE1
-gcloud compute network-endpoint-groups list --filter="canary-$SERVICE1"
+gcloud compute network-endpoint-groups list --filter="$SERVICE1"
+
+echo DELETEME so far so good.
 
 exit 0
 
