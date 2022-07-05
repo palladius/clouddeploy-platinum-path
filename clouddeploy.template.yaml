@@ -81,7 +81,11 @@ apiVersion: deploy.cloud.google.com/v1
 kind: Target
 metadata:
  name: canary
-description: 03 canary cluster (external, rather stable)
+description: |
+  03 canary cluster (external, rather stable).
+  Used for Traffic Splitting to bedew 90% of traffic into
+  the canary target (and remaining 10% to prod) for some time before
+  promoting all traffic to prod.
 gke:
  cluster: projects/MY_PROJECT_ID/locations/MY_REGION/clusters/cicd-canary
 ---
@@ -89,6 +93,10 @@ apiVersion: deploy.cloud.google.com/v1
 kind: Target
 metadata:
  name: production
-description: 04 production cluster (external, as stable as it can be)
+description:  |
+  04 production cluster (external, as stable as it can be).
+  Used for Traffic Splitting to bedew 10% of Traffic into
+  this canary (while 90% goes to canary) for some time before
+  promoting all traffic to prod.
 gke:
  cluster: projects/MY_PROJECT_ID/locations/MY_REGION/clusters/cicd-prod
