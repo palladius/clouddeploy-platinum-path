@@ -45,5 +45,8 @@ which skaffold >/dev/null && echo skaffold exists. All good. ||
 
 touch ".$APPNAME.appname"
 
+# sets kubetcl context to this cluste TODO ricc paramtyerize region.
+gcloud container clusters get-credentials cicd-dev --region europe-west6
+
 # End of your code here
 echo Everything is ok.

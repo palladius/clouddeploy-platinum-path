@@ -6,22 +6,23 @@ metadata:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  # this could be left whereami-v1
   name: svc1-canary90
   namespace: canary
 spec:
   replicas: 2
-  selector:
+  selector: # here pods are 'selected'.
     matchLabels:
-      app: whereami
+      app: whereami  # 1. first is linked to second
       version: v1
-  template:
+  template: # here pods are instanced.
     metadata:
       labels:
-        app: whereami
+        app: whereami # 2. second is linked to first
         version: v1
     spec:
       containers:
-      - name: whereami
+      - name: whereami # this could be whatever.
         image: gcr.io/google-samples/whereami:v1.2.1
         ports:
           - containerPort: 8080
@@ -32,6 +33,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  # This needs to be rennamed to `svc1-canary90` 
   name: svc1-canary90
   namespace: canary
   annotations:
@@ -39,7 +41,7 @@ metadata:
     cloud.google.com/neg: '{"exposed_ports": {"8080":{"name": ""}}}'
 spec:
   selector:
-    app: whereami
+    app: whereami # 4. this needs to be like 1/2.
     version: v1
   ports:
   - port: 8080
