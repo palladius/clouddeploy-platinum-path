@@ -1,0 +1,25 @@
+defaultService: https://www.googleapis.com/compute/v1/projects/cicd-platinum-test001/global/backendServices/whereami-v1
+hostRules:
+- hosts:
+  - host.example.io
+  pathMatcher: path-matcher-1
+pathMatchers:
+- defaultRouteAction:
+    faultInjectionPolicy:
+      abort:
+        httpStatus: 503
+        percentage: 100.0
+    weightedBackendServices:
+    - backendService: https://www.googleapis.com/compute/v1/projects/cicd-platinum-test001/global/backendServices/whereami-v1
+      weight: 1
+  name: path-matcher-1
+  routeRules:
+  - matchRules:
+    - prefixMatch: /
+    priority: 1
+    routeAction:
+      weightedBackendServices:
+      - backendService: https://www.googleapis.com/compute/v1/projects/cicd-platinum-test001/global/backendServices/whereami-v1
+        weight: 90
+      - backendService: https://www.googleapis.com/compute/v1/projects/cicd-platinum-test001/global/backendServices/whereami-v2
+        weight: 10
