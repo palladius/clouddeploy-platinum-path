@@ -98,3 +98,8 @@ gcloud compute forwarding-rules create http-content-rule \
     --target-http-proxy=http-whereami-lb  \
     --ports=80
     
+
+# Changing 90 10 into 80 20?
+
+If you need so, you need to "gcloud UrlMap update".
+No HTTP proxy or fwd rule recreation, all good. just that.

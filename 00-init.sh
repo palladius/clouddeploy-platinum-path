@@ -48,5 +48,8 @@ touch ".$APPNAME.appname"
 # sets kubetcl context to this cluste TODO ricc paramtyerize region.
 gcloud container clusters get-credentials cicd-dev --region europe-west6
 
+# TODO(ricc): check ENV_SH_CONFIG from sourced to the .dist and suggest to check the HISTORY
+#             for missing VARs.
+
 # End of your code here
 echo Everything is ok.

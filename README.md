@@ -1,5 +1,7 @@
 # clouddeploy-platinum-path
 
+Self: https://github.com/palladius/clouddeploy-platinum-path
+
 This repo tries to demo a few applications (under `apps/`) and it's path to
 deployment via Google Cloud Platform's `Cloud Build` + `Cloud Deploy`.
 Since a lot of setup is needed, I took inspiration from `willisc7` Golde Path
