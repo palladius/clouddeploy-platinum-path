@@ -26,8 +26,6 @@ set -e
 # These two names need to be aligned with app1/app2 in the k8s.
 SERVICE1="svc1-canary90"
 SERVICE2="svc2-prod10"
-URLMAP_NAME="http-svc9010-lb"
-FWD_RULE="${URLMAP_NAME}-fwdrule"
 
 ########################
 # Add your code here
@@ -118,7 +116,9 @@ cat << END_OF_URLMAP_GCLOUD_YAML_CONFIG
 defaultService: https://www.googleapis.com/compute/v1/projects/$PROJECT_ID/global/backendServices/svc1-canary90
 hostRules:
 - hosts:
+  # This is for ease of troubleshoot
   - xlb-gfe3-host.example.io
+  # This is for you to use your REAL domain - with Cloud DNS you can just curl the final hostname. Not covered by this demo. 
   - xlb-gfe3.$MY_DOMAIN
   pathMatcher: path-matcher-1
 pathMatchers:
@@ -160,14 +160,16 @@ proceed_if_error_matches "The resource 'projects/$PROJECT_ID/global/forwardingRu
     --target-http-proxy="$URLMAP_NAME" \
     --ports=80
 
+IP_FWDRULE=$(gcloud compute forwarding-rules list --filter "$FWD_RULE" | tail -1 | awk '{print $2}')
 
-# SBAJJATO
-#kubectl apply -f k8s/xlb-gfe3-traffic-split/step2/
-
-
+# why 20-30? since 90% is a 9vs1 in 10 tries. It takes 20-30 to see a few svc2 hits :)
+echo "Now you can try this:             1) export IP=$IP_FWDRULE"
+echo 'Now you can try this 20-30 times: 2) curl -H "Host: xlb-gfe3-host.example.io" http://$IP/whereami/pod_name'
 
 ########################
 # End of your code here
 ########################
 #green 'Everything is ok. To use this amazing script, please download it from https://github.com/palladius/sakura'
-green 'Everything is ok'
+green "Everything is ok. Now check your newly created LB for its IP (should be '$IP_FWDRULE')"
+
+
