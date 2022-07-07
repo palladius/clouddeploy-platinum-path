@@ -19,7 +19,7 @@ Doc: go/ricc-cd-canary-doc
 
 ## High-levl architecture
 
-<img src="https://github.com/palladius/clouddeploy-platinum-path/raw/master/doc/Ricc Canary deployment 2022.png" alt="Architecture v1.1" align='right' />
+<img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/Ricc%20Canary%20deployment%202022.png" alt="Architecture v1.1" align='right' />
 
 
 ## Install
