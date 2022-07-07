@@ -7,7 +7,7 @@ set -e
 
 # Add your code here:
 #export SKAFFOLD_BUCKET="${PROJECT_ID}-skaffoldcache"
-echo We\'re now creating a bucket to land Skaffold cache for our apps.
+echo "We're now creating a bucket to land Skaffold cache for our apps."
 
 echo gsutil mb "gs://$SKAFFOLD_BUCKET"
 

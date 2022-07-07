@@ -15,15 +15,14 @@ gcloud auth configure-docker $REGION-docker.pkg.dev
 # Create clusters normal (no autopilot since I need to run Daniel crazy code)
 ##############################################################################
 # DEV
-GKE_REGION2="europe-north1" # Finland
-gcloud container --project "$PROJECT_ID" clusters create "cicd-noauto-dev" --region "$GKE_REGION2" \
-  --release-channel "regular" --network "projects/$PROJECT_ID/global/networks/default" --subnetwork "projects/$PROJECT_ID/regions/$GKE_REGION2/subnetworks/default" \
+gcloud container --project "$PROJECT_ID" clusters create "cicd-noauto-dev" --region "$GKE_REGION" \
+  --release-channel "regular" --network "projects/$PROJECT_ID/global/networks/default" --subnetwork "projects/$PROJECT_ID/regions/$GKE_REGION/subnetworks/default" \
   --cluster-ipv4-cidr "/17" --services-ipv4-cidr "/22" --enable-ip-alias
-gcloud container --project "$PROJECT_ID" clusters create "cicd-noauto-canary" --region "$GKE_REGION2" \
-  --release-channel "regular" --network "projects/$PROJECT_ID/global/networks/default" --subnetwork "projects/$PROJECT_ID/regions/$GKE_REGION2/subnetworks/default" \
+gcloud container --project "$PROJECT_ID" clusters create "cicd-noauto-canary" --region "$GKE_REGION" \
+  --release-channel "regular" --network "projects/$PROJECT_ID/global/networks/default" --subnetwork "projects/$PROJECT_ID/regions/$GKE_REGION/subnetworks/default" \
   --cluster-ipv4-cidr "/17" --services-ipv4-cidr "/22" --enable-ip-alias
-gcloud container --project "$PROJECT_ID" clusters create "cicd-noauto-prod" --region "$GKE_REGION2" \
-  --release-channel "regular" --network "projects/$PROJECT_ID/global/networks/default" --subnetwork "projects/$PROJECT_ID/regions/$GKE_REGION2/subnetworks/default" \
+gcloud container --project "$PROJECT_ID" clusters create "cicd-noauto-prod" --region "$GKE_REGION" \
+  --release-channel "regular" --network "projects/$PROJECT_ID/global/networks/default" --subnetwork "projects/$PROJECT_ID/regions/$GKE_REGION/subnetworks/default" \
   --cluster-ipv4-cidr "/17" --services-ipv4-cidr "/22" --enable-ip-alias
 
 #############################################################
