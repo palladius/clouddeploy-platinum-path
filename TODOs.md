@@ -20,3 +20,5 @@
 * P2. Make k8s/xlb-gfe3.../ truly parametric by removing project id in step2/ folder.
 
 * P3. Remove `palladius.it` and personal stuff from k8s manifests.
+
+* P4. Set up service account in 00-init and use it for the rest.Probably it would be between a 00 and a 01 setup. If it works, backfill it to `codelabba.rb`
