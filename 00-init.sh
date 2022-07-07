@@ -20,24 +20,32 @@ gcloud services enable \
 
 # Set defaults..
 gcloud config set run/region "$REGION"
-#gcloud config set build/region "$REGION"
 gcloud config set deploy/region "$CLOUD_DEPLOY_REGION"
+#gcloud config set build/region "$REGION" # This would be bad since global build has more Quota ;)
+#gcloud config set compute/zone [COMPUTE_ZONE]
 
 #gcloud config set run/platform managed
 #gcloud config set eventarc/location $REGION
 
 gcloud config list | lolcat
 
-    # If you need to aunthenticate your app
-#This is needed when you want to use Python, Node, .. APIs and you cant / dont
-#want to use a service account.
+################################################
+# If you need to aunthenticate your app
+################################################
+# This is needed when you want to use Python, Node, .. APIs and you cant / dont
+# want to use a service account.
 #
-# gcloud auth application-default login
+#   $ gcloud auth application-default login
 #
-#Once I got a mysterious error which asked me to RE-authorize:
+# Once I got a mysterious error which asked me to RE-authorize:
 #
-# gcloud auth login --update-adc
+#   $ gcloud auth login --update-adc
 #
+# Note this is Riccardo being lazy. Proper way is
+# to set up a Service Account with proper access
+# to just the resourees you need. This might come
+# in a next iteration.
+################################################
 
 # Needed on a new computer. Smartly installs if needed.
 which skaffold >/dev/null && echo skaffold exists. All good. ||
