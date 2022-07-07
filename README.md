@@ -17,6 +17,11 @@ among my TODOs).
 
 Doc: go/ricc-cd-canary-doc
 
+## High-levl architecture
+
+<img src="https://github.com/palladius/clouddeploy-platinum-path/raw/master/doc/Ricc Canary deployment 2022.png" alt="Architecture v1.1" align='right' />
+
+
 ## Install
 
 * Create a project and assign billing to it. There gonna be clusterz :/
@@ -62,3 +67,4 @@ Yes, it's that beautiful.
 * dmarzi@ for incredible help on GKE manifests.
 * Alex Bielski for his support in getting a `Cloud Build` to work with multiple
   Skaffold modules, plus Skaffold *caching*.
+* Yuki Furuyama for GCPDraw. Absolutely stunning.
