@@ -8,7 +8,7 @@
 # glued together but is currently the ONLY solution to do Traffic Splitting with
 # external-facing public IP Load Balancing. When Gateway API will support TS on
 # ELB as well (currently only ILB are backed up Envoy) this effort will become 
-# useless but is still put here as an example to demonstrate the TS functionality. 
+# useless but is still put here as an example to demonstrate the TS functionality.
 ################################################################################
 
 function _fatal() {
