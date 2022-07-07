@@ -5,10 +5,13 @@
 # CB+CD+AR+GKE with canary deployment 90/10% 
 # Achieved with Traffic Splitting and/or pod
 # splitting.
+#
+# Changelog:
+# 2022-07-07 v1.2 Lighter colors, python/ruby icons.
+# 2022-07-07 v1.1 Added the Backendservices to both Apps.
 ##########################################################################################
-
 meta {
-  title "Canary Pipeline GKE+CB+CD v1.0"
+  title "Canary Pipeline GKE+CB+CD v1.2"
 }
 
 elements {
@@ -40,8 +43,8 @@ elements {
     #}
 
    group gke_clusters {
-      # Google blue for Clusters
-      background_color "#4c8bf5"
+      # Google blue for Clusters: 4c8bf5
+      background_color "#e8f4f8" # super light
 
     card gke as dev_gke {
       name "Dev Cluster"
@@ -60,8 +63,9 @@ elements {
      name "App01 Delivery Pipeline"
      #DOESNT WORK title_color "#000000"
      #python is green
-     background_color "#1aa260" # Google green 
-  	 icon_url "https://drive.google.com/file/d/10qBYxoKvZAhNJd_63eIk_jtkTUhEHJI7/view"
+     #background_color "#1aa260" # Google green 
+     background_color "#99edc3" # lighter-green
+  	 icon_url "https://drive.google.com/file/d/1BHeXPeL6bhhET7QGNctupFftapYyc7Ru/view"
 
     card dm_target as target_dev_app01 {
       name "Dev"
@@ -94,8 +98,9 @@ elements {
    group app02_pipeline {
      name "App02 Delivery Pipeline (ruby)"
      #ruby is red
-     background_color "#de5246" # Google red 
-  	 icon_url "https://drive.google.com/file/d/10qBYxoKvZAhNJd_63eIk_jtkTUhEHJI7/view"
+     #background_color "#de5246" # Google red 
+     background_color "#ffcccc" # lighter-red 
+  	 icon_url "https://drive.google.com/file/d/1u0JxVUaqHXcOR-ok-EUeQd2pQEKWGpqJ/view" # Ruby icon
 
     card dm_target as target_dev_app02 {
       name "Dev"
@@ -113,25 +118,65 @@ elements {
       name "Canary"
       icon_url "https://drive.google.com/file/d/10qBYxoKvZAhNJd_63eIk_jtkTUhEHJI7/view"
       display_name "target"
+      description "10% traffic"
     }
     card dm_target as target_prod_app02 {
       name "Prod"
       icon_url "https://drive.google.com/file/d/10qBYxoKvZAhNJd_63eIk_jtkTUhEHJI7/view"
       display_name "target"
+      description "90% traffic"
     }
    } #/App01 pipeline
 
-  card load_balancer as app01_endpoint {
-#    background_color "#1aa260"
-    name "http://app01.example.com/"
-#    background_color "#f6f6f6"
-    description "10% Canary / 90% prod "
 
-  }
+  group solution2_GFE_TS {
+#    background_color "#F4B400" # Google yellow 
+    background_color "#ffffe0" # Light yellow 
+    name "[Solution 2] HTTP LB + Envoy and Traffic Splitting"
+    
+    card load_balancer as app01_endpoint {
+  #    background_color "#1aa260"
+      name "http://app01.example.com/"
+  #    background_color "#f6f6f6"
+      description "Traffic split: 10% Canary / 90% prod"
+
+    }
+
   card load_balancer as app02_endpoint {
     name "http://app02.example.com/"
+    description "Traffic split: 10% Canary / 90% prod"
   }
 
+  #  backendService 10%/90%
+  card load_balancer as app01_bes_canary {
+    name "App01 Canary"
+    display_name "BackendService"
+    description "weight: 10%"
+  }
+  card load_balancer as app01_bes_prod {
+    name "App01 Prod"
+    display_name "BackendService"
+    description "weight: 90%"
+  }
+  
+   #  backendService 10%/90%
+  card load_balancer as app02_bes_canary {
+    name "App02 Canary"
+    display_name "BackendService"
+    description "weight: 10%"
+  }
+  card load_balancer as app02_bes_prod {
+    name "App02 Prod"
+    display_name "BackendService"
+    description "weight: 90%"
+  } 
+  
+  card users as app_user {
+    display_name "App01/App02 users"
+  }
+  
+  
+  } #/Group solution2_GFE_TS
 
 
   } # end of GCP
@@ -141,9 +186,7 @@ elements {
   #  display_name "Trigger"
   #}
 
-  card users as app_user {
-    display_name "App01/App02 users"
-  }
+
 }
 
 paths {
@@ -187,11 +230,20 @@ paths {
   target_prod_app02 -up-> prod_gke
   
   # Users consume Load Balancer endpoint.
-  app_user --> app01_endpoint
-  app_user --> app02_endpoint
+  # its UGLY
+  app01_endpoint <-- app_user 
+  app02_endpoint <-- app_user
   
+  # SOLUTION2: HTTP Envoy LB
   # canary deployment split traffic across canary/prod
-  target_canary_app01 --> app01_endpoint
-  target_prod_app01   --> app01_endpoint
+  target_canary_app01  <.. app01_bes_canary
+  app01_bes_canary  <-- app01_endpoint
+  target_prod_app01   <.. app01_bes_prod 
+  app01_bes_prod <--> app01_endpoint
+  
+  target_canary_app02  <.. app02_bes_canary
+  app02_bes_canary  <-- app02_endpoint
+  target_prod_app02   <.. app02_bes_prod 
+  app02_bes_prod <--> app02_endpoint
   
 }
