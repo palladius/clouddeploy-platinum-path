@@ -2,6 +2,8 @@
 
 source .env.sh || fatal "Config doesnt exist please create .env.sh"
 
+set -e 
+
 gcloud config configurations create $GCLOUD_CONFIG |
 gcloud config configurations activate $GCLOUD_CONFIG ||
     gcloud config configurations create $GCLOUD_CONFIG
@@ -22,13 +24,19 @@ gcloud services enable \
 gcloud config set run/region "$REGION"
 gcloud config set deploy/region "$CLOUD_DEPLOY_REGION"
 #gcloud config set build/region "$REGION" # This would be bad since global build has more Quota ;)
-#gcloud config set compute/zone [COMPUTE_ZONE]
+gcloud config set compute/zone  "$GCLOUD_REGION"
+# we have these other 1 variables to set: not sure how to set dflt GKE cluster :/
+#export GKE_REGION="europe-north1" # Finland
+#https://cloud.google.com/sdk/gcloud/reference/config/set
+#gcloud config set container/cluster "cicd-dev"
 
 #gcloud config set run/platform managed
 #gcloud config set eventarc/location $REGION
 
-gcloud config list | lolcat
-
+# In Italy we say "The eye wants its part too". If you like colors, use this :)
+# which lolcat || gem install lolcat
+# gcloud config list | lolcat
+gcloud config list
 ################################################
 # If you need to aunthenticate your app
 ################################################
@@ -54,7 +62,8 @@ which skaffold >/dev/null && echo skaffold exists. All good. ||
 touch ".$APPNAME.appname"
 
 # sets kubetcl context to this cluste TODO ricc paramtyerize region.
-gcloud container clusters get-credentials cicd-dev --region europe-west6
+gcloud container clusters get-credentials cicd-dev --region "$GKE_REGION" ||   
+    echo This will fail before you run step 01... so no biggie if this fails.
 
 # TODO(ricc): check ENV_SH_CONFIG from sourced to the .dist and suggest to check the HISTORY
 #             for missing VARs.
