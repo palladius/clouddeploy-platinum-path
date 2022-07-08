@@ -38,6 +38,12 @@ touch /tmp/MyEmptyFile
 GITHUB_REPO_NAME="clouddeploy-platinum-path"
 GCR_REPO="${GITHUB_REPO_OWNER}/clouddeploy-platinum-path"
 
+echo "*** WARNING ***"
+echo "To tun this script you need to have enabled the 6.5 docs in the README.md"
+echo "Also you need to have set up your GITHUB_REPO_OWNER='$GITHUB_REPO_OWNER'"
+echo "*** END ***"
+echo
+
 for TEAM_ARR in "${TEAMS[@]}"; do
     IFS=";" read -r -a arr <<< "${TEAM_ARR}"
 
@@ -58,7 +64,10 @@ for TEAM_ARR in "${TEAMS[@]}"; do
       --description="[$TEAM_NUMBER] CB trigger from CLI for $TEAM_NAME module" --included-files="${SRC_SUBFOLDER}**,*.yaml,cloud-build/**" \
       --build-config cloudbuild.yaml --substitutions="$SUBSTIUTIONS" \
       --name $TEAM_NUMBER-CLIv$TRIGGERVERSION-$TEAM_NAME
-    # echo NOT_THIS gcloud alpha builds triggers create cloud-source-repositories --repo=palladius/clouddeploy-platinum-path --branch-pattern='.*' \
+
+    # If you choose to connect to GCR, use this comand instead (note: might be a bit old and not updated like the one above #metafishing ).
+
+    # echo NOT_THIS gcloud alpha builds triggers create cloud-source-repositories --repo=$GITHUB_REPO_OWNER/clouddeploy-platinum-path --branch-pattern='.*' \
     #   --description="[$TEAM_NUMBER] CB trigger from CLI for $TEAM_NAME module" --included-files="${SRC_SUBFOLDER}**,*.yaml" \
     #   --build-config cloudbuild.yaml --substitutions="_DEPLOY_UNIT=$TEAM_NAME,_FAVORITE_COLOR=$FAV_COLOR" \
     #   --region=$REGION --name $TEAM_NUMBER-CLIv$TRIGGERVERSION-$TEAM_NAME
@@ -66,7 +75,8 @@ for TEAM_ARR in "${TEAMS[@]}"; do
 done
 
 # some self gratification :)
-gcloud alpha builds triggers  list --format 'table(name,github.name,description,includedFiles)'
+echo Here are the triggers:
+gcloud alpha builds triggers  list --format 'table(name,github.owner,github.user,github.name,description,includedFiles)'
 
 # End of your code here
 _allgood_post_script
