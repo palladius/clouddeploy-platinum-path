@@ -1,6 +1,24 @@
 
+There are three solutions here. In chronological order,
+Daniel helped me with solution 3 then 1 and 2. I renamed 0 to 3
+to signify this is the last resort and shouldnt be considered too much.
 
-## Solution0 - Gateway API + TS (internal IP only (*))
+The real solutions are the first TWO.
+
+# solution 1 - GXLB (Classic) + Gateway API (no TS)
+
++ GatewayAPI (idiomatic - everything is a k8s manifest)
++ Classic External Load Balancer
+- No Traffic splitting -> Pod splitting instead. This is achieved with 9 vs 1 pods (made easy via kustomize).
+- Needs `kustomize` to do "poor pod splitting".
+
+# Solution2 - GXLB (new envoy based) + Traffic Splitting (requires gcloud plumbing)
+
++ New envoy-based External Load Balancer
++ Supports Traffic Splitting in LB
+- requires some significant work on gcloud so it's not pure k8s idiomatic (knative would say boooh).
+
+# Solution 3 - Gateway API + TS (BEWARE: internal IP only (*))
 
 This solution was the first which came out. While it solves ALL problems, it only supports
 internal IP. This is the *best* solution if you don't want a pu
@@ -24,20 +42,6 @@ For more info:
 * [2] https://cloud.google.com/vpc/docs/configure-private-service-connect-controls
 
 Thanks Roberto for this.
-
-# solution1 - GXLB (Classic) + Gateway API (no TS)
-
-+ GatewayAPI (idiomatic - everything is a k8s manifest)
-+ Classic External Load Balancer
-+ No Traffic splitting -> Pod splitting achieved with 9 vs 1 pods (made easy via kustomize).
-- Needs 
-
-# Solution2 - GXLB (new envoy based) + Traffic Splitting (requires gcloud plumbing)
-
-+ New envoy-based External Load Balancer
-+ Supports Traffic Splitting in LB
-- requires some significant work on gcloud so it's not pure k8s idiomatic (knative would say boooh).
-
 
 
 ## other info
