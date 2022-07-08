@@ -24,10 +24,11 @@ function show_k8s_stuff() {
 # Add your code here:
 SHOW_VERBOSE_STUFF="false"
 SHOW_GCLOUD_ENTITIES="false"
-SHOW_PANTHEON_LINKS="true"
+SHOW_DEVCONSOLE_LINKS="true"
 SHOW_KUBERNETES_STUFF="true"
 
 echo "+ REGION for DEPLOY:          $CLOUD_DEPLOY_REGION"
+echo "+ REGION for GKE:             $GKE_REGION"
 echo "+ REGION for EVERYTHING ELSE: $REGION"
 
 #echo TODO kubectl get pods (TODO first add correct context)
@@ -36,7 +37,7 @@ kubectl get pods,service
 gcloud beta builds triggers list --region $REGION
 skaffold config list
 
-if [ "true" = "$SHOW_PANTHEON_LINKS" ]; then 
+if [ "true" = "$SHOW_DEVCONSOLE_LINKS" ]; then 
     echo "== DevConsole useful links START (if you are a UI kind of person) ==" | lolcat
     echo "GKE Workloads: https://console.cloud.google.com/kubernetes/workload/overview?&project=$PROJECT_ID"
     echo "Cloud Build Builds: https://console.cloud.google.com/cloud-build/builds;region=global?&project=$PROJECT_ID"
