@@ -69,7 +69,8 @@ gcloud projects add-iam-policy-binding "$PROJECT_ID" \
      --project=$PROJECT_ID
 
 #4.  enable gateway apis
-kubectl apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
+kubectl-on-canary apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
+kubectl-on-prod apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
 # I should see FOUR not TWO:
 kubectl get gatewayclass
 

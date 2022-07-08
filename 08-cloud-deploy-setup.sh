@@ -24,7 +24,8 @@ cat clouddeploy.template.yaml |
 
 #yellow TODO
 # Zurich doesnt work, :( euw6
-gcloud --project $PROJECT_ID deploy apply --file .tmp.clouddeploy.yaml --region $CLOUD_DEPLOY_REGION
+gcloud --project $PROJECT_ID deploy apply --file .tmp.clouddeploy.yaml --region "$CLOUD_DEPLOY_REGION"
+
 
 
 # End of your code here
