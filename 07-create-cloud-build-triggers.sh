@@ -9,12 +9,13 @@ set -e
 
 # array: https://stackoverflow.com/questions/12317483/array-of-arrays-in-bash
 # TeamNumber ; TeamName ; CloudBuild file ; Source To Be listening
-TEAMS[0]='T1py;app01;cloudbuild.yaml;apps/app01/;blue'
-TEAMS[1]='T2rb;app02;cloudbuild.yaml;apps/app02/;green'
+TEAMS[0]='T1py;app01;cloudbuild.yaml;apps/app01/;green'
+TEAMS[1]='T2rb;app02;cloudbuild.yaml;apps/app02/;red'
 #TEAMS[2]='T3;frontend;cloudbuild-super-parametric.yaml;src/frontend/;yellow'
 #TEAMS[3]='T4;loadgenerator;cloudbuild-super-parametric.yaml;src/loadgenerator/;red'
 
-TRIGGERVERSION="1-6"
+TRIGGERVERSION="1-7"
+# 1.7  20220708 Changed colors cos Ruby is Red and Python is green, but more importantly I dont want to confuse people with blue/green deployment since app_id is orthogonal to deployment stage.
 # 1.6  20220610 Added 'cloud-build/**' to trigger changes.
 # 1.5b 20220603 I didnt change a thing but DESTROYED everything since i had 4 triggers, 2 in 1.5a and 2 in 1.3 so wanted to have a clean slate.
 # 1.5a          ????
