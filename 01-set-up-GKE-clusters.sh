@@ -13,20 +13,21 @@ gcloud auth configure-docker $REGION-docker.pkg.dev
 
 ##############################################################################
 # Create clusters normal (no autopilot since I need to run Daniel crazy code)
+# I created these for testing but actually I can remove them now.
 ##############################################################################
 # DEV
-gcloud container --project "$PROJECT_ID" clusters create "cicd-noauto-dev" --region "$GKE_REGION" \
-  --release-channel "regular" --network "projects/$PROJECT_ID/global/networks/default" --subnetwork "projects/$PROJECT_ID/regions/$GKE_REGION/subnetworks/default" \
-  --cluster-ipv4-cidr "/17" --services-ipv4-cidr "/22" --enable-ip-alias
-gcloud container --project "$PROJECT_ID" clusters create "cicd-noauto-canary" --region "$GKE_REGION" \
-  --release-channel "regular" --network "projects/$PROJECT_ID/global/networks/default" --subnetwork "projects/$PROJECT_ID/regions/$GKE_REGION/subnetworks/default" \
-  --cluster-ipv4-cidr "/17" --services-ipv4-cidr "/22" --enable-ip-alias
-gcloud container --project "$PROJECT_ID" clusters create "cicd-noauto-prod" --region "$GKE_REGION" \
-  --release-channel "regular" --network "projects/$PROJECT_ID/global/networks/default" --subnetwork "projects/$PROJECT_ID/regions/$GKE_REGION/subnetworks/default" \
-  --cluster-ipv4-cidr "/17" --services-ipv4-cidr "/22" --enable-ip-alias
+# gcloud container --project "$PROJECT_ID" clusters create "cicd-noauto-dev" --region "$GKE_REGION" \
+#   --release-channel "regular" --network "projects/$PROJECT_ID/global/networks/default" --subnetwork "projects/$PROJECT_ID/regions/$GKE_REGION/subnetworks/default" \
+#   --cluster-ipv4-cidr "/17" --services-ipv4-cidr "/22" --enable-ip-alias
+# gcloud container --project "$PROJECT_ID" clusters create "cicd-noauto-canary" --region "$GKE_REGION" \
+#   --release-channel "regular" --network "projects/$PROJECT_ID/global/networks/default" --subnetwork "projects/$PROJECT_ID/regions/$GKE_REGION/subnetworks/default" \
+#   --cluster-ipv4-cidr "/17" --services-ipv4-cidr "/22" --enable-ip-alias
+# gcloud container --project "$PROJECT_ID" clusters create "cicd-noauto-prod" --region "$GKE_REGION" \
+#   --release-channel "regular" --network "projects/$PROJECT_ID/global/networks/default" --subnetwork "projects/$PROJECT_ID/regions/$GKE_REGION/subnetworks/default" \
+#   --cluster-ipv4-cidr "/17" --services-ipv4-cidr "/22" --enable-ip-alias
 
 #############################################################
-# Create 3 clusters in autopilot
+# Create 3 clusters in autopilot (the ones we use for our demo)
 #############################################################
 # CANARY (Similar to prod but smaller)
 proceed_if_error_matches 'ResponseError: code=409, message=Already exists:' \

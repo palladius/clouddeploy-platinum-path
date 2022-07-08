@@ -9,8 +9,10 @@ set -e
 #export SKAFFOLD_BUCKET="${PROJECT_ID}-skaffoldcache"
 echo "We're now creating a bucket to land Skaffold cache for our apps."
 
-echo gsutil mb "gs://$SKAFFOLD_BUCKET"
+proceed_if_error_matches "A Cloud Storage bucket named '$SKAFFOLD_BUCKET' already exists" \
+  gsutil mb "gs://$SKAFFOLD_BUCKET"
 
+# TODO security maniacs - make sure it doesnt exist, could be a rm -f before? But then it could fail...
 touch /tmp/EmptyFile
 
 ls apps/| grep -v README | while read MODULE ; do
