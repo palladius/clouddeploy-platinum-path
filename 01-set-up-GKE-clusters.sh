@@ -53,7 +53,8 @@ gcloud container --project "$PROJECT_ID" clusters create-auto "cicd-prod" --regi
 # Create Artifact Registry
 #############################################################
 
-gcloud --project "$PROJECT_ID" artifacts repositories create $ARTIFACT_REPONAME \
+proceed_if_error_matches 'the repository already exists' \
+  gcloud --project "$PROJECT_ID" artifacts repositories create $ARTIFACT_REPONAME \
     --location="$REGION" --repository-format=docker
 
 # End of your code here. `green` script can be found in "palladius/sakura" but also here in `bin/`
