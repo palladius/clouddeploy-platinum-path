@@ -13,7 +13,8 @@ internal IP. This is the *best* solution if you don't want a pu
 To make this solution work, you need a last-mile configuration which connects the ILB from 
 This is super-new technology called Private Service Connect (PSC, [1]). To do so you need to additionally:
 
-1. Create link between your private ILB VPC and another VPC.
+1. Create a Private Service Connect with consumer HTTP(S) service controls
+([2] basically a link between two VPCs: one with your ILB and one with XLB).
 1. Create a new PSC Network Endpoint Group (NEG) which links to the ILB.
 1. Create External Load Balancer on top of the PSC NEG.
 

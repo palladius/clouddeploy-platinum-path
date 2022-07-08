@@ -28,7 +28,7 @@ Doc: go/ricc-cd-canary-doc
 * `cp .env.sh.dist .env.sh`
 * Edit away with your personal project ids.
 * `sh 00-init.sh` and so on.. for all steps.
-* Do steps 1,2,3,4,5,6 automatically - TODO `make first-half`
+* Do steps 1,2,3,4,5,6 automatically: `make first-half`
 * Follow manual instructions for 6.5 below.
 * Do steps 7,8,9,..,16 automatically - `make second-half`
 
