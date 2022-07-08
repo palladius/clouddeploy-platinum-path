@@ -169,7 +169,8 @@ echo 'Now you can try this 20-30 times: 2) curl -H "Host: xlb-gfe3-host.example.
 ########################
 # End of your code here
 ########################
-#green 'Everything is ok. To use this amazing script, please download it from https://github.com/palladius/sakura'
 green "Everything is ok. Now check your newly created LB for its IP (should be '$IP_FWDRULE')"
 
-
+# End of your code here
+_allgood_post_script
+echo Everything is ok.

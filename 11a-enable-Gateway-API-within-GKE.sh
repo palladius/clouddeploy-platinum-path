@@ -85,4 +85,7 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
      
 echo Done. Now proceed to 11b to execute upon kubectl on two clusters: ./11b-kubectl-apply-stuff.sh
 
+
+# End of your code here
+_allgood_post_script
 echo Everything is ok.

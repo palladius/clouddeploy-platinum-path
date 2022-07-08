@@ -28,4 +28,5 @@ gcloud --project $PROJECT_ID deploy apply --file .tmp.clouddeploy.yaml --region 
 
 
 # End of your code here
+_allgood_post_script
 echo Everything is ok.

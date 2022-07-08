@@ -56,4 +56,5 @@ fi
 
 
 # End of your code here
+_allgood_post_script
 echo Everything is ok.

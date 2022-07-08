@@ -16,4 +16,5 @@ gcloud container clusters get-credentials cicd-dev --region $REGION --project $P
 skaffold config set default-repo "$SKAFFOLD_DEFAULT_REPO"
 
 # End of your code here
+_allgood_post_script
 echo Everything is ok.

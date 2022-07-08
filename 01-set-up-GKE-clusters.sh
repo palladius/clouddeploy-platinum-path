@@ -16,34 +16,36 @@ gcloud auth configure-docker $REGION-docker.pkg.dev
 # I created these for testing but actually I can remove them now.
 ##############################################################################
 # DEV
-# gcloud container --project "$PROJECT_ID" clusters create "cicd-noauto-dev" --region "$GKE_REGION" \
-#   --release-channel "regular" --network "projects/$PROJECT_ID/global/networks/default" --subnetwork "projects/$PROJECT_ID/regions/$GKE_REGION/subnetworks/default" \
+# gcloud container --project "$PROJECT_ID" clusters create "cicd-noauto-dev" --region "$GKE_ALTERNATIVE_REGION" \
+#   --release-channel "regular" --network "projects/$PROJECT_ID/global/networks/default" --subnetwork "projects/$PROJECT_ID/regions/$GKE_ALTERNATIVE_REGION/subnetworks/default" \
 #   --cluster-ipv4-cidr "/17" --services-ipv4-cidr "/22" --enable-ip-alias
-# gcloud container --project "$PROJECT_ID" clusters create "cicd-noauto-canary" --region "$GKE_REGION" \
-#   --release-channel "regular" --network "projects/$PROJECT_ID/global/networks/default" --subnetwork "projects/$PROJECT_ID/regions/$GKE_REGION/subnetworks/default" \
+# gcloud container --project "$PROJECT_ID" clusters create "cicd-noauto-canary" --region "$GKE_ALTERNATIVE_REGION" \
+#   --release-channel "regular" --network "projects/$PROJECT_ID/global/networks/default" --subnetwork "projects/$PROJECT_ID/regions/$GKE_ALTERNATIVE_REGION/subnetworks/default" \
 #   --cluster-ipv4-cidr "/17" --services-ipv4-cidr "/22" --enable-ip-alias
-# gcloud container --project "$PROJECT_ID" clusters create "cicd-noauto-prod" --region "$GKE_REGION" \
-#   --release-channel "regular" --network "projects/$PROJECT_ID/global/networks/default" --subnetwork "projects/$PROJECT_ID/regions/$GKE_REGION/subnetworks/default" \
+# gcloud container --project "$PROJECT_ID" clusters create "cicd-noauto-prod" --region "$GKE_ALTERNATIVE_REGION" \
+#   --release-channel "regular" --network "projects/$PROJECT_ID/global/networks/default" --subnetwork "projects/$PROJECT_ID/regions/$GKE_ALTERNATIVE_REGION/subnetworks/default" \
 #   --cluster-ipv4-cidr "/17" --services-ipv4-cidr "/22" --enable-ip-alias
 
 #############################################################
 # Create 3 clusters in autopilot (the ones we use for our demo)
 #############################################################
-# CANARY (Similar to prod but smaller)
+# 1. DEV
 proceed_if_error_matches 'ResponseError: code=409, message=Already exists:' \
-  gcloud container --project "$PROJECT_ID" clusters create-auto "cicd-canary" --region "$REGION" \
-    --release-channel "regular" --network "projects/$PROJECT_ID/global/networks/default" --subnetwork "projects/$PROJECT_ID/regions/$REGION/subnetworks/default" \
-    --cluster-ipv4-cidr "/17" --services-ipv4-cidr "/22" # --labels "env=prod"
-# PROD
-proceed_if_error_matches 'ResponseError: code=409, message=Already exists:' \
-gcloud container --project "$PROJECT_ID" clusters create-auto "cicd-prod" --region "$REGION" \
-  --release-channel "regular" --network "projects/$PROJECT_ID/global/networks/default" --subnetwork "projects/$PROJECT_ID/regions/$REGION/subnetworks/default" \
-  --cluster-ipv4-cidr "/17" --services-ipv4-cidr "/22" # --labels "env=prod"
-# DEV
-proceed_if_error_matches 'ResponseError: code=409, message=Already exists:' \
-gcloud container --project "$PROJECT_ID" clusters create-auto "cicd-dev" --region "$REGION" \
-  --release-channel "regular" --network "projects/$PROJECT_ID/global/networks/default" --subnetwork "projects/$PROJECT_ID/regions/$REGION/subnetworks/default" \
+gcloud container --project "$PROJECT_ID" clusters create-auto "cicd-dev" --region "$GKE_REGION" \
+  --release-channel "regular" --network "projects/$PROJECT_ID/global/networks/default" --subnetwork "projects/$PROJECT_ID/regions/$GKE_REGION/subnetworks/default" \
   --cluster-ipv4-cidr "/17" --services-ipv4-cidr "/22"
+
+# 2. CANARY (Similar to prod but smaller)
+proceed_if_error_matches 'ResponseError: code=409, message=Already exists:' \
+  gcloud container --project "$PROJECT_ID" clusters create-auto "cicd-canary" --region "$GKE_REGION" \
+    --release-channel "regular" --network "projects/$PROJECT_ID/global/networks/default" --subnetwork "projects/$PROJECT_ID/regions/$GKE_REGION/subnetworks/default" \
+    --cluster-ipv4-cidr "/17" --services-ipv4-cidr "/22" # --labels "env=prod"
+
+# 3. PROD
+proceed_if_error_matches 'ResponseError: code=409, message=Already exists:' \
+gcloud container --project "$PROJECT_ID" clusters create-auto "cicd-prod" --region "$GKE_REGION" \
+  --release-channel "regular" --network "projects/$PROJECT_ID/global/networks/default" --subnetwork "projects/$PROJECT_ID/regions/$GKE_REGION/subnetworks/default" \
+  --cluster-ipv4-cidr "/17" --services-ipv4-cidr "/22" # --labels "env=prod"
 
 
 
@@ -55,4 +57,5 @@ gcloud --project "$PROJECT_ID" artifacts repositories create $ARTIFACT_REPONAME 
     --location="$REGION" --repository-format=docker
 
 # End of your code here. `green` script can be found in "palladius/sakura" but also here in `bin/`
+_allgood_post_script
 echo Everything is ok.

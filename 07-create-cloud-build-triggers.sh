@@ -66,4 +66,5 @@ for TEAM_ARR in "${TEAMS[@]}"; do
 done
 
 # End of your code here
+_allgood_post_script
 echo Everything is ok.

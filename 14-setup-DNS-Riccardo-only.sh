@@ -42,6 +42,7 @@ riccardo_only_setup_dns "$(getLoadBalancerIP $GKE_CANARY_CLUSTER_CONTEXT  app02-
 riccardo_only_setup_dns "$(getLoadBalancerIP $GKE_PROD_CLUSTER_CONTEXT web)" app01 # prod
 
 
-# End of your code here
-echo Everything is ok.
 
+# End of your code here
+_allgood_post_script
+echo Everything is ok.

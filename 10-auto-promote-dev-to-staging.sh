@@ -20,4 +20,5 @@ gcloud deploy releases promote --to-target "$DESIRED_STAGE" --region "$CLOUD_DEP
 
 
 # End of your code here
+_allgood_post_script
 echo Everything is ok.

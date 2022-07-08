@@ -34,5 +34,5 @@ echo ''
 ########################
 # End of your code here
 ########################
-#green 'Everything is ok. To use this amazing script, please download it from https://github.com/palladius/sakura'
-echo 'Everything is ok'
+_allgood_post_script
+echo Everything is ok.
