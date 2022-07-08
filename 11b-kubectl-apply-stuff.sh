@@ -26,4 +26,6 @@ echo Restoring cluster 1.
 gcloud container clusters get-credentials "$CLUSTER_1"  --region "$GCLOUD_REGION" --project "$PROJECT_ID"
 
 
+# End of your code here
+_allgood_post_script
 echo Everything is ok.

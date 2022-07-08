@@ -17,6 +17,6 @@ PRD="gke_cicd-platinum-test001_europe-west6_cicd-prod"
 
 
 
-
 # End of your code here
+_allgood_post_script
 echo Everything is ok.

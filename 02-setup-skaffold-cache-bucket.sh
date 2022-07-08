@@ -21,4 +21,5 @@ ls apps/| grep -v README | while read MODULE ; do
 done
 
 # End of your code here
+_allgood_post_script
 echo Everything is ok.

@@ -24,14 +24,9 @@ gcloud services enable \
 gcloud config set run/region "$REGION"
 gcloud config set deploy/region "$CLOUD_DEPLOY_REGION"
 #gcloud config set build/region "$REGION" # This would be bad since global build has more Quota ;)
-gcloud config set compute/zone  "$GCLOUD_REGION"
-# we have these other 1 variables to set: not sure how to set dflt GKE cluster :/
-#export GKE_REGION="europe-north1" # Finland
+gcloud config set compute/region  "$GCLOUD_REGION"
 #https://cloud.google.com/sdk/gcloud/reference/config/set
 #gcloud config set container/cluster "cicd-dev"
-
-#gcloud config set run/platform managed
-#gcloud config set eventarc/location $REGION
 
 # In Italy we say "The eye wants its part too". If you like colors, use this :)
 # which lolcat || gem install lolcat
@@ -69,4 +64,5 @@ gcloud container clusters get-credentials cicd-dev --region "$GKE_REGION" ||
 #             for missing VARs.
 
 # End of your code here
+_allgood_post_script
 echo Everything is ok.
