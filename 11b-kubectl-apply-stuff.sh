@@ -16,6 +16,8 @@ kubectl config get-contexts
 
 set -x
 
+_kubectl_on_both_canary_and_prod get gatewayclass
+
 gcloud container clusters get-credentials "$CLUSTER_1" --region "$GCLOUD_REGION" --project "$PROJECT_ID"
 kubectl apply -f  $GKE_SOLUTION_ILB_SETUP_DIR/cluster1/
 
