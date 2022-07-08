@@ -15,8 +15,8 @@ build:
 deploy:
   kustomize:
     paths: 
-    - ./k8s/_base
-    - ./k8s/static
+    - ./k8s/_base   # new stuff with Kustomize
+    - ./k8s/static  # old stuff without Kustomize
 profiles:
   - name: dev
     deploy:

@@ -4,7 +4,6 @@ kind: Component
 #namespace: my-namespace
 #nameSuffix: "-prod"
 commonLabels:
-#  app: bingo
   applicazione-in-produzione: bingo
   ricc-awesome-selector: canary-or-prod
   ricc-env: prod

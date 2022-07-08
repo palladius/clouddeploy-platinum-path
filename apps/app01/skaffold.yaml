@@ -13,7 +13,7 @@ build:
       builder: "gcr.io/buildpacks/builder:v1"
       trustBuilder: true
 deploy:
-  kustomize:
+  kustomize: # uses kustomize
     paths: [./k8s/_base]
 profiles:
   - name: gcb
