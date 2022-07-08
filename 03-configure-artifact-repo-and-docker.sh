@@ -7,13 +7,13 @@ set -e
 
 # Add your code here:
 gcloud container clusters get-credentials cicd-dev --region $REGION --project $PROJECT_ID
-#gcloud container clusters get-credentials cicd-dev --region europe-west6 --project cicd-platinum-test001
 
-gcloud auth configure-docker $REGION-docker.pkg.dev
+# goes in 03 script..
+#gcloud auth configure-docker $REGION-docker.pkg.dev
 
 # Skaffold auto-config
-skaffold config set default-repo "$REGION-docker.pkg.dev/$PROJECT_ID/$ARTIFACT_REPONAME"
-
+#PLEONASTIC: skaffold config set default-repo "$REGION-docker.pkg.dev/$PROJECT_ID/$ARTIFACT_REPONAME"
+skaffold config set default-repo "$SKAFFOLD_DEFAULT_REPO"
 
 # End of your code here
 echo Everything is ok.
