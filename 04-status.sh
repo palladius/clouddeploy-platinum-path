@@ -39,10 +39,13 @@ skaffold config list
 
 if [ "true" = "$SHOW_DEVCONSOLE_LINKS" ]; then 
     echo "== DevConsole useful links START (if you are a UI kind of person) ==" | lolcat
+
     echo "GKE Workloads: https://console.cloud.google.com/kubernetes/workload/overview?&project=$PROJECT_ID"
-    echo "Cloud Build Builds: https://console.cloud.google.com/cloud-build/builds;region=global?&project=$PROJECT_ID"
-    echo "Cloud Build Triggers: https://console.cloud.google.com/cloud-build/triggers;region=global?project=$PROJECT_ID"
-    echo "Cloud Deploy Pipelines: https://console.cloud.google.com/deploy/delivery-pipelines?project=$PROJECT_ID"
+    echo "Cloud Build::Builds: https://console.cloud.google.com/cloud-build/builds;region=global?&project=$PROJECT_ID"
+    echo "Cloud Build::Triggers: https://console.cloud.google.com/cloud-build/triggers;region=global?project=$PROJECT_ID"
+    echo "Cloud Deploy::Pipelines: https://console.cloud.google.com/deploy/delivery-pipelines?project=$PROJECT_ID"
+    echo "Cloud Source Repositories (CSR): https://source.cloud.google.com/$PROJECT_ID"
+
     echo "== DevConsole useful links END =="
 fi
 
