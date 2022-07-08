@@ -82,3 +82,28 @@ kustomize-ruby-diff-prod-and-canary:
 	@echo Showing the diff between PROD and CANARY manifests:
 	diff t.app02-ruby.kust.prod t.app02-ruby.kust.cana
 	echo Done.
+
+
+first-half: 
+	./00-init.sh                                                      
+	./01-set-up-GKE-clusters.sh                        
+	./02-setup-skaffold-cache-bucket.sh         
+	./03-configure-artifact-repo-and-docker.sh  
+	./04-status.sh
+	./05-IAM-enable-cloud-build.sh
+	./06-cloud-build-locally.sh
+
+second-half:
+	./07-create-cloud-build-triggers.sh
+	./08-cloud-deploy-setup.sh
+	./09-show-latest-successful-releases.sh
+	./10-auto-promote-dev-to-staging.sh
+	./11a-enable-Gateway-API-within-GKE.sh
+	./11b-kubectl-apply-stuff.sh
+	./12-blue-green-step-by-step.sh
+	./13-create-Svc-Account-for-Terraform.sh
+	./14-setup-DNS-Riccardo-only.sh
+	./15-dmarzi-xlb-GFE3-traffic-split.sh
+	./16-test-solution-2-by-curling-N-times.sh
+
+

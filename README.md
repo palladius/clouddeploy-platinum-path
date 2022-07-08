@@ -28,6 +28,9 @@ Doc: go/ricc-cd-canary-doc
 * `cp .env.sh.dist .env.sh`
 * Edit away with your personal project ids.
 * `sh 00-init.sh` and so on.. for all steps.
+* Do steps 1,2,3,4,5,6 automatically - TODO `make first-half`
+* Follow manual instructions for 6.5 below.
+* Do steps 7,8,9,..,16 automatically - `make second-half`
 
 You should be good to go!
 
@@ -35,6 +38,11 @@ For more shenaningans you might need to install `lolcat` (`gem install lolcat`) 
 it colors my life and most likely yours too. If you insist on a gray life, just
 rename lolcat to cat :) Other scripts can all be found in my Swiss-Army Knife repo: 
 https://github.com/palladius/sakura/
+
+### Manual part (step 6.5)
+
+I'm working on it in a Google Doc ATM (go/ricc-cd-canary-doc). When finished
+I'll migrate text and images here. 
 
 ## The apps
 

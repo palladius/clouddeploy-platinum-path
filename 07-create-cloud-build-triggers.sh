@@ -35,9 +35,8 @@ TRIGGERVERSION="1-7"
 # 1.2           Made better substitutions.
 touch /tmp/MyEmptyFile
 
-GCR_REPO="palladius/clouddeploy-platinum-path"
 GITHUB_REPO_NAME="clouddeploy-platinum-path"
-GITHUB_REPO_OWNER="palladius"
+GCR_REPO="${GITHUB_REPO_OWNER}/clouddeploy-platinum-path"
 
 for TEAM_ARR in "${TEAMS[@]}"; do
     IFS=";" read -r -a arr <<< "${TEAM_ARR}"
