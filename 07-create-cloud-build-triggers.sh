@@ -54,7 +54,8 @@ for TEAM_ARR in "${TEAMS[@]}"; do
     SUBSTIUTIONS="_DEPLOY_UNIT=$TEAM_NAME,_REGION=$REGION,_ARTIFACT_REPONAME=$ARTIFACT_REPONAME,_DEPLOY_REGION=$CLOUD_DEPLOY_REGION"
 
     # This sets up on GCR
-    gcloud alpha builds triggers create github --repo-owner="$GITHUB_REPO_OWNER" --repo-name="$GITHUB_REPO_NAME" --branch-pattern='.*' \
+    proceed_if_error_matches 'generic::already_exists: trigger' \
+      gcloud alpha builds triggers create github --repo-owner="$GITHUB_REPO_OWNER" --repo-name="$GITHUB_REPO_NAME" --branch-pattern='.*' \
       --description="[$TEAM_NUMBER] CB trigger from CLI for $TEAM_NAME module" --included-files="${SRC_SUBFOLDER}**,*.yaml,cloud-build/**" \
       --build-config cloudbuild.yaml --substitutions="$SUBSTIUTIONS" \
       --name $TEAM_NUMBER-CLIv$TRIGGERVERSION-$TEAM_NAME
@@ -64,6 +65,9 @@ for TEAM_ARR in "${TEAMS[@]}"; do
     #   --region=$REGION --name $TEAM_NUMBER-CLIv$TRIGGERVERSION-$TEAM_NAME
 
 done
+
+# some self gratification :)
+gcloud alpha builds triggers  list --format 'table(name,github.name,description,includedFiles)'
 
 # End of your code here
 _allgood_post_script
