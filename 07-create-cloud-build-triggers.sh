@@ -5,6 +5,17 @@ source .env.sh || fatal "Config doesnt exist please create .env.sh"
 #set -x
 set -e
 
+#######################################################################
+# This script requires some manual config for the script which I'm working
+# on ATM and will add to README.md when ready. Simply put, you need to
+# have any GCR repo with `/apps/app01/` and `/apps/app02/` code.
+# 
+#
+# Internal ref: b/170325147
+#######################################################################
+
+
+
 # Add your code here:
 
 # array: https://stackoverflow.com/questions/12317483/array-of-arrays-in-bash
