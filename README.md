@@ -24,7 +24,7 @@ Doc: go/ricc-cd-canary-doc
 
 ## Install
 
-* Create a project and assign billing to it. There gonna be clusterz :/
+* Create a project on GCP and assign billing to it. There gonna be clusterz so quota might hit you :/
 * `cp .env.sh.dist .env.sh`
 * Edit away with your personal project ids.
 * `sh 00-init.sh` and so on.. for all steps.
