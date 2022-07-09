@@ -1,3 +1,8 @@
 #!/bin/bash
 
+# Some people won't install lolcat (colored cat). If they wont,
+# this script provides the necessary colorless/boring wrapper.
+
+# To install: `gem install lolcat`.
+
 cat
