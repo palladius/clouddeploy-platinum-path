@@ -7,21 +7,27 @@ set -e
 
 # Add your code here:
 
-echo "Here we set up a few clusters, cicd-dev/cicd-prod (one for prod and one for everything else). We set up everything in region $REGION" | lolcat
+echo "Here we set up a few clusters, this will take a few minutes. Good time to get a coffee or tea. Note we set up everything in region $REGION" | lolcat
+
 gcloud auth configure-docker $REGION-docker.pkg.dev
 
+##############################################################################
+# Uncomment this if you want to create clusters NOT in automode (will cost more
+# but will be more responsive to pods creation). Also capacity is kind of checked
+# at birth rather than at usage. If you want to use it INSTEAD you need to change
+# the cluster names to the shorter ones below ("cicd-dev", ..). I kept this names
+# to have both fleets of 3 clusters in parallel to test functionalities.
+##############################################################################
 
-##############################################################################
-# Create clusters normal (no autopilot since I need to run Daniel crazy code)
-# I created these for testing but actually I can remove them now.
-##############################################################################
 # DEV
 # gcloud container --project "$PROJECT_ID" clusters create "cicd-noauto-dev" --region "$GKE_ALTERNATIVE_REGION" \
 #   --release-channel "regular" --network "projects/$PROJECT_ID/global/networks/default" --subnetwork "projects/$PROJECT_ID/regions/$GKE_ALTERNATIVE_REGION/subnetworks/default" \
 #   --cluster-ipv4-cidr "/17" --services-ipv4-cidr "/22" --enable-ip-alias
+# CANARY
 # gcloud container --project "$PROJECT_ID" clusters create "cicd-noauto-canary" --region "$GKE_ALTERNATIVE_REGION" \
 #   --release-channel "regular" --network "projects/$PROJECT_ID/global/networks/default" --subnetwork "projects/$PROJECT_ID/regions/$GKE_ALTERNATIVE_REGION/subnetworks/default" \
 #   --cluster-ipv4-cidr "/17" --services-ipv4-cidr "/22" --enable-ip-alias
+# PROD
 # gcloud container --project "$PROJECT_ID" clusters create "cicd-noauto-prod" --region "$GKE_ALTERNATIVE_REGION" \
 #   --release-channel "regular" --network "projects/$PROJECT_ID/global/networks/default" --subnetwork "projects/$PROJECT_ID/regions/$GKE_ALTERNATIVE_REGION/subnetworks/default" \
 #   --cluster-ipv4-cidr "/17" --services-ipv4-cidr "/22" --enable-ip-alias

@@ -4,8 +4,8 @@ source .env.sh || fatal "Config doesnt exist please create .env.sh"
 
 set -e 
 
-gcloud config configurations create $GCLOUD_CONFIG |
-gcloud config configurations activate $GCLOUD_CONFIG ||
+gcloud config configurations create $GCLOUD_CONFIG ||
+  gcloud config configurations activate $GCLOUD_CONFIG ||
     gcloud config configurations create $GCLOUD_CONFIG
 gcloud config set account $ACCOUNT
 gcloud config set project $PROJECT_ID
