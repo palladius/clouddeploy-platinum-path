@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# These scripts only work for me since i've set up Cloud DNS. I hope they're useful to you as you can
+# use them with minimal change.
+# TODO(ricc): adapt to $MYDOMAIN
+
 # Created with codelabba.rb v.1.4a
 source .env.sh || fatal 'Couldnt source this'
 #set -x
@@ -14,7 +18,7 @@ function riccardo_only_setup_dns() {
     HOSTNAME="$2"
     echo "[DEB] Trying to associate $HOSTNAME.apps.palladius.eu to $IP"
     # only works if it doesnt exist already
-    echodo gcloud --quiet --project ric-cccwiki beta dns record-sets create --rrdatas="$IP" \
+    gcloud --quiet --project ric-cccwiki beta dns record-sets create --rrdatas="$IP" \
         --type=A --ttl=300 --zone=apps-palladius-eu $HOSTNAME.apps.palladius.eu &&
             echo OK. Created $HOSTNAME.apps.palladius.eu
     #dns-setup-palladius.sh "$HOSTNAME.apps.palladius.eu" "$IP"

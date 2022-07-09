@@ -14,11 +14,10 @@ function show_k8s_stuff() {
         yellow "== ClusterContext: $CONTEXT =="
         # https://stackoverflow.com/questions/33942709/run-a-single-kubectl-command-for-a-specific-project-and-cluster
         # if it doesnt work this should work: kubectl config use-context CONTEXT_NAME
-        echodo kubectl --context="$CONTEXT" get service,gatewayclass 2>/dev/null
-#        kubectl --context="$CONTEXT" get gatewayclass
+        # RIP echo_do
+        echo kubectl --context="$CONTEXT" get service,gatewayclass 2>/dev/null
+             kubectl --context="$CONTEXT" get service,gatewayclass 2>/dev/null
     done
-#    kubectl get pods,service
-#    kubectl get gatewayclass
 }
 
 # Add your code here:

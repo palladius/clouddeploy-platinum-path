@@ -15,22 +15,22 @@ if echo $PIPELINE | grep -q dunno ; then
 fi
 
 # Add your code here:
-azure 10. INSPECTING CD PIPELINE="$PIPELINE"
-echodo gcloud deploy releases list --delivery-pipeline "$PIPELINE" --filter renderState=SUCCEEDED \
+echo 10. INSPECTING CD PIPELINE="$PIPELINE"
+gcloud deploy releases list --delivery-pipeline "$PIPELINE" --filter renderState=SUCCEEDED \
     --format="table[box,title='Ricc Successful Releases for $PIPELINE'](createTime:sort=1, name:label=LongBoringName, renderState, skaffoldVersion, skaffoldConfigPath)" \
     --sort-by=~createTime 
 #    --format yaml # 'multi(targetRenders.*.renderingState)'
 
 # this teaches how to sort subfields iwthin an item not how to sort items. https://stackoverflow.com/questions/69527048/trying-to-reverse-the-sequence-of-values-returned-by-my-gcloud-query 
 # useless here
-#echodo gcloud deploy releases list --delivery-pipeline "$RELEASE" --filter renderState=SUCCEEDED \
+#gcloud deploy releases list --delivery-pipeline "$RELEASE" --filter renderState=SUCCEEDED \
 #    --format="value(createTime, name)" --sort-by=createTime 
 # A field to sort by, if applicable. To perform a descending-order sort, prefix the value with a tilde ("~").
 # https://cloud.google.com/compute/docs/gcloud-compute/tips
 # BINGO!
 
 yellow 20. Lets now print out just the release name.. 
-#echodo gcloud deploy releases list --delivery-pipeline app02 --filter renderState=SUCCEEDED  # --format 'multi(targetRenders.canary.renderingState)'
+#gcloud deploy releases list --delivery-pipeline app02 --filter renderState=SUCCEEDED  # --format 'multi(targetRenders.canary.renderingState)'
 # gcloud deploy releases list --delivery-pipeline "$PIPELINE" --filter renderState=SUCCEEDED \
 #    --format="value(name.split.7)"
 
@@ -47,7 +47,7 @@ LATEST_SUCCESSFUL_RELEASE=$(
 echo "the LATEST_SUCCESSFUL_RELEASE for this PIPELINE $PIPELINE is: '$LATEST_SUCCESSFUL_RELEASE' !!"
 
 if $VERBOSE ; then 
-    echodo gcloud deploy releases list --delivery-pipeline "$PIPELINE" --filter renderState=SUCCEEDED
+    gcloud deploy releases list --delivery-pipeline "$PIPELINE" --filter renderState=SUCCEEDED
 fi 
 
 

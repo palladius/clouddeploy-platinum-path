@@ -28,7 +28,7 @@ for SUCCINCT_ROLE in \
   gcloud projects add-iam-policy-binding --member="serviceAccount:${TERRAFORM_SVC_ACCT}" --role "roles/$SUCCINCT_ROLE" "$PROJECT_ID"
 done
 
-echodo gcloud iam service-accounts keys create private/tf-cd-sa.key \
+gcloud iam service-accounts keys create private/tf-cd-sa.key \
     --iam-account="$SVC_ACCT_NAME@$PROJECT_ID.iam.gserviceaccount.com"
 
 ls -al private/
