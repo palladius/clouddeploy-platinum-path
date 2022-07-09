@@ -107,5 +107,5 @@ second-half:
 	./16-test-solution-2-by-curling-N-times.sh
 
 breadcrumb-navigation:
-	@echo "I hope youre a fan of Hansel and Gretel too. As Zoolander fan, I prefer the first."
+	@echo "I hope youre a fan of Hansel and Gretel too. As Zoolander fan, I am."
 	ls -al .executed_ok.*
