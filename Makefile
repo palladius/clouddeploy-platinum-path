@@ -106,4 +106,6 @@ second-half:
 	./15-dmarzi-xlb-GFE3-traffic-split.sh
 	./16-test-solution-2-by-curling-N-times.sh
 
-
+breadcrumb-navigation:
+	@echo "I hope youre a fan of Hansel and Gretel too. As Zoolander fan, I prefer the first."
+	ls -al .executed_ok.*
