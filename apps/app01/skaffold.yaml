@@ -13,14 +13,29 @@ build:
     buildpacks:
       builder: "gcr.io/buildpacks/builder:v1"
       trustBuilder: true
+      dependencies:
+        ignore: 
+          - k8s
 deploy:
   kustomize: # uses kustomize
-    paths: [./k8s/_base]
+    paths: [./k8s/base]
 profiles:
   - name: gcb
     build:
       googleCloudBuild: {}
   - name: dev
+    deploy:
+      kustomize: # uses kustomize
+        paths: [./k8s/dev]
   - name: staging
+    deploy:
+      kustomize: # uses kustomize
+        paths: [./k8s/staging]
   - name: canary
-  - name: production
+    deploy:
+      kustomize: # uses kustomize
+        paths: [./k8s/canary]
+  - name: prod
+    deploy:
+      kustomize: # uses kustomize
+        paths: [./k8s/prod]
