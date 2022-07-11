@@ -2,7 +2,6 @@
 
 # Created with codelabba.rb v.1.4a
 source .env.sh || fatal 'Couldnt source this'
-set -x
 set -e
 
 PROJECT_NUMBER=$(gcloud projects list --filter="$PROJECT_ID" --format="value(PROJECT_NUMBER)")
