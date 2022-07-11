@@ -18,7 +18,7 @@ else
     #red "NOPE. need to dig deeper. ERR=$RET"
     echo "[DEB] $OUTPUT" | lolcat 
     if echo "$OUTPUT" | grep -q "$ERROR_MSG" ; then 
-        yellow "[DEB] '$COMMAND' returns $RET but matches regex '$ERROR_MSG'!! Saved in corner"
+        yellow "[proceed_if_error_matches] '$COMMAND' returns $RET but matches regex '$ERROR_MSG'!! Saved in corner"
         exit 0
     else
         #red "[DEB] I've tried everything but cmd failed with no regex to save him. Sorry, exiting with $RET"

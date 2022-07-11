@@ -1,8 +1,13 @@
 #!/bin/bash
 
-source .env.sh || fatal "Config doesnt exist please create .env.sh"
-
 set -e 
+
+function _fatal() {
+    echo "$*" >&1
+    exit 42
+}
+
+source '.env.sh' || _fatal "Config doesnt exist please create .env.sh"
 
 gcloud config configurations create $GCLOUD_CONFIG ||
   gcloud config configurations activate $GCLOUD_CONFIG ||
