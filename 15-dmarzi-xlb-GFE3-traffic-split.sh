@@ -21,8 +21,6 @@ source .env.sh || _fatal 'Couldnt source this'
 set -x
 set -e
 
-#HEALTH_CHECK="http-neg-check" 
-
 # These two names need to be aligned with app1/app2 in the k8s.
 SERVICE1="svc1-canary90"
 SERVICE2="svc2-prod10"
