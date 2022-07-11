@@ -19,8 +19,7 @@ cat clouddeploy.template.yaml |
   sed -e "s/MY_REGION/$REGION/g" |
   sed -e "s/_MY_VERSION_/$CLOUD_DEPLOY_TEMPLATING_VER/g" |
   tee .tmp.clouddeploy.yaml |
-  egrep 'cluster|VER' |
-  sverda
+  egrep 'cluster|VER' 
 
 #yellow TODO
 # Zurich doesnt work, :( euw6
