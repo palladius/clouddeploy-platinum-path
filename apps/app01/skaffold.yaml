@@ -15,7 +15,7 @@ build:
       trustBuilder: true
       dependencies:
         ignore: 
-          - ./k8s
+          - k8s/**
 deploy:
   kustomize: # uses kustomize
     paths: [./k8s/base]

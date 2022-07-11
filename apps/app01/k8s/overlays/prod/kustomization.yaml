@@ -3,7 +3,7 @@ kind: Kustomization
 resources:
   - ../../base
 components:
-  - ../../../../../components/common/production
+  - ../../../../../components/common/prod
 replicas: 
   - name: app01-kupython
     count: 9
