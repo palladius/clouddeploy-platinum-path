@@ -15,6 +15,14 @@ function _fatal() {
     echo "$*" >&1
     exit 42
 }
+function _get_zones_by_region() {
+  #    🐼 gcloud compute zones list | egrep ^europe-west1
+  # europe-west1-b             europe-west1             UP
+  # europe-west1-d             europe-west1             UP
+  # europe-west1-c             europe-west1             UP
+  REGION="$1"
+  gcloud compute zones list | egrep "^$REGION" | awk '{print $1}'
+}
 
 # Created with codelabba.rb v.1.5
 source .env.sh || _fatal 'Couldnt source this'
@@ -60,7 +68,8 @@ echo "NEG1 Found: $(yellow $SVC1_UGLY_NEG_NAME)."
 
 # add the first backend with NEGs from the canary-$SERVICE1 (EXAMPLE BELOW)
 # Lets assume the zones are A B C
-for ITERATIVE_ZONE in $REGION-a $REGION-b $REGION-c ; do 
+_get_zones_by_region "$REGION" | while read ITERATIVE_ZONE ; do
+#for ITERATIVE_ZONE in $REGION-a $REGION-b $REGION-c ; do 
   proceed_if_error_matches "Duplicate network endpoint groups in backend service." \
     gcloud compute backend-services add-backend $SERVICE1 \
             --network-endpoint-group=$SVC1_UGLY_NEG_NAME \
@@ -88,7 +97,8 @@ SVC2_UGLY_NEG_NAME=$(gcloud compute network-endpoint-groups list --filter="$SERV
 echo "NEG2 Found: $(yellow $SVC2_UGLY_NEG_NAME)."
 
 # add the first backend with NEGs from the canary-$SERVICE2 (EXAMPLE BELOW)
-for ITERATIVE_ZONE in $REGION-a $REGION-b $REGION-c ; do 
+#for ITERATIVE_ZONE in $REGION-a $REGION-b $REGION-c ; do 
+_get_zones_by_region "$REGION" | while read ITERATIVE_ZONE ; do
   proceed_if_error_matches "Duplicate network endpoint groups in backend service." \
     gcloud compute backend-services add-backend "$SERVICE2" \
       --network-endpoint-group="$SVC2_UGLY_NEG_NAME" \
