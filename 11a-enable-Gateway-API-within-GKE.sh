@@ -35,15 +35,15 @@ gcloud services enable \
 
 
 #2. register clusters to the fleet (cluster level)
-# gcloud container fleet memberships register "$CLUSTER_1" \
-#      --gke-cluster "$GCLOUD_REGION/$CLUSTER_1" \
-#      --enable-workload-identity \
-#      --project=$PROJECT_ID --quiet
+gcloud container fleet memberships register "$CLUSTER_1" \
+     --gke-cluster "$GCLOUD_REGION/$CLUSTER_1" \
+     --enable-workload-identity \
+     --project=$PROJECT_ID --quiet
 
-# gcloud container fleet memberships register $CLUSTER_2 \
-#      --gke-cluster $GCLOUD_REGION/$CLUSTER_2 \
-#      --enable-workload-identity \
-#      --project=$PROJECT_ID --quiet
+gcloud container fleet memberships register $CLUSTER_2 \
+     --gke-cluster $GCLOUD_REGION/$CLUSTER_2 \
+     --enable-workload-identity \
+     --project=$PROJECT_ID --quiet
 
 # Cluster 1
 _deb "Lets recall that: CANARY CLUSTER_1=$CLUSTER_1"
