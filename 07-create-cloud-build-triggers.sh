@@ -63,7 +63,8 @@ for TEAM_ARR in "${TEAMS[@]}"; do
       gcloud alpha builds triggers create github --repo-owner="$GITHUB_REPO_OWNER" --repo-name="$GITHUB_REPO_NAME" --branch-pattern='.*' \
       --description="[$TEAM_NUMBER] CB trigger from CLI for $TEAM_NAME module" --included-files="${SRC_SUBFOLDER}**,*.yaml,cloud-build/**" \
       --build-config cloudbuild.yaml --substitutions="$SUBSTIUTIONS" \
-      --name $TEAM_NUMBER-CLIv$TRIGGERVERSION-$TEAM_NAME
+      --name $TEAM_NUMBER-CLIv$TRIGGERVERSION-$TEAM_NAME \
+      --region "$REGION"
 
     # If you choose to connect to GCR, use this comand instead (note: might be a bit old and not updated like the one above #metafishing ).
 
@@ -77,7 +78,7 @@ done
 
 # some self gratification :)
 echo Here are the triggers:
-gcloud alpha builds triggers  list --format 'table(name,github.owner,github.user,github.name,description,includedFiles)'
+gcloud alpha builds triggers list --format 'table(name,github.owner,github.user,github.name,description,includedFiles)'
 
 # End of your code here
 _allgood_post_script
