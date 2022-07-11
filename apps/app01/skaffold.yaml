@@ -4,7 +4,8 @@ metadata:
   name: app01
 build:
   artifacts:
-  - image: skaffold-buildpacks
+#  - image: skaff old-buildpa cks # old name
+  - image: skaf-app01-python-buildpacks
     #context: my-python-app # not sure what this is for.. this should point to the folder in which the Procfile resides, will default to . I believe
     sync:
       infer:

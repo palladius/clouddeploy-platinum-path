@@ -13,7 +13,8 @@ gcloud container clusters get-credentials cicd-dev --region $REGION --project $P
 
 # Skaffold auto-config
 #PLEONASTIC: skaffold config set default-repo "$REGION-docker.pkg.dev/$PROJECT_ID/$ARTIFACT_REPONAME"
-skaffold config set default-repo "$SKAFFOLD_DEFAULT_REPO"
+yellow skaffold config set default-repo "$REGION-docker.pkg.dev/$PROJECT_ID/$ARTIFACT_REPONAME"
+yellow skaffold config set default-repo "$SKAFFOLD_DEFAULT_REPO"
 
 # End of your code here
 _allgood_post_script

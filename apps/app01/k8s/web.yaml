@@ -26,7 +26,7 @@ spec:
       containers:
       - name: web-obsolete
         #image: ricc-app01-python-buildpacks # skaffold-buildpacks
-        image: skaffold-buildpacks
+        image: skaf-app01-python-buildpacks
         env:
           - name: PORT
             value: "8080"

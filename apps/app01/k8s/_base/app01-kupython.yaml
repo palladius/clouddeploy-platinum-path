@@ -25,8 +25,8 @@ spec:
     spec:
       containers:
       - name: app01-kupython # was 'web' and it worked
-        #image: ricc-app01-python-buildpacks # skaffold-buildpacks
-        image: skaffold-buildpacks
+        #image: ricc-app01-python-buildpacks # sk affold-bui ldpacks
+        image: skaf-app01-python-buildpacks
         env:
           - name: PORT
             value: "8080"

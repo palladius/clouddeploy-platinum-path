@@ -25,7 +25,7 @@ spec:
     spec:
       containers:
       - name: ricctest-app01-web
-        image: skaffold-buildpacks
+        image: skaf-app01-python-buildpacks # WAS: skaffold - buildpacks
         env:
           - name: PORT
             value: "8080"
