@@ -67,7 +67,8 @@ for TEAM_ARR in "${TEAMS[@]}"; do
 
     # If you choose to connect to GCR, use this comand instead (note: might be a bit old and not updated like the one above #metafishing ).
 
-    # echo NOT_THIS gcloud alpha builds triggers create cloud-source-repositories --repo=$GITHUB_REPO_OWNER/clouddeploy-platinum-path --branch-pattern='.*' \
+    # echo NOT_THIS gcloud alpha builds triggers create cloud-source-repositories \
+    #   --repo=$GITHUB_REPO_OWNER/clouddeploy-platinum-path --branch-pattern='.*' \
     #   --description="[$TEAM_NUMBER] CB trigger from CLI for $TEAM_NAME module" --included-files="${SRC_SUBFOLDER}**,*.yaml" \
     #   --build-config cloudbuild.yaml --substitutions="_DEPLOY_UNIT=$TEAM_NAME,_FAVORITE_COLOR=$FAV_COLOR" \
     #   --region=$REGION --name $TEAM_NUMBER-CLIv$TRIGGERVERSION-$TEAM_NAME
