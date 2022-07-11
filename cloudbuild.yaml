@@ -22,8 +22,8 @@ steps:
     id: PullCache
     args: ['cp', 'gs://$PROJECT_ID-skaffoldcache/skaffold-cache/$_DEPLOY_UNIT.txt', '/workspace/cache']
 #  - name: gcr.io/k8s-skaffold/skaffold:v1.37.1-lts # not sure why i removed this..
-#  - name: gcr.io/k8s-skaffold/skaffold:v1.38.0 # Sander told me to point to 1.37 - same as CD
-  - name: gcr.io/k8s-skaffold/skaffold:v1.37.1-lts
+  - name: gcr.io/k8s-skaffold/skaffold:v1.38.0 # Sander told me to point to 1.37 - same as CD
+#  - name: gcr.io/k8s-skaffold/skaffold:v1.37.1-lts # 2022-07-11 doesnt work wuith aopp02: Step #1 - "SkaffoldBuildUsingCache": time="2022-07-11T12:58:11Z" level=warning msg="Your Skaffold version might be too old. Download the latest version (1.39.1) from:\n  https://github.com/GoogleContainerTools/skaffold/releases/tag/v1.39.1\n" subtask=-1 task=DevLoop
     id: SkaffoldBuildUsingCache
     waitFor:
     - PullCache

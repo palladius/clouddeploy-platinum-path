@@ -1,6 +1,6 @@
 #!/bin/bash
 
-MODULE_TO_BUILD="${1:-app01}"
+MODULE_TO_BUILD="${1:-app02}"
 COLOR=${2:-orange}
 
 # Created with codelabba.rb v.1.4a
@@ -25,7 +25,7 @@ gcloud auth configure-docker $REGION-docker.pkg.dev
 
 _echodo cloud-build-local --config="cloudbuild.yaml" --dryrun=false \
   --substitutions "_DEPLOY_UNIT=$MODULE_TO_BUILD,_REGION=$REGION,_ARTIFACT_REPONAME=$ARTIFACT_REPONAME,_DEPLOY_REGION=$CLOUD_DEPLOY_REGION" \
-  --push apps/app01/
+  --push "apps/$MODULE_TO_BUILD/"
 
 # End of your code here
 _allgood_post_script()
