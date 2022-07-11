@@ -12,8 +12,8 @@ kubectl config get-contexts
 #kubectl apply --context gke-west-1 -f https://raw.githubusercontent.com/GoogleCloudPlatform/gke-networking-recipes/main/gateway/gke-gateway-controller/multi-cluster-gateway/store-west-1-service.yaml
 #kubectl apply --context gke-west-2 -f https://raw.githubusercontent.com/GoogleCloudPlatform/gke-networking-recipes/main/gateway/gke-gateway-controller/multi-cluster-gateway/store-west-2-service.yaml
 
-kubectl apply --context "$GKE_CANARY_CLUSTER_CONTEXT" 
-
+#kubectl apply --context "$GKE_CANARY_CLUSTER_CONTEXT" 
+red TODO ricc 
 #######################
 # End of your code here
 #######################

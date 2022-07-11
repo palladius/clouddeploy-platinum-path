@@ -9,7 +9,7 @@ spec:
   - name: bifid-external-store-http
   hostnames:
   - "bifid-store.example.io"
-  - "store-bifido.palladius.it"
+  - "bifid-store.palladius.it" # please change to $MY_DOMAIN, or add below.
   rules:
   - backendRefs:
     - name: store-common-svc
