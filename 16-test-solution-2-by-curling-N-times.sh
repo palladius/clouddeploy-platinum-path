@@ -20,7 +20,8 @@ set -e
 
 IP_FWDRULE=$(gcloud compute forwarding-rules list --filter "$FWD_RULE" | tail -1 | awk '{print $2}')
 
-echo Trying $N_TRIES to curl my host at IP:$IP_FWDRULE ...
+echo
+white "Trying $N_TRIES times to curl my host at IP: $IP_FWDRULE [$FWD_RULE]..."
 for i in {0..20}; do 
     echo ""; curl -H "Host: xlb-gfe3-host.example.io" $IP_FWDRULE/whereami/pod_name; 
 done
