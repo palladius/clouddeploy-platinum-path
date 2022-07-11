@@ -17,7 +17,7 @@ set -e
 #MY_DOMAIN=apps.mydomain.com
 # MY_DASHED_DOMAIN=apps-mydomain-com
 export MY_DASHED_DOMAIN="${MY_DOMAIN//./-}"
-export CLOUD_DNS_PROJECT_ID="$PROJECT_ID"
+#set up on your .env.sh export CLOUD_DNS_PROJECT_ID=..."$PROJECT_ID"
 
 _deb "MY_DASHED_DOMAIN: $MY_DASHED_DOMAIN"
 # Add your code here:
@@ -28,9 +28,10 @@ function _cloud_dns_setup() {
     HOSTNAME="$2"
     echo "[DEB] Trying to associate $HOSTNAME.$MY_DOMAIN to $IP"
     # only works if it doesnt exist already
-    gcloud --quiet --project "$CLOUD_DNS_PROJECT_ID" beta dns record-sets create --rrdatas="$IP" \
-        --type=A --ttl=300 --zone="$MY_DASHED_DOMAIN" $HOSTNAME.$MY_DOMAIN &&
-            echo OK. Created $HOSTNAME.$MY_DOMAIN
+    proceed_if_error_matches "already exists" \
+        gcloud --quiet --project "$CLOUD_DNS_PROJECT_ID" beta dns record-sets create --rrdatas="$IP" \
+            --type=A --ttl=300 --zone="$MY_DASHED_DOMAIN" $HOSTNAME.$MY_DOMAIN &&
+                echo OK. Created $HOSTNAME.$MY_DOMAIN
     # gcloud --quiet --project ric-cccwiki beta dns record-sets create --rrdatas="$IP" \
     #     --type=A --ttl=300 --zone=apps-palladius-eu $HOSTNAME.$MY_DOMAIN &&
     #         echo OK. Created $HOSTNAME.$MY_DOMAIN
@@ -65,6 +66,11 @@ _cloud_dns_setup "$(getLoadBalancerIP $GKE_CANARY_CLUSTER_CONTEXT app02-kuruby)"
 _cloud_dns_setup "$(getLoadBalancerIP $GKE_PROD_CLUSTER_CONTEXT app01-kupython)" app01 # prod
 _cloud_dns_setup "$(getLoadBalancerIP $GKE_PROD_CLUSTER_CONTEXT app02-kuruby)"   app02 # prod
 
+echo "Lets see if it works:"
+for MYHOST in keep-me-honest app01-canary app01-canary app01 app02 ; do
+    _deb "Testing host "$MYHOST.$MY_DOMAIN": $(host "$MYHOST.$MY_DOMAIN")" ||
+        echo Some errors with "$MYHOST.$MY_DOMAIN"
+done
 
 # End of your code here
 _allgood_post_script

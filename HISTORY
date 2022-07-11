@@ -1,3 +1,4 @@
+* 2022-07-11 v0.8 Many things I forgot, bumped env.sh 2 version up with new succulent ENV VARS.
 * 2022-07-05 v0.5 Major image rename: from 'skaffold-buildpacks' to 'skaf-app01-python-buildpacks'
 * 2022-07-05 v0.4 Removed echodo depndency, but added fake lolcat to PATH.
 * 2022-07-05 v0.3 Added GKE setup for GFE with traffic splitting (solution 2).
