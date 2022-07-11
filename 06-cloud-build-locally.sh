@@ -1,6 +1,6 @@
 #!/bin/bash
 
-MODULE_TO_BUILD="${1:-app02}"
+MODULE_TO_BUILD="${1:-app01}"
 COLOR=${2:-orange}
 
 # Created with codelabba.rb v.1.4a
