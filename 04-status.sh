@@ -26,16 +26,20 @@ SHOW_VERBOSE_STUFF="false"
 SHOW_GCLOUD_ENTITIES="false"
 SHOW_DEVCONSOLE_LINKS="true"
 SHOW_KUBERNETES_STUFF="true"
+SHOW_SKAFFOLD_STUFF="true"
 
 echo "+ REGION for DEPLOY:          $CLOUD_DEPLOY_REGION"
 echo "+ REGION for GKE:             $GKE_REGION"
 echo "+ REGION for EVERYTHING ELSE: $REGION"
 
 #echo TODO kubectl get pods (TODO first add correct context)
-gsutil ls -l "gs://$SKAFFOLD_BUCKET/skaffold-cache/"
-kubectl get pods,service
+#kubectl get pods,service
 gcloud beta builds triggers list --region $REGION
-skaffold config list
+
+if [ "true" = "$SHOW_SKAFFOLD_STUFF" ]; then 
+    echo "== skaffold info ==" | lolcat
+    skaffold config list
+fi
 
 if [ "true" = "$SHOW_DEVCONSOLE_LINKS" ]; then 
     echo "== DevConsole useful links START (if you are a UI kind of person) ==" | lolcat

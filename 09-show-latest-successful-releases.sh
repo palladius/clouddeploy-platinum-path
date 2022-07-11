@@ -6,8 +6,9 @@ source .env.sh || fatal "Config doesnt exist please create .env.sh"
 #set -e
 
 PIPELINE="${1:-dunno}"
-VERBOSE=false
-AUTO_PROMOTE_DEV_TO_STAGING=true
+VERBOSE="false"
+AUTO_PROMOTE_DEV_TO_STAGING="true"
+MAX_ROWS="5"
 
 if echo $PIPELINE | grep -q dunno ; then 
     echo Give me app-01 or app02 in ARGV1 or for both just call: make show-latest-succesful-releases
@@ -16,9 +17,11 @@ fi
 
 # Add your code here:
 echo 10. INSPECTING CD PIPELINE="$PIPELINE"
-gcloud deploy releases list --delivery-pipeline "$PIPELINE" --filter renderState=SUCCEEDED \
-    --format="table[box,title='Ricc Successful Releases for $PIPELINE'](createTime:sort=1, name:label=LongBoringName, renderState, skaffoldVersion, skaffoldConfigPath)" \
-    --sort-by=~createTime 
+gcloud deploy releases list --delivery-pipeline "$PIPELINE" \
+    --filter renderState=SUCCEEDED \
+    --format="table[box,title='Latest Successful Releases for $PIPELINE'](createTime:sort=1, name:label=LongBoringName, renderState, skaffoldVersion, skaffoldConfigPath)" \
+    --sort-by=~createTime \
+    --limit="$MAX_ROWS"
 #    --format yaml # 'multi(targetRenders.*.renderingState)'
 
 # this teaches how to sort subfields iwthin an item not how to sort items. https://stackoverflow.com/questions/69527048/trying-to-reverse-the-sequence-of-values-returned-by-my-gcloud-query 
@@ -47,7 +50,8 @@ LATEST_SUCCESSFUL_RELEASE=$(
 echo "the LATEST_SUCCESSFUL_RELEASE for this PIPELINE $PIPELINE is: '$LATEST_SUCCESSFUL_RELEASE' !!"
 
 if $VERBOSE ; then 
-    gcloud deploy releases list --delivery-pipeline "$PIPELINE" --filter renderState=SUCCEEDED
+    gcloud deploy releases list --delivery-pipeline "$PIPELINE" --filter renderState=SUCCEEDED 
+    #--limit "$MAX_ROWS"
 fi 
 
 

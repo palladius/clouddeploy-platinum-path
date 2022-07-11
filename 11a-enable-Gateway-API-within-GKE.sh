@@ -36,27 +36,21 @@ gcloud services enable \
 
 
 #2. register clusters to the fleet (cluster level)
-gcloud container fleet memberships register "$CLUSTER_1" \
-     --gke-cluster "$GCLOUD_REGION/$CLUSTER_1" \
-     --enable-workload-identity \
-     --project=$PROJECT_ID
+# gcloud container fleet memberships register "$CLUSTER_1" \
+#      --gke-cluster "$GCLOUD_REGION/$CLUSTER_1" \
+#      --enable-workload-identity \
+#      --project=$PROJECT_ID --quiet
 
-gcloud container fleet memberships register $CLUSTER_2 \
-     --gke-cluster $GCLOUD_REGION/$CLUSTER_2 \
-     --enable-workload-identity \
-     --project=$PROJECT_ID
+# gcloud container fleet memberships register $CLUSTER_2 \
+#      --gke-cluster $GCLOUD_REGION/$CLUSTER_2 \
+#      --enable-workload-identity \
+#      --project=$PROJECT_ID --quiet
+
 # Cluster 1
-echo lets recall that: CLUSTER_1="$CLUSTER_1"
-echo lets recall that: CLUSTER_2="$CLUSTER_2"
+_deb "Lets recall that: CANARY CLUSTER_1=$CLUSTER_1"
+_deb "lets recall that: PROD   CLUSTER_2=$CLUSTER_2"
 #yellow "Try now for cluster1=$CLUSTER_1 kubectl apply -f  $GKE_SOLUTION_ILB_SETUP_DIR/cluster1/"
 
-gcloud container clusters get-credentials "$CLUSTER_1" --region "$GCLOUD_REGION" --project "$PROJECT_ID"
-kubectl config get-contexts
-kubectl apply -f  $GKE_SOLUTION_ILB_SETUP_DIR/cluster1/
-
-gcloud container clusters get-credentials "$CLUSTER_2" --region "$GCLOUD_REGION" --project "$PROJECT_ID"
-kubectl config get-contexts
-kubectl apply -f  $GKE_SOLUTION_ILB_SETUP_DIR/cluster2/
 
 #3. enable multi-cluster services
 gcloud container fleet multi-cluster-services enable \
@@ -69,22 +63,25 @@ gcloud projects add-iam-policy-binding "$PROJECT_ID" \
      --project=$PROJECT_ID
 
 #4.  enable gateway apis
-kubectl-on-canary apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
-kubectl-on-prod apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
+kubectl --context=$GKE_CANARY_CLUSTER_CONTEXT apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
+kubectl --context=$GKE_PROD_CLUSTER_CONTEXT   apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
+
 # I should see FOUR not TWO:
-kubectl get gatewayclass
+#kubectl get gatewayclass
+_kubectl_on_both_canary_and_prod get gatewayclass
+
 
 #5. enable GKE gateway controller just in GKE01.
 gcloud container fleet ingress enable \
-    --config-membership=/projects/$PROJECT_ID/locations/global/memberships/$CLUSTER_1 \
-     --project=$PROJECT_ID
+    --config-membership="/projects/$PROJECT_ID/locations/global/memberships/$CLUSTER_1" \
+     --project="$PROJECT_ID"
 
-gcloud projects add-iam-policy-binding $PROJECT_ID \
+gcloud projects add-iam-policy-binding "$PROJECT_ID" \
      --member "serviceAccount:service-${PROJECT_NUMBER}@gcp-sa-multiclusteringress.iam.gserviceaccount.com" \
      --role "roles/container.admin" \
-     --project=$PROJECT_ID
+     --project="$PROJECT_ID"
      
-echo Done. Now proceed to 11b to execute upon kubectl on two clusters: ./11b-kubectl-apply-stuff.sh
+echo "Done. Now proceed to 11b to execute upon kubectl on two clusters: ./11b-kubectl-apply-stuff.sh"
 
 
 # End of your code here
