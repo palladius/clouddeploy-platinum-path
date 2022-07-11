@@ -33,9 +33,13 @@ spec:
           - name: TEST_RICCARDO
             value: |
               I copied and pasted web.yaml inside base and now Im trying to use kustomize instead.
-              Not sure if Ill survive but whatever happens we'll see.
+              Not sure if Ill survive but we'll see.
+              Why am I using Kustomize? Thanks for asking. Two reasons mainly:
+              1. Learn kustomize
+              2. the only legitimate reason is to DRY the 4 dev/stagingca/ary/prod while injecting
+                 a slight difference in Canary vs Prod config (9 vs 1 Replicas respectively)
           - name: FAVORITE_COLOR
-            value: fbf4e2 # NACRE madreperla
+            value: fbf4e2 # NACRE / madreperla
           - name: USE_KUSTOMIZE
             value: "true"
           - name: APP_CODE

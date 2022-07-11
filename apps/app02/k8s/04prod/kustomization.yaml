@@ -6,4 +6,4 @@ components:
   - ../../../../components/prod/common
 replicas: 
   - name: app02-kuruby
-    count: 9 # turn it up to
+    count: 4 # If you have plenty of capacity, please turn to 9 (9 vs 1 is 90%/10%) but 4 is a better example as it demonstrates (4 vs 1 is 80%/20%) with half the pods.
