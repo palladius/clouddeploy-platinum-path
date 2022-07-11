@@ -39,3 +39,11 @@ profiles:
     deploy:
       kustomize: # uses kustomize
         paths: [./k8s/overlays/prod]
+
+# TODO skaffold profile for solutions. then use with skaffold render or CD release CLI.
+#   - name: canary-solution1
+#   - name: canary-solution1
+  # - name: canary-solution1
+  #   deploy:
+  #     kustomize: # uses kustomize
+  #       paths: [./k8s/overlays/canary]
