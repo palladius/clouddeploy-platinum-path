@@ -26,16 +26,16 @@ profiles:
   - name: dev
     deploy:
       kustomize: # uses kustomize
-        paths: [./k8s/dev]
+        paths: [./k8s/overlays/dev]
   - name: staging
     deploy:
       kustomize: # uses kustomize
-        paths: [./k8s/staging]
+        paths: [./k8s/overlays/staging]
   - name: canary
     deploy:
       kustomize: # uses kustomize
-        paths: [./k8s/canary]
+        paths: [./k8s/overlays/canary]
   - name: prod
     deploy:
       kustomize: # uses kustomize
-        paths: [./k8s/prod]
+        paths: [./k8s/overlays/prod]
