@@ -21,8 +21,9 @@ steps:
   - name: gcr.io/cloud-builders/gsutil
     id: PullCache
     args: ['cp', 'gs://$PROJECT_ID-skaffoldcache/skaffold-cache/$_DEPLOY_UNIT.txt', '/workspace/cache']
-#  - name: gcr.io/k8s-skaffold/skaffold:v1.37.1-lts
-  - name: gcr.io/k8s-skaffold/skaffold:v1.38.0
+#  - name: gcr.io/k8s-skaffold/skaffold:v1.37.1-lts # not sure why i removed this..
+#  - name: gcr.io/k8s-skaffold/skaffold:v1.38.0 # Sander told me to point to 1.37 - same as CD
+  - name: gcr.io/k8s-skaffold/skaffold:v1.37.1-lts
     id: SkaffoldBuildUsingCache
     waitFor:
     - PullCache
