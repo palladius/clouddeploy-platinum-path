@@ -154,7 +154,8 @@ END_OF_URLMAP_GCLOUD_YAML_CONFIG
 } | gcloud compute url-maps import "$URLMAP_NAME" --source=- --quiet 
   
 
-proceed_if_error_matches "The resource 'projects/cicd-platinum-test001/global/targetHttpProxies/http-svc9010-lb' already exists" \
+#proceed_if_error_matches "The resource 'projects/$PROJECT_ID/global/targetHttpProxies/http-svc9010-lb' already exists" \
+proceed_if_error_matches "already exists" \
   gcloud compute target-http-proxies create "$URLMAP_NAME" --url-map="$URLMAP_NAME"
 
 # TODO(ricc): change 89/11 to 90/10. Just to prove granularity :)
