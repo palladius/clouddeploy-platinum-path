@@ -31,7 +31,8 @@ function _cloud_dns_setup() {
     proceed_if_error_matches "already exists" \
         gcloud --quiet --project "$CLOUD_DNS_PROJECT_ID" beta dns record-sets create --rrdatas="$IP" \
             --type=A --ttl=300 --zone="$MY_DASHED_DOMAIN" $HOSTNAME.$MY_DOMAIN &&
-                echo OK. Created $HOSTNAME.$MY_DOMAIN
+                echo OK. Created $HOSTNAME.$MY_DOMAIN ||
+                echo ERR creating $HOSTNAME.$MY_DOMAIN..
     # gcloud --quiet --project ric-cccwiki beta dns record-sets create --rrdatas="$IP" \
     #     --type=A --ttl=300 --zone=apps-palladius-eu $HOSTNAME.$MY_DOMAIN &&
     #         echo OK. Created $HOSTNAME.$MY_DOMAIN
