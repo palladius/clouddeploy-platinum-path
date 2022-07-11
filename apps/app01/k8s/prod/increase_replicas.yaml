@@ -1,8 +1,0 @@
-# https://kubernetes.io/docs/tasks/manage-kubernetes-objects/kustomization/#setting-cross-cutting-fields
-# learnt a new technology: customizing
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: app01-kupython 
-spec:
-  replicas: 8

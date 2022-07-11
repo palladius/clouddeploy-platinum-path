@@ -1,5 +1,0 @@
-#https://github.com/kubernetes-sigs/kustomize/blob/master/examples/multibases/multi-namespace.md
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: cicd-internal
