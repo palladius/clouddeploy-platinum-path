@@ -13,4 +13,4 @@ For base
 
 For production
 
-    skaffold render --module=app01 --profile=production
+    skaffold render --module=app01 --profile=prod
