@@ -11,4 +11,5 @@ commonAnnotations:
   riccNotes: |
     This is common stuff which I include in my CANARY manifests.
     Thanks Daniel and Alex for their help on this!
-
+components:
+  - ../base
