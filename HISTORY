@@ -1,6 +1,8 @@
-* 2022-07-11 v0.9 solution2 is now WORKING.
-* 2022-07-11 v0.8 Many things I forgot, bumped env.sh 2 version up with new succulent ENV VARS.
-* 2022-07-05 v0.5 Major image rename: from 'skaffold-buildpacks' to 'skaf-app01-python-buildpacks'
-* 2022-07-05 v0.4 Removed echodo depndency, but added fake lolcat to PATH.
-* 2022-07-05 v0.3 Added GKE setup for GFE with traffic splitting (solution 2).
-* 2022-05-24 v0.2 Finally Cloud Build is set up.
+* 2022-07-11 v0.10.1 Alex fixed all Kustomize issues. This requires a major change but since I dont want to promote to v1.0
+                     I'm going to introduce a minor version instead :)
+* 2022-07-11 v0.9.0 Solution2 is now WORKING.
+* 2022-07-11 v0.8.0 Many things I forgot, bumped env.sh 2 version up with new succulent ENV VARS.
+* 2022-07-05 v0.5.0 Major image rename: from 'skaffold-buildpacks' to 'skaf-app01-python-buildpacks'
+* 2022-07-05 v0.4.0 Removed echodo depndency, but added fake lolcat to PATH.
+* 2022-07-05 v0.3.0 Added GKE setup for GFE with traffic splitting (solution 2).
+* 2022-05-24 v0.2.0 Finally Cloud Build is set up.
