@@ -13,6 +13,8 @@ This is an example demonstrating:
 
 ## History
 
+* 20220711 2.2 Major Kustomize rewrites - thanks Alex! 
+* 20220711 2.1 Lot of useless version bumps just to test CD. Sorry folks.
 * 20220614 2.0 Renamed to kupython -> breaking change.
 * 20220614 1.7 Added python emoji 🐍 in frontend - to test GKE backend changes..
 * 20220610 1.4 changed fav color to TEAL and added in HTML as background to add some color to the app :) 
