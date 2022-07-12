@@ -2,6 +2,7 @@
 
 skaffold-dev:
 	./skaffold-wrapper.sh dev
+dev: skaffold-dev
 
 skaffold-run-dev:
 	./skaffold-wrapper.sh run -p dev
