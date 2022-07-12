@@ -3,6 +3,6 @@ kind: Kustomization
 commonLabels:
   tier: ricc-frontend-application
 resources:
-  - deployment.yaml # ruby stuff
+  - app02-kuruby.yaml # Depl+Service
 components:
   - ../../../../components/common/base

@@ -4,7 +4,7 @@ metadata:
   name: app02
 build:
   artifacts:
-  - image: ricc-app02-ruby-example   
+  - image: ricc-app02-kuruby-skaffold 
     context: ruby-app
     sync:
       # Sync app.rb file, being watch with rack-unreloader

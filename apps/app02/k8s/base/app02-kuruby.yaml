@@ -25,7 +25,7 @@ spec:
     spec:
       containers:
       - name: app02-kuruby
-        image: ricc-app01-ruby-example    # ruby-example
+        image: ricc-app02-kuruby-skaffold    # Dockerized
         ports:
         - containerPort: 80
         env:
