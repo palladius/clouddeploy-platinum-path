@@ -8,7 +8,8 @@ test:
 
 .PHONY: tmp clean
 
-tmp:
+tmp: kustomize
+kustomize:
 	mkdir -p tmp/
 
 	kustomize build app01/k8s/overlays/dev/    > tmp/app01-tmp-dev.yaml

@@ -8,6 +8,6 @@ commonAnnotations:
   developer: Riccardo Carlesso
   riccNotes: |
     This is common stuff which I include in my STAGING manifests.
-    Testing thje -dev suffix but probably i wanna remove it in a while
+    Removed the -staging suffix as it added additional unnecessary complexity.
 components:
   - ../base

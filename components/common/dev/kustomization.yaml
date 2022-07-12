@@ -8,6 +8,7 @@ commonAnnotations:
   developer: Riccardo Carlesso
   riccNotes: |
     This is common stuff which I include in my DEV manifests.
-    Testing thje -dev suffix but probably i wanna remove it in a while
+    Removed -dev suffix which was awesome but created additional complexity
+    as my gcloud scripts needed to be aware of it.
 components:
   - ../base

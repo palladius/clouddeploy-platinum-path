@@ -1,3 +1,4 @@
-resources: ../base/service
+resources: ../base # /service
 # properties:
 # ...
+# then replace existing annotations with the ones you want.
