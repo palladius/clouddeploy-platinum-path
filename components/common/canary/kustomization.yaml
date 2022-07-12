@@ -1,10 +1,8 @@
 apiVersion: kustomize.config.k8s.io/v1alpha1
 kind: Component
 # https://kubernetes.io/docs/tasks/manage-kubernetes-objects/kustomization/#setting-cross-cutting-fields
-#namespace: my-namespace
-#nameSuffix: "-canary"
 commonLabels:
-  #applicazione-in-produzione: bingo
+  is-app-in-production: bingo
   ricc-awesome-selector: canary-or-prod
   ricc-env: canary
 commonAnnotations:
@@ -13,3 +11,9 @@ commonAnnotations:
     Thanks Daniel and Alex for their help on this!
 components:
   - ../base
+#################
+# Note: THESE are DANGEROUS for my installation as they add plenty of complexity which I need
+# to manage on the gcloud side as well, but super cool for the future.
+#namespace: my-namespace
+#nameSuffix: "-canary"
+#################

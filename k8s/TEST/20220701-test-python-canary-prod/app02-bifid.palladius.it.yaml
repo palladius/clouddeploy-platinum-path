@@ -50,7 +50,6 @@ metadata:
     cloud.google.com/neg: '{"exposed_ports": {"8080":{"name": "app02-ruby-common-svc"}}}'
 spec:
   selector:
-    #
     ricc-awesome-selector: canary-or-prod
     app: app02-kuruby
   ports:
@@ -76,7 +75,7 @@ spec:
   # selector:
   #   app: app02-kuruby
   #   application: riccardo-cicd-platinum-path
-  #   applicazione-in-produzione: bingo
+  #   is-app-in-production: bingo
   #   github-repo: palladius-colon-cicd-platinum-path
   #   ricc-awesome-selector: canary-or-prod
   #   ricc-env: prod

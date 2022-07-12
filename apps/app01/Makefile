@@ -36,3 +36,13 @@ run-p8080:
 	python3 -m pip install --requirement requirements.txt 
 #	conda install --file requirements.txt
 	FLASK_APP=web.py python3 -m flask run --host=0.0.0.0 --port=8080
+
+kustomize-dump:
+	# safely git-ignored ;)
+	mkdir -p tmp/
+	kustomize build k8s/overlays/dev/    > tmp/tmp-dev.yaml
+	kustomize build k8s/overlays/staging/> tmp/tmp-staging.yaml
+	kustomize build k8s/overlays/canary/ > tmp/tmp-canary.yaml
+	kustomize build k8s/overlays/prod/   > tmp/tmp-prod.yaml
+	diff tmp/tmp-prod.yaml tmp/tmp-canary.yaml
+	
