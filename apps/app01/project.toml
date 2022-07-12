@@ -1,0 +1,13 @@
+# documented in https://buildpacks.io/docs/app-developer-guide/using-project-descriptor/
+
+[project]
+id = "it.palladius.app01-kupython"
+name = "Sample App in python with Kustomize and BuildPacks"
+# TODO find way to get from VERSION, or v.v. get from here :)
+version = "2.2.0"
+
+[build]
+# .packignore for BuildPacks
+exclude = [
+    "/README.md"
+]
