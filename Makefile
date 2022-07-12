@@ -91,7 +91,8 @@ first-half:
 	./03-configure-artifact-repo-and-docker.sh  
 	./04-status.sh
 	./05-IAM-enable-cloud-build.sh
-	./06-cloud-build-locally.sh
+	#./06-cloud-build-locally.sh
+	echo All good: first half done.
 
 second-half:
 	./07-create-cloud-build-triggers.sh
