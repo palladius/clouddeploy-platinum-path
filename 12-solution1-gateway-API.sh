@@ -33,7 +33,7 @@ egrep "store|v2" $GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/templates/[a-z]*yaml | 
 # set up additional variables for the for cycle
 REGION="${GCLOUD_REGION}"
 PREFIX="${APP_NAME}-${REGION}" # maybe in the future PREFIX = APP-REGION
-SOLUTION1_TEMPLATING_VER="1-0"
+SOLUTION1_TEMPLATING_VER="1.0a"
 ###############################################
 
 for TEMPLATE_FILE in "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/templates/"*.template.yaml ; do 
@@ -62,6 +62,8 @@ green Done.
 
 yellow Now we can issue a kubectl on the out dir..
 echo "TODO:  kubectl apply -f $GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/out/"
+
+kubectl --context="$GKE_CANARY_CLUSTER_CONTEXT" apply -f "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/out/"
 
 #######################
 # End of your code here

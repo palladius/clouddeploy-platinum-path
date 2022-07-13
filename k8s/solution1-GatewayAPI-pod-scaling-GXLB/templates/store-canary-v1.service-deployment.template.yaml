@@ -26,7 +26,7 @@ spec:
         version: canary
     spec:
       containers:
-      - name: this-is-useless # used to be: whereami
+      - name: sol1-canary-image-useless # used to be: whereami
         image: __IMAGE_NAME__
         ports:
           - containerPort: 8080

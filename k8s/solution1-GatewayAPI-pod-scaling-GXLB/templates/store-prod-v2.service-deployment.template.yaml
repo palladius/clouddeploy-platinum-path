@@ -1,40 +1,40 @@
-# Service 'store-v2' has 9x capacity than store-v1. We simulate it with 9x pods ands 9x capacity (max-rate-per-endpoint)
+# Service 'store-prod' has 9x capacity than store-v1. We simulate it with 9x pods ands 9x capacity (max-rate-per-endpoint)
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: store-v2
+  name: __K8S_APP_SELECTOR__-prod
 spec:
   replicas: 4
   selector:
     matchLabels:
-      app: store
-      version: v2
+      app: __K8S_APP_SELECTOR__
+      version: prod
   template:
     metadata:
       labels:
-        app: store
-        version: v2
+        app: __K8S_APP_SELECTOR__
+        version: prod
     spec:
       containers:
-      - name: whereami
-        image: gcr.io/google-samples/whereami:v1.2.1
+      - name: sol1-prod-image-useless #  whereami
+        image: __IMAGE_NAME__  # gcr.io/google-samples/whereami:v1.2.1
         ports:
           - containerPort: 8080
         env:
         - name: METADATA
-          value: "store-v2"
+          value: "__K8S_APP_SELECTOR__-prod"
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: store-v2
+  name: __K8S_APP_SELECTOR__-prod
   annotations:
     networking.gke.io/max-rate-per-endpoint: "90"
-    cloud.google.com/neg: '{"exposed_ports": {"8080":{"name": "store-v2-neg"}}}'
+    cloud.google.com/neg: '{"exposed_ports": {"8080":{"name": "__K8S_APP_SELECTOR__-prod-neg"}}}'
 spec:
   selector:
-    app: store
-    version: v2
+    app: __K8S_APP_SELECTOR__
+    version: prod
   ports:
   - port: 8080
     targetPort: 8080
