@@ -14,7 +14,8 @@ DESIRED_STAGE="${3:-staging}"
 LATEST_SUCCESSFUL_RELEASE="$(get_latest_successful_release_by_pipeline "$PIPELINE" )"
 
 if [ -z "$LATEST_SUCCESSFUL_RELEASE" ]; then 
-    _error "Sorry, no release found. Probably you need to build something to dev/canary first. Have you committed code to $PIPELINE yet?"
+    _error "Sorry, no release found. Probably you need to build something to dev/canary first. Have you committed code to $PIPELINE yet? Let me show you what I see:"
+    gcloud deploy releases list --delivery-pipeline="$PIPELINE" --format 'table(renderState,name)'
     exit 153
 fi
 green "Now promoting DEV to STAG for PIPELINE=$PIPELINE (from ARGV1) and RELEASE=$LATEST_SUCCESSFUL_RELEASE.."
