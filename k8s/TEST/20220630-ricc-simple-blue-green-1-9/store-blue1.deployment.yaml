@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: store-blue1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: store-bluegreen
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: store-bluegreen
+        version: v1
+    spec:
+      containers:
+      - name: whereami
+        image: gcr.io/google-samples/whereami:v1.2.1
+        ports:
+          - containerPort: 8080
+        env:
+        - name: METADATA
+          value: "store-blue1"
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: store-blue1
+#   annotations:
+#     networking.gke.io/max-rate-per-endpoint: "10"
+#     cloud.google.com/neg: '{"exposed_ports": {"8080":{"name": "store-blue1-neg"}}}'
+# spec:
+#   selector:
+#     app: store-bluegreen
+#     version: v1
+#   ports:
+#   - port: 8080

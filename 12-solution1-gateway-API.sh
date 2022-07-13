@@ -5,11 +5,14 @@ source .env.sh || fatal 'Couldnt source this'
 #set -x
 set -e
 
+# app01 / app02
 DEFAULT_APP="app01"
-APP_NAME="${1:-$DEFAULT_APP}"
+# app01-kupython / app02-kuruby
+DEFAULT_APP_SELECTOR="app01-kupython"
 
+APP_NAME="${1:-$DEFAULT_APP}"
+K8S_APP_SELECTOR="${2:-$DEFAULT_APP_SELECTOR}"
 # K8S_IMAGE="skaf-app01-python-buildpacks"
-# K8S_SELECTOR="app: ??" # or without app:
 # Add your code here:
 
 #kubectl config get-contexts | grep cicd | grep "$PROJECT_ID" | grep "$REGION"
@@ -24,7 +27,7 @@ white "Now I proceed to apply solution 1 for: $APP_NAME. If wrong, call me with 
 mkdir -p "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/out/"
 
 white This grep output should be null:
-grep store $GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/templates/*yaml | egrep -v '^#'
+egrep "store|v2" $GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/templates/[a-z]*yaml | egrep -v '^#'
 
 ###############################################
 # set up additional variables for the for cycle
@@ -48,6 +51,7 @@ for TEMPLATE_FILE in "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/templates/"*.templ
     sed -e "s/__PREFIX__/$PREFIX/g" |    
     sed -e "s/__APP_NAME__/$APP_NAME/g" |    
     sed -e "s/__APPNAME__/$APP_NAME/g" |    # I know what you thinking..
+    sed -e "s/__K8S_APP_SELECTOR__/$K8S_APP_SELECTOR/g" |    # I know what you thinking..
     sed -e "s/__MY_REGION__/$REGION/g" |
     sed -e "s/__MY_DOMAIN__/$MY_DOMAIN/g" |
     #sed -e "s/__MY_VERSION_/$CLOUD_DEPLOY_TEMPLATING_VER/g" |

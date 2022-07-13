@@ -1,1 +1,6 @@
-chaning "store" to "__PREFIX__-sol1"
+Substitutions for tomorrow after Seeuberquaerung:
+
+* v1 => canary
+* v2 => prod 
+* store => "__PREFIX__-sol1"
+* bifid-external-store => "__PREFIX__-sol1-ext"

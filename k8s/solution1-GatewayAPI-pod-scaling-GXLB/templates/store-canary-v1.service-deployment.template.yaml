@@ -1,0 +1,49 @@
+###########################################################
+# This is a K8S template for Solution1 with some variables.
+# You cant kubectl apply this or you'll get errors.
+#
+# Vars:
+#  APP_NAME: __APP_NAME__
+#  PREFIX:   __PREFIX__
+#  REGION:   __REGION__
+#
+# .. and so on. in general things with double underscore left and right as Im not a great sedder :)
+###########################################################
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: store-canary
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: __K8S_APP_SELECTOR__
+      version: canary
+  template:
+    metadata:
+      labels:
+        app: __K8S_APP_SELECTOR__
+        version: canary
+    spec:
+      containers:
+      - name: this-is-useless # used to be: whereami
+        image: __IMAGE_NAME__
+        ports:
+          - containerPort: 8080
+        env:
+        - name: METADATA
+          value: "__K8S_APP_SELECTOR__-canary"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: __K8S_APP_SELECTOR__-canary
+  annotations:
+    networking.gke.io/max-rate-per-endpoint: "10"
+    cloud.google.com/neg: '{"exposed_ports": {"8080":{"name": "__K8S_APP_SELECTOR__-canary-neg"}}}'
+spec:
+  selector:
+    app: __K8S_APP_SELECTOR__
+    version: canary
+  ports:
+  - port: 8080
