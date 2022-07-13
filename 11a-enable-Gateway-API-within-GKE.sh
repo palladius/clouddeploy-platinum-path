@@ -11,14 +11,15 @@ PROJECT_NUMBER=$(gcloud projects list --filter="$PROJECT_ID" --format="value(PRO
 # Blue-Green https://cloud.google.com/kubernetes-engine/docs/how-to/deploying-multi-cluster-gateways#blue-green
 
 
-# CREO IN europe-west6
+# CREATING IN region XXX
+# Changed dmarzi-proxy to "platinum-proxy-$GCLOUD_REGION" in case you want to change region after starting this :)
 proceed_if_error_matches "already exists" \
-     gcloud compute networks subnets create dmarzi-proxy \
+     gcloud compute networks subnets create "dmarzi-proxy" \
      --purpose=REGIONAL_MANAGED_PROXY \
      --role=ACTIVE \
      --region="$GCLOUD_REGION" \
      --network='default' \
-     --range='192.168.0.0/24'
+     --range='192.168.0.0/24' # changed after dmarzi-proxy rename..
 
 # bingo! https://screenshot.googleplex.com/h5ZXAUgy5wWrvqh
 
@@ -66,8 +67,9 @@ kubectl --context=$GKE_CANARY_CLUSTER_CONTEXT apply -k "github.com/kubernetes-si
 kubectl --context=$GKE_PROD_CLUSTER_CONTEXT   apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
 
 # I should see FOUR not TWO:
-#kubectl get gatewayclass
+_deb "This command should show you TWO entries for TWO clusters: total 4 lines."
 _kubectl_on_both_canary_and_prod get gatewayclass
+# TODO assert(wc -l == 4)
 
 
 #5. enable GKE gateway controller just in GKE01.
@@ -80,7 +82,7 @@ gcloud projects add-iam-policy-binding "$PROJECT_ID" \
      --role "roles/container.admin" \
      --project="$PROJECT_ID"
      
-echo "Done. Now proceed to 11b to execute upon kubectl on two clusters: ./11b-kubectl-apply-stuff.sh"
+green "one-off Configuration is Done. Now proceed to 11b to execute upon kubectl on two clusters: ./11b-kubectl-apply-stuff.sh"
 
 
 # End of your code here
