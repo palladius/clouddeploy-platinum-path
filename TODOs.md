@@ -22,3 +22,5 @@
 * P3. Remove `palladius.it` and personal stuff from k8s manifests.
 
 * P4. Set up service account in 00-init and use it for the rest.Probably it would be between a 00 and a 01 setup. If it works, backfill it to `codelabba.rb`
+
+* P3. Use `envsubst` instead.

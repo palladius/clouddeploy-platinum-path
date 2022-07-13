@@ -14,6 +14,7 @@ function delete_old_pipelines() {
 # Add your code here:
 
 CLOUD_DEPLOY_TEMPLATING_VER="1-2"
+
 cat clouddeploy.template.yaml |
   sed -e "s/MY_PROJECT_ID/$PROJECT_ID/g" |
   sed -e "s/MY_REGION/$REGION/g" |

@@ -1,3 +1,14 @@
+###########################################################
+# This is a K8S template for Solution1 with some variables.
+# You cant kubectl apply this or you'll get errors.
+#
+# Vars:
+#  APP_NAME: __APP_NAME__
+#  PREFIX:   __PREFIX__
+#  REGION:   __REGION__
+#
+# .. and so on. in general things with double underscore left and right as Im not a great sedder :)
+###########################################################
 kind: Gateway
 apiVersion: gateway.networking.k8s.io/v1alpha2
 metadata:

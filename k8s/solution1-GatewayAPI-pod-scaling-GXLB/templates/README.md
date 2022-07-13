@@ -1,0 +1,1 @@
+chaning "store" to "__PREFIX__-sol1"

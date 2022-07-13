@@ -111,3 +111,9 @@ second-half:
 breadcrumb-navigation:
 	@echo "I hope youre a fan of Hansel and Gretel too. As Zoolander fan, I am."
 	ls -al .executed_ok.*
+
+clean:
+	echon Removing tmp files created by scripts..
+	rm k8s/*/out/*.yaml
+# not sure i want to do this...
+#rm .executed.*
