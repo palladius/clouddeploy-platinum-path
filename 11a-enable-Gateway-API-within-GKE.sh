@@ -47,9 +47,10 @@ gcloud container fleet memberships register $CLUSTER_2 \
      --project=$PROJECT_ID --quiet
 
 # Cluster 1
-_deb "Lets recall that: CANARY CLUSTER_1=$CLUSTER_1"
-_deb "lets recall that: PROD   CLUSTER_2=$CLUSTER_2"
-#yellow "Try now for cluster1=$CLUSTER_1 kubectl apply -f  $GKE_SOLUTION_ILB_SETUP_DIR/cluster1/"
+_deb "Cluster mapping: CANARY CLUSTER_1=$CLUSTER_1"
+_deb "Cluster mapping: PROD   CLUSTER_2=$CLUSTER_2"
+
+#yellow "Try now for cluster1=$CLUSTER_1 kubectl apply -f  $GKE_SOLUTION0_ILB_SETUP_DIR/cluster1/"
 
 
 #3. enable multi-cluster services

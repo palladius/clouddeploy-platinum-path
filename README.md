@@ -66,7 +66,16 @@ Yes, it's that beautiful.
 
 ## Deploy philosophy
 
-4 targets have been created:
+4 targets have been created, as you can see above.
+
+## Canary solutions
+
+Historically, 3 solutions have been provided. History is important since it plays a role
+into script numbering ;)
+
+* Solution0: ILB + TrafficSplitting. Doesnt have public IP. Initial code: https://github.com/palladius/clouddeploy-platinum-path/pull/3/files (script 11)
+* Solution1:
+* Solution2: 
 
 ## Credits
 
