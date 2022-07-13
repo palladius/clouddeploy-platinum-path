@@ -12,8 +12,8 @@
 kind: Gateway
 apiVersion: gateway.networking.k8s.io/v1alpha2
 metadata:
-#  name: bifid-external-store-http
-  name: __PREFIX__-__REGION__-bifid-ext-gw
+#  original_name: bifid-external-store-http
+  name: __PREFIX__-bifid-ext-gw
 spec:
   # PREFIX can be app01, app02, ... maybe with a dash.
   # Consider adding a region too to make this solutionm multiregional :)
