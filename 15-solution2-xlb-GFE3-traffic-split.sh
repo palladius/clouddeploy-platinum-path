@@ -39,8 +39,7 @@ SERVICE2="svc2-prod10"
 #
 yellow "Deploy the GKE manifests. This needs to happen first as it creates the NEGs which this script depends upon." 
 
-#kubectl apply -f k8s/prod/solution2-traffic-splitting-via-xlb
-kubectl apply -f k8s/solution2-xlb-gfe3-traffic-split
+kubectl apply -f "$GKE_SOLUTION2_ENVOY_XLB_TRAFFICSPLITTING_SETUP_DIR"
 
 # create health check for the backends
 proceed_if_error_matches "global/healthChecks/http-neg-check' already exists" \

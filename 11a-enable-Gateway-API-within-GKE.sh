@@ -25,6 +25,7 @@ proceed_if_error_matches "already exists" \
 
 
 # 1. # enable required APIs (project level)
+#TODO(ricc): refactor to 00
 gcloud services enable \
     container.googleapis.com \
     gkehub.googleapis.com \
@@ -32,8 +33,6 @@ gcloud services enable \
     multiclusteringress.googleapis.com \
     trafficdirector.googleapis.com \
     --project=$PROJECT_ID
-
-
 
 #2. register clusters to the fleet (cluster level)
 gcloud container fleet memberships register "$CLUSTER_1" \
@@ -52,7 +51,6 @@ _deb "Cluster mapping: PROD   CLUSTER_2=$CLUSTER_2"
 
 #yellow "Try now for cluster1=$CLUSTER_1 kubectl apply -f  $GKE_SOLUTION0_ILB_SETUP_DIR/cluster1/"
 
-
 #3. enable multi-cluster services
 gcloud container fleet multi-cluster-services enable \
     --project $PROJECT_ID
@@ -64,11 +62,11 @@ gcloud projects add-iam-policy-binding "$PROJECT_ID" \
      --project=$PROJECT_ID
 
 #4.  enable gateway apis
-kubectl --context=$GKE_CANARY_CLUSTER_CONTEXT apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
-kubectl --context=$GKE_PROD_CLUSTER_CONTEXT   apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
+kubectl --context="$GKE_CANARY_CLUSTER_CONTEXT" apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
+kubectl --context="$GKE_PROD_CLUSTER_CONTEXT"   apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
 
-# I should see FOUR not TWO:
-_deb "This command should show you TWO entries for TWO clusters: total 4 lines."
+#4a. TEST. I should see FOUR not TWO:
+_deb "TEST: This command should show you TWO entries for TWO clusters: total 4 lines."
 _kubectl_on_both_canary_and_prod get gatewayclass
 # TODO assert(wc -l == 4)
 
@@ -84,7 +82,6 @@ gcloud projects add-iam-policy-binding "$PROJECT_ID" \
      --project="$PROJECT_ID"
      
 green "one-off Configuration is Done. Now proceed to 11b to execute upon kubectl on two clusters: ./11b-kubectl-apply-stuff.sh"
-
 
 # End of your code here
 _allgood_post_script

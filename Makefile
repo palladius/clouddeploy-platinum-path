@@ -105,7 +105,7 @@ second-half:
 	./12-blue-green-step-by-step.sh
 	./13-create-Svc-Account-for-Terraform.sh
 	./14-setup-DNS-Riccardo-only.sh
-	./15-dmarzi-xlb-GFE3-traffic-split.sh
+	./15-solution2-xlb-GFE3-traffic-split.sh
 	./16-test-solution-2-by-curling-N-times.sh
 
 breadcrumb-navigation:
