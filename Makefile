@@ -97,7 +97,8 @@ first-half:
 second-half:
 	./07-create-cloud-build-triggers.sh
 	./08-cloud-deploy-setup.sh
-	./09-show-latest-successful-releases.sh
+	./09-show-latest-successful-releases.sh app01
+	./09-show-latest-successful-releases.sh app02
 	./10-auto-promote-dev-to-staging.sh
 	./11a-enable-Gateway-API-within-GKE.sh
 	./11b-kubectl-apply-stuff.sh

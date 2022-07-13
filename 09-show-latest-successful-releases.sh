@@ -11,8 +11,8 @@ AUTO_PROMOTE_DEV_TO_STAGING="true"
 MAX_ROWS="5"
 
 if echo $PIPELINE | grep -q dunno ; then 
-    echo Give me app-01 or app02 in ARGV1 or for both just call: make show-latest-succesful-releases
-    exit 42
+    echo 'WARNING. Give me "app01" or "app02" in ARGV1 or for both just call: make show-latest-succesful-releases'
+    exit 102
 fi
 
 # Add your code here:
