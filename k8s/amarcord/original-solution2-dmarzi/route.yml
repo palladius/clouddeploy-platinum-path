@@ -1,0 +1,29 @@
+
+
+kind: HTTPRoute
+apiVersion: gateway.networking.k8s.io/v1alpha2
+metadata:
+  name: external-store
+  labels:
+    gateway: external-store-http
+spec:
+  parentRefs:
+  - name: external-store-http
+  hostnames:
+  - "store.example.io"
+  rules:
+  - backendRefs:
+    - name: store-common-svc
+      port: 8080
+  - matches:
+    - path:
+        value: /canary
+    backendRefs:
+    - name: store-v2
+      port: 8080
+  - matches:
+    - path:
+        value: /v1
+    backendRefs:
+    - name: store-v1
+      port: 8080
