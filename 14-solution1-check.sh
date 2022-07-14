@@ -22,9 +22,13 @@ DEFAULT_APP="app01"                       # app01 / app02
 APP_NAME="${1:-$DEFAULT_APP}"
 URL="$APP_NAME-sol1.example.io"
 
-set -x
+kubectl --context="$GKE_CANARY_CLUSTER_CONTEXT" apply -f "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/out/"
 
-curl -H "host: $URL" 8.8.8.8 2>/dev/null
+#set -x
+
+LB_NAME="http-svc9010-lb"
+ENDPOINT_IP="34.160.173.24:80"	# https://console.cloud.google.com/net-services/loadbalancing/details/httpAdvanced/http-svc9010-lb?project=cicd-platinum-test001
+curl -H "host: $URL" $ENDPOINT_IP 2>/dev/null
 
 
 ########################

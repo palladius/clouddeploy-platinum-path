@@ -18,12 +18,15 @@ set -e
 ########################
 # script dmarziano:
 
+gcloud compute network-endpoint-groups list --filter="$SOL2_SERVICE1"
+gcloud compute network-endpoint-groups list --filter="$SOL2_SERVICE2"
+
 IP_FWDRULE=$(gcloud compute forwarding-rules list --filter "$FWD_RULE" | tail -1 | awk '{print $2}')
 
 echo
 white "Trying $N_TRIES times to curl my host at IP: $IP_FWDRULE [$FWD_RULE]..."
-for i in {0..20}; do 
-    echo ""; curl -H "Host: xlb-gfe3-host.example.io" $IP_FWDRULE/whereami/pod_name; 
+for i in {0..20}; do
+    echo ""; curl -H "Host: xlb-gfe3-host.example.io" $IP_FWDRULE/whereami/pod_name;
 done
 echo ''
 

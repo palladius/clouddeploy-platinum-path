@@ -41,8 +41,13 @@ egrep "store|v2" $GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/templates/[a-z]*yaml | 
 ###############################################
 # set up additional variables for the for cycle
 REGION="${GCLOUD_REGION}"
-PREFIX="${APP_NAME}-${REGION}" # maybe in the future PREFIX = APP-REGION
-SOLUTION1_TEMPLATING_VER="1.0a"
+SHORT_REGION="$(_shorten_region "$REGION")"
+PREFIX="${APP_NAME}-${SHORT_REGION}" # maybe in the future PREFIX = APP-REGION
+
+###############################################
+SOLUTION1_TEMPLATING_VER="1.1"
+# 1.1 14jul22 Added support for short regions which def acto changed the naming convention!
+# 1.0 13jul22 Initial stesure.
 ###############################################
 
 for TEMPLATE_FILE in "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/templates/"*.template.yaml ; do

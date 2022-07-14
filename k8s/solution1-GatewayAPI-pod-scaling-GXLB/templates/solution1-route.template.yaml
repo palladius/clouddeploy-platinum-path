@@ -4,7 +4,7 @@
 #
 # Vars:
 #  APP_NAME: __APP_NAME__
-#  PREFIX:   __PREFIX__
+#  PREFIX:   __PREFIX__   # contains appname and region as of now.
 #  REGION:   __REGION__
 #
 # .. and so on. in general things with double underscore left and right as Im not a great sedder :)
@@ -12,12 +12,12 @@
 kind: HTTPRoute
 apiVersion: gateway.networking.k8s.io/v1alpha2
 metadata:
-  name: bifid-external-store
+  name: __PREFIX__-sol1
   labels:
-    gateway: bifid-external-store-http
+    gateway: __PREFIX__-sol1-http
 spec:
   parentRefs:
-  - name: bifid-external-store-http
+  - name: __PREFIX__-sol1-http
   hostnames:
   - "__APPNAME__-sol1.example.io"    # kept for easy curl/documented static commands :)
   - "__APPNAME__-sol1.__MY_DOMAIN__" # being changed by script 12 into $MY_DOMAIN.
@@ -25,7 +25,7 @@ spec:
   - backendRefs:
     - name: __PREFIX__sol1-common-svc
       port: 8080
-# While this might work, Im gonna remove this.
+# While this might work, Im gonna remove this for now.
 #      weight: 90
   - matches:
     - path:

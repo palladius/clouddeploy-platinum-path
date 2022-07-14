@@ -13,11 +13,11 @@ kind: Gateway
 apiVersion: gateway.networking.k8s.io/v1alpha2
 metadata:
 #  original_name: bifid-external-store-http
-  name: __PREFIX__-bifid-ext-gw
+  name: __PREFIX__-sol1-ext-gw
 spec:
   # PREFIX can be app01, app02, ... maybe with a dash.
   # Consider adding a region too to make this solutionm multiregional :)
-  gatewayClassName: __PREFIX__-gke-l7-gxlb
+  gatewayClassName: __PREFIX__-sol1-gke-l7-gxlb
   listeners:
   - name: http
     protocol: HTTP

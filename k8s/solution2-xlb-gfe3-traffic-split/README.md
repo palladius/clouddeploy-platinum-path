@@ -1,11 +1,11 @@
 ## ricc reshuffle
 
-I chjanged name of resources to make sure they work from the ground up.
+I changed name of resources to make sure they work from the ground up.
 
 Renames:
 
-* `whereami-v1` -> svc1-canary90
-* `whereami-v2` -> svc2-prod10
+* `whereami-v1` -> svc1-canary90 -> $APPNAME-sol2-svc1-canary"
+* `whereami-v2` -> svc2-prod10   -> $APPNAME-sol2-svc2-prod"
 
 ## dmarzi instructions
 
@@ -97,7 +97,7 @@ gcloud compute forwarding-rules create http-content-rule \
     --global \
     --target-http-proxy=http-whereami-lb  \
     --ports=80
-    
+
 
 # Changing 90 10 into 80 20?
 
