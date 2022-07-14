@@ -6,12 +6,17 @@ set -e
 
 PROJECT_NUMBER=$(gcloud projects list --filter="$PROJECT_ID" --format="value(PROJECT_NUMBER)")
 
+################################################################################################################
+# This script sets the foundations for Solution 0/3 (Internal Load Balancer with Traffic Splitting)
+#
 # Daniel says: WORKS ONLY WITH MULTIPLE CLUSTERS IN THE SAME REGION
 # Enable (multi-cluster Gateways)[https://cloud.google.com/kubernetes-engine/docs/how-to/enabling-multi-cluster-gateways]
 # Blue-Green https://cloud.google.com/kubernetes-engine/docs/how-to/deploying-multi-cluster-gateways#blue-green
+################################################################################################################
 
 
 # CREATING IN region XXX
+# NOTE: Even though this is regional, you can have only one of this in a reg
 # Changed dmarzi-proxy to "platinum-proxy-$GCLOUD_REGION" in case you want to change region after starting this :)
 proceed_if_error_matches "already exists" \
      gcloud compute networks subnets create "dmarzi-proxy" \
@@ -80,7 +85,7 @@ gcloud projects add-iam-policy-binding "$PROJECT_ID" \
      --member "serviceAccount:service-${PROJECT_NUMBER}@gcp-sa-multiclusteringress.iam.gserviceaccount.com" \
      --role "roles/container.admin" \
      --project="$PROJECT_ID"
-     
+
 green "one-off Configuration is Done. Now proceed to 11b to execute upon kubectl on two clusters: ./11b-kubectl-apply-stuff.sh"
 
 # End of your code here

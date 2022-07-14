@@ -23,6 +23,15 @@ red Dear friends and colleagues this is STILL WIP. Ricc is implementing this for
 yellow Try to use app01 with solution01 and make it parametric in ARGV..
 white "Now I proceed to apply solution 1 for: $APP_NAME. If wrong, call me with proper usage."
 
+#4.  enable gateway apis
+kubectl --context="$GKE_CANARY_CLUSTER_CONTEXT" apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
+kubectl --context="$GKE_PROD_CLUSTER_CONTEXT"   apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
+
+################################################################################
+# Now we do our k8s manifests. Since we're multi-app we need to do some manual plumbing on the manifests
+# I'll use sed, but hopefully I'll kustomize it later.
+################################################################################
+
 # ensure out dir exists..
 mkdir -p "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/out/"
 
