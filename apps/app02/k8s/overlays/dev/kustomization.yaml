@@ -13,5 +13,4 @@ patches:
         value: "01 Dev (Development)"
   target:
     kind: Deployment
-#    namespace: myns
     name: app02-kuruby

@@ -4,7 +4,7 @@ resources:
   - ../../base
 components:
   - ../../../../../components/common/staging
-replicas: 
+replicas:
   - name: app02-kuruby
     count: 1
 patches:
@@ -16,5 +16,4 @@ patches:
         value: "02 Staging (pls read with French accent)"
   target:
     kind: Deployment
-    namespace: staging
     name: app02-kuruby
