@@ -1,5 +1,13 @@
 #!/bin/bash
 
+########################################
+# This script is just a working test which lays the foundations
+# (creates Service Account, download key, uses it to terraform stuff)
+# for a TF setup. Since I haven’t come to terraform the rest of this
+# project, this is useless from a narrative perspective. But it does
+# tear up a sample Cloud Deploy pipeline with targets.
+########################################
+
 # Created with codelabba.rb v.1.4a
 source .env.sh || fatal 'Couldnt source this'
 set -x

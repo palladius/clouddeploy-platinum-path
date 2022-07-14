@@ -100,10 +100,11 @@ second-half:
 	./09-show-latest-successful-releases.sh app01
 	./09-show-latest-successful-releases.sh app02
 	./10-auto-promote-dev-to-staging.sh
-	./11a-enable-Gateway-API-within-GKE.sh
-	./11b-kubectl-apply-stuff.sh
+	./11a-solution0-enable-Gateway-API-with-ILB.sh
+	./11b-solution0-kubectl-apply-stuff.sh
 	./12-blue-green-step-by-step.sh
-	./13-create-Svc-Account-for-Terraform.sh
+	./13-solution1-check.sh
+	# moved to 13-create-Svc-Account-for-Terraform.sh to examples/
 	./14-setup-DNS-Riccardo-only.sh
 	./15-solution2-xlb-GFE3-traffic-split.sh
 	./16-test-solution-2-by-curling-N-times.sh
