@@ -33,7 +33,7 @@ set -e
 DEFAULT_APP="app01"                                # app01 / app02
 DEFAULT_APP_IMAGE="skaf-app01-python-buildpacks"   # skaf-app01-python-buildpacks // ricc-app02-kuruby-skaffold
 APP_NAME="${1:-$DEFAULT_APP}"
-K8S_APP_IMAGE="${2:-DEFAULT_APP_IMAGE}" # "skaf-app01-python-buildpacks"
+K8S_APP_IMAGE="${2:-$DEFAULT_APP_IMAGE}" # "skaf-app01-python-buildpacks"
 
 SOL2_SERVICE1="$APP_NAME-$DFLT_SOL2_SERVICE1"
 SOL2_SERVICE2="$APP_NAME-$DFLT_SOL2_SERVICE2"
@@ -42,9 +42,10 @@ SOL2_SERVICE2="$APP_NAME-$DFLT_SOL2_SERVICE2"
 # Add your code here
 ########################
 
-
+echo "##############################################"
 yellow "WORK IN PROGRESS!! trying to use envsubst to make this easier.."
 yellow "Deploy the GKE manifests. This needs to happen first as it creates the NEGs which this script depends upon."
+echo "##############################################"
 
 smart_apply_k8s_templates "$GKE_SOLUTION2_ENVOY_XLB_TRAFFICSPLITTING_SETUP_DIR"
 
@@ -71,17 +72,19 @@ proceed_if_error_matches "The resource 'projects/$PROJECT_ID/global/backendServi
 # k8s1-3072c6bd-canary-svc1-canary90-8080-7bc34067  europe-west6-c  GCE_VM_IP_PORT  1
 # k8s1-3072c6bd-canary-svc1-canary90-8080-7bc34067  europe-west6-a  GCE_VM_IP_PORT  0
 
+gcloud compute network-endpoint-groups list --filter="$SOL2_SERVICE1" | grep "$REGION" | awk '{print $1}' | lolcat
+
 SVC1_UGLY_NEG_NAME=$(gcloud compute network-endpoint-groups list --filter="$SOL2_SERVICE1" | grep "$REGION" | awk '{print $1}' | head -1)
 
 echo "NEG1 Found: $(yellow $SVC1_UGLY_NEG_NAME)."
 
 # add the first backend with NEGs from the canary-$SOL2_SERVICE1 (EXAMPLE BELOW)
 # Lets assume the zones are A B C
+#  for ITERATIVE_ZONE in $REGION-a $REGION-b $REGION-c ; do - but some regions dont have A B C so...
 _get_zones_by_region "$REGION" | while read ITERATIVE_ZONE ; do
-#for ITERATIVE_ZONE in $REGION-a $REGION-b $REGION-c ; do
   proceed_if_error_matches "Duplicate network endpoint groups in backend service." \
-    gcloud compute backend-services add-backend $SOL2_SERVICE1 \
-            --network-endpoint-group=$SVC1_UGLY_NEG_NAME \
+    gcloud compute backend-services add-backend "$SOL2_SERVICE1" \
+            --network-endpoint-group="$SVC1_UGLY_NEG_NAME" \
             --network-endpoint-group-zone="$ITERATIVE_ZONE" \
             --balancing-mode=RATE \
             --max-rate-per-endpoint=10 \
@@ -90,7 +93,7 @@ done
 
 
 # create backend for the V2 of the whereami application
-proceed_if_error_matches "The resource 'projects/$PROJECT_ID/global/backendServices/' already exists" \
+proceed_if_error_matches "The resource 'projects/$PROJECT_ID/global/backendServices/$SOL2_SERVICE2' already exists" \
   gcloud compute backend-services create "$SOL2_SERVICE2" \
     --load-balancing-scheme='EXTERNAL_MANAGED' \
     --protocol=HTTP \
@@ -99,8 +102,9 @@ proceed_if_error_matches "The resource 'projects/$PROJECT_ID/global/backendServi
     --global
 
 # grab the names of the NEGs for $SOL2_SERVICE1
-#gcloud compute network-endpoint-groups list --filter="canary-$SOL2_SERVICE2"
-#gcloud compute network-endpoint-groups list --filter="$SOL2_SERVICE1" | grep "$REGION" | awk '{print $1}' | head -1
+gcloud compute network-endpoint-groups list --filter="$SOL2_SERVICE2"
+gcloud compute network-endpoint-groups list --filter="$SOL2_SERVICE2" | grep "$REGION" | awk '{print $1}' | head -1
+
 SVC2_UGLY_NEG_NAME=$(gcloud compute network-endpoint-groups list --filter="$SOL2_SERVICE2" | grep "$REGION" | awk '{print $1}' | head -1)
 
 echo "NEG2 Found: $(yellow $SVC2_UGLY_NEG_NAME)."

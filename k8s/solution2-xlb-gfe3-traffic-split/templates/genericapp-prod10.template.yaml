@@ -1,0 +1,50 @@
+# kind: Namespace
+# apiVersion: v1
+# metadata:
+#   name: canary
+# #  name: app00 # TODO ricc change this
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: svc2-prod10
+  #namespace: canary
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: __APPNAME__
+      #version: v2
+      stage: prod
+  template:
+    metadata:
+      labels:
+        app: __APPNAME__
+        #version: v2
+        stage: prod
+    spec:
+      containers:
+      - name: __APPNAME__-image
+        image: __APP_IMAGE__ # gcr.io/google-samples/whereami:v1.2.1
+        ports:
+          - containerPort: 8080
+        env:
+        - name: METADATA
+          value: "__APPNAME__-sol2-svc1-prod"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: svc2-prod10
+  #namespace: canary
+  annotations:
+    networking.gke.io/max-rate-per-endpoint: "10"
+    cloud.google.com/neg: '{"exposed_ports": {"8080":{"name": ""}}}'
+spec:
+  selector:
+    app: __APPNAME__
+    #version: v2
+    stage: prod
+  ports:
+  - port: 8080
+    targetPort: 8080

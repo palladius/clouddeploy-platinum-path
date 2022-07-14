@@ -81,6 +81,12 @@ More info on historical code under `k8s/amarcord/` (Romagnolo Italian for *I rem
 
 *(XLB: eXternal Load Balancer)*
 
+## Possible errors
+
+* gcloud crashed (AttributeError): 'NoneType' object has no attribute 'SelfLink' => See
+  [Stackoverflow](https://stackoverflow.com/questions/57031471/gcloud-crashed-attributeerror-nonetype-object-has-no-attribute-revisiontem)
+
+
 ## Credits
 
 * willisc7 for https://github.com/willisc7/next21-demo-golden-path and the

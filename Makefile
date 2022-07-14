@@ -105,7 +105,7 @@ second-half:
 	./13-solution1-setup-gateway-API.sh
 	./14-solution1-check.sh
 	./15-solution2-xlb-GFE3-traffic-split.sh
-	./16-test-solution-2-by-curling-N-times.sh
+	./16-solution2-test-by-curling-N-times.sh
 
 breadcrumb-navigation:
 	@echo "I hope youre a fan of Hansel and Gretel too. As Zoolander fan, I am."
