@@ -6,7 +6,7 @@ function _fatal() {
 }
 
 # 20 by default
-DEFAULT_N_TRIES=20
+DEFAULT_N_TRIES="20"
 N_TRIES=${1:-$DEFAULT_N_TRIES}
 # Created with codelabba.rb v.1.5
 source .env.sh || _fatal 'Couldnt source this'

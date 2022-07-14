@@ -23,6 +23,20 @@ function _get_zones_by_region() {
   REGION="$1"
   gcloud compute zones list | egrep "^$REGION" | awk '{print $1}'
 }
+function _assert_neg_exists_for_service(){
+  SOL2_SERVICE_NAME="$1"
+  NEG_ID="$2"
+  SVC_UGLY_NEG_NAME="$3"
+
+  if [ -z "$SVC_UGLY_NEG_NAME" ]; then
+    echo "\$SVC_UGLY_NEG_NAME ($NEG_ID) is empty. No NEGS found for '$SOL2_SERVICE_NAME'."
+    gcloud compute network-endpoint-groups list --filter="$SOL2_SERVICE_NAME" | lolcat
+    gcloud compute network-endpoint-groups list --filter="$SOL2_SERVICE_NAME" | grep "$REGION" | awk '{print $1}' | head -1
+    exit 2352
+  else
+    echo "NEG Found: $(yellow $SVC2_UGLY_NEG_NAME)."
+  fi
+}
 
 # Created with codelabba.rb v.1.5
 source .env.sh || _fatal 'Couldnt source this'
@@ -75,7 +89,7 @@ proceed_if_error_matches "The resource 'projects/$PROJECT_ID/global/backendServi
 gcloud compute network-endpoint-groups list --filter="$SOL2_SERVICE1" | grep "$REGION" | awk '{print $1}' | lolcat
 
 SVC1_UGLY_NEG_NAME=$(gcloud compute network-endpoint-groups list --filter="$SOL2_SERVICE1" | grep "$REGION" | awk '{print $1}' | head -1)
-
+_assert_neg_exists_for_service "$SOL2_SERVICE1" UGLY_NEG1_NAME "$SVC1_UGLY_NEG_NAME"
 echo "NEG1 Found: $(yellow $SVC1_UGLY_NEG_NAME)."
 
 # add the first backend with NEGs from the canary-$SOL2_SERVICE1 (EXAMPLE BELOW)
@@ -102,12 +116,11 @@ proceed_if_error_matches "The resource 'projects/$PROJECT_ID/global/backendServi
     --global
 
 # grab the names of the NEGs for $SOL2_SERVICE1
-gcloud compute network-endpoint-groups list --filter="$SOL2_SERVICE2"
-gcloud compute network-endpoint-groups list --filter="$SOL2_SERVICE2" | grep "$REGION" | awk '{print $1}' | head -1
 
 SVC2_UGLY_NEG_NAME=$(gcloud compute network-endpoint-groups list --filter="$SOL2_SERVICE2" | grep "$REGION" | awk '{print $1}' | head -1)
+#2022-07-14: for the first time in my life i could experience a gcloud crash..
+_assert_neg_exists_for_service "$SOL2_SERVICE2" UGLY_NEG2_NAME "$SVC2_UGLY_NEG_NAME"
 
-echo "NEG2 Found: $(yellow $SVC2_UGLY_NEG_NAME)."
 
 # add the first backend with NEGs from the canary-$SOL2_SERVICE2 (EXAMPLE BELOW)
 #for ITERATIVE_ZONE in $REGION-a $REGION-b $REGION-c ; do
