@@ -8,9 +8,9 @@ source .env.sh || fatal "Config doesnt exist please create .env.sh"
 PIPELINE="${1:-dunno}"
 VERBOSE="false"
 AUTO_PROMOTE_DEV_TO_STAGING="true"
-MAX_ROWS="5"
+MAX_ROWS="50"
 
-if echo $PIPELINE | grep -q dunno ; then 
+if echo $PIPELINE | grep -q dunno ; then
     echo 'WARNING. Give me "app01" or "app02" in ARGV1 or for both just call: make show-latest-succesful-releases'
     exit 102
 fi
@@ -24,15 +24,15 @@ gcloud deploy releases list --delivery-pipeline "$PIPELINE" \
     --limit="$MAX_ROWS"
 #    --format yaml # 'multi(targetRenders.*.renderingState)'
 
-# this teaches how to sort subfields iwthin an item not how to sort items. https://stackoverflow.com/questions/69527048/trying-to-reverse-the-sequence-of-values-returned-by-my-gcloud-query 
+# this teaches how to sort subfields iwthin an item not how to sort items. https://stackoverflow.com/questions/69527048/trying-to-reverse-the-sequence-of-values-returned-by-my-gcloud-query
 # useless here
 #gcloud deploy releases list --delivery-pipeline "$RELEASE" --filter renderState=SUCCEEDED \
-#    --format="value(createTime, name)" --sort-by=createTime 
+#    --format="value(createTime, name)" --sort-by=createTime
 # A field to sort by, if applicable. To perform a descending-order sort, prefix the value with a tilde ("~").
 # https://cloud.google.com/compute/docs/gcloud-compute/tips
 # BINGO!
 
-yellow 20. Lets now print out just the release name.. 
+yellow 20. Lets now print out just the release name..
 #gcloud deploy releases list --delivery-pipeline app02 --filter renderState=SUCCEEDED  # --format 'multi(targetRenders.canary.renderingState)'
 # gcloud deploy releases list --delivery-pipeline "$PIPELINE" --filter renderState=SUCCEEDED \
 #    --format="value(name.split.7)"
@@ -40,19 +40,21 @@ yellow 20. Lets now print out just the release name..
 # this gets the last release, eg 'projects/cicd-platinum-test001/locations/europe-west1/deliveryPipelines/app02/releases/app02-20220603-1621'
 # then gcloud tokenizes it into semicolons, ive tried hard to do name.split()[7] but didnt work and couldnt find gcloud documentation on other functions like split.
 LATEST_SUCCESSFUL_RELEASE=$(
-    gcloud deploy releases list --delivery-pipeline "$PIPELINE" --filter renderState=SUCCEEDED \
+    gcloud deploy releases list --delivery-pipeline "$PIPELINE" \
+    --filter renderState=SUCCEEDED \
     --format="value(name.split())" \
-    --sort-by=~createTime --limit 1 |
-    cut -d';' -f 8
+    --sort-by=~createTime --limit 100 |
+    cut -d';' -f 8 |
+    head -1
     )
 # I care about:
 # 1. createTime: '2022-06-03T16:21:20.718745Z'
 echo "the LATEST_SUCCESSFUL_RELEASE for this PIPELINE $PIPELINE is: '$LATEST_SUCCESSFUL_RELEASE' !!"
 
-if $VERBOSE ; then 
-    gcloud deploy releases list --delivery-pipeline "$PIPELINE" --filter renderState=SUCCEEDED 
+if $VERBOSE ; then
+    gcloud deploy releases list --delivery-pipeline "$PIPELINE" --filter renderState=SUCCEEDED
     #--limit "$MAX_ROWS"
-fi 
+fi
 
 
 #fatal 42 Debugging it..

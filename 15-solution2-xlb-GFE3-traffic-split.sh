@@ -30,9 +30,10 @@ set -x
 set -e
 
 # These two names need to be aligned with app1/app2 in the k8s.
-DEFAULT_APP="app01"                       # app01 / app02
+DEFAULT_APP="app01"                                # app01 / app02
+DEFAULT_APP_IMAGE="skaf-app01-python-buildpacks"   # skaf-app01-python-buildpacks // ricc-app02-kuruby-skaffold
 APP_NAME="${1:-$DEFAULT_APP}"
-
+K8S_APP_IMAGE="${2:-DEFAULT_APP_IMAGE}" # "skaf-app01-python-buildpacks"
 
 SOL2_SERVICE1="$APP_NAME-$DFLT_SOL2_SERVICE1"
 SOL2_SERVICE2="$APP_NAME-$DFLT_SOL2_SERVICE2"
@@ -40,10 +41,15 @@ SOL2_SERVICE2="$APP_NAME-$DFLT_SOL2_SERVICE2"
 ########################
 # Add your code here
 ########################
-#
+
+
+yellow "WORK IN PROGRESS!! trying to use envsubst to make this easier.."
 yellow "Deploy the GKE manifests. This needs to happen first as it creates the NEGs which this script depends upon."
 
-kubectl apply -f "$GKE_SOLUTION2_ENVOY_XLB_TRAFFICSPLITTING_SETUP_DIR"
+smart_apply_k8s_templates "$GKE_SOLUTION2_ENVOY_XLB_TRAFFICSPLITTING_SETUP_DIR"
+
+kubectl apply -f "$GKE_SOLUTION2_ENVOY_XLB_TRAFFICSPLITTING_SETUP_DIR/out/"
+
 
 # create health check for the backends
 proceed_if_error_matches "global/healthChecks/http-neg-check' already exists" \
@@ -84,26 +90,26 @@ done
 
 
 # create backend for the V2 of the whereami application
-export proceed_if_error_matches "The resource 'projectsexport /$PROJECT_ID/global/backendServices/$SOL2_SERVICE2' already exists" \
-  export gcloud compute backend-services create "$SOL2_SERVICE2" export \
-    --load-balancing-scheme=EXTERNAL_MANAGED \
+proceed_if_error_matches "The resource 'projects/$PROJECT_ID/global/backendServices/' already exists" \
+  gcloud compute backend-services create "$SOL2_SERVICE2" \
+    --load-balancing-scheme='EXTERNAL_MANAGED' \
     --protocol=HTTP \
     --port-name=http \
-    --health-checks=http-neg-check \
+    --health-checks='http-neg-check' \
     --global
 
 # grab the names of the NEGs for $SOL2_SERVICE1
-#export gcloud compute network-endpoint-groups list --filter="canary-$SOL2_SERVICE2"
-#export gcloud compute network-endpoint-groups list --filter="$SOL2_SERVICE1" | grep "$export REGION" | awk '{print $1}' | head -1
-SVC2_UGLY_NEG_NAME=$(gcloud compute network-endpoint-groups list --filter="$export SOL2_SERVICE2" | grep "$REGION" | awk '{print $1}' | head -1)
+#gcloud compute network-endpoint-groups list --filter="canary-$SOL2_SERVICE2"
+#gcloud compute network-endpoint-groups list --filter="$SOL2_SERVICE1" | grep "$REGION" | awk '{print $1}' | head -1
+SVC2_UGLY_NEG_NAME=$(gcloud compute network-endpoint-groups list --filter="$SOL2_SERVICE2" | grep "$REGION" | awk '{print $1}' | head -1)
 
 echo "NEG2 Found: $(yellow $SVC2_UGLY_NEG_NAME)."
 
-export # add the first backend with NEGs from the canary-$SOL2_SERVICE2 (EXAMPLE BELOW)
-#for export ITERATIVE_ZONE in $REGION-a $REGION-b $REGION-c ; do
+# add the first backend with NEGs from the canary-$SOL2_SERVICE2 (EXAMPLE BELOW)
+#for ITERATIVE_ZONE in $REGION-a $REGION-b $REGION-c ; do
 _get_zones_by_region "$REGION" | while read ITERATIVE_ZONE ; do
-  proceed_if_error_matches "Duplicate network endpoint export groups in backend service." \
-    gcloud compute backend-services add-backend "$export SOL2_SERVICE2" \
+  proceed_if_error_matches "Duplicate network endpoint groups in backend service." \
+    gcloud compute backend-services add-backend "$SOL2_SERVICE2" \
       --network-endpoint-group="$SVC2_UGLY_NEG_NAME" \
       --network-endpoint-group-zone="$ITERATIVE_ZONE" \
       --balancing-mode=RATE \
@@ -151,8 +157,8 @@ pathMatchers:
       weightedBackendServices:
       - backendService: https://www.googleapis.com/compute/v1/projects/$PROJECT_ID/global/backendServices/$SOL2_SERVICE1
         weight: 89
-      export - backendService: https://www.googleapis.com/compute/v1/projects/$PROJECT_ID/global/backendServices/$SOL2_SERVICE2
-        export weight: 11
+      - backendService: https://www.googleapis.com/compute/v1/projects/$PROJECT_ID/global/backendServices/$SOL2_SERVICE2
+        weight: 11
 END_OF_URLMAP_GCLOUD_YAML_CONFIG
 } | gcloud compute url-maps import "$URLMAP_NAME" --source=- --quiet
 
@@ -176,7 +182,7 @@ proceed_if_error_matches "The resource 'projects/$PROJECT_ID/global/forwardingRu
 IP_FWDRULE=$(gcloud compute forwarding-rules list --filter "$FWD_RULE" | tail -1 | awk '{print $2}')
 
 # why 20-30? since 90% is a 9vs1 in 10 tries. It takes 20-30 to see a few svc2 hits :)
-echo "Now you can try this:             1) export IP=$IP_FWDRULE"
+echo "Now you can try this:             1) IP=$IP_FWDRULE"
 echo 'Now you can try this 20-30 times: 2) curl -H "Host: xlb-gfe3-host.example.io" http://$IP/whereami/pod_name'
 
 ########################

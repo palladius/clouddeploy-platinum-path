@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e 
+set -e
 
 function _fatal() {
     echo "$*" >&1
@@ -61,10 +61,12 @@ which skaffold >/dev/null && echo skaffold exists. All good. ||
 
 touch ".$APPNAME.appname"
 
-# sets kubetcl context to this cluste TODO ricc paramtyerize region.
-gcloud container clusters get-credentials cicd-dev --region "$GKE_REGION" ||   
-    yellow "This will fail before you run step 01... so no biggie if this fails."
-
+# sets `kubetcl`` context to this cluster, I'll do DEV CANARY PROD but keep DEV
+# LAST so it will stick so do NOT change the order :)
+for ITER_CLUSTER in cicd-canary cicd-prod cicd-dev ; do
+  gcloud container clusters get-credentials "$ITER_CLUSTER" --region "$GKE_REGION" ||
+      yellow "This will fail before you run step 01... so no biggie if this fails."
+done
 # TODO(ricc): check ENV_SH_CONFIG from sourced to the .dist and suggest to check the HISTORY
 #             for missing VARs.
 
