@@ -1,9 +1,8 @@
-This is a link to original code which Im not going to touch.
-
+This is a link to original code which I'm not going to touch, for study purposes.
 
 * solution0 - 13jun22 - 11-enable-Gateway-API-within-GKE.sh - https://github.com/palladius/clouddeploy-platinum-path/pull/3/files
 * solution1 - 28jun22 - NO SHELL :) - https://github.com/palladius/clouddeploy-platinum-path/pull/5 https://github.com/palladius/clouddeploy-platinum-path/pull/6
-* solution2 - ? - >? - https://github.com/palladius/clouddeploy-platinum-path/pull/7
+* solution2 - 4jul22 -  k8s/xlb-gfe3-traffic-split/ - https://github.com/palladius/clouddeploy-platinum-path/pull/7
 
 # More on sol0/3 (First PR)
 
@@ -53,3 +52,11 @@ For prod:
     version: v2
 
 NEG: __MULTI__ but you can also remove the name and he'll figure it out for you.
+
+
+## Solution2
+
+TODO - just copied from here:
+
+* BRANCH: https://github.com/palladius/clouddeploy-platinum-path/tree/dmarzi/xlb-gfe3-traffic-split/k8s
+* subfolder: 8s/xlb-gfe3-traffic-split

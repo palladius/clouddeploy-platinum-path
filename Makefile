@@ -9,7 +9,7 @@ dev:
 	echo Only works after step 4..
 	skaffold dev
 
-all: 
+all:
 	bash 0*.sh
 # build:
 # 	skaffold build --module=app01
@@ -62,7 +62,7 @@ tests:
 	make -C apps/app02/ test
 	@echo Testing kustomize for both apps..
 	make -C out all
-	
+
 # I didnt know it was so straightfwd! Install: https://kubectl.docs.kubernetes.io/installation/kustomize/binaries/
 kustomize-install:
 	curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash
@@ -84,11 +84,11 @@ kustomize-ruby-diff-prod-and-canary:
 	echo Done.
 
 
-first-half: 
-	./00-init.sh                                                      
-	./01-set-up-GKE-clusters.sh                        
-	./02-setup-skaffold-cache-bucket.sh         
-	./03-configure-artifact-repo-and-docker.sh  
+first-half:
+	./00-init.sh
+	./01-set-up-GKE-clusters.sh
+	./02-setup-skaffold-cache-bucket.sh
+	./03-configure-artifact-repo-and-docker.sh
 	./04-status.sh
 	./05-IAM-enable-cloud-build.sh
 	#./06-cloud-build-locally.sh
@@ -113,7 +113,8 @@ breadcrumb-navigation:
 	ls -al .executed_ok.*
 
 clean:
-	echon Removing tmp files created by scripts..
+	echo 'Removing tmp files created by scripts..'
 	rm k8s/*/out/*.yaml
+
 # not sure i want to do this...
 #rm .executed.*
