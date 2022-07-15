@@ -13,7 +13,8 @@ yellow Lets recall that: CLUSTER_2="$CLUSTER_2"
 
 kubectl config get-contexts
 
-_kubectl_on_both_canary_and_prod get gatewayclass
+#_kubectl_on_both_canary_and_prod get gatewayclass
+bin/kubectl-triune get gatewayclass
 
 set -x
 

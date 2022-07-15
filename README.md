@@ -81,6 +81,20 @@ More info on historical code under `k8s/amarcord/` (Romagnolo Italian for *I rem
 
 *(XLB: eXternal Load Balancer)*
 
+## Lesson learnt
+
+* Never EVER change name of entities, particularly if they are pointed by different products/modules.
+  for instance, the Artifact Repository, or the Image name. Image version is a no-breezer, but remember
+  that changing the code in your manifest doesn't mean that the deployer is aware of the change because
+  its configuration "online" is based on a 1-month-old manifest which pointed to the earliest version.
+  If you do, destroying everything and rebuilding seems the only safe choice, and since I don't want it
+  I suggest you: don't change the NAMES, change just everything else :)
+* As a corollary, when you name a resource, make sure you spend **time** to add the right dimensions: is it
+  function of APPNAME? If yes, it should have APPNAMe inside the name (like "appo1-frontend"). Is it
+  regional? If yes, then make sure some sort of region string is in the name so you can have the US and EU
+  version of it, and so on.
+
+
 ## Possible errors
 
 * gcloud crashed (AttributeError): 'NoneType' object has no attribute 'SelfLink' => See
