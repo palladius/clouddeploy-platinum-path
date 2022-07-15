@@ -3,6 +3,7 @@ kind: Component
 commonLabels:
   application: riccardo-cicd-platinum-path
   github-repo: palladius-colon-cicd-platinum-path
+  tier: ricc-frontend-application # => should be in common
   #latest-kustomization-review: '2022-07-12'
 commonAnnotations:
   developer: Riccardo Carlesso

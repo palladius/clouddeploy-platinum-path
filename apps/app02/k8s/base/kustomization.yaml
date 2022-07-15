@@ -4,7 +4,7 @@ kind: Kustomization
 # restoring since this wasnt the real issue.
 # Note that commonLabel needs to be in root indenting.
 commonLabels:
-  tier: ricc-frontend-application
+#  tier: ricc-frontend-application -=> should be in common
   platinum-app-id: app02
 resources:
   - app02-kuruby.yaml # Depl+Service
