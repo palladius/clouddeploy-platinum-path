@@ -21,9 +21,11 @@ steps:
   - name: gcr.io/cloud-builders/gsutil
     id: PullCache
     args: ['cp', 'gs://$PROJECT_ID-skaffoldcache/skaffold-cache/$_DEPLOY_UNIT.txt', '/workspace/cache']
+#  - name: gcr.io/k8s-skaffold/skaffold:v1.38.0 # Sander told me to point to 1.37 - same as CD
 #  - name: gcr.io/k8s-skaffold/skaffold:v1.37.1-lts # not sure why i removed this..
-  - name: gcr.io/k8s-skaffold/skaffold:v1.38.0 # Sander told me to point to 1.37 - same as CD
 #  - name: gcr.io/k8s-skaffold/skaffold:v1.37.1-lts # 2022-07-11 doesnt work wuith aopp02: Step #1 - "SkaffoldBuildUsingCache": time="2022-07-11T12:58:11Z" level=warning msg="Your Skaffold version might be too old. Download the latest version (1.39.1) from:\n  https://github.com/GoogleContainerTools/skaffold/releases/tag/v1.39.1\n" subtask=-1 task=DevLoop
+# 20220715 Note from Alex 1.38.0 uis NOT cached sop it takes 30-60sec to downlaod which is not ideal.
+  - name: gcr.io/k8s-skaffold/skaffold:v1.37.1-lts # not sure why i removed this..
     id: SkaffoldBuildUsingCache
     waitFor:
     - PullCache
@@ -48,7 +50,7 @@ steps:
 # https://cloud.google.com/build/docs/configuring-builds/run-bash-scripts#running_inline_bash_scripts
 #############################################################################
 #   - name: gcr.io/cloud-builders/gcloud
-#   - id: PushToCloudDeployWithVersion 
+#   - id: PushToCloudDeployWithVersion
 #     args:
 #       - "deploy"
 #       - "releases"
@@ -62,7 +64,7 @@ steps:
 #       - "--region=${_DEPLOY_REGION}"
 
 #############################################################################
-# This instead is the MAGIC one which gives a VERSION file dependant name to the release 
+# This instead is the MAGIC one which gives a VERSION file dependant name to the release
 #############################################################################
   - name: gcr.io/google.com/cloudsdktool/cloud-sdk
     id: PushToCloudDeployDEVWithVersion # needs bash
@@ -83,7 +85,7 @@ steps:
       - '-c'
       - cloud-build/01-on-commit-build.sh "$_DEPLOY_UNIT" "$_DEPLOY_REGION" 'dt1-$$DATE-$$TIME' "dt2-$$DATE-$$TIME"
 
-## Also consider using Ubuntu for ENV: https://cloud.google.com/build/docs/configuring-builds/substitute-variable-values 
+## Also consider using Ubuntu for ENV: https://cloud.google.com/build/docs/configuring-builds/substitute-variable-values
 # steps:
 # # Uses the ubuntu build step:
 # # to run a shell script; and
@@ -92,7 +94,7 @@ steps:
 #   args: ['bash', './myscript.sh']
 
 
-#- 
+#-
   - name: gcr.io/google.com/cloudsdktool/cloud-sdk
     id: IfTestPassPushToCloudDeployStaging
     waitFor:
