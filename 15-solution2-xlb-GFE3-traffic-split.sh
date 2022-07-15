@@ -62,9 +62,11 @@ set -e
 # These two names need to be aligned with app1/app2 in the k8s.
 DEFAULT_APP="app01"                                # app01 / app02
 DEFAULT_APP_IMAGE="skaf-app01-python-buildpacks"   # skaf-app01-python-buildpacks // ricc-app02-kuruby-skaffold
-APP_NAME="${1:-$DEFAULT_APP}"
-K8S_APP_IMAGE="${2:-$DEFAULT_APP_IMAGE}" # "skaf-app01-python-buildpacks"
 
+APP_NAME="${1:-$DEFAULT_APP}"
+K8S_APP_IMAGE="${2:-$DEFAULT_APP_IMAGE}"
+
+# MultiTenant solution
 SOL2_SERVICE1="$APP_NAME-$DFLT_SOL2_SERVICE1"    # => appXX-sol2-svc1-canary
 SOL2_SERVICE2="$APP_NAME-$DFLT_SOL2_SERVICE2"    # => appXX-sol2-svc1-prod
 
@@ -73,6 +75,9 @@ echo "##############################################"
 yellow "WORK IN PROGRESS!! trying to use envsubst to make this easier.."
 yellow "Deploy the GKE manifests. This needs to happen first as it creates the NEGs which this script depends upon."
 echo "##############################################"
+
+#kubectl --context="$GKE_CANARY_CLUSTER_CONTEXT" apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
+#kubectl --context="$GKE_PROD_CLUSTER_CONTEXT" apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
 
 white "01. Showing NEGs for sol2:" # uhm only canary
 gcloud compute network-endpoint-groups list  | grep sol2
