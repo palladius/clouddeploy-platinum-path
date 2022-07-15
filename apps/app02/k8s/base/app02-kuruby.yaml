@@ -4,7 +4,7 @@ metadata:
   name: app02-kuruby # as in App02, ruby and Kustomized
 spec:
   ports:
-  - port: 80 
+  - port: 80
     targetPort: 80
   type: LoadBalancer
   selector:
@@ -27,14 +27,14 @@ spec:
       - name: app02-kuruby
         image: ricc-app02-kuruby-skaffold    # Dockerized
         ports:
-        - containerPort: 80
+        - containerPort: 9292 # was 80 My pod esxpects traffic here.
         env:
         - name: RACK_ENV
           value: "development"
         - name: APP_NAME
           value: A Wodnerful App in Ruby (app02)
         - name: RICCARDO_MESSAGE
-          value: Hi! This is the default message if you dont customize to come to another target (dev, prod, ..) 
+          value: Hi! This is the default message if you dont customize to come to another target (dev, prod, ..)
         - name: FAVORITE_COLOR
-          value: pink # default bkg color, will make it white in prod and yellow in canary.  
-          
+          value: pink # default bkg color, will make it white in prod and yellow in canary.
+
