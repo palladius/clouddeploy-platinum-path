@@ -9,7 +9,8 @@ skaffold-run-dev:
 skaffold-run-canary:
 	./skaffold-wrapper.sh run -p canary
 
-
+skaffold-render-dev:
+	./skaffold-wrapper.sh render --profile=dev
 
 test:
 	echo Text fixed now all good

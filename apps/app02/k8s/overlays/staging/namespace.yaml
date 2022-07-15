@@ -1,5 +1,8 @@
-#https://github.com/kubernetes-sigs/kustomize/blob/master/examples/multibases/multi-namespace.md
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: cicd-app02-staging
+# No! STAGING should be as close to prod as possible!!!
+
+
+# #https://github.com/kubernetes-sigs/kustomize/blob/master/examples/multibases/multi-namespace.md
+# apiVersion: v1
+# kind: Namespace
+# metadata:
+#   name: cicd-app02-staging
