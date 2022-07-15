@@ -7,6 +7,12 @@ function _ignore_verbose_warnings() {
     egrep -v 'W0715|To learn more'
 }
 
-kubectl --context="$GKE_DEV_CLUSTER_CONTEXT"    "$@" 2>&1 | _prepend "[DEVE] " | _ignore_verbose_warnings
+white "01. Kubernetes endpoints:"
+kubectl --context="$GKE_DEV_CLUSTER_CONTEXT" --namespace cicd-dev "$@" 2>&1 | _prepend "[DEV ] " | _ignore_verbose_warnings
+kubectl --context="$GKE_DEV_CLUSTER_CONTEXT"    "$@" 2>&1 | _prepend "[STAG] " | _ignore_verbose_warnings
 kubectl --context="$GKE_CANARY_CLUSTER_CONTEXT" "$@" 2>&1 | _prepend "[CANA] " | _ignore_verbose_warnings
 kubectl --context="$GKE_PROD_CLUSTER_CONTEXT"   "$@" 2>&1 | _prepend "[PROD] " | _ignore_verbose_warnings
+
+white "02. GCloud FwdRule endpoints:"
+# remove horrible ones with random MD5 hashes. I know, this is implementation dependent SORRY.
+gcloud compute forwarding-rules list |  egrep -v '^[0-9a-f]{32}'

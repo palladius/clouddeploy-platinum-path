@@ -1,0 +1,7 @@
+#!/bin/bash
+
+source ./.env.sh || exit 42
+
+echo gcloud and kubectl...
+
+bin/kubectl-triune get services | grep -v '<none>'

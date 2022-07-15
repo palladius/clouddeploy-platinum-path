@@ -114,6 +114,11 @@ breadcrumb-navigation:
 clean:
 	echo 'Removing tmp files created by scripts..'
 	rm k8s/*/out/*.yaml
+	# not sure i want to do this...
+	#rm .executed.*
 
-# not sure i want to do this...
-#rm .executed.*
+observe-endpoints:
+	# See k8s and gcloud endpoints.
+	bin/show-endpoints
+endpoints-show: observe-endpoints
+ip-address: observe-endpoints
