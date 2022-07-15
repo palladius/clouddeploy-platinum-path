@@ -56,21 +56,22 @@ echo "REV:              $REV"
 #echo "_DEPLOY_UNIT:     $_DEPLOY_UNIT"
 #echo "_DEPLOY_REGION:   $_DEPLOY_REGION"
 
-set -x 
+set -x
 #TODO when everything work put this and remove &&: set -e
 
 if [ "true" = "$FAKEIT" ]; then
-        echo Faking it since probably you called me from CLI to troubleshoot me 
+        echo Faking it since probably you called me from CLI to troubleshoot me
         GCLOUD="echo [FAKING] GcLoUd"
-else 
+else
         GCLOUD="gcloud"
 fi
 
 RELEASE_NAME="$ARGV_DEPLOY_UNIT-$BASH_DATETIME-v$SUPERDUPER_MAGIC_VERSION"
+
 $GCLOUD deploy releases create "$RELEASE_NAME"  \
         --delivery-pipeline="$ARGV_DEPLOY_UNIT" \
         --build-artifacts=/workspace/artifacts.json \
         --skaffold-file="apps/$ARGV_DEPLOY_UNIT/skaffold.yaml" \
-        --region="${ARGV_DEPLOY_REGION}" && 
+        --region="${ARGV_DEPLOY_REGION}" &&
         echo "$RELEASE_NAME" > "$RELEASE_FILE_PATH" # /workspace/.cb.releasename
 echo All done.
