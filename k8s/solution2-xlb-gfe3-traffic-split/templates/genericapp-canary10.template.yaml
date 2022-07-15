@@ -8,7 +8,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   # this could be left __APPNAME__-v1
-  name: __APPNAME__-sol2-svc1-canary
+  name: __APPNAME__-sol2-svc-canary
   #namespace: canary
 spec:
   replicas: 2
@@ -31,13 +31,13 @@ spec:
           - containerPort: 8080
         env:
         - name: METADATA
-          value: "__APPNAME__-sol2-svc1-canary"
+          value: "__APPNAME__-sol2-svc-canary"
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  # This needs to be rennamed to `__APPNAME__-sol2-svc1-canary`
-  name: __APPNAME__-sol2-svc1-canary
+  # This needs to be rennamed to `__APPNAME__-sol2-svc-canary`
+  name: __APPNAME__-sol2-svc-canary
   #namespace: canary
   annotations:
     networking.gke.io/max-rate-per-endpoint: "10"
@@ -46,7 +46,8 @@ spec:
   selector:
     app: __APPNAME__ # 4. this needs to be like 1/2.
     #version: v1 # dmarzian
-    stage: canary
+    #stage: canary
+    ricc-env: canary
   ports:
   - port: 8080
     targetPort: 8080

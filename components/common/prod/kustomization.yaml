@@ -23,6 +23,6 @@ components:
 
 # apiVersion: kustomize.config.k8s.io/v1alpha1
 # kind: Component
-# replicas: 
+# replicas:
 #   - name: ricc-ruby
-#     count: 11 
+#     count: 11

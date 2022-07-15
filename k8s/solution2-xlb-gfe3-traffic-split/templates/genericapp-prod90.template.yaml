@@ -7,7 +7,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: svc2-prod10
+  name: svc-prod10
   #namespace: canary
 spec:
   replicas: 2
@@ -30,12 +30,12 @@ spec:
           - containerPort: 8080
         env:
         - name: METADATA
-          value: "__APPNAME__-sol2-svc1-prod"
+          value: "__APPNAME__-sol2-svc-prod" # DFLT_SOL2_SERVICE2
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: svc2-prod10
+  name: svc-prod90 # former svc2-prod90
   #namespace: canary
   annotations:
     networking.gke.io/max-rate-per-endpoint: "10"
@@ -44,7 +44,8 @@ spec:
   selector:
     app: __APPNAME__
     #version: v2
-    stage: prod
+    #stage: prod
+    ricc-env: prod
   ports:
   - port: 8080
     targetPort: 8080

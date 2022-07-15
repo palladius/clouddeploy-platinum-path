@@ -29,13 +29,13 @@ function _assert_neg_exists_for_service() {
   SVC_UGLY_NEG_NAME="$3"
 
   if [ -z "$SVC_UGLY_NEG_NAME" ]; then
-    echo "\$SVC_UGLY_NEG_NAME ($NEG_ID) is empty. No NEGS found for '$SOL2_SERVICE_NAME'."
+    echo "BEGIN \$SVC_UGLY_NEG_NAME ($NEG_ID) is empty. No NEGS found for '$SOL2_SERVICE_NAME'."
     gcloud compute network-endpoint-groups list --filter="$SOL2_SERVICE_NAME" | lolcat
     gcloud compute network-endpoint-groups list --filter="$SOL2_SERVICE_NAME" | grep "$REGION" | awk '{print $1}' | head -1
     #exit 2352
-    _fatal "\$SVC_UGLY_NEG_NAME ($NEG_ID) is empty. No NEGS found for '$SOL2_SERVICE_NAME'."
+    _fatal "END(_assert_neg_exists_for_service) \$SVC_UGLY_NEG_NAME ($NEG_ID) is empty. No NEGS found for '$SOL2_SERVICE_NAME'."
   else
-    echo "NEG Found: $(yellow $SVC2_UGLY_NEG_NAME)."
+    echo "_assert_neg_exists_for_service() NEG $NEG_ID Found: $(yellow $SVC2_UGLY_NEG_NAME)."
   fi
 }
 
@@ -73,7 +73,9 @@ gcloud compute network-endpoint-groups list  | grep sol2
 
 smart_apply_k8s_templates "$GKE_SOLUTION2_ENVOY_XLB_TRAFFICSPLITTING_SETUP_DIR"
 
-kubectl apply -f "$GKE_SOLUTION2_ENVOY_XLB_TRAFFICSPLITTING_SETUP_DIR/out/"
+kubectl --context="$GKE_CANARY_CLUSTER_CONTEXT" apply -f "$GKE_SOLUTION2_ENVOY_XLB_TRAFFICSPLITTING_SETUP_DIR/out/"
+kubectl --context="$GKE_PROD_CLUSTER_CONTEXT" apply -f "$GKE_SOLUTION2_ENVOY_XLB_TRAFFICSPLITTING_SETUP_DIR/out/"
+#kubectl apply -f "$GKE_SOLUTION2_ENVOY_XLB_TRAFFICSPLITTING_SETUP_DIR/out/"
 
 # rgrep λευκόχρυσος k8s/ &&
 #   _fatal "Error, this shouldnt happen! Try fixing APPNAME with \${APP_NAME}"
@@ -101,11 +103,14 @@ proceed_if_error_matches "The resource 'projects/$PROJECT_ID/global/backendServi
 # k8s1-3072c6bd-canary-svc1-canary90-8080-7bc34067  europe-west6-c  GCE_VM_IP_PORT  1
 # k8s1-3072c6bd-canary-svc1-canary90-8080-7bc34067  europe-west6-a  GCE_VM_IP_PORT  0
 
-gcloud compute network-endpoint-groups list --filter="$SOL2_SERVICE1" | grep "$REGION" | awk '{print $1}' | lolcat
+white "[DEBUG] Showing SORTED NEGs in your region $REGION which might or might not match service '$SOL2_SERVICE1':"
+gcloud compute network-endpoint-groups list --filter="$SOL2_SERVICE1" | grep "$REGION"  | sort | lolcat
 
+                     gcloud compute network-endpoint-groups list --filter="$SOL2_SERVICE1" | grep "$REGION" | awk '{print $1}' | head -1
 SVC1_UGLY_NEG_NAME=$(gcloud compute network-endpoint-groups list --filter="$SOL2_SERVICE1" | grep "$REGION" | awk '{print $1}' | head -1)
+echo "NEG1 possibly Found: $(yellow "$SVC1_UGLY_NEG_NAME")."
 _assert_neg_exists_for_service "$SOL2_SERVICE1" UGLY_NEG1_NAME "$SVC1_UGLY_NEG_NAME"
-echo "NEG1 Found: $(yellow $SVC1_UGLY_NEG_NAME)."
+#echo "NEG1 Found: $(yellow "$SVC1_UGLY_NEG_NAME")."
 
 # add the first backend with NEGs from the canary-$SOL2_SERVICE1 (EXAMPLE BELOW)
 # Lets assume the zones are A B C
@@ -133,6 +138,7 @@ proceed_if_error_matches "The resource 'projects/$PROJECT_ID/global/backendServi
 # grab the names of the NEGs for $SOL2_SERVICE1
 
 SVC2_UGLY_NEG_NAME=$(gcloud compute network-endpoint-groups list --filter="$SOL2_SERVICE2" | grep "$REGION" | awk '{print $1}' | head -1)
+echo "NEG2 possibly Found: $(yellow "$SVC2_UGLY_NEG_NAME")."
 #2022-07-14: for the first time in my life i could experience a gcloud crash..
 _assert_neg_exists_for_service "$SOL2_SERVICE2" UGLY_NEG2_NAME "$SVC2_UGLY_NEG_NAME"
 
@@ -154,7 +160,7 @@ done
 proceed_if_error_matches "The resource 'projects/$PROJECT_ID/global/urlMaps/$URLMAP_NAME' already exists" \
   gcloud compute url-maps create "$URLMAP_NAME" --default-service "$SOL2_SERVICE1"
 
-# Import traffic-split url-map (from file)
+# Import traffic-split url-map (from file) dmarzi way (obsolete):
 #gcloud compute url-maps import "$URLMAP_NAME" --source='k8s/xlb-gfe3-traffic-split/step2/urlmap-split.yaml'
 
 # Import traffic-split url-map (from STDIN - so templating is trivially obvious)
@@ -166,9 +172,9 @@ cat << END_OF_URLMAP_GCLOUD_YAML_CONFIG
 defaultService: https://www.googleapis.com/compute/v1/projects/$PROJECT_ID/global/backendServices/$SOL2_SERVICE1
 hostRules:
 - hosts:
-  # This is for ease of troubleshoot
+    # This is for ease of troubleshoot
   - sol2-xlb-gfe3.example.io
-  # This is for you to use your REAL domain - with Cloud DNS you can just curl the final hostname. Not covered by this demo.
+    # This is for you to use your REAL domain - with Cloud DNS you can just curl the final hostname. Not covered by this demo.
   - sol2-xlb-gfe3.$MY_DOMAIN
   pathMatcher: path-matcher-1
 pathMatchers:
@@ -192,7 +198,7 @@ pathMatchers:
       - backendService: https://www.googleapis.com/compute/v1/projects/$PROJECT_ID/global/backendServices/$SOL2_SERVICE2
         weight: 11
 END_OF_URLMAP_GCLOUD_YAML_CONFIG
-} | gcloud compute url-maps import "$URLMAP_NAME" --source=- --quiet
+} | gcloud compute url-maps import "$URLMAP_NAME" --source=- # --quiet
 
 
 #proceed_if_error_matches "The resource 'projects/$PROJECT_ID/global/targetHttpProxies/http-svc9010-lb' already exists" \

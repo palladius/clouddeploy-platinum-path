@@ -5,6 +5,7 @@ commonLabels:
   is-app-in-production: bingo
   ricc-awesome-selector: canary-or-prod
   ricc-env: canary
+#  stage: canary
 commonAnnotations:
   riccNotes: |
     This is common stuff which I include in my CANARY manifests.
