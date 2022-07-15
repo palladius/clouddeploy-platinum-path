@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: sol1-prod-image-useless #  whereami
-        image: __IMAGE_NAME__  # gcr.io/google-samples/whereami:v1.2.1
+        image: __K8S_APP_IMAGE__ # not _ _ IMAGE_NAME _ _  # gcr.io/google-samples/whereami:v1.2.1
         ports:
           - containerPort: 8080
         env:

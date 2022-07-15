@@ -16,18 +16,17 @@ APP_NAME="${1:-$DEFAULT_APP}"
 # [RICC01] Troubleshooting info..
 ###########################################################
 
-if /bin/false ; then
+#if /bin/false ; then # restore when part 2 works :) and re_add when its too slow or youre in debug mode.
 
-# restore when part 2 works :)
+    # Cluster 1
+    yellow Lets recall that: CLUSTER_1="$CLUSTER_1"
+    yellow Lets recall that: CLUSTER_2="$CLUSTER_2"
+    #yellow "Try now for cluster1=$CLUSTER_1 kubectl apply -f  $GKE_SOLUTION0_ILB_SETUP_DIR/cluster1/"
+    kubectl config get-contexts
+    #_kubectl_on_both_canary_and_prod get gatewayclass
+    bin/kubectl-triune get gatewayclass
 
-                # Cluster 1
-                yellow Lets recall that: CLUSTER_1="$CLUSTER_1"
-                yellow Lets recall that: CLUSTER_2="$CLUSTER_2"
-                #yellow "Try now for cluster1=$CLUSTER_1 kubectl apply -f  $GKE_SOLUTION0_ILB_SETUP_DIR/cluster1/"
-                kubectl config get-contexts
-                #_kubectl_on_both_canary_and_prod get gatewayclass
-                bin/kubectl-triune get gatewayclass
-fi
+#fi
 ############################################################
 # [RICC02] HYDRATE TEMPLATES the hard way :)
 ###########################################################
@@ -46,6 +45,7 @@ echo TODO kubectl apply -f "$GKE_SOLUTION0_ILB_SETUP_DIR/out/"
 kubectl --context="$GKE_CANARY_CLUSTER_CONTEXT" apply -f "$GKE_SOLUTION0_ILB_SETUP_DIR/out/cluster1/"
 kubectl --context="$GKE_PROD_CLUSTER_CONTEXT"   apply -f "$GKE_SOLUTION0_ILB_SETUP_DIR/out/cluster2/"
 
+red "WARNING: The ILB selector just uses canary-or-prod, not appname. Once it works and OVER reaches I can then specify. This fix is for another day."
 white "Solution0 - related endpoints:"
 make endpoints-show | grep "sol0"
 
@@ -60,6 +60,9 @@ kubectl --context=$GKE_PROD_CLUSTER_CONTEXT   apply -f "$GKE_SOLUTION0_ILB_SETUP
 
 echo Restoring cluster 1.
 gcloud container clusters get-credentials "$CLUSTER_1"  --region "$GCLOUD_REGION" --project "$PROJECT_ID"
+
+red "WARNING: The ILB hasnt been tested yet. TODO(ricc): Try creating a GCE vm and curl the internal ILB IP: "
+gcloud compute forwarding-rules list |grep ilb | lolcat
 
 # End of your code here
 _allgood_post_script

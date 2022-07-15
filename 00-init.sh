@@ -2,6 +2,7 @@
 
 set -e
 
+# Defined also in .env.sh.post BUT I need to define it here for the first time :)
 function _fatal() {
     echo "$*" >&1
     exit 42

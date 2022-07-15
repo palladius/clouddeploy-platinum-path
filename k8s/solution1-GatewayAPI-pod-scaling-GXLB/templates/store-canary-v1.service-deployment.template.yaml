@@ -27,7 +27,7 @@ spec:
     spec:
       containers:
       - name: sol1-canary-image-useless # used to be: whereami
-        image: __IMAGE_NAME__
+        image: __K8S_APP_IMAGE__ # not _ _ IMAGE_NAME _ _
         ports:
           - containerPort: 8080
         env:

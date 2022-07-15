@@ -23,7 +23,7 @@ function _get_zones_by_region() {
   REGION="$1"
   gcloud compute zones list | egrep "^$REGION" | awk '{print $1}'
 }
-function _assert_neg_exists_for_service(){
+function _assert_neg_exists_for_service() {
   SOL2_SERVICE_NAME="$1"
   NEG_ID="$2"
   SVC_UGLY_NEG_NAME="$3"
@@ -32,7 +32,8 @@ function _assert_neg_exists_for_service(){
     echo "\$SVC_UGLY_NEG_NAME ($NEG_ID) is empty. No NEGS found for '$SOL2_SERVICE_NAME'."
     gcloud compute network-endpoint-groups list --filter="$SOL2_SERVICE_NAME" | lolcat
     gcloud compute network-endpoint-groups list --filter="$SOL2_SERVICE_NAME" | grep "$REGION" | awk '{print $1}' | head -1
-    exit 2352
+    #exit 2352
+    _fatal "\$SVC_UGLY_NEG_NAME ($NEG_ID) is empty. No NEGS found for '$SOL2_SERVICE_NAME'."
   else
     echo "NEG Found: $(yellow $SVC2_UGLY_NEG_NAME)."
   fi
@@ -43,19 +44,25 @@ source .env.sh || _fatal 'Couldnt source this'
 set -x
 set -e
 
+
+########################
+# Add your code here
+########################
+
+########################################################################
+# RICC00. ARGV -> vars for MultiAppK8sRefactoring
+########################################################################
+
 # These two names need to be aligned with app1/app2 in the k8s.
 DEFAULT_APP="app01"                                # app01 / app02
 DEFAULT_APP_IMAGE="skaf-app01-python-buildpacks"   # skaf-app01-python-buildpacks // ricc-app02-kuruby-skaffold
 APP_NAME="${1:-$DEFAULT_APP}"
 K8S_APP_IMAGE="${2:-$DEFAULT_APP_IMAGE}" # "skaf-app01-python-buildpacks"
 
-SOL2_SERVICE1="$APP_NAME-$DFLT_SOL2_SERVICE1"
-SOL2_SERVICE2="$APP_NAME-$DFLT_SOL2_SERVICE2"
+SOL2_SERVICE1="$APP_NAME-$DFLT_SOL2_SERVICE1"    # => appXX-sol2-svc1-canary
+SOL2_SERVICE2="$APP_NAME-$DFLT_SOL2_SERVICE2"    # => appXX-sol2-svc1-prod
 
-########################
-# Add your code here
-########################
-
+# K8S_APP_SELECTOR -> nothing
 echo "##############################################"
 yellow "WORK IN PROGRESS!! trying to use envsubst to make this easier.."
 yellow "Deploy the GKE manifests. This needs to happen first as it creates the NEGs which this script depends upon."
@@ -65,6 +72,11 @@ smart_apply_k8s_templates "$GKE_SOLUTION2_ENVOY_XLB_TRAFFICSPLITTING_SETUP_DIR"
 
 kubectl apply -f "$GKE_SOLUTION2_ENVOY_XLB_TRAFFICSPLITTING_SETUP_DIR/out/"
 
+# rgrep λευκόχρυσος k8s/ &&
+#   _fatal "Error, this shouldnt happen! Try fixing APPNAME with \${APP_NAME}"
+
+# _fatal "Exiting anyway, since I want to fix the Lecuchrisos bug"
+# # exit 41
 
 # create health check for the backends
 proceed_if_error_matches "global/healthChecks/http-neg-check' already exists" \
