@@ -14,7 +14,7 @@ build:
       builder: "gcr.io/buildpacks/builder:v1"
       trustBuilder: true
       dependencies:
-        ignore: 
+        ignore:
           - k8s/**
 deploy:
   kustomize: # uses kustomize
@@ -35,10 +35,10 @@ profiles:
     deploy:
       kustomize: # uses kustomize
         paths: [./k8s/overlays/canary]
-  - name: prod
+  - name: production
     deploy:
       kustomize: # uses kustomize
-        paths: [./k8s/overlays/prod]
+        paths: [./k8s/overlays/production]
 
 # TODO skaffold profile for solutions. then use with skaffold render or CD release CLI.
 #   - name: canary-solution1

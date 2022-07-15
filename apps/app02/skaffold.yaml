@@ -4,18 +4,18 @@ metadata:
   name: app02
 build:
   artifacts:
-  - image: ricc-app02-kuruby-skaffold 
+  - image: ricc-app02-kuruby-skaffold
     context: ruby-app
     sync:
       # Sync app.rb file, being watch with rack-unreloader
       # or add any other rb file to your application
       infer:
       - '*.rb'
-    
+
 # abielski says: This is the issue. Either always pass a profile param to skaffold or change this to point to `./k8s/_base`
 deploy:
   kustomize:
-    paths: 
+    paths:
     - ./k8s/base   # new stuff with Kustomize
     # - ./k8s/static  # old stuff without Kustomize
 profiles:
@@ -31,7 +31,7 @@ profiles:
     deploy:
       kustomize:
         paths: ["k8s/overlays/canary"]
-  - name: prod
+  - name: production
     deploy:
       kustomize:
-        paths: ["k8s/overlays/prod"]
+        paths: ["k8s/overlays/production"]

@@ -17,7 +17,8 @@ kind: DeliveryPipeline
 metadata:
   name: app01
   annotations:
-    ricc: was here # testing an annotation
+    #ricc: was here # testing an annotation
+    about: This is a python sample web frontend built with BuildPacks
   labels:
     lang: python
     CDT_VER: _MY_VERSION_
@@ -42,7 +43,8 @@ kind: DeliveryPipeline
 metadata:
   name: app02
   annotations:
-    ricc: was also here and loves ruby
+    #ricc: was also here and loves ruby
+    about: This is a Ruby sample web frontend built with Docker
   labels:
     lang: ruby
     CDT_VER: _MY_VERSION_
