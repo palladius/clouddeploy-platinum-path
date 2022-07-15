@@ -19,8 +19,8 @@ spec:
   parentRefs:
   - name: __PREFIX__-sol1-http
   hostnames:
-  - "__APPNAME__-sol1.example.io"    # kept for easy curl/documented static commands :)
-  - "__APPNAME__-sol1.__MY_DOMAIN__" # being changed by script 12 into $MY_DOMAIN.
+  - "sol1-__APPNAME__.example.io"    # kept for easy curl/documented static commands :)
+  - "sol1-__APPNAME__.__MY_DOMAIN__" # being changed by script 12 into $MY_DOMAIN.
   rules:
   - backendRefs:
     - name: __PREFIX__sol1-common-svc

@@ -17,15 +17,16 @@ set -e
 ########################
 # Add your code here
 ########################
-#  We're going to use  - "__APPNAME__-sol1.example.io"    # kept for easy curl/documented static commands :)
+#  We're going to use  - "sol1-__APPNAME__.example.io"    # kept for easy curl/documented static commands :)
 DEFAULT_APP="app01"                       # app01 / app02
 APP_NAME="${1:-$DEFAULT_APP}"
-URL="$APP_NAME-sol1.example.io"
+URL="sol1-$APP_NAME.example.io"
 
 kubectl --context="$GKE_CANARY_CLUSTER_CONTEXT" apply -f "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/out/"
 
 #set -x
 
+yellow "Warning, IP address is currently hard-coded :/"
 LB_NAME="http-svc9010-lb"
 ENDPOINT_IP="34.160.173.24:80"	# https://console.cloud.google.com/net-services/loadbalancing/details/httpAdvanced/http-svc9010-lb?project=cicd-platinum-test001
 curl -H "host: $URL" $ENDPOINT_IP 2>/dev/null
