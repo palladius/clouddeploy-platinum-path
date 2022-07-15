@@ -50,6 +50,8 @@ SOLUTION1_TEMPLATING_VER="1.1"
 # 1.0 13jul22 Initial stesure.
 ###############################################
 
+# MultiAppK8sRefactoring: first script
+
 for TEMPLATE_FILE in "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/templates/"*.template.yaml ; do
   DEST_FILE=$(echo "$TEMPLATE_FILE" | sed s:/templates/:/out/:)
   echo "Hydrating template '$TEMPLATE_FILE' [v.$SOLUTION1_TEMPLATING_VER] into this tmp out/ file: $DEST_FILE:"

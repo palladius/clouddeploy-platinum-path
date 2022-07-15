@@ -4,4 +4,9 @@ source ./.env.sh || exit 42
 
 echo gcloud and kubectl...
 
+white "01. Kubernetes endpoints:"
 bin/kubectl-triune get services | grep -v '<none>'
+
+white "02. GCloud FwdRule endpoints:"
+# remove horrible ones with random MD5 hashes. I know, this is implementation dependent SORRY.
+gcloud compute forwarding-rules list |  egrep -v '^[0-9a-f]{32}'

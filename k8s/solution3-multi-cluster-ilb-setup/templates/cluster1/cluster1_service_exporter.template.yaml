@@ -1,0 +1,23 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dmarzi-app-web-01
+spec:
+  ports:
+  - port: 8080
+    name: http
+  selector:
+    # dmarzi@ wise words: "no you cant use two selectors in OR (prod or canary) but you can choose ANY selector" => 
+    # I've added to kustomize for both python and ruby a ricc-awesome-selector: canary-or-prod for those two statuses. I'm strating to LOVE this!
+    ricc-awesome-selector: canary-or-prod
+#    app: app01-web
+#    app: webapp01-python
+#    app-selettore: app01-in-python 
+
+---
+kind: ServiceExport
+apiVersion: net.gke.io/v1
+metadata:
+  name: dmarzi-app-web-01
+  namespace: default
