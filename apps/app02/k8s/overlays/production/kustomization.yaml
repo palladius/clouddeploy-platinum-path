@@ -4,6 +4,16 @@ resources:
   - ../../base
 components:
   - ../../../../../components/common/prod
-replicas: 
+replicas:
   - name: app02-kuruby
     count: 4 # If you have plenty of capacity, please turn to 9 (9 vs 1 is 90%/10%) but 4 is a better example as it demonstrates (4 vs 1 is 80%/20%) with half the pods.
+patches:
+- patch: |-
+    - op: add
+      path: "/spec/template/spec/containers/0/env/-"
+      value:
+        name: CLOUD_DEPLOY_TARGET #RICCARDO_KUSTOMIZE_ENV
+        value: "04 Prod - Production"
+  target:
+    kind: Deployment
+    name: app02-kuruby

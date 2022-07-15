@@ -10,7 +10,7 @@ patches:
     - op: add
       path: "/spec/template/spec/containers/0/env/-"
       value:
-        name: RICCARDO_KUSTOMIZE_ENV
+        name: CLOUD_DEPLOY_TARGET #RICCARDO_KUSTOMIZE_ENV
         value: "01 Dev (Development)"
   target:
     kind: Deployment

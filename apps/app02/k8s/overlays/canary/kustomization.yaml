@@ -8,6 +8,7 @@ replicas:
   - name: app02-kuruby
     count: 1
 patches:
+# TODO(ricc): when you have a minute add patch also here.
 - patch: |-
     - op: add
       path: "/spec/template/spec/containers/0/env/-"

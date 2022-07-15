@@ -32,9 +32,13 @@ spec:
         - name: RACK_ENV
           value: "development"
         - name: APP_NAME
-          value: A Wodnerful App in Ruby (app02)
+          value: A Wonderful App in Ruby (app02)
         - name: RICCARDO_MESSAGE
-          value: Hi! This is the default message if you dont customize to come to another target (dev, prod, ..)
+          value: |
+            Hi! This is the default message if you dont customize to come to another
+            target (dev, prod, ..). This was fixed in v1.16 with port mismatch.
+            I'm still trying to bake the CD target into this which kustomize should add in
+            overlays but nisba: ENV['RICCARDO_KUSTOMIZE_ENV'] seems null
         - name: FAVORITE_COLOR
           value: pink # default bkg color, will make it white in prod and yellow in canary.
 
