@@ -11,9 +11,11 @@ spec:
     # dmarzi@ wise words: "no you cant use two selectors in OR (prod or canary) but you can choose ANY selector" =>
     # I've added to kustomize for both python and ruby a ricc-awesome-selector: canary-or-prod for those two statuses. I'm strating to LOVE this!
     ricc-awesome-selector: canary-or-prod
-#    app: app01-web
-#    app: webapp01-python
-#    app-selettore: app01-in-python
+    #TODO_ricc-awesome-app: ${APP_NAME}
+    app: "${K8S_APP_SELECTOR}" # if we're lucky yhis shoulod suffice 9292 MultiAppK8sRefactoring
+    #2022-07-15 Either use the latest appnames:
+    # app: app02-kuruby
+    # app: app01-python
 
 ---
 kind: ServiceExport
