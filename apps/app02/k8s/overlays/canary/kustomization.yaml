@@ -4,12 +4,9 @@ resources:
   - ../../base
 components:
   - ../../../../../components/common/canary
-replicas: 
+replicas:
   - name: app02-kuruby
-    count: 1 
-# How do i make the fav color to be yellow?!?
-#         - name: FAVORITE_COLOR
-#          value: pink # default bkg color, will make it white in prod and yellow in canary.          
+    count: 1
 patches:
 - patch: |-
     - op: add
