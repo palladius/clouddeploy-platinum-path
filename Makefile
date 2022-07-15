@@ -113,9 +113,11 @@ breadcrumb-navigation:
 
 clean:
 	echo 'Removing tmp files created by scripts..'
-	rm k8s/*/out/*.yaml
+	rm -f k8s/*/out/*.yaml
 	# not sure i want to do this...
 	#rm .executed.*
+	rm -f apps/tmp/*
+	@echo OK. Removed tmp files.
 
 observe-endpoints:
 	# See k8s and gcloud endpoints.

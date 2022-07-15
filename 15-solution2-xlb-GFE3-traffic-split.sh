@@ -41,7 +41,7 @@ function _assert_neg_exists_for_service() {
 
 # Created with codelabba.rb v.1.5
 source .env.sh || _fatal 'Couldnt source this'
-set -x
+#set -x
 set -e
 
 
@@ -67,6 +67,9 @@ echo "##############################################"
 yellow "WORK IN PROGRESS!! trying to use envsubst to make this easier.."
 yellow "Deploy the GKE manifests. This needs to happen first as it creates the NEGs which this script depends upon."
 echo "##############################################"
+
+white "01. Showing NEGs for sol2:" # uhm only canary
+gcloud compute network-endpoint-groups list  | grep sol2
 
 smart_apply_k8s_templates "$GKE_SOLUTION2_ENVOY_XLB_TRAFFICSPLITTING_SETUP_DIR"
 
@@ -217,6 +220,10 @@ echo 'Now you can try this 20-30 times: 2) curl -H "Host: xlb-gfe3-host.example.
 ########################
 # End of your code here
 ########################
+
+# Check everything ok:
+bin/kubectl-triune get all | grep "sol1"
+
 green "Everything is ok. Now check your newly created LB for its IP (should be '$IP_FWDRULE')"
 
 # End of your code here

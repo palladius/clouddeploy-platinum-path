@@ -52,44 +52,25 @@ SHORT_REGION="$(_shorten_region "$REGION")"
 PREFIX="${APP_NAME}-${SHORT_REGION}" # maybe in the future PREFIX = APP-REGION
 export IMAGE_NAME="${K8S_APP_IMAGE}"
 ###############################################
+
 SOLUTION1_TEMPLATING_VER="1.1"
+###############################################
 # 1.1 14jul22 Added support for short regions which def acto changed the naming convention!
 # 1.0 13jul22 Initial stesure.
 ###############################################
 
-# MultiAppK8sRefactoring: first script
+# MultiAppK8sRefactoring: first script (just ported to obsolete script 2)
 
 smart_apply_k8s_templates "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR"
 
-
-# for TEMPLATE_FILE in "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/templates/"*.template.yaml ; do
-#   DEST_FILE=$(echo "$TEMPLATE_FILE" | sed s:/templates/:/out/:)
-#   echo "Hydrating template '$TEMPLATE_FILE' [v.$SOLUTION1_TEMPLATING_VER] into this tmp out/ file: $DEST_FILE:"
-#   (
-#     echo '###########################################################'
-#     echo "# Created by $0 v$SOLUTION1_TEMPLATING_VER on `date` on `hostname`"
-#     echo "# Edit at your own risk as it'll be soon overwritten. Maybe."
-#     echo '###########################################################'
-#     cat "$TEMPLATE_FILE"  | egrep -v '^#'  # remove comments
-#   )|
-#     sed -e "s/__MY_PROJECT_ID__/$PROJECT_ID/g" |
-#     sed -e "s/__PREFIX__/$PREFIX/g" |
-#     sed -e "s/__APP_NAME__/$APP_NAME/g" |
-#     sed -e "s/__APPNAME__/$APP_NAME/g" |    # I know what you thinking..
-#     sed -e "s/__K8S_APP_SELECTOR__/$K8S_APP_SELECTOR/g" |    # I know what you thinking..
-#     sed -e "s/__MY_REGION__/$REGION/g" |
-#     sed -e "s/__MY_DOMAIN__/$MY_DOMAIN/g" |
-#     #sed -e "s/__MY_VERSION_/$CLOUD_DEPLOY_TEMPLATING_VER/g" |
-#     #egrep 'cluster|VER' |
-#       tee "$DEST_FILE" >/dev/null
-# done
-# green Done.
-
-yellow Now we can issue a kubectl on the out dir..
-echo "TODO:  kubectl apply -f $GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/out/"
+#yellow Now we can issue a kubectl on the out dir..
+#echo "TODO:  kubectl apply -f $GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/out/"
 
 kubectl --context="$GKE_CANARY_CLUSTER_CONTEXT" apply -f "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/out/"
 kubectl --context="$GKE_PROD_CLUSTER_CONTEXT" apply -f "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/out/"
+
+# Check everything ok:
+bin/kubectl-triune get all | grep "sol1"
 
 #######################
 # End of your code here

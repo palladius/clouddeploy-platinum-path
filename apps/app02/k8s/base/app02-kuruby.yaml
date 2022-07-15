@@ -5,7 +5,7 @@ metadata:
 spec:
   ports:
   - port: 80
-    targetPort: 9292
+    targetPort: 8080
   type: LoadBalancer
   selector:
     app: app02-kuruby
@@ -27,7 +27,7 @@ spec:
       - name: app02-kuruby
         image: ricc-app02-kuruby-skaffold    # Dockerized
         ports:
-        - containerPort: 9292 # was 80 My pod esxpects traffic here.
+        - containerPort: 8080 # was 9292. My pod esxpects traffic here.
         env:
         - name: RACK_ENV
           value: "development"
@@ -38,7 +38,8 @@ spec:
             Hi! This is the default message if you dont customize to come to another
             target (dev, prod, ..). This was fixed in v1.16 with port mismatch.
             I'm still trying to bake the CD target into this which kustomize should add in
-            overlays but nisba: ENV['RICCARDO_KUSTOMIZE_ENV'] seems null
+            overlays but nisba: ENV['RICCARDO_KUSTOMIZE_ENV'] seems null.
+            Btw moved 9292 to 8080 since I need
         - name: FAVORITE_COLOR
           value: pink # default bkg color, will make it white in prod and yellow in canary.
 

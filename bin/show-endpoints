@@ -10,3 +10,5 @@ bin/kubectl-triune get services | grep -v '<none>'
 white "02. GCloud FwdRule endpoints:"
 # remove horrible ones with random MD5 hashes. I know, this is implementation dependent SORRY.
 gcloud compute forwarding-rules list |  egrep -v '^[0-9a-f]{32}'
+
+yellow Done. Consider grepping sol0 sol1 or sol2 on the output.. >&2 # :)

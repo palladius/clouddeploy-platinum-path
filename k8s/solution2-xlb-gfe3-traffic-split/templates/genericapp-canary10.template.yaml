@@ -45,7 +45,7 @@ metadata:
 spec:
   selector:
     app: __APPNAME__ # 4. this needs to be like 1/2.
-    #version: v1
+    #version: v1 # dmarzian
     stage: canary
   ports:
   - port: 8080

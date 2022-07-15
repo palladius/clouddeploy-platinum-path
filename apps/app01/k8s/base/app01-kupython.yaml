@@ -30,7 +30,7 @@ spec:
         env:
           - name: PORT
             value: "8080"
-          - name: TEST_RICCARDO
+          - name: RICCARDO_MESSAGE # TEST_RICCARDO. Ruby has RICCARDO_MESSAGE and uses it, so changing in case I want to refactor in common :)
             value: |
               I copied and pasted web.yaml inside base and now Im trying to use kustomize instead.
               Not sure if Ill survive but we'll see.
