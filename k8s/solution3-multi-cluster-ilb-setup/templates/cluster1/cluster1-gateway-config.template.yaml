@@ -2,7 +2,7 @@
 kind: Gateway
 apiVersion: gateway.networking.k8s.io/v1alpha2
 metadata:
-  name: dmarzi-apps-http
+  name: sol0-ilb-$APP_NAME-http
 spec:
   gatewayClassName: gke-l7-rilb-mc
   listeners:
@@ -16,4 +16,4 @@ spec:
         from: Selector
         selector:
           matchLabels:
-            gateway: dmarzi-apps-http
+            gateway: sol0-ilb-$APP_NAME-http

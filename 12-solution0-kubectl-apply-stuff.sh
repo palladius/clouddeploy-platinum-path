@@ -23,10 +23,17 @@ fi
 ############################################################
 # [RICC02] HYDRATE TEMPLATES the hard way :)
 ###########################################################
+APPNAME="This should fail !! @ ~ argh" # otherwise takes .env/sh which is a good string :)
+for CLUSTER in cluster1 cluster2 ; do
+    APP_NAME="app42"
+    # apply smart substitutions..
+    smart_apply_k8s_templates_with_envsubst \
+        "$GKE_SOLUTION0_ILB_SETUP_DIR/templates/$CLUSTER/" \
+        "$GKE_SOLUTION0_ILB_SETUP_DIR/out/$CLUSTER/"
+done
+#envsubst
 
-smart_apply_k8s_templates "$GKE_SOLUTION2_ENVOY_XLB_TRAFFICSPLITTING_SETUP_DIR"
-
-echo TODO kubectl apply -f "$GKE_SOLUTION2_ENVOY_XLB_TRAFFICSPLITTING_SETUP_DIR/out/"
+echo TODO kubectl apply -f "$GKE_SOLUTION0_ILB_SETUP_DIR/out/"
 
 exit 102
 
