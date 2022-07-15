@@ -9,10 +9,11 @@ set -x
 set -e
 
 # Install cloud-build-local if we don't have it yet
-which cloud-build-local >/dev/null  && 
+which cloud-build-local >/dev/null  &&
   echo cloud-build-local exists. All good. ||
     gcloud components install cloud-build-local
 
+white "Skaffold should be confgured automatically: SKAFFOLD_DEFAULT_REPO=$SKAFFOLD_DEFAULT_REPO"
 # Add your code here:
 # docs for substitutions: https://cloud.google.com/build/docs/configuring-builds/substitute-variable-values
 #  --substitutions "_DEPLOY_UNIT=$MODULE_TO_BUILD,_REGION=$REGION,_ARTIFACT_REPONAME=$ARTIFACT_REPONAME,_DEPLOY_REGION=$CLOUD_DEPLOY_REGION,_APP_VERSION=$PARTICULAR_VERSION_FOR_MODULE" \
@@ -23,7 +24,7 @@ gcloud auth configure-docker $REGION-docker.pkg.dev
 # documented herE: https://cloud.google.com/artifact-registry/docs/docker/pushing-and-pulling#auth
 #which docker-credential-gcloud  && docker-credential-gcloud configure-docker #  $REGION-docker.pkg.dev
 
-_echodo cloud-build-local --config="cloudbuild.yaml" --dryrun=false \
+cloud-build-local --config="cloudbuild.yaml" --dryrun=false \
   --substitutions "_DEPLOY_UNIT=$MODULE_TO_BUILD,_REGION=$REGION,_ARTIFACT_REPONAME=$ARTIFACT_REPONAME,_DEPLOY_REGION=$CLOUD_DEPLOY_REGION" \
   --push "apps/$MODULE_TO_BUILD/"
 
