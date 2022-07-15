@@ -10,23 +10,30 @@ function show_k8s_stuff() {
 # GKE_CANARY_CLUSTER_CONTEXT="gke_cicd-platinum-test001_europe-west6_cicd-canary"
 # GKE_PROD_CLUSTER_CONTEXT="gke_cicd-platinum-test001_europe-west6_cicd-prod"
     # I have 3 clusters and for each I want to show things..
-    for CONTEXT in $GKE_DEV_CLUSTER_CONTEXT $GKE_CANARY_CLUSTER_CONTEXT $GKE_PROD_CLUSTER_CONTEXT ; do 
+    for CONTEXT in $GKE_DEV_CLUSTER_CONTEXT $GKE_CANARY_CLUSTER_CONTEXT $GKE_PROD_CLUSTER_CONTEXT ; do
         yellow "== ClusterContext: $CONTEXT =="
         # https://stackoverflow.com/questions/33942709/run-a-single-kubectl-command-for-a-specific-project-and-cluster
         # if it doesnt work this should work: kubectl config use-context CONTEXT_NAME
         # RIP echo_do
         echo kubectl --context="$CONTEXT" get service,gatewayclass 2>/dev/null
              kubectl --context="$CONTEXT" get service,gatewayclass 2>/dev/null ||
-                echo "Possibly empty output for cluster in $CONTEXT" 
+                echo "Possibly empty output for cluster in $CONTEXT"
     done
+}
+
+function show_gcloud_stuff() {
+    echo "+ Let's count the images for each artifact:"
+    gcloud artifacts docker images list "$ARTIFACT_LONG_REPO_PATH" | awk '{print $1}' | sort | uniq -c
+    gcloud deploy delivery-pipelines list | egrep "name:|targetId"
+    gcloud compute target-http-proxies list
 }
 
 # Add your code here:
 SHOW_VERBOSE_STUFF="false"
-SHOW_GCLOUD_ENTITIES="false"
+SHOW_GCLOUD_ENTITIES="true"
 SHOW_DEVCONSOLE_LINKS="true"
-SHOW_KUBERNETES_STUFF="true"
-SHOW_SKAFFOLD_STUFF="true"
+SHOW_KUBERNETES_STUFF="false"
+SHOW_SKAFFOLD_STUFF="false"
 
 echo "+ REGION for DEPLOY:          $CLOUD_DEPLOY_REGION"
 echo "+ REGION for GKE:             $GKE_REGION"
@@ -36,12 +43,12 @@ echo "+ REGION for EVERYTHING ELSE: $REGION"
 #kubectl get pods,service
 gcloud beta builds triggers list --region $REGION
 
-if [ "true" = "$SHOW_SKAFFOLD_STUFF" ]; then 
+if [ "true" = "$SHOW_SKAFFOLD_STUFF" ]; then
     echo "== skaffold info ==" | lolcat
     skaffold config list
 fi
 
-if [ "true" = "$SHOW_DEVCONSOLE_LINKS" ]; then 
+if [ "true" = "$SHOW_DEVCONSOLE_LINKS" ]; then
     echo "== DevConsole useful links START (if you are a UI kind of person) ==" | lolcat
 
     white "GKE Workloads: https://console.cloud.google.com/kubernetes/workload/overview?&project=$PROJECT_ID"
@@ -55,14 +62,12 @@ fi
 
 if [ "true" = $SHOW_KUBERNETES_STUFF ] ; then
     show_k8s_stuff
-fi 
+fi
 
 # Docs: https://cloud.google.com/sdk/gcloud/reference/beta/artifacts/docker
 if [ "true" = "$SHOW_GCLOUD_ENTITIES" ] ; then
-    echo "+ Let's count the images for each artifact:"
-    gcloud artifacts docker images list "$ARTIFACT_LONG_REPO_PATH" | awk '{print $1}' | sort | uniq -c
-    gcloud deploy delivery-pipelines list | egrep "name:|targetId"
-fi 
+    show_gcloud_stuff
+fi
 if [ "true" = "$SHOW_VERBOSE_STUFF" ] ; then
     gsutil ls -l "gs://$SKAFFOLD_BUCKET/skaffold-cache/"
     gcloud beta builds triggers list --region $REGION

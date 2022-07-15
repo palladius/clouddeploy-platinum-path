@@ -1,11 +1,11 @@
 #
 Deploy the applications as usual
 
-# create health check for the backends
+# RIC001 create health check for the backends
 gcloud compute health-checks create http http-neg-check --port 8080
 
 
-# create backend for the V1 of the whereami application
+# RIC002 create backend for the V1 of the whereami application
 gcloud compute backend-services create whereami-v1 \
     --load-balancing-scheme=EXTERNAL_MANAGED \
     --protocol=HTTP \
@@ -13,10 +13,10 @@ gcloud compute backend-services create whereami-v1 \
     --health-checks=http-neg-check \
     --global
 
-# grab the names of the NEGs for whereami-v1
+# RIC003 grab the names of the NEGs for whereami-v1
 gcloud compute network-endpoint-groups list --filter="canary-whereami-v1"
 
-# add the first backend with NEGs from the canary-whereami-v1 (EXAMPLE BELOW)
+# RIC004 add the first backend with NEGs from the canary-whereami-v1 (EXAMPLE BELOW)
 gcloud compute backend-services add-backend whereami-v1 \
         --network-endpoint-group=k8s1-8ac5360b-canary-whereami-v1-8080-3fe8fae3 \
         --network-endpoint-group-zone=europe-north1-b \
@@ -38,7 +38,7 @@ gcloud compute backend-services add-backend whereami-v1 \
         --max-rate-per-endpoint=10 \
         --global
 
-# create backend for the V2 of the whereami application
+# RIC005 create backend for the V2 of the whereami application
 gcloud compute backend-services create whereami-v2 \
     --load-balancing-scheme=EXTERNAL_MANAGED \
     --protocol=HTTP \
@@ -46,10 +46,10 @@ gcloud compute backend-services create whereami-v2 \
     --health-checks=http-neg-check \
     --global
 
-# grab the names of the NEGs for whereami-v1
+# RIC006 grab the names of the NEGs for whereami-v1
 gcloud compute network-endpoint-groups list --filter="canary-whereami-v2"
 
-# add the first backend with NEGs from the canary-whereami-v2 (EXAMPLE BELOW)
+# RIC007 add the first backend with NEGs from the canary-whereami-v2 (EXAMPLE BELOW)
 gcloud compute backend-services add-backend whereami-v2 \
         --network-endpoint-group=k8s1-8ac5360b-canary-whereami-v2-8080-a4d133a9 \
         --network-endpoint-group-zone=europe-north1-b \
@@ -71,17 +71,16 @@ gcloud compute backend-services add-backend whereami-v2 \
         --max-rate-per-endpoint=10 \
         --global
 
-# Create a default url-map
+# RIC008 Create a default url-map
 gcloud compute url-maps create http-whereami-lb --default-service whereami-v1
 
-# Import traffic-split url-map
+# RIC009 Import traffic-split url-map
 gcloud compute url-maps import http-whereami-lb --source=urlmap-split.yaml
 
-# Finalize
+# RIC010 Finalize
 gcloud compute target-http-proxies create http-whereami-lb --url-map=http-whereami-lb
 gcloud compute forwarding-rules create http-content-rule \
     --load-balancing-scheme=EXTERNAL_MANAGED \
     --global \
     --target-http-proxy=http-whereami-lb  \
     --ports=80
-    

@@ -38,6 +38,12 @@ function _assert_neg_exists_for_service() {
     echo "_assert_neg_exists_for_service() NEG $NEG_ID Found: $(yellow $SVC2_UGLY_NEG_NAME)."
   fi
 }
+function _grab_NEG_name_by_filter() {
+  FILTER="$1"
+  # DEBUG
+  white "[DEBUG] _grab_NEG_name_by_filter('$FILTER')" >&2
+  gcloud compute network-endpoint-groups list --filter="$FILTER" | grep "$REGION" | awk '{print $1}' | head -1
+}
 
 # Created with codelabba.rb v.1.5
 source .env.sh || _fatal 'Couldnt source this'
@@ -71,23 +77,12 @@ echo "##############################################"
 white "01. Showing NEGs for sol2:" # uhm only canary
 gcloud compute network-endpoint-groups list  | grep sol2
 
-smart_apply_k8s_templates "$GKE_SOLUTION2_ENVOY_XLB_TRAFFICSPLITTING_SETUP_DIR"
 
-kubectl --context="$GKE_CANARY_CLUSTER_CONTEXT" apply -f "$GKE_SOLUTION2_ENVOY_XLB_TRAFFICSPLITTING_SETUP_DIR/out/"
-kubectl --context="$GKE_PROD_CLUSTER_CONTEXT" apply -f "$GKE_SOLUTION2_ENVOY_XLB_TRAFFICSPLITTING_SETUP_DIR/out/"
-#kubectl apply -f "$GKE_SOLUTION2_ENVOY_XLB_TRAFFICSPLITTING_SETUP_DIR/out/"
-
-# rgrep λευκόχρυσος k8s/ &&
-#   _fatal "Error, this shouldnt happen! Try fixing APPNAME with \${APP_NAME}"
-
-# _fatal "Exiting anyway, since I want to fix the Lecuchrisos bug"
-# # exit 41
-
-# create health check for the backends
+# RIC001 create health check for the backends
 proceed_if_error_matches "global/healthChecks/http-neg-check' already exists" \
     gcloud compute health-checks create http http-neg-check --port 8080
 
-# create backend for the V1 of the whereami application
+# RIC002 create backend for the V1 of the whereami application
 proceed_if_error_matches "The resource 'projects/$PROJECT_ID/global/backendServices/$SOL2_SERVICE1' already exists" \
     gcloud compute backend-services create "$SOL2_SERVICE1" \
         --load-balancing-scheme=EXTERNAL_MANAGED \
@@ -96,22 +91,26 @@ proceed_if_error_matches "The resource 'projects/$PROJECT_ID/global/backendServi
         --health-checks=http-neg-check \
         --global
 
-# grab the names of the NEGs for $SOL2_SERVICE1. This should produce 3 lines like this:
+# RIC003 grab the names of the NEGs for $SOL2_SERVICE1.
+# This should produce 3 lines like this:
 # $ gcloud compute network-endpoint-groups list --filter=svc1-canary90
 # NAME                                              LOCATION        ENDPOINT_TYPE   SIZE
 # k8s1-3072c6bd-canary-svc1-canary90-8080-7bc34067  europe-west6-b  GCE_VM_IP_PORT  0
 # k8s1-3072c6bd-canary-svc1-canary90-8080-7bc34067  europe-west6-c  GCE_VM_IP_PORT  1
 # k8s1-3072c6bd-canary-svc1-canary90-8080-7bc34067  europe-west6-a  GCE_VM_IP_PORT  0
 
-white "[DEBUG] Showing SORTED NEGs in your region $REGION which might or might not match service '$SOL2_SERVICE1':"
-gcloud compute network-endpoint-groups list --filter="$SOL2_SERVICE1" | grep "$REGION"  | sort | lolcat
+# white "[DEBUG] Showing SORTED NEGs in your region $REGION which might or might not match service '$SOL2_SERVICE1':"
+# gcloud compute network-endpoint-groups list --filter="$SOL2_SERVICE1" | grep "$REGION"  | sort | lolcat
 
-                     gcloud compute network-endpoint-groups list --filter="$SOL2_SERVICE1" | grep "$REGION" | awk '{print $1}' | head -1
-SVC1_UGLY_NEG_NAME=$(gcloud compute network-endpoint-groups list --filter="$SOL2_SERVICE1" | grep "$REGION" | awk '{print $1}' | head -1)
-echo "NEG1 possibly Found: $(yellow "$SVC1_UGLY_NEG_NAME")."
+SVC1_UGLY_NEG_NAME=$(_grab_NEG_name_by_filter "$SOL2_SERVICE1")
+#  echo "NEG possibly Found: $(yellow "$FILTER"). Lets see"
 _assert_neg_exists_for_service "$SOL2_SERVICE1" UGLY_NEG1_NAME "$SVC1_UGLY_NEG_NAME"
+#                    echodo gcloud compute network-endpoint-groups list --filter="$SOL2_SERVICE1" | grep "$REGION" | awk '{print $1}' | head -1
+#SVC1_UGLY_NEG_NAME=$(gcloud compute network-endpoint-groups list --filter="$SOL2_SERVICE1" | grep "$REGION" | awk '{print $1}' | head -1)
+
 #echo "NEG1 Found: $(yellow "$SVC1_UGLY_NEG_NAME")."
 
+# RIC004
 # add the first backend with NEGs from the canary-$SOL2_SERVICE1 (EXAMPLE BELOW)
 # Lets assume the zones are A B C
 #  for ITERATIVE_ZONE in $REGION-a $REGION-b $REGION-c ; do - but some regions dont have A B C so...
@@ -126,7 +125,7 @@ _get_zones_by_region "$REGION" | while read ITERATIVE_ZONE ; do
 done
 
 
-# create backend for the V2 of the whereami application
+# RIC005 create backend for the V2 of the whereami application
 proceed_if_error_matches "The resource 'projects/$PROJECT_ID/global/backendServices/$SOL2_SERVICE2' already exists" \
   gcloud compute backend-services create "$SOL2_SERVICE2" \
     --load-balancing-scheme='EXTERNAL_MANAGED' \
@@ -135,15 +134,18 @@ proceed_if_error_matches "The resource 'projects/$PROJECT_ID/global/backendServi
     --health-checks='http-neg-check' \
     --global
 
-# grab the names of the NEGs for $SOL2_SERVICE1
+# RIC006 grab the names of the NEGs for $SOL2_SERVICE1
 
-SVC2_UGLY_NEG_NAME=$(gcloud compute network-endpoint-groups list --filter="$SOL2_SERVICE2" | grep "$REGION" | awk '{print $1}' | head -1)
+#white "[DEBUG] Showing SORTED NEGs in your region $REGION which might or might not match service '$SOL2_SERVICE2':"
+#SVC1_UGLY_NEG_NAME=$(_grab_NEG_name_by_filter "$SOL2_SERVICE1")
+#                     gcloud compute network-endpoint-groups list --filter="$SOL2_SERVICE2" | grep "$REGION" | sort | lolcat
+SVC2_UGLY_NEG_NAME=$(_grab_NEG_name_by_filter "$SOL2_SERVICE2" )
 echo "NEG2 possibly Found: $(yellow "$SVC2_UGLY_NEG_NAME")."
 #2022-07-14: for the first time in my life i could experience a gcloud crash..
 _assert_neg_exists_for_service "$SOL2_SERVICE2" UGLY_NEG2_NAME "$SVC2_UGLY_NEG_NAME"
 
 
-# add the first backend with NEGs from the canary-$SOL2_SERVICE2 (EXAMPLE BELOW)
+# RIC007 add the first backend with NEGs from the canary-$SOL2_SERVICE2 (EXAMPLE BELOW)
 #for ITERATIVE_ZONE in $REGION-a $REGION-b $REGION-c ; do
 _get_zones_by_region "$REGION" | while read ITERATIVE_ZONE ; do
   proceed_if_error_matches "Duplicate network endpoint groups in backend service." \
@@ -156,14 +158,14 @@ _get_zones_by_region "$REGION" | while read ITERATIVE_ZONE ; do
 done
 
 
-# Create a default url-map
+# RIC008 Create a default url-map
 proceed_if_error_matches "The resource 'projects/$PROJECT_ID/global/urlMaps/$URLMAP_NAME' already exists" \
   gcloud compute url-maps create "$URLMAP_NAME" --default-service "$SOL2_SERVICE1"
 
 # Import traffic-split url-map (from file) dmarzi way (obsolete):
 #gcloud compute url-maps import "$URLMAP_NAME" --source='k8s/xlb-gfe3-traffic-split/step2/urlmap-split.yaml'
 
-# Import traffic-split url-map (from STDIN - so templating is trivially obvious)
+# RIC009b Import traffic-split url-map (from STDIN - so templating is trivially obvious)
 {
 # this curly bracket doesnt open subshell. I didnt know! I used normal brackets before today.
 # https://unix.stackexchange.com/questions/88490/how-do-you-use-output-redirection-in-combination-with-here-documents-and-cat
@@ -202,6 +204,8 @@ END_OF_URLMAP_GCLOUD_YAML_CONFIG
 
 
 #proceed_if_error_matches "The resource 'projects/$PROJECT_ID/global/targetHttpProxies/http-svc9010-lb' already exists" \
+
+# RIC010 Finalize 1/2
 proceed_if_error_matches "already exists" \
   gcloud compute target-http-proxies create "$URLMAP_NAME" --url-map="$URLMAP_NAME"
 
@@ -209,7 +213,7 @@ proceed_if_error_matches "already exists" \
 # "$URLMAP_NAME"
 
 
-# Finalize
+# # RIC010 2/2 Finalize
 proceed_if_error_matches "The resource 'projects/$PROJECT_ID/global/forwardingRules/$FWD_RULE' already exists" \
   gcloud compute forwarding-rules create "$FWD_RULE" \
     --load-balancing-scheme=EXTERNAL_MANAGED \
@@ -222,6 +226,13 @@ IP_FWDRULE=$(gcloud compute forwarding-rules list --filter "$FWD_RULE" | tail -1
 # why 20-30? since 90% is a 9vs1 in 10 tries. It takes 20-30 to see a few svc2 hits :)
 echo "Now you can try this:             1) IP=$IP_FWDRULE"
 echo 'Now you can try this 20-30 times: 2) curl -H "Host: xlb-gfe3-host.example.io" http://$IP/whereami/pod_name'
+
+
+
+smart_apply_k8s_templates "$GKE_SOLUTION2_ENVOY_XLB_TRAFFICSPLITTING_SETUP_DIR"
+
+kubectl --context="$GKE_CANARY_CLUSTER_CONTEXT" apply -f "$GKE_SOLUTION2_ENVOY_XLB_TRAFFICSPLITTING_SETUP_DIR/out/"
+kubectl --context="$GKE_PROD_CLUSTER_CONTEXT" apply -f "$GKE_SOLUTION2_ENVOY_XLB_TRAFFICSPLITTING_SETUP_DIR/out/"
 
 ########################
 # End of your code here
