@@ -1,7 +1,9 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-# commonLabels:
-#   tier: ricc-frontend-application
+  # TODO(ricc): removeme after 15jul22, this is just a N+1 rev comment.
+  # restoring since this wasnt the real issue.
+  commonLabels:
+   tier: ricc-frontend-application
 resources:
   - app02-kuruby.yaml # Depl+Service
 components:
