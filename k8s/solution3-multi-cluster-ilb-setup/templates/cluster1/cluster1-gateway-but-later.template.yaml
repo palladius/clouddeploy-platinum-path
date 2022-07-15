@@ -17,13 +17,13 @@ spec:
   rules:
   - backendRefs:
     # 90% of traffic to store-west-1 ServiceImport
-    - name: sol0-ilb-$APPNAME-canary # dmarzi-app-web-01
+    - name: sol0-ilb-$APP_NAME-canary # dmarzi-app-web-01
       group: net.gke.io
       kind: ServiceImport
       port: 8080
       weight: 90
     # 10% of traffic to store-west-2 ServiceImport
-    - name: sol0-ilb-$APPNAME-prod   # dmarzi-app-web-02
+    - name: sol0-ilb-$APP_NAME-prod   # dmarzi-app-web-02
       group: net.gke.io
       kind: ServiceImport
       port: 8080

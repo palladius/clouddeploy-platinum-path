@@ -5,6 +5,14 @@ source .env.sh || fatal 'Couldnt source this'
 set -e
 
 ############################################################
+# [RICC01] sol0 SetUp #MultiAppK8sRefactoring
+###########################################################
+DEFAULT_APP="app01"                                # app01 / app02
+#DEFAULT_APP_IMAGE="skaf-app01-python-buildpacks"   # skaf-app01-python-buildpacks // ricc-app02-kuruby-skaffold
+APP_NAME="${1:-$DEFAULT_APP}"
+#K8S_APP_IMAGE="${2:-$DEFAULT_APP_IMAGE}" # "skaf-app01-python-buildpacks"
+
+############################################################
 # [RICC01] Troubleshooting info..
 ###########################################################
 
@@ -23,9 +31,10 @@ fi
 ############################################################
 # [RICC02] HYDRATE TEMPLATES the hard way :)
 ###########################################################
-APPNAME="This should fail !! @ ~ argh" # otherwise takes .env/sh which is a good string :)
+#APPNAME="This should fail !! @ ~ argh" # otherwise takes .env/sh which is a good string :)
 for CLUSTER in cluster1 cluster2 ; do
-    APP_NAME="app42"
+    # In case I get it wrong.. :)
+    APPNAME="$APP_NAME"
     # apply smart substitutions..
     smart_apply_k8s_templates_with_envsubst \
         "$GKE_SOLUTION0_ILB_SETUP_DIR/templates/$CLUSTER/" \
@@ -34,8 +43,11 @@ done
 #envsubst
 
 echo TODO kubectl apply -f "$GKE_SOLUTION0_ILB_SETUP_DIR/out/"
+kubectl --context="$GKE_CANARY_CLUSTER_CONTEXT" apply -f "$GKE_SOLUTION0_ILB_SETUP_DIR/out/cluster1/"
+kubectl --context="$GKE_PROD_CLUSTER_CONTEXT"   apply -f "$GKE_SOLUTION0_ILB_SETUP_DIR/out/cluster2/"
 
-exit 102
+white "Solution0 - related endpoints:"
+make endpoints-show | grep "sol0"
 
 set -x
 
