@@ -11,13 +11,13 @@ build:
       # or add any other rb file to your application
       infer:
       - '*.rb'
+      - VERSION # nice to
 
 # abielski says: This is the issue. Either always pass a profile param to skaffold or change this to point to `./k8s/_base`
 deploy:
   kustomize:
     paths:
     - ./k8s/base   # new stuff with Kustomize
-    # - ./k8s/static  # old stuff without Kustomize
 profiles:
   - name: dev
     deploy:

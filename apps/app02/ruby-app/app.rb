@@ -31,13 +31,15 @@ class App
 
     return [ 200, {
       "Content-Type" => "text/html"},
-      ["<h1>[app02 in 💎Ruby💎] Hello from Riccardo!</h1>  More exciting stuff coming soon from ENV vars.<br/>
+      ["<h1>[app02 in 💎Ruby💎] Hello from Riccardo!</h1>
+       More exciting stuff coming soon from ENV vars.<br/>
 
       Favorite Color: <b style='background-color:#{fav_color};' >#{fav_color}</b><br/>
 
-      #{interesting_infos_htmlified}
+      #{interesting_infos_htmlified}<br/>
 
-      Manual RICCARDO_KUSTOMIZE_ENV: #{ ENV['RICCARDO_KUSTOMIZE_ENV'] }
+      Manual RICCARDO_KUSTOMIZE_ENV (seems broken): #{ ENV['RICCARDO_KUSTOMIZE_ENV'] }<br/>
+      CD_TARGET (works): <tt><b>#{ENV['CLOUD_DEPLOY_TARGET']}</b></tt> <br/>
 
       Btw, I really love skaffold!
       Note that the version below is now read by file since v1.3 and also properly associated to a Cloud Deploy
@@ -48,7 +50,6 @@ class App
         APP
         <b>#{ENV['APP_NAME']}</b>
         (from env)) v.<b>#{$VERSION}</b> -
-        CD_TARGET: <tt><b>#{ENV['CLOUD_DEPLOY_TARGET']}</b></tt>
       </center>
       "]
     ]

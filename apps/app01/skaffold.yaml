@@ -10,6 +10,7 @@ build:
     sync:
       infer:
       - '*.py'
+      - VERSION
     buildpacks:
       builder: "gcr.io/buildpacks/builder:v1"
       trustBuilder: true
