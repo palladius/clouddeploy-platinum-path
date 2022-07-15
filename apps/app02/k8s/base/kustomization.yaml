@@ -1,9 +1,11 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-  # TODO(ricc): removeme after 15jul22, this is just a N+1 rev comment.
-  # restoring since this wasnt the real issue.
-  commonLabels:
-   tier: ricc-frontend-application
+# TODO(ricc): removeme after 15jul22, this is just a N+1 rev comment.
+# restoring since this wasnt the real issue.
+# Note that commonLabel needs to be in root indenting.
+commonLabels:
+  tier: ricc-frontend-application
+  platinum-app-id: app02
 resources:
   - app02-kuruby.yaml # Depl+Service
 components:
