@@ -2,6 +2,11 @@
 
 source ./.env.sh || exit 42
 
-kubectl --context="$GKE_DEV_CLUSTER_CONTEXT"    "$@" | _prepend "[DEV]  "
-kubectl --context="$GKE_CANARY_CLUSTER_CONTEXT" "$@" | _prepend "[CANA] "
-kubectl --context="$GKE_PROD_CLUSTER_CONTEXT"   "$@" | _prepend "[PROD] "
+function _ignore_verbose_warnings() {
+    # this might change overtime
+    egrep -v 'W0715|To learn more'
+}
+
+kubectl --context="$GKE_DEV_CLUSTER_CONTEXT"    "$@" 2>&1 | _prepend "[DEVE] " | _ignore_verbose_warnings
+kubectl --context="$GKE_CANARY_CLUSTER_CONTEXT" "$@" 2>&1 | _prepend "[CANA] " | _ignore_verbose_warnings
+kubectl --context="$GKE_PROD_CLUSTER_CONTEXT"   "$@" 2>&1 | _prepend "[PROD] " | _ignore_verbose_warnings
