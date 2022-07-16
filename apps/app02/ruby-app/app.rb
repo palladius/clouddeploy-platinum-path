@@ -1,5 +1,6 @@
 $VERSION = File.read("VERSION").chomp
-$interesting_envs = %w{ RICCARDO_KUSTOMIZE_ENV RICCARDO_MESSAGE FAVORITE_COLOR RACK_ENV APP_NAME }
+# Removing RACK_ENV because its always DEV and its confusing! :)
+$interesting_envs = %w{ RICCARDO_KUSTOMIZE_ENV RICCARDO_MESSAGE FAVORITE_COLOR  APP_NAME }
 
 require 'URI'
 
