@@ -12,3 +12,15 @@ commonAnnotations:
     as my gcloud scripts needed to be aware of it.
 components:
   - ../base
+# resources:
+#   - patch-env-var.yaml
+patches:
+- patch: |-
+    - op: add
+      path: "/spec/template/spec/containers/0/env/-"
+      value:
+        name: CLOUD_DEPLOY_TARGET_COMMON # TODO remove common
+        value: "01 Dev (COMMON Development probably adds to ALL Deployments)"
+  target:
+    kind: Deployment
+    #name: app02-kuruby

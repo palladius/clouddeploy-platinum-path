@@ -1,0 +1,10 @@
+# patches:
+# - patch: |-
+#     - op: add
+#       path: "/spec/template/spec/containers/0/env/-"
+#       value:
+#         name: CLOUD_DEPLOY_TARGET_COMMON # TODO remove common
+#         value: "01 Dev (COMMON Development)"
+#   target:
+#     kind: Deployment
+#     #name: app02-kuruby

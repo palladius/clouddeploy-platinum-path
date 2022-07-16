@@ -1,0 +1,32 @@
+#!/bin/bash
+
+function _kustomize_test_dir() {
+    kustomize build "$1" >/dev/null &&
+        echo "OK $1"
+
+}
+source .env.sh || fatal "Config doesnt exist please create .env.sh"
+#set -x
+set -e
+
+echo  This run a numbr of tests.
+
+white 01. Skaffold ok-ness
+
+#skaffold build
+#skaffold render
+
+white 02. Kustomize check for correctness.
+
+# app01
+for dir in apps/app01/k8s/base/ apps/app01/k8s/overlays/* ; do
+    _kustomize_test_dir "$dir"
+done
+# app02
+for dir in apps/app02/k8s/base/ apps/app02/k8s/overlays/* ; do
+    _kustomize_test_dir "$dir"
+done
+# common
+for dir in components/common/* ; do
+    _kustomize_test_dir "$dir"
+done
