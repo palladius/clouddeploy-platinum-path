@@ -1,8 +1,6 @@
 $VERSION = File.read("VERSION").chomp
 # Removing RACK_ENV because its always DEV and its confusing! :)
-$interesting_envs = %w{ RICCARDO_KUSTOMIZE_ENV RICCARDO_MESSAGE FAVORITE_COLOR  APP_NAME }
-
-require 'URI'
+$interesting_envs = %w{ RICCARDO_KUSTOMIZE_ENV RICCARDO_MESSAGE FAVORITE_COLOR  APP_NAME CLOUD_DEPLOY_TARGET_COMMON }
 
 class App
   require 'socket'
@@ -51,6 +49,7 @@ class App
       APP
       <b>#{ENV['APP_NAME']}</b>
       (from env) v.<b>#{$VERSION}</b> -
+      CLOUD_DEPLOY_TARGET_COMMON=<b>#{ ENV.fetch 'CLOUD_DEPLOY_TARGET_COMMON', 'dunno'}</b> <!-- directly from kustomize COMMON! -->
     </center>
   "
 
@@ -62,7 +61,7 @@ class App
       200,
       {"Content-Type" => "text/html"},
       [
-        html_string.force_encoding('utf-8')
+        html_string # .force_encoding('utf-8')
       ]
     ]
   end
