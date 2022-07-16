@@ -7,7 +7,7 @@ _smart_curl() {
   POST_COMMENT="$4"
   #https://stackoverflow.com/questions/6136022/script-to-get-the-http-status-code-of-a-list-of-urls
   curl -s -o /dev/null --silent --head --write-out "HTTP_RESPONSE: $PRE_COMMENT %{http_code} for http://$IP:$PORT/\t'$POST_COMMENT'\n" "http://$IP:$PORT/" |
-    bin/rcg 200 "BOLD . GREEN" | bin/rcg 500 "BOLD . RED" | bin/rcg 000 "BRIGHT_RED"
+    bin/rcg 200 "BOLD . GREEN" | bin/rcg 500 "BOLD . RED" | bin/rcg 000 "YELLOW"
     # | sed 's/200/\o33[47;31;1m&\e[0m/'
     # If colleagues complain i can simply hardcode sed as per
     # sed 's/200/\o33[47;31;1m&\e[0m/' file

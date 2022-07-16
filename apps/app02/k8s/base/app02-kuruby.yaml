@@ -4,7 +4,7 @@ metadata:
   name: app02-kuruby # as in App02, ruby and Kustomized
 spec:
   ports:
-  - port: 80
+  - port: 8080
     targetPort: 8080
   type: LoadBalancer
   selector:
@@ -29,8 +29,8 @@ spec:
         ports:
         - containerPort: 8080 # was 9292. My pod esxpects traffic here.
         env:
-        - name: RACK_ENV
-          value: "development"
+        - name: RACK_ENV # https://docs.pivotal.io/application-service/2-7/buildpacks/ruby/ruby-tips.html
+          value: "development" # todo consider updating to DEPLOYMENT :) https://www.hezmatt.org/~mpalmer/blog/2013/10/13/rack_env-its-not-for-you.html
         - name: APP_NAME
           value: A Wonderful App in Ruby (app02)
         - name: RICCARDO_MESSAGE
