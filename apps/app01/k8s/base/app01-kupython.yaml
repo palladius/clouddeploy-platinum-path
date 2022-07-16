@@ -6,6 +6,7 @@ spec:
   ports:
   - port: 8080
     name: http
+    targetPort: 8080
   type: LoadBalancer
   selector:
     app: app01-kupython # was 'web' and it worked
