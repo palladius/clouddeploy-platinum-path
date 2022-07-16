@@ -1,4 +1,8 @@
 # Service 'store-prod' has 9x capacity than store-v1. We simulate it with 9x pods ands 9x capacity (max-rate-per-endpoint)
+#  APP_NAME:         __APP_NAME__
+#  PREFIX:           __PREFIX__
+#  REGION:           __REGION__
+#  K8S_APP_SELECTOR: __K8S_APP_SELECTOR__
 apiVersion: apps/v1
 kind: Deployment
 metadata:

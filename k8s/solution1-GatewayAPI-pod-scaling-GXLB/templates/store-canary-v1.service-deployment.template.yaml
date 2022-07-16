@@ -3,16 +3,16 @@
 # You cant kubectl apply this or you'll get errors.
 #
 # Vars:
-#  APP_NAME: __APP_NAME__
-#  PREFIX:   __PREFIX__
-#  REGION:   __REGION__
-#
+#  APP_NAME:         __APP_NAME__
+#  PREFIX:           __PREFIX__
+#  REGION:           __REGION__
+#  K8S_APP_SELECTOR: __K8S_APP_SELECTOR__
 # .. and so on. in general things with double underscore left and right as Im not a great sedder :)
 ###########################################################
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: store-canary
+  name: __K8S_APP_SELECTOR__-canary # store-canary
 spec:
   replicas: 1
   selector:

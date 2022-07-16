@@ -6,7 +6,8 @@ metadata:
     cloud.google.com/neg: '{"exposed_ports": {"8080":{"name": "__PREFIX__-sol1-common-svc"}}}'
 spec:
   selector:
-    app: store
+    #app: store
+    ricc-awesome-selector: dev-or-staging
   ports:
   - port: 8080
     targetPort: 8080
