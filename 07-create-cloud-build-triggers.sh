@@ -9,7 +9,7 @@ set -e
 # This script requires some manual config for the script which I'm working
 # on ATM and will add to README.md when ready. Simply put, you need to
 # have any GCR repo with `/apps/app01/` and `/apps/app02/` code.
-# 
+#
 #
 # Internal ref: b/170325147
 #######################################################################
@@ -38,10 +38,10 @@ touch /tmp/MyEmptyFile
 GITHUB_REPO_NAME="clouddeploy-platinum-path"
 GCR_REPO="${GITHUB_REPO_OWNER}/clouddeploy-platinum-path"
 
-echo "*** WARNING ***"
-echo "To tun this script you need to have enabled the 6.5 docs in the README.md"
-echo "Also you need to have set up your GITHUB_REPO_OWNER='$GITHUB_REPO_OWNER'"
-echo "*** END ***"
+yellow "*** WARNING ***"
+yellow "  To run this script you need to have enabled the 6.5 docs in the README.md"
+yellow "  Also you need to have set up your GITHUB_REPO_OWNER='$GITHUB_REPO_OWNER' (if this an empty string, this ain't gonna work)"
+yellow "*** END ***"
 echo
 
 for TEAM_ARR in "${TEAMS[@]}"; do
@@ -64,12 +64,12 @@ for TEAM_ARR in "${TEAMS[@]}"; do
       gcloud alpha builds triggers create github --repo-owner="$GITHUB_REPO_OWNER" --repo-name="$GITHUB_REPO_NAME" --branch-pattern='.*' \
       --description="[$TEAM_NUMBER] CB trigger from CLI for $TEAM_NAME module" --included-files="${SRC_SUBFOLDER}**,*.yaml,cloud-build/**" \
       --build-config cloudbuild.yaml --substitutions="$SUBSTIUTIONS" \
-      --name "$TEAM_NUMBER-CLIv$TRIGGERVERSION-$TEAM_NAME" 
-    
+      --name "$TEAM_NUMBER-CLIv$TRIGGERVERSION-$TEAM_NAME"
+
     # Important note: bYou might want to add "" --region "$REGION" "" which was needed for some.
     # * Nate (US) had to add it it or it wouldnt work.
     # * Ricc (EU) added it and it wouldnt work WITH, only without.
-    # I'm unable to explain this difference unless US and EMEA regions are not equal 
+    # I'm unable to explain this difference unless US and EMEA regions are not equal
 
     # If you choose to connect to GCR, use this comand instead (note: might be a bit old and not updated like the one above #metafishing ).
 
