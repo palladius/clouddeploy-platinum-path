@@ -13,7 +13,7 @@ test-profiles:
 	skaffold dev -p dev     --no-prune=false --cache-artifacts=false
 	skaffold dev -p staging --no-prune=false --cache-artifacts=false
 	skaffold dev -p canary  --no-prune=false --cache-artifacts=false
-	skaffold dev -p prod    --no-prune=false --cache-artifacts=false
+	skaffold dev -p production  --no-prune=false --cache-artifacts=false
 
 test:
 	echo App01 Always OK.
@@ -33,7 +33,7 @@ run-p8080:
 	conda create --name cicd-app01-python
 	conda activate cicd-app01-python
 	conda install pip
-	python3 -m pip install --requirement requirements.txt 
+	python3 -m pip install --requirement requirements.txt
 #	conda install --file requirements.txt
 	FLASK_APP=web.py python3 -m flask run --host=0.0.0.0 --port=8080
 
@@ -43,6 +43,8 @@ kustomize-dump:
 	kustomize build k8s/overlays/dev/    > tmp/tmp-dev.yaml
 	kustomize build k8s/overlays/staging/> tmp/tmp-staging.yaml
 	kustomize build k8s/overlays/canary/ > tmp/tmp-canary.yaml
-	kustomize build k8s/overlays/prod/   > tmp/tmp-prod.yaml
+	kustomize build k8s/overlays/production/   > tmp/tmp-prod.yaml
 	diff tmp/tmp-prod.yaml tmp/tmp-canary.yaml
-	
+
+docker-run:
+	docker run -it -p 8080:8080 app02-kuruby

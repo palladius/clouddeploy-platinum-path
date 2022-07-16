@@ -56,7 +56,8 @@ if [ "true" = "$SHOW_DEVCONSOLE_LINKS" ]; then
     white "Cloud Build::Triggers: https://console.cloud.google.com/cloud-build/triggers;region=global?project=$PROJECT_ID"
     white "Cloud Deploy::Pipelines: https://console.cloud.google.com/deploy/delivery-pipelines?project=$PROJECT_ID"
     white "Cloud Source Repositories (CSR): https://source.cloud.google.com/$PROJECT_ID"
-
+    white "Network Endpoint Groups (NEGs): https://console.cloud.google.com/compute/networkendpointgroups/list?project=$PROJECT_ID"
+    white "Load Balancers (HTTP LBs): https://console.cloud.google.com/net-services/loadbalancing/list/loadBalancers?project=$PROJECT_ID"
     echo "== DevConsole useful links END =="
 fi
 
