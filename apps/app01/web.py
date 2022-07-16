@@ -35,7 +35,7 @@ def index():
 
         <hr/>
           <center>
-            App01 (🐍) v<b>{ver}</b> CD_TARGET={cd_stage}
+            App01 (🐍) v<b>{ver}</b> TARGET=<b>{cd_stage}</b>
           </center>
   """.format(
     ver=version,
