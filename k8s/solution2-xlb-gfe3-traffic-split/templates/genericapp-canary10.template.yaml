@@ -22,7 +22,8 @@ spec:
       labels:
         app: __APPNAME__ # 2. second is linked to first
         #version: v1
-        stage: canary
+        #stage: canary # TODO - for now  ricc-env: canary
+        ricc-env: canary
     spec:
       containers:
       - name: __APPNAME__-image # this could be whatever.
