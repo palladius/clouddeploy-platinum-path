@@ -46,5 +46,9 @@ kustomize-dump:
 	kustomize build k8s/overlays/production/   > tmp/tmp-prod.yaml
 	diff tmp/tmp-prod.yaml tmp/tmp-canary.yaml
 
-docker-run:
-	docker run -it -p 8080:8080 app02-kuruby
+# Sorry for cheating, but took me a while. Killer feature was "locate flask/bin" cos I knew it was somewhere :P
+flask-run-on-my-mac:
+#/opt/homebrew/anaconda3/bin/flask run
+#	PATH=$(PATH):/opt/homebrew/anaconda3/bin/ FLASK_APP=web.py python3 -m flask run --host=0.0.0.0 --port=8080
+#	PATH=$(PATH):/opt/homebrew/anaconda3/bin/ FLASK_APP=web.py flask run --host=0.0.0.0 --port=8080
+	FLASK_APP=web.py /opt/homebrew/anaconda3/bin/flask run --host=0.0.0.0 --port=8080

@@ -49,7 +49,7 @@ class App
       <center>
         APP
         <b>#{ENV['APP_NAME']}</b>
-        (from env)) v.<b>#{$VERSION}</b> -
+        (from env) v.<b>#{$VERSION}</b> -
       </center>
       "]
     ]
