@@ -3,3 +3,8 @@ source 'https://rubygems.org'
 gem 'rack'
 gem 'rack-unreloader' # for dynamic reloading
 gem 'puma'
+
+# Looks like it fixes the emoji bug..
+# https://mensfeld.pl/2014/03/rack-argument-error-invalid-byte-sequence-in-utf-8/
+# Wait, its useless it doesnt work. Leaving just as a trace for a while before removing.
+#gem 'utf8-cleaner'
