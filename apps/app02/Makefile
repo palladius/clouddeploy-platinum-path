@@ -25,3 +25,5 @@ kustomize-render:
 #	echo Lets pretend this doesnt build.
 #	/bin/false
 # fixed echodo now -> try again.
+run-p8080:
+	cd ruby-app/ && bundle install && bundle exec puma -p 8080

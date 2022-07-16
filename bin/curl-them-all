@@ -35,9 +35,9 @@ bin/kubectl-triune get service | grep app01 | grep -v none | while read stage ap
   _smart_curl $PUBLIC_IP 8080 "$stage"
 done
 
-white  "app01: app02: ruby pt 80"
+white  "app01: app02: ruby pt 8080 now :)"
 bin/kubectl-triune get service | grep app02 | grep -v none | while read stage app LB PVTIP PUBLIC_IP BLURB TIME ; do
-  _smart_curl $PUBLIC_IP 80 "$stage"
+  _smart_curl $PUBLIC_IP 8080 "$stage"
 done
 
 

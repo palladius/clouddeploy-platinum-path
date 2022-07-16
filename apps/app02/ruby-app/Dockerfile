@@ -6,7 +6,8 @@ RUN bundle install
 
 ADD . ./
 
-CMD ["bundle","exec","puma"]
+# Puma serves on 9292 by default. With this we bend it back to Carlessian deafult.
+CMD ["bundle","exec","puma", "-p", "8080"]
 
 # Note from Alex: this doesn't guarantee anything. It's just a documentation thingy. Might be worth even REMOVING it.
 # https://kubernetes.io/docs/concepts/services-networking/service/#proxy-mode-ipvs
