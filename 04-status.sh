@@ -51,10 +51,11 @@ fi
 if [ "true" = "$SHOW_DEVCONSOLE_LINKS" ]; then
     echo "== DevConsole useful links START (if you are a UI kind of person) ==" | lolcat
 
-    white "GKE Workloads: https://console.cloud.google.com/kubernetes/workload/overview?&project=$PROJECT_ID"
-    white "Cloud Build::Builds: https://console.cloud.google.com/cloud-build/builds;region=global?&project=$PROJECT_ID"
-    white "Cloud Build::Triggers: https://console.cloud.google.com/cloud-build/triggers;region=global?project=$PROJECT_ID"
-    white "Cloud Deploy::Pipelines: https://console.cloud.google.com/deploy/delivery-pipelines?project=$PROJECT_ID"
+    white "[GKE] k8s Workloads: https://console.cloud.google.com/kubernetes/workload/overview?&project=$PROJECT_ID"
+    white "[Cloud Build] Global Builds (our triggers): https://console.cloud.google.com/cloud-build/builds;region=global?&project=$PROJECT_ID"
+    white "[Cloud Build] Regio Builds (from CDeploy): https://console.cloud.google.com/cloud-build/builds;region=$REGION?&project=$PROJECT_ID"
+    white "[Cloud Build] Triggers: https://console.cloud.google.com/cloud-build/triggers;region=global?project=$PROJECT_ID"
+    white "[Cloud Deploy] Pipelines: https://console.cloud.google.com/deploy/delivery-pipelines?project=$PROJECT_ID"
     white "Cloud Source Repositories (CSR): https://source.cloud.google.com/$PROJECT_ID"
     white "Network Endpoint Groups (NEGs): https://console.cloud.google.com/compute/networkendpointgroups/list?project=$PROJECT_ID"
     white "Load Balancers (HTTP LBs): https://console.cloud.google.com/net-services/loadbalancing/list/loadBalancers?project=$PROJECT_ID"

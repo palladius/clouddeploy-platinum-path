@@ -26,8 +26,7 @@ spec:
     spec:
       containers:
       - name: app01-kupython # was 'web' and it worked
-        #image: ricc-app01-python-buildpacks # sk affold-bui ldpacks
-        image: skaf-app01-python-buildpacks
+        image: skaf-app01-python-buildpacks # used to be: 'skaffold-buildpacks'
         env:
           - name: PORT
             value: "8080"
@@ -41,9 +40,11 @@ spec:
                  a slight difference in Canary vs Prod config (9 vs 1 Replicas respectively)
           - name: FAVORITE_COLOR
             value: fbf4e2 # NACRE / madreperla
-          - name: USE_KUSTOMIZE
-            value: "true"
+          # - name: USE_KUSTOMIZE
+          #   value: "true"
           - name: APP_CODE
             value: app01-kustomize
+          - name: APP_NAME
+            value: A Wonderful App in Python (app01)
         ports:
           - containerPort: 8080
