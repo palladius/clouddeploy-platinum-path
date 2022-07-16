@@ -4,6 +4,7 @@ resources:
   - ../../base
 components:
   - ../../../../../components/common/prod
-replicas: 
+replicas:
   - name: app01-kupython
-    count: 9
+    #count: 9
+    count: 4 # moved to 4 - nicer on my cluster :)

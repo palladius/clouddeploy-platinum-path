@@ -67,13 +67,15 @@ APP_NAME="${1:-$DEFAULT_APP}"
 K8S_APP_IMAGE="${2:-$DEFAULT_APP_IMAGE}"
 
 # MultiTenant solution
-SOL2_SERVICE1="$APP_NAME-$DFLT_SOL2_SERVICE1"    # => appXX-sol2-svc1-canary
-SOL2_SERVICE2="$APP_NAME-$DFLT_SOL2_SERVICE2"    # => appXX-sol2-svc1-prod
+SOL2_SERVICE1="$APP_NAME-$DFLT_SOL2_SERVICE1"    # => appXX-sol2-svc-canary
+SOL2_SERVICE2="$APP_NAME-$DFLT_SOL2_SERVICE2"    # => appXX-sol2-svc-prod
 
 # K8S_APP_SELECTOR -> nothing
 echo "##############################################"
 yellow "WORK IN PROGRESS!! trying to use envsubst to make this easier.."
 yellow "Deploy the GKE manifests. This needs to happen first as it creates the NEGs which this script depends upon."
+echo SOL2_SERVICE1: $SOL2_SERVICE1
+echo SOL2_SERVICE2: $SOL2_SERVICE2
 echo "##############################################"
 
 #kubectl --context="$GKE_CANARY_CLUSTER_CONTEXT" apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
@@ -205,7 +207,7 @@ pathMatchers:
       - backendService: https://www.googleapis.com/compute/v1/projects/$PROJECT_ID/global/backendServices/$SOL2_SERVICE2
         weight: 11
 END_OF_URLMAP_GCLOUD_YAML_CONFIG
-} | gcloud compute url-maps import "$URLMAP_NAME" --source=- # --quiet
+} | tee t.sol15.yaml | gcloud compute url-maps import "$URLMAP_NAME" --source=- # --quiet
 
 
 #proceed_if_error_matches "The resource 'projects/$PROJECT_ID/global/targetHttpProxies/http-svc9010-lb' already exists" \

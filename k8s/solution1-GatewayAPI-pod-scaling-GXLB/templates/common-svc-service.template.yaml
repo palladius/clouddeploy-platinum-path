@@ -1,3 +1,5 @@
+# Values:
+# PREFIX: __PREFIX__
 apiVersion: v1
 kind: Service
 metadata:
@@ -6,7 +8,7 @@ metadata:
     cloud.google.com/neg: '{"exposed_ports": {"8080":{"name": "__PREFIX__-sol1-common-svc"}}}'
 spec:
   selector:
-    #app: store
+    #was: app: store
     ricc-awesome-selector: dev-or-staging
   ports:
   - port: 8080
