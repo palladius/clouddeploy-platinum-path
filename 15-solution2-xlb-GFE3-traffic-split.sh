@@ -58,9 +58,8 @@ solution2_tear_up_k8s() {
 
 #https://www.unix.com/shell-programming-and-scripting/183865-automatically-send-stdout-stderror-file-well-screen-but-without-using-tee.html
 SCRIPT_LOG_FILE=".15sh.lastStdOutAndErr"
-#exec 1>>"$SCRIPT_LOG_FILE"
-#exec 2>>"$SCRIPT_LOG_FILE"
-# next step:
+# Logging output both in STD XX and on file
+echo "Logging output and error ro: $SCRIPT_LOG_FILE"
 exec > >(tee -a "$SCRIPT_LOG_FILE") 2>&1
 
 # Created with codelabba.rb v.1.5
@@ -90,8 +89,9 @@ SOL2_SERVICE_PROD="$APP_NAME-$DFLT_SOL2_SERVICE_PROD"        # => appXX-sol2-svc
 
 # K8S_APP_SELECTOR -> nothing
 echo "##############################################"
-yellow "WORK IN PROGRESS!! trying to use envsubst to make this easier.."
-yellow "Deploy the GKE manifests. This needs to happen first as it creates the NEGs which this script depends upon."
+yellow "WORK IN PROGRESS! on 17jul22 I was finally able to get to the end of this script in its entirety after the huge multi-tennant refactor"
+yellow "TODO(ricc): everything is multi-tennant except the FWD RULE part. Shouls have app01/02 in it.."
+#yellow "Deploy the GKE manifests. This needs to happen first as it creates the NEGs which this script depends upon."
 
 echo SOL2_SERVICE_CANARY: $SOL2_SERVICE_CANARY
 echo SOL2_SERVICE_PROD: $SOL2_SERVICE_PROD
@@ -279,7 +279,7 @@ IP_FWDRULE=$(gcloud compute forwarding-rules list --filter "$FWD_RULE" | tail -1
 
 # why 20-30? since 90% is a 9vs1 in 10 tries. It takes 20-30 to see a few svc2 hits :)
 echo "Now you can try this:             1) IP=$IP_FWDRULE"
-echo 'Now you can try this 20-30 times: 2) curl -H "Host: sol2-xlb-gfe3.example.io" http://$IP_FWDRULE/'
+echo 'Now you can try this 20-30 times: 2) curl -H "Host: sol2-xlb-gfe3.example.io" http://'$IP_FWDRULE'/'
 
 # solution2_tear_up_k8s
 
