@@ -4,8 +4,8 @@ I changed name of resources to make sure they work from the ground up.
 
 Renames:
 
-* `whereami-v1` -> svc1-canary90 -> $APPNAME-sol2-svc1-canary"  -> $APPNAME-sol2-svc-canary
-* `whereami-v2` -> svc2-prod10   -> $APPNAME-sol2-svc2-prod"   ->  $APPNAME-sol2-svc-prod
+* RENAMING `whereami-v1` -> svc1-canary90 -> $APPNAME-sol2-svc1-canary"  -> $APPNAME-sol2-svc-canary
+* RENAMING `whereami-v2` -> svc2-prod10   -> $APPNAME-sol2-svc2-prod"   ->  $APPNAME-sol2-svc-prod
 
 ## dmarzi instructions
 

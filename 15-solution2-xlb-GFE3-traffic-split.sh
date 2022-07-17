@@ -35,16 +35,21 @@ function _assert_neg_exists_for_service() {
     #exit 2352
     _fatal "END(_assert_neg_exists_for_service) \$SVC_UGLY_NEG_NAME ($NEG_ID) is empty. No NEGS found for '$SOL2_SERVICE_NAME'."
   else
-    echo "_assert_neg_exists_for_service() NEG $NEG_ID Found: $(yellow $SVC2_UGLY_NEG_NAME)."
+    echo "_assert_neg_exists_for_service() NEG $NEG_ID Found: $(yellow $SVC_UGLY_NEG_NAME)."
   fi
 }
 
 function _grab_NEG_name_by_filter() {
   FILTER="$1"
-  # DEBUG
   white "[DEBUG] _grab_NEG_name_by_filter('$FILTER')" >&2
   gcloud compute network-endpoint-groups list --filter="$FILTER" | grep "$REGION" | awk '{print $1}' | head -1
 }
+#https://www.unix.com/shell-programming-and-scripting/183865-automatically-send-stdout-stderror-file-well-screen-but-without-using-tee.html
+SCRIPT_LOG_FILE=".15sh.lastStdOutAndErr"
+#exec 1>>"$SCRIPT_LOG_FILE"
+#exec 2>>"$SCRIPT_LOG_FILE"
+# next step:
+exec > >(tee -a "$SCRIPT_LOG_FILE") 2>&1
 
 # Created with codelabba.rb v.1.5
 source .env.sh || _fatal 'Couldnt source this'
@@ -67,16 +72,16 @@ DEFAULT_APP_IMAGE="skaf-app01-python-buildpacks"   # skaf-app01-python-buildpack
 APP_NAME="${1:-$DEFAULT_APP}"
 K8S_APP_IMAGE="${2:-$DEFAULT_APP_IMAGE}"
 
-# MultiTenant solution
-SOL2_SERVICE1="$APP_NAME-$DFLT_SOL2_SERVICE_CANARY"    # => appXX-sol2-svc-canary
-SOL2_SERVICE2="$APP_NAME-$DFLT_SOL2_SERVICE_PROD"    # => appXX-sol2-svc-prod
+# MultiTenant solution (parametric in $1)
+SOL2_SERVICE_CANARY="$APP_NAME-$DFLT_SOL2_SERVICE_CANARY"    # => appXX-sol2-svc-canary
+SOL2_SERVICE_PROD="$APP_NAME-$DFLT_SOL2_SERVICE_PROD"        # => appXX-sol2-svc-prod
 
 # K8S_APP_SELECTOR -> nothing
 echo "##############################################"
 yellow "WORK IN PROGRESS!! trying to use envsubst to make this easier.."
 yellow "Deploy the GKE manifests. This needs to happen first as it creates the NEGs which this script depends upon."
-echo SOL2_SERVICE1: $SOL2_SERVICE1
-echo SOL2_SERVICE2: $SOL2_SERVICE2
+echo SOL2_SERVICE_CANARY: $SOL2_SERVICE_CANARY
+echo SOL2_SERVICE_PROD: $SOL2_SERVICE_PROD
 echo "##############################################"
 
 # Cleaning old templates in case you've renamed something so i dont tear up WO resources with sightly different names
@@ -94,41 +99,50 @@ proceed_if_error_matches "global/healthChecks/http-neg-check' already exists" \
     gcloud compute health-checks create http http-neg-check --port 8080
 
 # RIC002 create backend for the V1 of the whereami application
-proceed_if_error_matches "The resource 'projects/$PROJECT_ID/global/backendServices/$SOL2_SERVICE1' already exists" \
-    gcloud compute backend-services create "$SOL2_SERVICE1" \
+proceed_if_error_matches "The resource 'projects/$PROJECT_ID/global/backendServices/$SOL2_SERVICE_CANARY' already exists" \
+    gcloud compute backend-services create "$SOL2_SERVICE_CANARY" \
         --load-balancing-scheme=EXTERNAL_MANAGED \
         --protocol=HTTP \
         --port-name=http \
         --health-checks=http-neg-check \
         --global
 
-# RIC003 grab the names of the NEGs for $SOL2_SERVICE1.
+proceed_if_error_matches "The resource 'projects/$PROJECT_ID/global/backendServices/$SOL2_SERVICE_PROD' already exists" \
+    gcloud compute backend-services create "$SOL2_SERVICE_PROD" \
+        --load-balancing-scheme=EXTERNAL_MANAGED \
+        --protocol=HTTP \
+        --port-name=http \
+        --health-checks=http-neg-check \
+        --global
+
+
+
+# RIC003 grab the names of the NEGs for $SOL2_SERVICE_CANARY.
 # This should produce 3 lines like this:
-# $ gcloud compute network-endpoint-groups list --filter=svc1-canary90
+# $ gcloud compute network-endpoint-groups list --filter=svcX-canary90
 # NAME                                              LOCATION        ENDPOINT_TYPE   SIZE
-# k8s1-3072c6bd-canary-svc1-canary90-8080-7bc34067  europe-west6-b  GCE_VM_IP_PORT  0
-# k8s1-3072c6bd-canary-svc1-canary90-8080-7bc34067  europe-west6-c  GCE_VM_IP_PORT  1
-# k8s1-3072c6bd-canary-svc1-canary90-8080-7bc34067  europe-west6-a  GCE_VM_IP_PORT  0
+# k8s1-3072c6bd-canary-svcX-canary90-8080-7bc34067  europe-west6-b  GCE_VM_IP_PORT  0
+# k8s1-3072c6bd-canary-svcX-canary90-8080-7bc34067  europe-west6-c  GCE_VM_IP_PORT  1
+# k8s1-3072c6bd-canary-svcX-canary90-8080-7bc34067  europe-west6-a  GCE_VM_IP_PORT  0
 
-# white "[DEBUG] Showing SORTED NEGs in your region $REGION which might or might not match service '$SOL2_SERVICE1':"
-# gcloud compute network-endpoint-groups list --filter="$SOL2_SERVICE1" | grep "$REGION"  | sort | lolcat
+# white "[DEBUG] Showing SORTED NEGs in your region $REGION which might or might not match service '$SOL2_SERVICE_CANARY':"
+# gcloud compute network-endpoint-groups list --filter="$SOL2_SERVICE_CANARY" | grep "$REGION"  | sort | lolcat
 
-SVC1_UGLY_NEG_NAME=$(_grab_NEG_name_by_filter "$SOL2_SERVICE1")
-#  echo "NEG possibly Found: $(yellow "$FILTER"). Lets see"
-_assert_neg_exists_for_service "$SOL2_SERVICE1" UGLY_NEG1_NAME "$SVC1_UGLY_NEG_NAME"
-#                    echodo gcloud compute network-endpoint-groups list --filter="$SOL2_SERVICE1" | grep "$REGION" | awk '{print $1}' | head -1
-#SVC1_UGLY_NEG_NAME=$(gcloud compute network-endpoint-groups list --filter="$SOL2_SERVICE1" | grep "$REGION" | awk '{print $1}' | head -1)
+#                    echodo gcloud compute network-endpoint-groups list --filter="$SOL2_SERVICE_CANARY" | grep "$REGION" | awk '{print $1}' | head -1
+#SVC_UGLY_NEG_NAME_CANARY=$(gcloud compute network-endpoint-groups list --filter="$SOL2_SERVICE_CANARY" | grep "$REGION" | awk '{print $1}' | head -1)
 
-#echo "NEG1 Found: $(yellow "$SVC1_UGLY_NEG_NAME")."
+SVC_UGLY_NEG_NAME_CANARY=$(_grab_NEG_name_by_filter "$SOL2_SERVICE_CANARY")
+_assert_neg_exists_for_service "$SOL2_SERVICE_CANARY" SVC_UGLY_NEG_NAME_CANARY "$SVC_UGLY_NEG_NAME_CANARY"
+echo "NEG1 Found: $(yellow "$SVC_UGLY_NEG_NAME_CANARY")."
 
 # RIC004
-# add the first backend with NEGs from the canary-$SOL2_SERVICE1 (EXAMPLE BELOW)
+# add the first backend with NEGs from the canary-$SOL2_SERVICE_CANARY (EXAMPLE BELOW)
 # Lets assume the zones are A B C
 #  for ITERATIVE_ZONE in $REGION-a $REGION-b $REGION-c ; do - but some regions dont have A B C so...
 _get_zones_by_region "$REGION" | while read ITERATIVE_ZONE ; do
   proceed_if_error_matches "Duplicate network endpoint groups in backend service." \
-    gcloud compute backend-services add-backend "$SOL2_SERVICE1" \
-            --network-endpoint-group="$SVC1_UGLY_NEG_NAME" \
+    gcloud compute backend-services add-backend "$SOL2_SERVICE_CANARY" \
+            --network-endpoint-group="$SVC_UGLY_NEG_NAME_CANARY" \
             --network-endpoint-group-zone="$ITERATIVE_ZONE" \
             --balancing-mode=RATE \
             --max-rate-per-endpoint=10 \
@@ -136,32 +150,30 @@ _get_zones_by_region "$REGION" | while read ITERATIVE_ZONE ; do
 done
 
 
-# RIC005 create backend for the V2 of the whereami application
-proceed_if_error_matches "The resource 'projects/$PROJECT_ID/global/backendServices/$SOL2_SERVICE2' already exists" \
-  gcloud compute backend-services create "$SOL2_SERVICE2" \
+# RIC005 create backend for the V2 of the whereami application.
+# [Multitenancy] 17jul22 bring this command UP since here it fails. well i'll leave it twice as no biggie..
+proceed_if_error_matches "The resource 'projects/$PROJECT_ID/global/backendServices/$SOL2_SERVICE_PROD' already exists" \
+  gcloud compute backend-services create "$SOL2_SERVICE_PROD" \
     --load-balancing-scheme='EXTERNAL_MANAGED' \
     --protocol=HTTP \
     --port-name=http \
     --health-checks='http-neg-check' \
     --global
 
-# RIC006 grab the names of the NEGs for $SOL2_SERVICE1
+# RIC006 grab the names of the NEGs for $SOL2_SERVICE_CANARY
 
-#white "[DEBUG] Showing SORTED NEGs in your region $REGION which might or might not match service '$SOL2_SERVICE2':"
-#SVC1_UGLY_NEG_NAME=$(_grab_NEG_name_by_filter "$SOL2_SERVICE1")
-#                     gcloud compute network-endpoint-groups list --filter="$SOL2_SERVICE2" | grep "$REGION" | sort | lolcat
-SVC2_UGLY_NEG_NAME=$(_grab_NEG_name_by_filter "$SOL2_SERVICE2" )
-echo "NEG2 possibly Found: $(yellow "$SVC2_UGLY_NEG_NAME")."
+SVC_UGLY_NEG_NAME_PROD=$(_grab_NEG_name_by_filter "$SOL2_SERVICE_PROD" )
 #2022-07-14: for the first time in my life i could experience a gcloud crash..
-_assert_neg_exists_for_service "$SOL2_SERVICE2" UGLY_NEG2_NAME "$SVC2_UGLY_NEG_NAME"
+_assert_neg_exists_for_service "$SOL2_SERVICE_PROD" SVC_UGLY_NEG_NAME_PROD "$SVC_UGLY_NEG_NAME_PROD"
+echo "NEG2 Found: $(yellow "$SVC_UGLY_NEG_NAME_PROD")."
 
+# RIC007 add the first backend with NEGs from the canary-$SOL2_SERVICE_PROD (EXAMPLE BELOW)
 
-# RIC007 add the first backend with NEGs from the canary-$SOL2_SERVICE2 (EXAMPLE BELOW)
 #for ITERATIVE_ZONE in $REGION-a $REGION-b $REGION-c ; do
 _get_zones_by_region "$REGION" | while read ITERATIVE_ZONE ; do
   proceed_if_error_matches "Duplicate network endpoint groups in backend service." \
-    gcloud compute backend-services add-backend "$SOL2_SERVICE2" \
-      --network-endpoint-group="$SVC2_UGLY_NEG_NAME" \
+    gcloud compute backend-services add-backend "$SOL2_SERVICE_PROD" \
+      --network-endpoint-group="$SVC_UGLY_NEG_NAME_PROD" \
       --network-endpoint-group-zone="$ITERATIVE_ZONE" \
       --balancing-mode=RATE \
       --max-rate-per-endpoint=10 \
@@ -169,9 +181,11 @@ _get_zones_by_region "$REGION" | while read ITERATIVE_ZONE ; do
 done
 
 
+
+
 # RIC008 Create a default url-map
 proceed_if_error_matches "The resource 'projects/$PROJECT_ID/global/urlMaps/$URLMAP_NAME' already exists" \
-  gcloud compute url-maps create "$URLMAP_NAME" --default-service "$SOL2_SERVICE1"
+  gcloud compute url-maps create "$URLMAP_NAME" --default-service "$SOL2_SERVICE_CANARY"
 
 # Import traffic-split url-map (from file) dmarzi way (obsolete):
 #gcloud compute url-maps import "$URLMAP_NAME" --source='k8s/xlb-gfe3-traffic-split/step2/urlmap-split.yaml'
@@ -182,7 +196,7 @@ proceed_if_error_matches "The resource 'projects/$PROJECT_ID/global/urlMaps/$URL
 # https://unix.stackexchange.com/questions/88490/how-do-you-use-output-redirection-in-combination-with-here-documents-and-cat
 cat << END_OF_URLMAP_GCLOUD_YAML_CONFIG
 # This comment will be lost in a bash pipe, like tears in the rain...
-defaultService: https://www.googleapis.com/compute/v1/projects/$PROJECT_ID/global/backendServices/$SOL2_SERVICE1
+defaultService: https://www.googleapis.com/compute/v1/projects/$PROJECT_ID/global/backendServices/$SOL2_SERVICE_CANARY
 hostRules:
 - hosts:
     # This is for ease of troubleshoot
@@ -197,7 +211,7 @@ pathMatchers:
         httpStatus: 503
         percentage: 100.0
     weightedBackendServices:
-    - backendService: https://www.googleapis.com/compute/v1/projects/$PROJECT_ID/global/backendServices/$SOL2_SERVICE1
+    - backendService: https://www.googleapis.com/compute/v1/projects/$PROJECT_ID/global/backendServices/$SOL2_SERVICE_CANARY
       weight: 1
   name: path-matcher-1
   routeRules:
@@ -206,9 +220,9 @@ pathMatchers:
     priority: 1
     routeAction:
       weightedBackendServices:
-      - backendService: https://www.googleapis.com/compute/v1/projects/$PROJECT_ID/global/backendServices/$SOL2_SERVICE1
+      - backendService: https://www.googleapis.com/compute/v1/projects/$PROJECT_ID/global/backendServices/$SOL2_SERVICE_CANARY
         weight: 89
-      - backendService: https://www.googleapis.com/compute/v1/projects/$PROJECT_ID/global/backendServices/$SOL2_SERVICE2
+      - backendService: https://www.googleapis.com/compute/v1/projects/$PROJECT_ID/global/backendServices/$SOL2_SERVICE_PROD
         weight: 11
 END_OF_URLMAP_GCLOUD_YAML_CONFIG
 } | tee t.sol15.yaml | gcloud compute url-maps import "$URLMAP_NAME" --source=- # --quiet

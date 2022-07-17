@@ -59,6 +59,8 @@ if [ "true" = "$SHOW_DEVCONSOLE_LINKS" ]; then
     white "Cloud Source Repositories (CSR): https://source.cloud.google.com/$PROJECT_ID"
     white "Network Endpoint Groups (NEGs): https://console.cloud.google.com/compute/networkendpointgroups/list?project=$PROJECT_ID"
     white "Load Balancers (HTTP LBs): https://console.cloud.google.com/net-services/loadbalancing/list/loadBalancers?project=$PROJECT_ID"
+    # Super important for things that killed my script 15: Load balancing components
+    white "Load Balancers (BE comps): https://console.cloud.google.com/net-services/loadbalancing/advanced/backendServices/list?project=$PROJECT_ID"
     echo "== DevConsole useful links END =="
 fi
 

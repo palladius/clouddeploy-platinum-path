@@ -16,10 +16,20 @@ set -e
 ########################
 # Add your code here
 ########################
+DEFAULT_APP="app01"                                # app01 / app02
+APP_NAME="${1:-$DEFAULT_APP}"
+#K8S_APP_IMAGE="${2:-$DEFAULT_APP_IMAGE}"
+
+# MultiTenant solution (parametric in $1)
+SOL2_SERVICE_CANARY="$APP_NAME-$DFLT_SOL2_SERVICE_CANARY"    # => appXX-sol2-svc-canary
+SOL2_SERVICE_PROD="$APP_NAME-$DFLT_SOL2_SERVICE_PROD"    # => appXX-sol2-svc-prod
+
 # script dmarziano:
 
-gcloud compute network-endpoint-groups list --filter="$SOL2_SERVICE1"
-gcloud compute network-endpoint-groups list --filter="$SOL2_SERVICE2"
+echo 01a Showing CANARY Endpoints: SOL2_SERVICE_CANARY
+gcloud compute network-endpoint-groups list --filter="$SOL2_SERVICE_CANARY" | lolcat
+echo 01b Showing PROD Endpoints: SOL2_SERVICE_PROD
+gcloud compute network-endpoint-groups list --filter="$SOL2_SERVICE_PROD" | lolcat
 
 IP_FWDRULE=$(gcloud compute forwarding-rules list --filter "$FWD_RULE" | tail -1 | awk '{print $2}')
 
