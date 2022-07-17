@@ -12,7 +12,7 @@
 ################################################################################
 
 function _fatal() {
-    echo "$*" >&1
+    echo "[FATAL] $*" >&1
     exit 42
 }
 function _get_zones_by_region() {
@@ -44,6 +44,18 @@ function _grab_NEG_name_by_filter() {
   white "[DEBUG] _grab_NEG_name_by_filter('$FILTER')" >&2
   gcloud compute network-endpoint-groups list --filter="$FILTER" | grep "$REGION" | awk '{print $1}' | head -1
 }
+solution2_tear_up_k8s() {
+  smart_apply_k8s_templates "$GKE_SOLUTION2_ENVOY_XLB_TRAFFICSPLITTING_SETUP_DIR"
+
+  # If you changed some name and you get IMMUTABLE error, try to destroy the same resource before:
+  # eg, bin/kubectl-prod delete deployments/app01-sol2-svc-canary
+  #kubectl --context="$GKE_CANARY_CLUSTER_CONTEXT" delete "Deployments/$SOL2_SERVICE_CANARY"
+  #kubectl --context="$GKE_CANARY_CLUSTER_CONTEXT" delete "Deployments/$SOL2_SERVICE_PROD"
+  bin/kubectl-staging apply -f "$GKE_SOLUTION2_ENVOY_XLB_TRAFFICSPLITTING_SETUP_DIR/out/"
+  bin/kubectl-prod    apply -f "$GKE_SOLUTION2_ENVOY_XLB_TRAFFICSPLITTING_SETUP_DIR/out/"
+}
+
+
 #https://www.unix.com/shell-programming-and-scripting/183865-automatically-send-stdout-stderror-file-well-screen-but-without-using-tee.html
 SCRIPT_LOG_FILE=".15sh.lastStdOutAndErr"
 #exec 1>>"$SCRIPT_LOG_FILE"
@@ -80,15 +92,30 @@ SOL2_SERVICE_PROD="$APP_NAME-$DFLT_SOL2_SERVICE_PROD"        # => appXX-sol2-svc
 echo "##############################################"
 yellow "WORK IN PROGRESS!! trying to use envsubst to make this easier.."
 yellow "Deploy the GKE manifests. This needs to happen first as it creates the NEGs which this script depends upon."
+
 echo SOL2_SERVICE_CANARY: $SOL2_SERVICE_CANARY
 echo SOL2_SERVICE_PROD: $SOL2_SERVICE_PROD
 echo "##############################################"
 
 # Cleaning old templates in case you've renamed something so i dont tear up WO resources with sightly different names
 make clean
+solution2_tear_up_k8s
+# kubectl --context="$GKE_CANARY_CLUSTER_CONTEXT" apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
+# kubectl --context="$GKE_PROD_CLUSTER_CONTEXT" apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
 
-#kubectl --context="$GKE_CANARY_CLUSTER_CONTEXT" apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
-#kubectl --context="$GKE_PROD_CLUSTER_CONTEXT" apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
+red "00Warning. I've noticed after 7d of failures that as a prerequisite for this to work you need the k8s deployments correctly named. Im going to make this as a prerequisite"
+white "00. Check that Canary and Prod have made it correctly to your k8s systems via some kubectl command:"
+(kubectl --context="$GKE_CANARY_CLUSTER_CONTEXT" get service | grep sol2
+ kubectl --context="$GKE_PROD_CLUSTER_CONTEXT" get service | grep sol2
+) | grep canary ||
+   red "Looks like no CANARY services are working. Work on your CI/CD pipeline to have working solution2 CANARY Services"
+
+(kubectl --context="$GKE_CANARY_CLUSTER_CONTEXT" get service | grep sol2
+ kubectl --context="$GKE_PROD_CLUSTER_CONTEXT" get service | grep sol2
+) | grep prod ||
+   red "Looks like no PROD services are working. Work on your CI/CD pipeline to have working solution2 PROD Services"
+
+green "It seems you have at least ONE entry for PROD and one entry for CANARY. If not please fix it before going on."
 
 white "01. Showing NEGs for sol2:" # uhm only canary
 gcloud compute network-endpoint-groups list  | grep sol2
@@ -181,8 +208,6 @@ _get_zones_by_region "$REGION" | while read ITERATIVE_ZONE ; do
 done
 
 
-
-
 # RIC008 Create a default url-map
 proceed_if_error_matches "The resource 'projects/$PROJECT_ID/global/urlMaps/$URLMAP_NAME' already exists" \
   gcloud compute url-maps create "$URLMAP_NAME" --default-service "$SOL2_SERVICE_CANARY"
@@ -225,12 +250,15 @@ pathMatchers:
       - backendService: https://www.googleapis.com/compute/v1/projects/$PROJECT_ID/global/backendServices/$SOL2_SERVICE_PROD
         weight: 11
 END_OF_URLMAP_GCLOUD_YAML_CONFIG
-} | tee t.sol15.yaml | gcloud compute url-maps import "$URLMAP_NAME" --source=- # --quiet
+} | tee t.sol15.yaml | gcloud compute url-maps import "$URLMAP_NAME" --source=- --quiet
 
 
 #proceed_if_error_matches "The resource 'projects/$PROJECT_ID/global/targetHttpProxies/http-svc9010-lb' already exists" \
 
 # RIC010 Finalize 1/2
+
+white "RIC010: create UrlMap='$URLMAP_NAME' and FwdRule='$FWD_RULE'"
+
 proceed_if_error_matches "already exists" \
   gcloud compute target-http-proxies create "$URLMAP_NAME" --url-map="$URLMAP_NAME"
 
@@ -246,31 +274,25 @@ proceed_if_error_matches "The resource 'projects/$PROJECT_ID/global/forwardingRu
     --target-http-proxy="$URLMAP_NAME" \
     --ports=80
 
+# Get IP of this Load Balancer
 IP_FWDRULE=$(gcloud compute forwarding-rules list --filter "$FWD_RULE" | tail -1 | awk '{print $2}')
 
 # why 20-30? since 90% is a 9vs1 in 10 tries. It takes 20-30 to see a few svc2 hits :)
 echo "Now you can try this:             1) IP=$IP_FWDRULE"
-echo 'Now you can try this 20-30 times: 2) curl -H "Host: xlb-gfe3-host.example.io" http://$IP/whereami/pod_name'
+echo 'Now you can try this 20-30 times: 2) curl -H "Host: sol2-xlb-gfe3.example.io" http://$IP_FWDRULE/'
+
+# solution2_tear_up_k8s
 
 
-
-smart_apply_k8s_templates "$GKE_SOLUTION2_ENVOY_XLB_TRAFFICSPLITTING_SETUP_DIR"
-
-# tear down first
-kubectl --context="$GKE_CANARY_CLUSTER_CONTEXT" apply -k "$GKE_SOLUTION2_ENVOY_XLB_TRAFFICSPLITTING_SETUP_DIR/out/"
-kubectl --context="$GKE_PROD_CLUSTER_CONTEXT" apply -k "$GKE_SOLUTION2_ENVOY_XLB_TRAFFICSPLITTING_SETUP_DIR/out/"
-# tear up
-kubectl --context="$GKE_CANARY_CLUSTER_CONTEXT" apply -f "$GKE_SOLUTION2_ENVOY_XLB_TRAFFICSPLITTING_SETUP_DIR/out/"
-kubectl --context="$GKE_PROD_CLUSTER_CONTEXT" apply -f "$GKE_SOLUTION2_ENVOY_XLB_TRAFFICSPLITTING_SETUP_DIR/out/"
 
 ########################
 # End of your code here
 ########################
 
 # Check everything ok:
-bin/kubectl-triune get all | grep "sol1"
+bin/kubectl-triune get all | grep "sol2"
 
-green "Everything is ok. Now check your newly created LB for its IP (should be '$IP_FWDRULE')"
+green "Everything is ok. Now check your newly created '$APP_NAME' LB for its IP (should be '$IP_FWDRULE')"
 
 # End of your code here
 _allgood_post_script

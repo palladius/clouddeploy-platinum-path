@@ -1,0 +1,8 @@
+#!/bin/bash
+
+source ./.env.sh || exit 42
+
+#kubectl --context="$GKE_DEV_CLUSTER_CONTEXT" --namespace cicd-dev "$@" 2>&1 | _prepend "[DEV]  " | _ignore_verbose_warnings
+#kubectl --context="$GKE_DEV_CLUSTER_CONTEXT"    "$@" 2>&1 | _prepend "[STAG] " | _ignore_verbose_warnings
+kubectl --context="$GKE_CANARY_CLUSTER_CONTEXT" "$@" 2>&1 | _prepend "[CANA] "
+#kubectl --context="$GKE_PROD_CLUSTER_CONTEXT"   "$@" 2>&1 | _prepend "[PROD] "
