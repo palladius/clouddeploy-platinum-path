@@ -15,13 +15,15 @@ spec:
     matchLabels:
       app: __APPNAME__
       #version: v2
-      stage: prod
+      #stage: prod
+      ricc-env: prod
   template:
     metadata:
       labels:
         app: __APPNAME__
         #version: v2
-        stage: prod
+        #stage: prod
+        ricc-env: prod
     spec:
       containers:
       - name: __APPNAME__-image
@@ -30,7 +32,7 @@ spec:
           - containerPort: 8080
         env:
         - name: METADATA
-          value: "__APPNAME__-sol2-svc-prod" # DFLT_SOL2_SERVICE2
+          value: "__APPNAME__-sol2-svc-prod" # DFLT_SOL2_SERVICE_PROD
 ---
 apiVersion: v1
 kind: Service

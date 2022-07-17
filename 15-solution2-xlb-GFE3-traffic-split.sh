@@ -38,6 +38,7 @@ function _assert_neg_exists_for_service() {
     echo "_assert_neg_exists_for_service() NEG $NEG_ID Found: $(yellow $SVC2_UGLY_NEG_NAME)."
   fi
 }
+
 function _grab_NEG_name_by_filter() {
   FILTER="$1"
   # DEBUG
@@ -67,8 +68,8 @@ APP_NAME="${1:-$DEFAULT_APP}"
 K8S_APP_IMAGE="${2:-$DEFAULT_APP_IMAGE}"
 
 # MultiTenant solution
-SOL2_SERVICE1="$APP_NAME-$DFLT_SOL2_SERVICE1"    # => appXX-sol2-svc-canary
-SOL2_SERVICE2="$APP_NAME-$DFLT_SOL2_SERVICE2"    # => appXX-sol2-svc-prod
+SOL2_SERVICE1="$APP_NAME-$DFLT_SOL2_SERVICE_CANARY"    # => appXX-sol2-svc-canary
+SOL2_SERVICE2="$APP_NAME-$DFLT_SOL2_SERVICE_PROD"    # => appXX-sol2-svc-prod
 
 # K8S_APP_SELECTOR -> nothing
 echo "##############################################"
@@ -77,6 +78,9 @@ yellow "Deploy the GKE manifests. This needs to happen first as it creates the N
 echo SOL2_SERVICE1: $SOL2_SERVICE1
 echo SOL2_SERVICE2: $SOL2_SERVICE2
 echo "##############################################"
+
+# Cleaning old templates in case you've renamed something so i dont tear up WO resources with sightly different names
+make clean
 
 #kubectl --context="$GKE_CANARY_CLUSTER_CONTEXT" apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
 #kubectl --context="$GKE_PROD_CLUSTER_CONTEXT" apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
@@ -238,6 +242,10 @@ echo 'Now you can try this 20-30 times: 2) curl -H "Host: xlb-gfe3-host.example.
 
 smart_apply_k8s_templates "$GKE_SOLUTION2_ENVOY_XLB_TRAFFICSPLITTING_SETUP_DIR"
 
+# tear down first
+kubectl --context="$GKE_CANARY_CLUSTER_CONTEXT" apply -k "$GKE_SOLUTION2_ENVOY_XLB_TRAFFICSPLITTING_SETUP_DIR/out/"
+kubectl --context="$GKE_PROD_CLUSTER_CONTEXT" apply -k "$GKE_SOLUTION2_ENVOY_XLB_TRAFFICSPLITTING_SETUP_DIR/out/"
+# tear up
 kubectl --context="$GKE_CANARY_CLUSTER_CONTEXT" apply -f "$GKE_SOLUTION2_ENVOY_XLB_TRAFFICSPLITTING_SETUP_DIR/out/"
 kubectl --context="$GKE_PROD_CLUSTER_CONTEXT" apply -f "$GKE_SOLUTION2_ENVOY_XLB_TRAFFICSPLITTING_SETUP_DIR/out/"
 
