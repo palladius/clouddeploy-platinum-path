@@ -51,7 +51,7 @@ function _grab_NEG_name_by_filter() {
 #   # eg, bin/kubectl-prod delete deployments/app01-sol2-svc-canary
 #   #kubectl --context="$GKE_CANARY_CLUSTER_CONTEXT" delete "Deployments/$SOL2_SERVICE_CANARY"
 #   #kubectl --context="$GKE_CANARY_CLUSTER_CONTEXT" delete "Deployments/$SOL2_SERVICE_PROD"
-#   bin/kubectl-staging apply -f "$GKE_SOLUTION2_ENVOY_XLB_TRAFFICSPLITTING_SETUP_DIR/out/"
+#   bin/kubectl-canary apply -f "$GKE_SOLUTION2_ENVOY_XLB_TRAFFICSPLITTING_SETUP_DIR/out/"
 #   bin/kubectl-prod    apply -f "$GKE_SOLUTION2_ENVOY_XLB_TRAFFICSPLITTING_SETUP_DIR/out/"
 # }
 
