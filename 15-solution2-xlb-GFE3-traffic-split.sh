@@ -44,16 +44,16 @@ function _grab_NEG_name_by_filter() {
   white "[DEBUG] _grab_NEG_name_by_filter('$FILTER')" >&2
   gcloud compute network-endpoint-groups list --filter="$FILTER" | grep "$REGION" | awk '{print $1}' | head -1
 }
-solution2_tear_up_k8s() {
-  smart_apply_k8s_templates "$GKE_SOLUTION2_ENVOY_XLB_TRAFFICSPLITTING_SETUP_DIR"
+# solution2_tear_up_k8s() {
+#   smart_apply_k8s_templates "$GKE_SOLUTION2_ENVOY_XLB_TRAFFICSPLITTING_SETUP_DIR"
 
-  # If you changed some name and you get IMMUTABLE error, try to destroy the same resource before:
-  # eg, bin/kubectl-prod delete deployments/app01-sol2-svc-canary
-  #kubectl --context="$GKE_CANARY_CLUSTER_CONTEXT" delete "Deployments/$SOL2_SERVICE_CANARY"
-  #kubectl --context="$GKE_CANARY_CLUSTER_CONTEXT" delete "Deployments/$SOL2_SERVICE_PROD"
-  bin/kubectl-staging apply -f "$GKE_SOLUTION2_ENVOY_XLB_TRAFFICSPLITTING_SETUP_DIR/out/"
-  bin/kubectl-prod    apply -f "$GKE_SOLUTION2_ENVOY_XLB_TRAFFICSPLITTING_SETUP_DIR/out/"
-}
+#   # If you changed some name and you get IMMUTABLE error, try to destroy the same resource before:
+#   # eg, bin/kubectl-prod delete deployments/app01-sol2-svc-canary
+#   #kubectl --context="$GKE_CANARY_CLUSTER_CONTEXT" delete "Deployments/$SOL2_SERVICE_CANARY"
+#   #kubectl --context="$GKE_CANARY_CLUSTER_CONTEXT" delete "Deployments/$SOL2_SERVICE_PROD"
+#   bin/kubectl-staging apply -f "$GKE_SOLUTION2_ENVOY_XLB_TRAFFICSPLITTING_SETUP_DIR/out/"
+#   bin/kubectl-prod    apply -f "$GKE_SOLUTION2_ENVOY_XLB_TRAFFICSPLITTING_SETUP_DIR/out/"
+# }
 
 
 #https://www.unix.com/shell-programming-and-scripting/183865-automatically-send-stdout-stderror-file-well-screen-but-without-using-tee.html
@@ -78,10 +78,12 @@ set -e
 
 # These two names need to be aligned with app1/app2 in the k8s.
 DEFAULT_APP="app01"                                # app01 / app02
+DEFAULT_APP_SELECTOR="app01-kupython"     # app01-kupython / app02-kuruby
 DEFAULT_APP_IMAGE="skaf-app01-python-buildpacks"   # skaf-app01-python-buildpacks // ricc-app02-kuruby-skaffold
 
 APP_NAME="${1:-$DEFAULT_APP}"
-K8S_APP_IMAGE="${2:-$DEFAULT_APP_IMAGE}"
+K8S_APP_SELECTOR="${2:-$DEFAULT_APP_SELECTOR}"               # => app01-kupython  /
+K8S_APP_IMAGE="${3:-$DEFAULT_APP_IMAGE}"
 
 # MultiTenant solution (parametric in $1)
 SOL2_SERVICE_CANARY="$APP_NAME-$DFLT_SOL2_SERVICE_CANARY"    # => appXX-sol2-svc-canary

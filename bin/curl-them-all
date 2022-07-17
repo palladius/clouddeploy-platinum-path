@@ -40,6 +40,8 @@ bin/kubectl-triune get service | grep app02 | grep -v none | while read stage ap
   _smart_curl $PUBLIC_IP 8080 "$stage"
 done
 
-
+white "Solution2: app01"
+IP_FWDRULE=$(gcloud compute forwarding-rules list --filter "$FWD_RULE" | tail -1 | awk '{print $2}')
+echo TODO
 
 echo Done.

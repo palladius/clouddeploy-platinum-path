@@ -1,9 +1,6 @@
-# kind: Namespace
-# apiVersion: v1
-# metadata:
-#   name: prod
-# #  name: app00 # TODO ricc change this
----
+#APP_NAME =  __APP_NAME__
+#K8S_APP_SELECTOR =   __K8S_APP_SELECTOR__
+#K8S_APP_IMAGE =     __K8S_APP_IMAGE__
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -13,12 +10,12 @@ spec:
   replicas: 2
   selector:
     matchLabels:
-      app: __APPNAME__
+      app: __K8S_APP_SELECTOR__
       ricc-env: prod
   template:
     metadata:
       labels:
-        app: __APPNAME__
+        app: __K8S_APP_SELECTOR__
         ricc-env: prod
     spec:
       containers:
@@ -29,6 +26,12 @@ spec:
         env:
         - name: METADATA
           value: "__APPNAME__-sol2-svc-prod" # DFLT_SOL2_SERVICE_PROD
+        - name: debug-selector
+          value: __K8S_APP_SELECTOR__
+        - name: debug-app-image
+          value: __K8S_APP_IMAGE__
+        - name: debug-app-name
+          value: __APP_NAME__
 ---
 apiVersion: v1
 kind: Service
@@ -40,8 +43,14 @@ metadata:
     cloud.google.com/neg: '{"exposed_ports": {"8080":{"name": ""}}}'
 spec:
   selector:
-    app: __APPNAME__
+    app: __K8S_APP_SELECTOR__
     ricc-env: prod
   ports:
   - port: 8080
     targetPort: 8080
+#---
+# kind: Namespace
+# apiVersion: v1
+# metadata:
+#   name: prod
+# #  name: app00 # TODO ricc change this

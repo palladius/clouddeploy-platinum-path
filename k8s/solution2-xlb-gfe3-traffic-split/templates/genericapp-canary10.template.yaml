@@ -14,12 +14,12 @@ spec:
   replicas: 2
   selector: # here pods are 'selected'.
     matchLabels:
-      app: __APPNAME__  # 1. first is linked to second
+      app: __K8S_APP_SELECTOR__  # 1. first is linked to second
       ricc-env: canary
   template: # here pods are instanced.
     metadata:
       labels:
-        app: __APPNAME__ # 2. second is linked to first
+        app: __K8S_APP_SELECTOR__ # 2. second is linked to first
         ricc-env: canary
     spec:
       containers:
@@ -42,7 +42,7 @@ metadata:
     cloud.google.com/neg: '{"exposed_ports": {"8080":{"name": ""}}}'
 spec:
   selector:
-    app: __APPNAME__ # 4. this needs to be like 1/2.
+    app: __K8S_APP_SELECTOR__ # 4. this needs to be like 1/2.
     ricc-env: canary
   ports:
   - port: 8080
