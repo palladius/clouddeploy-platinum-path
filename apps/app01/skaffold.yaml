@@ -18,6 +18,9 @@ build:
         ignore:
           - k8s/**
 deploy:
+  # Adding just for Python to see if stabilization gets better with CD b/239385876
+  #  https://skaffold-latest.firebaseapp.com/docs/pipeline-stages/status-check/
+  statusCheckDeadlineSeconds: 300
   kustomize: # uses kustomize
     paths: [./k8s/base]
 profiles:
