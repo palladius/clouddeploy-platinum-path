@@ -26,4 +26,4 @@ kustomize-render:
 #	/bin/false
 # fixed echodo now -> try again.
 run-p8080:
-	cd ruby-app/ && bundle install && bundle exec puma -p 8080
+	CLOUD_DEPLOY_TARGET_COMMON=LocalMakefileRunP8080 cd ruby-app/ && bundle install && bundle exec puma -p 8080

@@ -35,7 +35,7 @@ def index():
 
         <hr/>
           <center>
-           <!-- Statusz --> app01 (🐍) v<b>{ver}</b> TARGET=<b>{cd_stage}</b>
+           <!-- /statusz --> app01 (🐍) v<b>{ver}</b> TARGET=<b>{cd_stage}</b>
           </center>
   """.format(
     ver=version,
