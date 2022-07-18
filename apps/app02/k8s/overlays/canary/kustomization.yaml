@@ -14,7 +14,7 @@ patches:
       path: "/spec/template/spec/containers/0/env/-"
       value:
         name: FAVORITE_COLOR
-        value: brown
+        value: lemonchiffon # was: brown. Better light yellow, getting lighter as we get closer to prod: https://www.rapidtables.com/web/color/Yellow_Color.html
   target:
     kind: Deployment
     name: app02-kuruby

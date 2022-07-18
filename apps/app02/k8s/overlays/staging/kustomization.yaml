@@ -14,6 +14,12 @@ patches:
       value:
         name: CLOUD_DEPLOY_TARGET # RICCARDO_KUSTOMIZE_ENV
         value: "02 Staging (pls read with French accent)"
+  # - patch: |-
+  #   - op: add
+  #     path: "/spec/template/spec/containers/0/env/-"
+  #     value:
+  #       name: FAVORITE_COLOR
+  #       value: khaki # light yellow for STAGING
   target:
     kind: Deployment
     name: app02-kuruby
