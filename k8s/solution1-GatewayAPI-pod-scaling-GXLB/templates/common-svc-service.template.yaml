@@ -3,9 +3,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: __PREFIX__-sol1-common-svc
+  name: sol1-__PREFIX__-common-svc
   annotations:
-    cloud.google.com/neg: '{"exposed_ports": {"8080":{"name": "__PREFIX__-sol1-common-svc"}}}'
+    cloud.google.com/neg: '{"exposed_ports": {"8080":{"name": "sol1-__PREFIX__-common-svc"}}}'
 spec:
   selector:
     #was: app: store

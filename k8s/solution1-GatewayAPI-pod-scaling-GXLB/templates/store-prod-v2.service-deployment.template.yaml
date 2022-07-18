@@ -6,7 +6,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: __K8S_APP_SELECTOR__-prod
+  name: sol1-__K8S_APP_SELECTOR__-prod
 spec:
   replicas: 4
   selector:
@@ -26,15 +26,15 @@ spec:
           - containerPort: 8080
         env:
         - name: METADATA
-          value: "__K8S_APP_SELECTOR__-prod"
+          value: "sol1-__K8S_APP_SELECTOR__-prod"
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: __K8S_APP_SELECTOR__-prod
+  name: sol1-__K8S_APP_SELECTOR__-prod
   annotations:
     networking.gke.io/max-rate-per-endpoint: "90"
-    cloud.google.com/neg: '{"exposed_ports": {"8080":{"name": "__K8S_APP_SELECTOR__-prod-neg"}}}'
+    cloud.google.com/neg: '{"exposed_ports": {"8080":{"name": "sol1-__K8S_APP_SELECTOR__-prod-neg"}}}'
 spec:
   selector:
     app: __K8S_APP_SELECTOR__

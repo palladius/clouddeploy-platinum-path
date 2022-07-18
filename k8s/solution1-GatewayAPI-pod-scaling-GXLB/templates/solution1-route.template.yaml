@@ -12,19 +12,19 @@
 kind: HTTPRoute
 apiVersion: gateway.networking.k8s.io/v1alpha2
 metadata:
-  name: __PREFIX__-sol1
+  name: sol1-__PREFIX__
   labels:
-    gateway: __PREFIX__-sol1-http
+    gateway: sol1-__PREFIX__-http
 spec:
   parentRefs:
-  - name: __PREFIX__-sol1-http
+  - name: sol1-__PREFIX__-http
   hostnames:
   - "sol1-__APPNAME__.example.io"    # kept for easy curl/documented static commands :)
   - "sol1-__PREFIX__.example.io"     # bake in region as well... klets see which is best
   - "sol1-__APPNAME__.__MY_DOMAIN__" # being changed by script 12 into $MY_DOMAIN.
   rules:
   - backendRefs:
-    - name: __PREFIX__sol1-common-svc
+    - name: sol1-__PREFIX__-common-svc
       port: 8080
 # While this might work, Im gonna remove this for now.
 #      weight: 90
@@ -32,11 +32,11 @@ spec:
     - path:
         value: /prod
     backendRefs:
-    - name: __PREFIX__sol1-prod
+    - name: sol1-__PREFIX__-prod
       port: 8080
   - matches:
     - path:
         value: /canary
     backendRefs:
-    - name: __PREFIX__sol1-canary
+    - name: sol1-__PREFIX__-canary
       port: 8080
