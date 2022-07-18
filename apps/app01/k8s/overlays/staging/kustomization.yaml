@@ -13,4 +13,4 @@ components:
 #         value: "01 Dev (Development)"
 #   target:
 #     kind: Deployment
-#     name: ricc-ruby
+#     name: app02-kuruby

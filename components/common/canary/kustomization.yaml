@@ -32,6 +32,9 @@ patches:
         value: khaki # prod is WHITE :)
   target:
     kind: Deployment
+    # name in:
+    #  - app01-kupython
+    #  - app02-kuruby
 # for both:
 #  name: app01-kupython
 #  name: app02-kuruby
