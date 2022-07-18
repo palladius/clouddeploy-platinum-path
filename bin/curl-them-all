@@ -44,8 +44,11 @@ done
 
 echo Sol0: No routable endpoints.
 
-white  "== Solution1 Artifacts =="
-echo TODO
+white  "== Solution1 Artifacts (TODO: get public IPs)=="
+# Note they dont get public IPs. But with Daniel it took them 1d to do it so i will wait till tomorrow.
+bin/kubectl-canary get gateways | egrep "sol1-app"
+# This might be pleonastic but hey, ANYTHING for a public IP!
+bin/kubectl-prod get gateways | egrep "sol1-app"
 
 white  "== Solution2 Artifacts =="
 
