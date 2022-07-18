@@ -68,11 +68,22 @@ kustomize-install:
 	curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash
 
 kustomize-test:
-	kustomize build apps/app02/k8s/04prod/ >/dev/null
-	kustomize build apps/app02/k8s/03canary/ >/dev/null
-	kustomize build apps/app02/k8s/01dev/ >/dev/null
-	kustomize build apps/app02/k8s/02staging/ >/dev/null
+	kustomize build apps/app01/k8s/base/                >/dev/null
+	kustomize build apps/app01/k8s/overlays/dev/        >/dev/null
+	kustomize build apps/app01/k8s/overlays/staging/    >/dev/null
+	kustomize build apps/app01/k8s/overlays/canary/     >.t.app01.can
+	kustomize build apps/app01/k8s/overlays/production/ >.t.app01.prod
+
+	kustomize build apps/app02/k8s/base/                >/dev/null
+	kustomize build apps/app02/k8s/overlays/dev/        >/dev/null
+	kustomize build apps/app02/k8s/overlays/staging/    >/dev/null
+	kustomize build apps/app02/k8s/overlays/canary/     >.t.app02.can
+	kustomize build apps/app02/k8s/overlays/production/ >.t.app02.prod
+	@echo Done. Now lets see the diffs between canary and prod:
+	diff .t.app01.*
+	diff .t.app02.*
 	@echo Done. TODO ricc diff the two now.
+
 
 kustomize-ruby-diff-prod-and-canary:
 	kustomize build apps/app02/k8s/01dev/     > t.app02-ruby.kust.dev

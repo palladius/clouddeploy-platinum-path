@@ -12,7 +12,6 @@ commonAnnotations:
   developer: Riccardo Carlesso
   riccNotes: |
     This is common stuff which I include in my PROD manifests.
-    Thanks Daniel and Alex for their help on this!
 # resources:
 # - deployment.yaml
 components:
@@ -26,3 +25,21 @@ components:
 # replicas:
 #   - name: ricc-ruby
 #     count: 11
+patches:
+- patch: |-
+    - op: add
+      path: "/spec/template/spec/containers/0/env/-"
+      value:
+        name: COMMON_CLOUD_DEPLOY_TARGET
+        value: "04 CProd - COMMON Production"
+# - patch: |-
+#     - op: add
+#       path: "/spec/template/spec/containers/0/env/-"
+#       value:
+#         name: FAVORITE_COLOR
+#         value: white # prod is WHITE :)
+  target:
+    kind: Deployment
+# for both:
+#  name: app01-kupython
+#  name: app02-kuruby

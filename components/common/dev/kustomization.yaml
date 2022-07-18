@@ -12,8 +12,8 @@ commonAnnotations:
     as my gcloud scripts needed to be aware of it.
 components:
   - ../base
-# resources:
-#   - patch-env-var.yaml
+resources:
+  - patch-env-var.yaml
 patches:
 - patch: |-
     - op: add
