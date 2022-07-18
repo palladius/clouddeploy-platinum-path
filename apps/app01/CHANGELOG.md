@@ -1,3 +1,5 @@
+* 2022-07-18 v2.18 [OPS] surfacing from common component CLOUD_DEPLOY_TARGET_COMMON in UI.
+* 2022-07-18 v2.17 [OPS] simple ver bump to inherit new COMMON components.
 * 2022-07-18 v2.16 [OPS] Making skaffold laxxer waiting 5min for deployment to stabilize. See b/239385876
 * 2022-07-18 v2.14 [DEV] rstrip for version - usefuil in the curler on script 16 :) Also for [OPS]
 * 2022-07-16 v2.10 [DEV] fixed a bug Ive introduced yesterday dammit. Now it back to compile. Also introduced a simple

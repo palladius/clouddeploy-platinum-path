@@ -30,12 +30,11 @@ install-conda:
 
 
 run-p8080:
-	conda create --name cicd-app01-python
-	conda activate cicd-app01-python
-	conda install pip
-	python3 -m pip install --requirement requirements.txt
+	#conda create --name cicd-app01-python
+	#~/miniconda3/bin/conda init && ~/miniconda3/bin/conda activate cicd-app01-python && 	~/miniconda3/bin/conda install pip
+	#python3 -m pip install --requirement requirements.txt
 #	conda install --file requirements.txt
-	CLOUD_DEPLOY_TARGET=LocalMakefile FLASK_APP=web.py python3 -m flask run --host=0.0.0.0 --port=8080
+	CLOUD_DEPLOY_TARGET_COMMON=COMMONLocalMakefileRun CLOUD_DEPLOY_TARGET=LocalMakefile FLASK_APP=web.py python3 -m flask run --host=0.0.0.0 --port=8080
 
 kustomize-dump:
 	# safely git-ignored ;)
