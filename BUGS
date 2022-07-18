@@ -1,0 +1,4 @@
+
+* P3 b/0001  The Hash declared in .env.sh.post needs bash v4. My Linux has it, but my Mac doesnt. Fopr the first time
+  after 2mo coding on my Mac, this is not working. Luckily there is a semi-ugly workaround. See https://stackoverflow.com/questions/1494178/how-to-define-hash-tables-in-bash
+  for bash v3. My mac has version 3.2.57(1)-release (arm64-apple-darwin21).
