@@ -24,8 +24,9 @@ metadata:
     CDT_VER: _MY_VERSION_
     ricc_app_id: '01'
 description: |
-  App01 in Python CDTv _MY_VERSION_
-  Delivery pipeline for App01 deploy unit
+  Delivery pipeline for CI CD App01 (in python) and then 
+  packaged via buildpacks.
+  CDTv _MY_VERSION_
 #  ricc_language: python
 serialPipeline:
  stages:
@@ -50,8 +51,9 @@ metadata:
     CDT_VER: _MY_VERSION_
     ricc_app_id: '02'
 description: |
-    Delivery pipeline for CICD deploy unit App02 (in ruby) which is based on
-    CloudDeploy template version: _MY_VERSION_
+    Delivery pipeline for CI/CD App02 (in ruby) and then 
+    packaged via Docker.
+    CDTv _MY_VERSION_
 serialPipeline:
  stages:
  - targetId: dev
