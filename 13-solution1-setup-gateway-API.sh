@@ -66,8 +66,8 @@ egrep "store|v2" $GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/templates/[a-z]*yaml | 
 ###############################################
 # set up additional variables for the for cycle
 REGION="${GCLOUD_REGION}"
-SHORT_REGION="$(_shorten_region "$REGION")"
-PREFIX="${APP_NAME}-${SHORT_REGION}" # maybe in the future PREFIX = APP-REGION
+#SHORT_REGION="$(_shorten_region "$REGION")"
+PREFIX="${APP_NAME}-${DEFAULT_SHORT_REGION}" # maybe in the future PREFIX = APP-REGION
 export IMAGE_NAME="${K8S_APP_IMAGE}"
 ###############################################
 
@@ -78,7 +78,7 @@ SOLUTION1_TEMPLATING_VER="1.1"
 ###############################################
 
 # MultiAppK8sRefactoring: first script (just ported to obsolete script 2)
-
+make clean
 smart_apply_k8s_templates "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR"
 
 #yellow Now we can issue a kubectl on the out dir..
