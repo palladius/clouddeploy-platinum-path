@@ -12,7 +12,7 @@ app = Flask(__name__)
 def index():
   with open("VERSION", "r") as f:
     version_from_file = "".join(f.readlines())
-  version = version_from_file # "1.1a"
+  version = version_from_file.rstrip() # "1.1a"
   fav_color = os.environ.get('FAVORITE_COLOR')
   env_app_name = os.environ.get('APP_NAME')
   cd_stage =  os.environ.get('CLOUD_DEPLOY_TARGET')
@@ -35,7 +35,7 @@ def index():
 
         <hr/>
           <center>
-            App01 (🐍) v<b>{ver}</b> TARGET=<b>{cd_stage}</b>
+           <!-- Statusz --> app01 (🐍) v<b>{ver}</b> TARGET=<b>{cd_stage}</b>
           </center>
   """.format(
     ver=version,

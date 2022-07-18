@@ -44,9 +44,15 @@ done
 
 echo Sol0: TODO
 echo Sol1: TODO
-white "Solution2: app01 FWD_RULE=$FWD_RULE"
-IP_FWDRULE=$(gcloud compute forwarding-rules list --filter "$FWD_RULE" | tail -1 | awk '{print $2}')
-#echodo gcloud compute forwarding-rules list --filter "$FWD_RULE"
-_smart_curl "$IP_FWDRULE" 80 "app01" "FwdRule $FWD_RULE"
+for APPXX_ITER in app01 app02 ; do
+  FWD_RULE="$APPXX_ITER-${FWD_RULE_MTSUFFIX}"
+  white "Solution2: $APPXX_ITER FWD_RULE='$FWD_RULE'"
+  IP_FWDRULE=$(gcloud compute forwarding-rules list --filter "$FWD_RULE" 2>/dev/null | tail -1 | awk '{print $2}' )
+  if [ -z "$IP_FWDRULE" ] ; then
+    red "NOT FOUND IP for FWD_RULE '$FWD_RULE' for $APPXX_ITER. Skipping."
+  else
+    _smart_curl "$IP_FWDRULE" 80 "$APPXX_ITER" "FwdRule $FWD_RULE"
+  fi
+done
 
-echo Done.
+echo "END of $0"

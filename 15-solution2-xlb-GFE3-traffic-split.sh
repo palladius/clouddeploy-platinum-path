@@ -32,7 +32,6 @@ function _assert_neg_exists_for_service() {
     echo "BEGIN \$SVC_UGLY_NEG_NAME ($NEG_ID) is empty. No NEGS found for '$SOL2_SERVICE_NAME'."
     gcloud compute network-endpoint-groups list --filter="$SOL2_SERVICE_NAME" | lolcat
     gcloud compute network-endpoint-groups list --filter="$SOL2_SERVICE_NAME" | grep "$REGION" | awk '{print $1}' | head -1
-    #exit 2352
     _fatal "END(_assert_neg_exists_for_service) \$SVC_UGLY_NEG_NAME ($NEG_ID) is empty. No NEGS found for '$SOL2_SERVICE_NAME'."
   else
     echo "_assert_neg_exists_for_service() NEG $NEG_ID Found: $(yellow $SVC_UGLY_NEG_NAME)."
@@ -41,7 +40,7 @@ function _assert_neg_exists_for_service() {
 
 function _grab_NEG_name_by_filter() {
   FILTER="$1"
-  white "[DEBUG] _grab_NEG_name_by_filter('$FILTER')" >&2
+  white "[DEBUG] Grabbing NEG name by filter '$FILTER'" >&2
   gcloud compute network-endpoint-groups list --filter="$FILTER" | grep "$REGION" | awk '{print $1}' | head -1
 }
 # solution2_tear_up_k8s() {
@@ -77,26 +76,38 @@ set -e
 ########################################################################
 
 # These two names need to be aligned with app1/app2 in the k8s.
+# 01a Magic defaults
 DEFAULT_APP="app01"                                # app01 / app02
-DEFAULT_APP_SELECTOR="app01-kupython"     # app01-kupython / app02-kuruby
+DEFAULT_APP_SELECTOR="app01-kupython"              # app01-kupython / app02-kuruby
 DEFAULT_APP_IMAGE="skaf-app01-python-buildpacks"   # skaf-app01-python-buildpacks // ricc-app02-kuruby-skaffold
-
+# 01b Magic Values
 APP_NAME="${1:-$DEFAULT_APP}"
-K8S_APP_SELECTOR="${2:-$DEFAULT_APP_SELECTOR}"               # => app01-kupython  /
-K8S_APP_IMAGE="${3:-$DEFAULT_APP_IMAGE}"
+#K8S_APP_SELECTOR="${2:-$DEFAULT_APP_SELECTOR}"
+#K8S_APP_IMAGE="${3:-$DEFAULT_APP_IMAGE}"#
+# Default from Magic Hash Array :)
+K8S_APP_SELECTOR="${AppsInterestingHash["$APP_NAME-SELECTOR"]}"
+K8S_APP_IMAGE="${AppsInterestingHash["$APP_NAME-IMAGE"]}"
+
 
 # MultiTenant solution (parametric in $1)
 SOL2_SERVICE_CANARY="$APP_NAME-$DFLT_SOL2_SERVICE_CANARY"    # => appXX-sol2-svc-canary
 SOL2_SERVICE_PROD="$APP_NAME-$DFLT_SOL2_SERVICE_PROD"        # => appXX-sol2-svc-prod
+
+# Now that I know APPXX I can do this:
+export URLMAP_NAME="${APP_NAME}-$URLMAP_NAME_MTSUFFIX"        # eg: "app02-BLAHBLAH"
+export FWD_RULE="${APP_NAME}-${FWD_RULE_MTSUFFIX}"            # eg: "app02-BLAHBLAH"
 
 # K8S_APP_SELECTOR -> nothing
 echo "##############################################"
 yellow "WORK IN PROGRESS! on 17jul22 I was finally able to get to the end of this script in its entirety after the huge multi-tennant refactor"
 yellow "TODO(ricc): everything is multi-tennant except the FWD RULE part. Shouls have app01/02 in it.."
 #yellow "Deploy the GKE manifests. This needs to happen first as it creates the NEGs which this script depends upon."
-
-echo SOL2_SERVICE_CANARY: $SOL2_SERVICE_CANARY
-echo SOL2_SERVICE_PROD: $SOL2_SERVICE_PROD
+echo "URLMAP_NAME: $URLMAP_NAME"
+echo "FWD_RULE:    $FWD_RULE"
+echo "K8S_APP_SELECTOR:    $K8S_APP_SELECTOR"
+echo "K8S_APP_IMAGE:       $K8S_APP_IMAGE"
+echo "SOL2_SERVICE_CANARY: $SOL2_SERVICE_CANARY"
+echo "SOL2_SERVICE_PROD: $SOL2_SERVICE_PROD"
 echo "##############################################"
 
 # Cleaning old templates in case you've renamed something so i dont tear up WO resources with sightly different names
@@ -227,9 +238,9 @@ defaultService: https://www.googleapis.com/compute/v1/projects/$PROJECT_ID/globa
 hostRules:
 - hosts:
     # This is for ease of troubleshoot
-  - sol2-xlb-gfe3.example.io
+  - ${APP_NAME}-sol2-xlb-gfe3.example.io
     # This is for you to use your REAL domain - with Cloud DNS you can just curl the final hostname. Not covered by this demo.
-  - sol2-xlb-gfe3.$MY_DOMAIN
+  - ${APP_NAME}-sol2-xlb-gfe3.$MY_DOMAIN
   pathMatcher: path-matcher-1
 pathMatchers:
 - defaultRouteAction:

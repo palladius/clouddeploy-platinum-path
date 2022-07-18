@@ -35,7 +35,7 @@ run-p8080:
 	conda install pip
 	python3 -m pip install --requirement requirements.txt
 #	conda install --file requirements.txt
-	FLASK_APP=web.py python3 -m flask run --host=0.0.0.0 --port=8080
+	CLOUD_DEPLOY_TARGET=LocalMakefile FLASK_APP=web.py python3 -m flask run --host=0.0.0.0 --port=8080
 
 kustomize-dump:
 	# safely git-ignored ;)
