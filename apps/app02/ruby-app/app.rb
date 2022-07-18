@@ -53,7 +53,7 @@ class App
     <hr/>
     <center>
       <b>#{ENV['APP_NAME']}</b>
-      <!-- /statusz --> app02 v<b>#{$VERSION}</b> - Target:<b>#{ ENV.fetch 'CLOUD_DEPLOY_TARGET_COMMON', 'dunno'}</b>
+      <!-- /statusz --> app02 💎 v<b>#{$VERSION}</b> - Target:<b>#{ ENV.fetch 'CLOUD_DEPLOY_TARGET_COMMON', 'dunno'}</b>
       <!-- directly from kustomize CLOUD_DEPLOY_TARGET_COMMON variable ! -->
     </center>
   "

@@ -22,12 +22,13 @@ DEFAULT_APP="app01"                       # app01 / app02
 APP_NAME="${1:-$DEFAULT_APP}"
 URL="sol1-$APP_NAME.example.io"
 
-kubectl --context="$GKE_CANARY_CLUSTER_CONTEXT" apply -f "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/out/"
+#bin/kubectl-canary apply -f "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/out/"
+#bin/kubectl-prod   apply -f "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/out/"
 
 #set -x
 
 yellow "Warning, IP address is currently hard-coded :/"
-LB_NAME="http-svc9010-lb"
+#LB_NAME="http-svc9010-lb"
 ENDPOINT_IP="34.160.173.24:80"	# https://console.cloud.google.com/net-services/loadbalancing/details/httpAdvanced/http-svc9010-lb?project=cicd-platinum-test001
 curl -H "host: $URL" $ENDPOINT_IP 2>/dev/null
 
