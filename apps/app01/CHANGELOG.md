@@ -1,3 +1,4 @@
+* 2022-07-18 v2.19 [DEV] also FAV_COLOR _COMMON in UI.
 * 2022-07-18 v2.18 [OPS] surfacing from common component CLOUD_DEPLOY_TARGET_COMMON in UI.
 * 2022-07-18 v2.17 [OPS] simple ver bump to inherit new COMMON components.
 * 2022-07-18 v2.16 [OPS] Making skaffold laxxer waiting 5min for deployment to stabilize. See b/239385876
