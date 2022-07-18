@@ -9,12 +9,17 @@ replicas:
     count: 1
 patches:
 # TODO(ricc): when you have a minute add patch also here.
-- patch: |-
-    - op: add
-      path: "/spec/template/spec/containers/0/env/-"
-      value:
-        name: FAVORITE_COLOR
-        value: lemonchiffon # was: brown. Better light yellow, getting lighter as we get closer to prod: https://www.rapidtables.com/web/color/Yellow_Color.html
-  target:
-    kind: Deployment
-    name: app02-kuruby
+
+
+# do NOT add this or you get deployment error since you have TWO colors. If you want to do it right, subsume all colors  bases:
+# OUT of ruby python and in the commong components/ folder.
+
+# - patch: |-
+#     - op: add
+#       path: "/spec/template/spec/containers/0/env/-"
+#       value:
+#         name: FAVORITE_COLOR
+#         value: lemonchiffon # was: brown. Better light yellow, getting lighter as we get closer to prod: https://www.rapidtables.com/web/color/Yellow_Color.html
+#   target:
+#     kind: Deployment
+#     name: app02-kuruby

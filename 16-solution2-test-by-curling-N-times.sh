@@ -57,7 +57,7 @@ IP_FWDRULE=$(gcloud compute forwarding-rules list --filter "$FWD_RULE" | tail -1
 echo
 white "Trying $N_TRIES times to curl my host at IP: $IP_FWDRULE [$FWD_RULE]..."
 for i in {0..10}; do
-    curl -H "Host: ${APP_NAME}-sol2-xlb-gfe3.example.io" $IP_FWDRULE/ 2>/dev/null | egrep "$SMART_EGREP" | head -1
+    curl -H "Host: ${APP_NAME}-sol2-xlb-gfe3.example.io" $IP_FWDRULE/ 2>/dev/null | egrep -i 'statusz' # egrep "$SMART_EGREP" | head -1
 done
 echo ''
 
