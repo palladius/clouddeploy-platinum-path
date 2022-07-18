@@ -12,6 +12,11 @@ patches:
       value:
         name: CLOUD_DEPLOY_TARGET #RICCARDO_KUSTOMIZE_ENV
         value: "01 Dev (Development)"
+    - op: add
+      path: "/spec/template/spec/containers/0/env/-"
+      value:
+        name: FAVORITE_COLOR
+        value: red
   target:
     kind: Deployment
     name: app02-kuruby
