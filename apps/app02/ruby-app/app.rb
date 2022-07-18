@@ -56,6 +56,8 @@ class App
     # https://mensfeld.pl/2014/03/rack-argument-error-invalid-byte-sequence-in-utf-8/
     #doesnt work html_string = URI.decode(html_string).force_encoding('UTF-8')
 
+    # not sure if it works, but should fail pretty cleanly if it doesnt :)
+    html_string = html_string.encode('UTF-8') rescue html_string
 
     return [
       200,
