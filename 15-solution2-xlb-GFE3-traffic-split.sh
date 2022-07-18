@@ -99,8 +99,9 @@ export FWD_RULE="${APP_NAME}-${FWD_RULE_MTSUFFIX}"            # eg: "app02-BLAHB
 
 # K8S_APP_SELECTOR -> nothing
 echo "##############################################"
-yellow "WORK IN PROGRESS! on 17jul22 I was finally able to get to the end of this script in its entirety after the huge multi-tennant refactor"
-yellow "TODO(ricc): everything is multi-tennant except the FWD RULE part. Shouls have app01/02 in it.."
+green "As of 18jul22 I declare this script as WORKING."
+#yellow "WORK IN PROGRESS! on 17jul22 I was finally able to get to the end of this script in its entirety after the huge multi-tennant refactor"
+#yellow "TODO(ricc): everything is multi-tennant except the FWD RULE part. Shouls have app01/02 in it.."
 #yellow "Deploy the GKE manifests. This needs to happen first as it creates the NEGs which this script depends upon."
 echo "URLMAP_NAME: $URLMAP_NAME"
 echo "FWD_RULE:    $FWD_RULE"

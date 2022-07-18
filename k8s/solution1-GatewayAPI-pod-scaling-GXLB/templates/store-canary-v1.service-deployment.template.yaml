@@ -18,12 +18,12 @@ spec:
   selector:
     matchLabels:
       app: __K8S_APP_SELECTOR__
-      version: canary
+      ricc-env: canary
   template:
     metadata:
       labels:
         app: __K8S_APP_SELECTOR__
-        version: canary
+        ricc-env: canary
     spec:
       containers:
       - name: sol1-canary-image-useless # used to be: whereami
@@ -44,6 +44,6 @@ metadata:
 spec:
   selector:
     app: __K8S_APP_SELECTOR__
-    version: canary
+    ricc-env: canary
   ports:
   - port: 8080

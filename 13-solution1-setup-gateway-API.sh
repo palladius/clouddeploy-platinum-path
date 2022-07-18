@@ -14,14 +14,32 @@ DEFAULT_APP_SELECTOR="app01-kupython"     # app01-kupython / app02-kuruby
 DEFAULT_APP_IMAGE="skaf-app01-python-buildpacks"   # skaf-app01-python-buildpacks // ricc-app02-kuruby-skaffold
 
 APP_NAME="${1:-$DEFAULT_APP}"
-K8S_APP_SELECTOR="${2:-$DEFAULT_APP_SELECTOR}"
-K8S_APP_IMAGE="${3:-$DEFAULT_APP_IMAGE}" # "skaf-app01-python-buildpacks"
+#K8S_APP_SELECTOR="${2:-$DEFAULT_APP_SELECTOR}"
+#K8S_APP_IMAGE="${3:-$DEFAULT_APP_IMAGE}" # "skaf-app01-python-buildpacks"
 
+K8S_APP_SELECTOR="${AppsInterestingHash["$APP_NAME-SELECTOR"]}"
+K8S_APP_IMAGE="${AppsInterestingHash["$APP_NAME-IMAGE"]}"
+export URLMAP_NAME="${APP_NAME}-$URLMAP_NAME_MTSUFFIX"        # eg: "app02-BLAHBLAH"
+export FWD_RULE="${APP_NAME}-${FWD_RULE_MTSUFFIX}"            # eg: "app02-BLAHBLAH"
 
 ########################################################################
 # Add your code here:
 ########################################################################
 
+echo "##############################################"
+yellow "WORK IN PROGRESS! huge multi-tennant refactor in progress"
+#yellow "TODO(ricc): everything is multi-tennant except the FWD RULE part. Shouls have app01/02 in it.."
+#yellow "Deploy the GKE manifests. This needs to happen first as it creates the NEGs which this script depends upon."
+
+echo "APP_NAME:    $APP_NAME"
+echo "URLMAP_NAME: $URLMAP_NAME"
+echo "FWD_RULE:    $FWD_RULE"
+echo "K8S_APP_SELECTOR:    $K8S_APP_SELECTOR (useless in sol1)"
+echo "K8S_APP_IMAGE:       $K8S_APP_IMAGE    (useless in sol1)"
+echo "GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR:       $GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR"
+echo "##############################################"
+
+#exit 47
 #kubectl config get-contexts | grep cicd | grep "$PROJECT_ID" | grep "$REGION"
 
 #kubectl apply --context "$GKE_CANARY_CLUSTER_CONTEXT"
@@ -67,7 +85,7 @@ smart_apply_k8s_templates "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR"
 #echo "TODO:  kubectl apply -f $GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/out/"
 
 kubectl --context="$GKE_CANARY_CLUSTER_CONTEXT" apply -f "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/out/"
-kubectl --context="$GKE_PROD_CLUSTER_CONTEXT" apply -f "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/out/"
+kubectl --context="$GKE_PROD_CLUSTER_CONTEXT"   apply -f "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/out/"
 
 # Check everything ok:
 bin/kubectl-triune get all | grep "sol1"

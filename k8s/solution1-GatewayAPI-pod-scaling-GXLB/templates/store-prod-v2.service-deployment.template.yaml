@@ -12,12 +12,12 @@ spec:
   selector:
     matchLabels:
       app: __K8S_APP_SELECTOR__
-      version: prod
+      ricc-env: prod
   template:
     metadata:
       labels:
         app: __K8S_APP_SELECTOR__
-        version: prod
+        ricc-env: prod
     spec:
       containers:
       - name: sol1-prod-image-useless #  whereami
@@ -38,7 +38,7 @@ metadata:
 spec:
   selector:
     app: __K8S_APP_SELECTOR__
-    version: prod
+    ricc-env: prod
   ports:
   - port: 8080
     targetPort: 8080
