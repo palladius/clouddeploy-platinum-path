@@ -1,6 +1,7 @@
 $VERSION = File.read("VERSION").chomp
 # Removing RACK_ENV because its always DEV and its confusing! :)
-$interesting_envs = %w{ CLOUD_DEPLOY_TARGET RICCARDO_MESSAGE FAVORITE_COLOR  APP_NAME CLOUD_DEPLOY_TARGET_COMMON }
+$interesting_envs = %w{ CLOUD_DEPLOY_TARGET RICCARDO_MESSAGE FAVORITE_COLOR  APP_NAME
+  CLOUD_DEPLOY_TARGET_COMMON FAVORITE_COLOR_COMMON}
 
 class App
   require 'socket'

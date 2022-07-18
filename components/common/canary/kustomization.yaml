@@ -25,12 +25,11 @@ patches:
       value:
         name: COMMON_CLOUD_DEPLOY_TARGET
         value: "03 CCanary - COMMON Canary"
-# - patch: |-
-#     - op: add
-#       path: "/spec/template/spec/containers/0/env/-"
-#       value:
-#         name: FAVORITE_COLOR
-#         value: white # prod is WHITE :)
+    - op: add
+      path: "/spec/template/spec/containers/0/env/-"
+      value:
+        name: FAVORITE_COLOR_COMMON
+        value: khaki # prod is WHITE :)
   target:
     kind: Deployment
 # for both:

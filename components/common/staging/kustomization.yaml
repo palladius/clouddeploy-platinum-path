@@ -11,3 +11,17 @@ commonAnnotations:
     Removed the -staging suffix as it added additional unnecessary complexity.
 components:
   - ../base
+patches:
+- patch: |-
+    - op: add
+      path: "/spec/template/spec/containers/0/env/-"
+      value:
+        name: COMMON_CLOUD_DEPLOY_TARGET
+        value: "02 CStaging - COMMON Staging"
+    - op: add
+      path: "/spec/template/spec/containers/0/env/-"
+      value:
+        name: FAVORITE_COLOR_COMMON
+        value: cyan
+  target:
+    kind: Deployment
