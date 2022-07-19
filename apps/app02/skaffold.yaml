@@ -11,18 +11,19 @@ build:
       # or add any other rb file to your application
       infer:
       - '*.rb'
-      - VERSION # nice to
-
+      - VERSION
+    # TODO(ricc): see if there's way to say 'dependencies' like for app01/buildpacks. However, could be LESS error prone
+    #             NOT to define those.
 # abielski says: This is the issue. Either always pass a profile param to skaffold or change this to point to `./k8s/_base`
 deploy:
   kustomize:
     paths:
-    - ./k8s/base   # new stuff with Kustomize
+    - ./k8s/base
 profiles:
   - name: dev
     deploy:
       kustomize:
-        paths: ["k8s/overlays/dev"] # should be dev but its the same so today ill be lazy...
+        paths: ["k8s/overlays/dev"]
   - name: staging
     deploy:
       kustomize:

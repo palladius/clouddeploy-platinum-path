@@ -17,6 +17,9 @@ build:
       dependencies:
         paths:
           - '*.py'
+          - requirements.txt
+          - project.toml
+          - Procfile
           - VERSION
         ignore:
           - k8s/**

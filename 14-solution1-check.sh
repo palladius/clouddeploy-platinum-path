@@ -31,10 +31,13 @@ bin/kubectl-triune get gateways | egrep "NAME|sol1"
 
 yellow "Warning, IP address is currently hard-coded :/"
 #LB_NAME="http-svc9010-lb"
-SOL1_LB_NAME="sol1-$APP_NAME-$DEFAULT_SHORT_REGION-gke-l7-gxlb"
-ENDPOINT_IP="34.160.173.24:80"	# https://console.cloud.google.com/net-services/loadbalancing/details/httpAdvanced/http-svc9010-lb?project=cicd-platinum-test001
+SOL1_LB_NAME_FOR_MY_APP="sol1-$APP_NAME-$DEFAULT_SHORT_REGION-gke-l7-gxlb"
+#ENDPOINT_IP="34.160.173.24:80"	# https://console.cloud.google.com/net-services/loadbalancing/details/httpAdvanced/http-svc9010-lb?project=cicd-platinum-test001
+ENDPOINT_IP='1.2.3.4'
 
-yellow "TODO check for a LB called SOL1_LB_NAME=$SOL1_LB_NAME. Once you do, youre done and you can subsitute it to this static IP."
+
+
+yellow "TODO check for a LB called SOL1_LB_NAME_FOR_MY_APP=$SOL1_LB_NAME_FOR_MY_APP. Once you do, youre done and you can subsitute it to this static IP."
 curl -H "host: $URL" "$ENDPOINT_IP/canary" 2>/dev/null
 curl -H "host: $URL" "$ENDPOINT_IP/prod" 2>/dev/null
 
