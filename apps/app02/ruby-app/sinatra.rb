@@ -51,7 +51,7 @@ class App < Sinatra::Base
 
     RICCARDO_KUSTOMIZE_ENV (seems broken): #{ ENV['RICCARDO_KUSTOMIZE_ENV'] }<br/>
     CLOUD_DEPLOY_TARGET (often works): <tt><b>#{ENV['CLOUD_DEPLOY_TARGET']}</b></tt> <br/>
-    CLOUD_DEPLOY_TARGET_COMMON: <tt><b>#{ENV.fetch 'CLOUD_DEPLOY_TARGET_COMMON'}</b></tt> <br/>
+    CLOUD_DEPLOY_TARGET_COMMON: <tt><b>#{ENV.fetch 'CLOUD_DEPLOY_TARGET_COMMON', 'variabilis non datur'}</b></tt> <br/>
     CLOUD_DEPLOY_TARGET_SHORT_COMMON: <tt><b>#{cloud_deploy_target()}</b></tt> <br/>
 
     <h2>Interesting Info 😎</h2>

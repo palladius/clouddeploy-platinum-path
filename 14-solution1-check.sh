@@ -25,7 +25,8 @@ function _manage_gateway_endpoint() {
     ENDPOINT_IP="$3"
     green "[SOL1::$TARGET] Found a nice Endpoint for '$2': $3. curling now=$URL"
     #set -x
-    curl_result="$( curl -H "host: $URL" "http://$ENDPOINT_IP/" 2>/dev/null )" # sometimes it has no \n so wrapping here.
+    echo "command:         curl -s -H 'host: $URL' 'http://$ENDPOINT_IP/'" # for me tro try from CLI :)
+    curl_result="$( curl -s -H "host: $URL" "http://$ENDPOINT_IP/" 2>&1 )" # sometimes it has no \n so wrapping here.
     echo "[$TARGET] CURL $URL: $curl_result" | bin/rcg "default backend - 404" "BOLD . RED"
 
 }
