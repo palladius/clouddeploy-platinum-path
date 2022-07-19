@@ -24,8 +24,10 @@ function _manage_gateway_endpoint() {
     GATEWAY_NAME="$2"
     ENDPOINT_IP="$3"
     green "[SOL1::$TARGET] Found a nice Endpoint for '$2': $3. curling now=$URL"
-    set -x
-    curl -H "host: $URL" "http://$ENDPOINT_IP/" 2>/dev/null
+    #set -x
+    curl_result="$( curl -H "host: $URL" "http://$ENDPOINT_IP/" 2>/dev/null )" # sometimes it has no \n so wrapping here.
+    echo "[$TARGET] CURL $URL: $curl_result" | bin/rcg "default backend - 404" "BOLD . RED"
+
 }
 # Created with codelabba.rb v.1.7a
 source .env.sh || _fatal 'Couldnt source this'
@@ -66,10 +68,11 @@ bin/kubectl-triune get gateways | egrep "NAME|sol1"
 # [PROD] NAME                      CLASS         ADDRESS         READY   AGE
 # [PROD] sol1-app01-eu-w1-ext-gw   gke-l7-gxlb   34.111.78.196   True    39m
 
-bin/kubectl-prod get gateway | grep sol1-app | grep True | while read USELESS_HEADER NAME CLASS ADDRESS READY AGE ; do
+# Making sure the IP address sis up (True), it belongs to the APP called by ARGV[1] and that it is solution 1 stuff.
+bin/kubectl-prod get gateway | grep sol1-app | grep True | grep "$APP_NAME" | while read USELESS_HEADER NAME CLASS ADDRESS READY AGE ; do
     _manage_gateway_endpoint 'prod' "$NAME" "$ADDRESS"
 done
-bin/kubectl-canary get gateway | grep sol1-app | grep True | while read USELESS_HEADER NAME CLASS ADDRESS READY AGE ; do
+bin/kubectl-canary get gateway | grep sol1-app | grep True | grep "$APP_NAME" | while read USELESS_HEADER NAME CLASS ADDRESS READY AGE ; do
     _manage_gateway_endpoint 'canary' "$NAME" "$ADDRESS"
 done
 # yellow "Warning, IP address is currently hard-coded :/"
