@@ -29,6 +29,13 @@ URL="sol1-$APP_NAME.example.io"
 yellow "Watch in awe this:"
 bin/kubectl-triune get gateways | egrep "NAME|sol1"
 
+white "== Lets investigate entities in PROD =="
+export DEBUG="false"
+bin/kubectl-prod get Gateway
+bin/kubectl-prod get GatewayClass
+
+exit 41
+
 yellow "Warning, IP address is currently hard-coded :/"
 #LB_NAME="http-svc9010-lb"
 SOL1_LB_NAME_FOR_MY_APP="sol1-$APP_NAME-$DEFAULT_SHORT_REGION-gke-l7-gxlb"

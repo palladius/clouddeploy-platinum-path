@@ -12,12 +12,15 @@
 kind: Gateway
 apiVersion: gateway.networking.k8s.io/v1alpha2
 metadata:
-#  original_name: bifid-external-store-http
-  name: sol1-__PREFIX__-ext-gw
+  name: sol1-__PREFIX__-ext-gw     # dmarzi_was: external-store-http
 spec:
   # PREFIX can be app01, app02, ... maybe with a dash.
   # Consider adding a region too to make this solutionm multiregional :)
-  gatewayClassName: sol1-__PREFIX__-gke-l7-gxlb
+  gatewayClassName: gke-l7-gxlb # I think this is the bug: I shold NOT change this! Try this:
+  # $ bin/kubectl-prod get gatewayclass
+  # [PROD] gke-l7-gxlb   networking.gke.io/gateway   7d21h
+  # [PROD] gke-l7-rilb   networking.gke.io/gateway   7d21h
+  # sol1-__PREFIX__-gke-l7-gxlb # dmarzi_was: gke-l7-gxlb
   listeners:
   - name: http
     protocol: HTTP

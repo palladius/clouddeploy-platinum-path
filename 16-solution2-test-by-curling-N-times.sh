@@ -29,7 +29,7 @@ K8S_APP_SELECTOR="${AppsInterestingHash["$APP_NAME-SELECTOR"]}"
 K8S_APP_IMAGE="${AppsInterestingHash["$APP_NAME-IMAGE"]}"
 
 export URLMAP_NAME="${APP_NAME}-$URLMAP_NAME_MTSUFFIX"        # eg: "app02-BLAHBLAH"
-export FWD_RULE="${APP_NAME}-${FWD_RULE_MTSUFFIX}"            # eg: "app02-BLAHBLAH"
+export FWD_RULE_FOR_MY_APP="${APP_NAME}-${FWD_RULE_MTSUFFIX}"            # eg: "app02-BLAHBLAH"
 
 # MultiTenant solution (parametric in $1)
 SOL2_SERVICE_CANARY="$APP_NAME-$DFLT_SOL2_SERVICE_CANARY"    # => appXX-sol2-svc-canary
@@ -42,7 +42,7 @@ SMART_EGREP=${AppsInterestingHash["$APP_NAME-WEB_EGREP"]}
 #solution2_tear_up_k8s
 if "$DEBUG" ; then
     echo "URLMAP_NAME:         $URLMAP_NAME"
-    echo "FWD_RULE:            $FWD_RULE"
+    echo "FWD_RULE_FOR_MY_APP: $FWD_RULE_FOR_MY_APP"
     echo "K8S_APP_SELECTOR:    $K8S_APP_SELECTOR"
     echo "K8S_APP_IMAGE:       $K8S_APP_IMAGE"
     echo "SOL2_SERVICE_CANARY: $SOL2_SERVICE_CANARY"
@@ -53,11 +53,12 @@ fi
 # echo 01b Showing PROD Endpoints: SOL2_SERVICE_PROD
 # gcloud compute network-endpoint-groups list --filter="$SOL2_SERVICE_PROD" | lolcat
 
-IP_FWDRULE=$(gcloud compute forwarding-rules list --filter "$FWD_RULE" | tail -1 | awk '{print $2}')
+IP_FWDRULE_FOR_MY_APP=$(gcloud compute forwarding-rules list --filter "$FWD_RULE_FOR_MY_APP" | tail -1 | awk '{print $2}')
 echo
-white "Trying $N_TRIES times to curl my host at IP: $IP_FWDRULE [$FWD_RULE]..."
+white "Trying $N_TRIES times to curl my host at IP: $IP_FWDRULE_FOR_MY_APP [$FWD_RULE_FOR_MY_APP]..."
 for i in {0..10}; do
-    curl -H "Host: ${APP_NAME}-sol2-xlb-gfe3.example.io" $IP_FWDRULE/ 2>/dev/null | egrep -i 'statusz' # egrep "$SMART_EGREP" | head -1
+    curl -H "Host: ${APP_NAME}-sol2-xlb-gfe3.example.io" $IP_FWDRULE_FOR_MY_APP/statusz 2>/dev/null # | egrep -i 'statusz' # egrep "$SMART_EGREP" | head -1
+    echo
 done
 echo ''
 

@@ -39,11 +39,74 @@ echo "K8S_APP_IMAGE:       $K8S_APP_IMAGE    (useless in sol1)"
 echo "GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR:       $GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR"
 echo "##############################################"
 
+yellow "Usage (as I want it): $0 [app01|app02]"
+
 #exit 47
 #kubectl config get-contexts | grep cicd | grep "$PROJECT_ID" | grep "$REGION"
 
+##################################################
+## dmarzi001 enable required APIs (project level)
+##################################################
+
+gcloud services enable \
+    container.googleapis.com \
+    gkehub.googleapis.com \
+    multiclusterservicediscovery.googleapis.com \
+    multiclusteringress.googleapis.com \
+    trafficdirector.googleapis.com
+
+##################################################
+## dmarzi015 SetUp Workload ~Identity
+##################################################
+
+gcloud container clusters update cicd-prod \
+    --region=$REGION \
+    --workload-pool=$PROJECT_ID.svc.id.goog
+# green 'To update your current NodePools to use WokkLoadIdendity use this magic and breaking command (note GKE_METADATA doesnt need change):'
+# echo gcloud container node-pools update NODEPOOL_NAME_CHANGEME \
+#     --cluster=$CLUSTER_NAME \
+#     --workload-metadata=GKE_METADATA
+
+##################################################
+## dmarzi002 register clusters to the fleet (cluster level)
+##################################################
+white "Skipping step2 since it was already done for Solution0."
+
+# default to PROD
+gcloud container clusters get-credentials "cicd-prod" --region "$REGION" # --project "$PROJECT_ID"
+
+
+bin/kubectl-canary auth can-i '*' '*' --all-namespaces | grep yes
+bin/kubectl-prod   auth can-i '*' '*' --all-namespaces | grep yes
+
+##################################################
+## dmarzi003 enable multi-cluster services
+##################################################
+gcloud container fleet multi-cluster-services enable
+
+##################################################
+## dmarzi003.5 from https://cloud.google.com/kubernetes-engine/docs/how-to/multi-cluster-services
+##################################################
+gcloud projects add-iam-policy-binding "$PROJECT_ID" \
+     --member "serviceAccount:$PROJECT_ID.svc.id.goog[gke-mcs/gke-mcs-importer]" \
+     --role "roles/compute.networkViewer" \
+     --project=$PROJECT_ID
+
+##################################################
+## dmarzi004 enable gateway apis (in prod)
+##################################################
+kubectl apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
+# I should see FOUR not TWO:
+kubectl get gatewayclass
+
+##################################################
+## dmarzi005 enable GKE gateway controller just in GKE01.
+##################################################
+gcloud container fleet ingress enable \
+    --config-membership=/projects/$PROJECT_ID/locations/global/memberships/cicd-prod \
+    --project=$PROJECT_ID
+
 #kubectl apply --context "$GKE_CANARY_CLUSTER_CONTEXT"
-white "Usage (as I want it): $0 <APPNAME> <..>"
 #red Dear friends and colleagues this is STILL WIP. Ricc is implementing this for App01/02 since the POC works for a generic STORE.
 #yellow Try to use app01 with solution01 and make it parametric in ARGV..
 white "Now I proceed to apply solution 1 for: $APP_NAME. If wrong, call me with proper usage."
