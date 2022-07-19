@@ -9,31 +9,31 @@
 #  K8S_APP_SELECTOR: __K8S_APP_SELECTOR__
 # .. and so on. in general things with double underscore left and right as Im not a great sedder :)
 ###########################################################
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: sol1-__K8S_APP_SELECTOR__-canary # store-canary
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: __K8S_APP_SELECTOR__
-      ricc-env: canary
-  template:
-    metadata:
-      labels:
-        app: __K8S_APP_SELECTOR__
-        ricc-env: canary
-    spec:
-      containers:
-      - name: sol1-canary-image-useless # used to be: whereami
-        image: __K8S_APP_IMAGE__ # not _ _ IMAGE_NAME _ _
-        ports:
-          - containerPort: 8080
-        env:
-        - name: METADATA
-          value: "sol1-__K8S_APP_SELECTOR__-canary"
----
+# apiVersion: apps/v1
+# kind: Deployment # HurricaneAlex
+# metadata:
+#   name: sol1-__K8S_APP_SELECTOR__-canary # store-canary
+# spec:
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       app: __K8S_APP_SELECTOR__
+#       ricc-env: canary
+#   template:
+#     metadata:
+#       labels:
+#         app: __K8S_APP_SELECTOR__
+#         ricc-env: canary
+#     spec:
+#       containers:
+#       - name: sol1-canary-image-useless # used to be: whereami
+#         image: __K8S_APP_IMAGE__ # not _ _ IMAGE_NAME _ _
+#         ports:
+#           - containerPort: 8080
+#         env:
+#         - name: METADATA
+#           value: "sol1-__K8S_APP_SELECTOR__-canary"
+# ---
 apiVersion: v1
 kind: Service
 metadata:
