@@ -15,6 +15,9 @@ build:
       builder: "gcr.io/buildpacks/builder:v1"
       trustBuilder: true
       dependencies:
+        paths:
+          - '*.py'
+          - VERSION
         ignore:
           - k8s/**
 deploy:
