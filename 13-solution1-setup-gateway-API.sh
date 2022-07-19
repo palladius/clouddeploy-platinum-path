@@ -92,6 +92,10 @@ gcloud projects add-iam-policy-binding "$PROJECT_ID" \
      --role "roles/compute.networkViewer" \
      --project=$PROJECT_ID
 
+# Makling sure its active: https://cloud.google.com/kubernetes-engine/docs/how-to/multi-cluster-services
+gcloud container fleet multi-cluster-services describe | grep "state: ACTIVE"
+
+
 ##################################################
 ## dmarzi004 enable gateway apis (in prod)
 ##################################################
@@ -102,6 +106,7 @@ kubectl get gatewayclass
 ##################################################
 ## dmarzi005 enable GKE gateway controller just in GKE01.
 ##################################################
+# UNLESS `gcloud container fleet ingress describe | ... greps both canary and prod`
 gcloud container fleet ingress enable \
     --config-membership=/projects/$PROJECT_ID/locations/global/memberships/cicd-prod \
     --project=$PROJECT_ID

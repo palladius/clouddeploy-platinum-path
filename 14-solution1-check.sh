@@ -10,6 +10,23 @@ function _after_allgood_post_script() {
     touch .executed_ok."$CLEANED_UP_DOLL0".touch
 }
 
+# This is just for me to go through the created entities and see if its all good.
+function troubleshoot_solution1_entities() {
+    white "== Lets investigate entities in PROD =="
+    export DEBUG="false"
+    bin/kubectl-prod get GatewayClass
+    bin/kubectl-prod get Gateway
+    bin/kubectl-prod describe Gateway sol1-app01-eu-w1-ext-gw
+}
+# ARGS: 'canary' "$NAME" "$ADDRESS"
+function _manage_gateway_endpoint() {
+    TARGET="$1"
+    GATEWAY_NAME="$2"
+    ENDPOINT_IP="$3"
+    green "[SOL1::$TARGET] Found a nice Endpoint for '$2': $3. curling now=$URL"
+    set -x
+    curl -H "host: $URL" "http://$ENDPOINT_IP/" 2>/dev/null
+}
 # Created with codelabba.rb v.1.7a
 source .env.sh || _fatal 'Couldnt source this'
 set -e
@@ -25,28 +42,47 @@ URL="sol1-$APP_NAME.example.io"
 #bin/kubectl-canary apply -f "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/out/"
 #bin/kubectl-prod   apply -f "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/out/"
 
+if "$DEBUG" ; then
+    echo "APP_NAME:         $APP_NAME"
+    echo "URL: $URL"
+fi
+
 #set -x
 yellow "Watch in awe this:"
 bin/kubectl-triune get gateways | egrep "NAME|sol1"
 
-white "== Lets investigate entities in PROD =="
-export DEBUG="false"
-bin/kubectl-prod get Gateway
-bin/kubectl-prod get GatewayClass
+#troubleshoot_solution1_entities
 
-exit 41
+### OPutput should look like this:
+# bin/kubectl-prod get gateway
+# [DEBUG] DEBUG has been enabled! Please change to DEBUG=FALSE in your .env.sh to remove this. Some impotant fields:
+# [DEBUG] PROJECT_ID:        'cicd-platinum-test002'
+# [DEBUG] ACCOUNT:           'palladiusbonton@gmail.com'
+# [DEBUG] GITHUB_REPO_OWNER: 'palladius'
+# [DEBUG] GCLOUD_REGION:     'europe-west1'
+# [DEBUG] GKE_REGION:        'europe-west1'
+# [PROD] W0719 11:22:31.834156 1998707 gcp.go:120] WARNING: the gcp auth plugin is deprecated in v1.22+, unavailable in v1.25+; use gcloud instead.
+# [PROD] To learn more, consult https://cloud.google.com/blog/products/containers-kubernetes/kubectl-auth-changes-in-gke
+# [PROD] NAME                      CLASS         ADDRESS         READY   AGE
+# [PROD] sol1-app01-eu-w1-ext-gw   gke-l7-gxlb   34.111.78.196   True    39m
 
-yellow "Warning, IP address is currently hard-coded :/"
-#LB_NAME="http-svc9010-lb"
-SOL1_LB_NAME_FOR_MY_APP="sol1-$APP_NAME-$DEFAULT_SHORT_REGION-gke-l7-gxlb"
-#ENDPOINT_IP="34.160.173.24:80"	# https://console.cloud.google.com/net-services/loadbalancing/details/httpAdvanced/http-svc9010-lb?project=cicd-platinum-test001
-ENDPOINT_IP='1.2.3.4'
+bin/kubectl-prod get gateway | grep sol1-app | grep True | while read USELESS_HEADER NAME CLASS ADDRESS READY AGE ; do
+    _manage_gateway_endpoint 'prod' "$NAME" "$ADDRESS"
+done
+bin/kubectl-canary get gateway | grep sol1-app | grep True | while read USELESS_HEADER NAME CLASS ADDRESS READY AGE ; do
+    _manage_gateway_endpoint 'canary' "$NAME" "$ADDRESS"
+done
+# yellow "Warning, IP address is currently hard-coded :/"
+# #LB_NAME="http-svc9010-lb"
+# SOL1_LB_NAME_FOR_MY_APP="sol1-$APP_NAME-$DEFAULT_SHORT_REGION-gke-l7-gxlb"
+# #ENDPOINT_IP="34.160.173.24:80"	# https://console.cloud.google.com/net-services/loadbalancing/details/httpAdvanced/http-svc9010-lb?project=cicd-platinum-test001
+# ENDPOINT_IP='1.2.3.4'
 
 
 
-yellow "TODO check for a LB called SOL1_LB_NAME_FOR_MY_APP=$SOL1_LB_NAME_FOR_MY_APP. Once you do, youre done and you can subsitute it to this static IP."
-curl -H "host: $URL" "$ENDPOINT_IP/canary" 2>/dev/null
-curl -H "host: $URL" "$ENDPOINT_IP/prod" 2>/dev/null
+# yellow "TODO check for a LB called SOL1_LB_NAME_FOR_MY_APP=$SOL1_LB_NAME_FOR_MY_APP. Once you do, youre done and you can subsitute it to this static IP."
+# curl -H "host: $URL" "$ENDPOINT_IP/canary" 2>/dev/null
+# curl -H "host: $URL" "$ENDPOINT_IP/prod" 2>/dev/null
 
 
 ########################

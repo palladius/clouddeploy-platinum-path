@@ -30,13 +30,13 @@ spec:
 #      weight: 90
   - matches:
     - path:
-        value: /prod
+        value: /_justprod
     backendRefs:
     - name: sol1-__PREFIX__-prod
       port: 8080
   - matches:
     - path:
-        value: /canary
+        value: /_justcanary
     backendRefs:
     - name: sol1-__PREFIX__-canary
       port: 8080
