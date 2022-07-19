@@ -21,6 +21,11 @@ patches:
     - op: add
       path: "/spec/template/spec/containers/0/env/-"
       value:
+        name: CLOUD_DEPLOY_TARGET_SHORT_COMMON
+        value: "staging"
+    - op: add
+      path: "/spec/template/spec/containers/0/env/-"
+      value:
         name: FAVORITE_COLOR_COMMON
         value: cyan
   target:

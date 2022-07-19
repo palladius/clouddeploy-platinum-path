@@ -1,3 +1,5 @@
+* 2022-07-19 v2.21 [DEV] Cleaned up CTarget and made it smaller in kustomize and header and /statusz
+* 2022-07-19 ....  [OPS] Somewhere in between Alex fixed skaffold and now it builds it correctly. Back to business.
 * 2022-07-19 v2.20 [DEV] Added statusz
 * 2022-07-18 v2.19 [DEV] also FAV_COLOR _COMMON in UI.
 * 2022-07-18 v2.18 [OPS] surfacing from common component CLOUD_DEPLOY_TARGET_COMMON in UI.

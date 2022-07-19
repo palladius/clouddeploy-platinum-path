@@ -24,6 +24,11 @@ patches:
     - op: add
       path: "/spec/template/spec/containers/0/env/-"
       value:
+        name: CLOUD_DEPLOY_TARGET_SHORT_COMMON
+        value: "dev"
+    - op: add
+      path: "/spec/template/spec/containers/0/env/-"
+      value:
         name: FAVORITE_COLOR_COMMON
         value: '#DB4437'       # Google red or try Blood / sangria.
   target:
