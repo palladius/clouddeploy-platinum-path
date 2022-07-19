@@ -32,17 +32,18 @@ echo Getting status of my 8 apps them all WOW:
 #_smart_curl 35.195.165.153 8080 "[DEV ] app01-kupython"
 #_smart_curl 35.241.210.233 80   "[DEV ] app02-kuruby"
 
-white  "== app01: python web app =="
+white  "== app01: python web app (latest version: '$(cat apps/app01/VERSION)')=="
 bin/kubectl-triune get service | grep app01 | grep -v none | while read stage app LB PVTIP PUBLIC_IP BLURB TIME ; do
   _smart_curl $PUBLIC_IP 8080 "$stage"
 done
 
-white  "== app02: ruby web app =="
+white  "== app02: ruby web app (latest version: '$(cat apps/app02/VERSION)')=="
 bin/kubectl-triune get service | grep app02 | grep -v none | while read stage app LB PVTIP PUBLIC_IP BLURB TIME ; do
   _smart_curl $PUBLIC_IP 8080 "$stage"
 done
 
-echo Sol0: No routable endpoints.
+white  "== Solution0 (Internal LB)=="
+echo '😞 Sorry, no routable endpoints.'
 
 white  "== Solution1 Artifacts (TODO: get public IPs)=="
 # Note they dont get public IPs. But with Daniel it took them 1d to do it so i will wait till tomorrow.

@@ -38,6 +38,8 @@ spec:
               1. Learn kustomize
               2. the only legitimate reason is to DRY the 4 dev/stagingca/ary/prod while injecting
                  a slight difference in Canary vs Prod config (9 vs 1 Replicas respectively)
+
+              2022-07-19 BUG: Cloud Deploy seems stuck to version 2.14
           - name: FAVORITE_COLOR
             value: fbf4e2 # NACRE / madreperla
           # - name: USE_KUSTOMIZE
