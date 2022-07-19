@@ -18,10 +18,14 @@ class App < Sinatra::Base
     ENV.fetch 'CLOUD_DEPLOY_TARGET_COMMON', '_DUNNO_'
   end
 
+  def favorite_color()
+    ENV.fetch 'FAVORITE_COLOR_COMMON', 'black'  # default to black
+  end
+
 
   get '/' do
     #"Hello, world!"
-    fav_color = ENV.fetch("FAVORITE_COLOR", "unknown color, presumably gray?") rescue :UNKNOWN_COLOR
+    fav_color = ENV.fetch("FAVORITE_COLOR", "unknown color, presumably gray?") rescue :UNKNOWN_COLOR # OLD ONE.
 
     interesting_infos = {
       :version => $VERSION,
@@ -46,7 +50,8 @@ class App < Sinatra::Base
     Hello from Riccardo!
     More exciting stuff coming soon from ENV vars.<br/>
 
-    Favorite Color: <b style='background-color:#{fav_color};' >#{fav_color}</b><br/>
+    Favorite Color v1: <b style='background-color:#{fav_color};' >#{fav_color}</b> (so 90s!)<br/>
+    Favorite Color v2: <b style='background-color:#{favorite_color};' >#{favorite_color}</b><br/>
 
     <h2>Deployment Info 😎</h2>
 
