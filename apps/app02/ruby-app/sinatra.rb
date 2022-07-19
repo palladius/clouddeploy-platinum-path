@@ -1,21 +1,15 @@
-#require 'sinatra'
-# app.rb
 require 'sinatra'
 
 $VERSION = File.read("VERSION").chomp
 # Removing RACK_ENV because its always DEV and its confusing! :)
 $interesting_envs = %w{ CLOUD_DEPLOY_TARGET RICCARDO_MESSAGE FAVORITE_COLOR  APP_NAME
-  CLOUD_DEPLOY_TARGET_COMMON FAVORITE_COLOR_COMMON}
+  CLOUD_DEPLOY_TARGET_COMMON FAVORITE_COLOR_COMMON CLOUD_DEPLOY_TARGET_SHORT_COMMON}
 
-
-# class HelloWorldApp < Sinatra::Base
-#   get '/' do "Hello, world!" end
-# end
 
 class App < Sinatra::Base
 
   def cloud_deploy_target()
-    ENV.fetch 'CLOUD_DEPLOY_TARGET_COMMON', '_DUNNO_'
+    ENV.fetch 'CLOUD_DEPLOY_TARGET_SHORT_COMMON', '_dunno_'
   end
 
   def favorite_color()
@@ -25,7 +19,7 @@ class App < Sinatra::Base
 
   get '/' do
     #"Hello, world!"
-    fav_color = ENV.fetch("FAVORITE_COLOR", "unknown color, presumably gray?") rescue :UNKNOWN_COLOR # OLD ONE.
+    fav_color = ENV.fetch("FAVORITE_COLOR", "#161616") rescue :UNKNOWN_COLOR # OLD ONE.
 
     interesting_infos = {
       :version => $VERSION,
@@ -57,7 +51,8 @@ class App < Sinatra::Base
 
     RICCARDO_KUSTOMIZE_ENV (seems broken): #{ ENV['RICCARDO_KUSTOMIZE_ENV'] }<br/>
     CLOUD_DEPLOY_TARGET (often works): <tt><b>#{ENV['CLOUD_DEPLOY_TARGET']}</b></tt> <br/>
-    CLOUD_DEPLOY_TARGET_COMMON: <tt><b>#{cloud_deploy_target}</b></tt> <br/>
+    CLOUD_DEPLOY_TARGET_COMMON: <tt><b>#{ENV.fetch 'CLOUD_DEPLOY_TARGET_COMMON'}</b></tt> <br/>
+    CLOUD_DEPLOY_TARGET_SHORT_COMMON: <tt><b>#{cloud_deploy_target()}</b></tt> <br/>
 
     <h2>Interesting Info 😎</h2>
 
@@ -74,17 +69,12 @@ class App < Sinatra::Base
     <hr/>
     <center>
       <b>#{ENV['APP_NAME']}</b>
-      <!-- /statusz --> app02 💎 v<b>#{$VERSION}</b> - Target:<b>#{ ENV.fetch 'CLOUD_DEPLOY_TARGET_COMMON', 'dunno'}</b>
+      <!-- /statusz --> app02 💎 v<b>#{$VERSION}</b> target:<b>#{cloud_deploy_target}</b>
       <!-- directly from kustomize CLOUD_DEPLOY_TARGET_COMMON variable ! -->
     </center>
-  "
+    "
 
-    # https://mensfeld.pl/2014/03/rack-argument-error-invalid-byte-sequence-in-utf-8/
-    #doesnt work html_string = URI.decode(html_string).force_encoding('UTF-8')
-
-    # not sure if it works, but should fail pretty cleanly if it doesnt :)
-    #html_string = html_string.encode('UTF-8') rescue html_string
-    html_string
+    return html_string
   end
   get '/statusz' do
     "app=app02 version=#{$VERSION} target=#{cloud_deploy_target} emoji=💎"

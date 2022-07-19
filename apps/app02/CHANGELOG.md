@@ -1,3 +1,4 @@
+* 2022-07-19 v2.0.2 [DEV] Shortened target thanks to leveraging CLOUD_DEPLOY_TARGET_SHORT_COMMON
 * 2022-07-19 v2.0.0 [DEV] Added /statusz for easy grepping. Damn I needed to change EVERYTHING and move to Sinatra. Upgraded to 3 numbers now :)
 * 2022-07-18 v1.30 [DEV] fixed emoji: https://stackoverflow.com/questions/34621541/why-dont-emojis-render-in-my-html-and-or-php
 * 2022-07-18 v1.29 [DEV] Added /statusz for easy grepping. nice ENv from Makefile.
