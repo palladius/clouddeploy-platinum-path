@@ -242,6 +242,8 @@ hostRules:
   - ${APP_NAME}-sol2-xlb-gfe3.example.io
     # This is for you to use your REAL domain - with Cloud DNS you can just curl the final hostname. Not covered by this demo.
   - ${APP_NAME}-sol2-xlb-gfe3.$MY_DOMAIN
+    # this is part of the new Passepartout philosophy for ease of troubleshooting
+  - sol2-passepartout.example.io
   pathMatcher: path-matcher-1
 pathMatchers:
 - defaultRouteAction:

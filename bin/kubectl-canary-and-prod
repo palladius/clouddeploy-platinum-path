@@ -1,0 +1,7 @@
+#!/bin/bash
+
+source ./.env.sh || exit 42
+
+# Being lazy and wrapping CAN and PROD for solutions 0,1,2..
+kubectl --context="$GKE_CANARY_CLUSTER_CONTEXT" "$@" 2>&1 | _prepend "[CANA] "
+kubectl --context="$GKE_PROD_CLUSTER_CONTEXT"   "$@" 2>&1 | _prepend "[PROD] "
