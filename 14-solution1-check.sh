@@ -25,11 +25,12 @@ function _manage_gateway_endpoint() {
     TARGET="$1"
     GATEWAY_NAME="$2"
     ENDPOINT_IP="$3"
+    TEST_URL="${4:-sol1-passepartout.example.io}"
     #green "[SOL1::$TARGET] Found a nice Endpoint for '$2': $3. curling now=$URL"
     #echo -en "[$TARGET] '$2'\t" # $3. curling now=$URL"
-    _deb "command:         curl -s -H 'host: $URL' 'http://$ENDPOINT_IP/'" # for me tro try from CLI :)
-    curl_result="$( curl -s -H "host: $URL" "http://$ENDPOINT_IP/" 2>&1 )" # sometimes it has no \n so wrapping here.
-    echo "[$TARGET] $GATEWAY_NAME CURL $URL to $ENDPOINT_IP => $curl_result" | bin/rcg "default backend - 404" "BOLD . RED"
+    _deb "command:         curl -s -H 'host: $TEST_URL' 'http://$ENDPOINT_IP/'" # for me tro try from CLI :)
+    curl_result="$( curl -s -H "host: $TEST_URL" "http://$ENDPOINT_IP/" 2>&1 )" # sometimes it has no \n so wrapping here.
+    echo "[$TARGET] $GATEWAY_NAME CURL $TEST_URL to $ENDPOINT_IP => $curl_result" | bin/rcg "default backend - 404" "BOLD . RED"
 
 }
 # Created with codelabba.rb v.1.7a
@@ -42,6 +43,9 @@ set -e
 #  We're going to use  - "sol1-__APPNAME__.example.io"    # kept for easy curl/documented static commands :)
 DEFAULT_APP="app01"                       # app01 / app02
 APP_NAME="${1:-$DEFAULT_APP}"
+K8S_APP_SELECTOR="${AppsInterestingHash["$APP_NAME-SELECTOR"]}"
+K8S_APP_IMAGE="${AppsInterestingHash["$APP_NAME-IMAGE"]}"
+
 URL="sol1-$APP_NAME.example.io"
 PREFIX="${APP_NAME}-${DEFAULT_SHORT_REGION}" # maybe in the future PREFIX = APP-REGION
 
@@ -52,6 +56,8 @@ if "$DEBUG" ; then
     echo "APP_NAME:  $APP_NAME"
     echo "URL:       $URL"
     echo "PREFIX:    $PREFIX"
+    echo K8S_APP_SELECTOR: $K8S_APP_SELECTOR
+    echo K8S_APP_IMAGE: $K8S_APP_IMAGE
 fi
 
 #set -x
