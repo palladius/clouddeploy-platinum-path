@@ -1,34 +1,36 @@
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: __APPNAME__-sol2-svc-prod # was: svc-prod10
-spec:
-  replicas: 2
-  selector:
-    matchLabels:
-      app: __K8S_APP_SELECTOR__
-      #ricc-env: prod
-  template:
-    metadata:
-      labels:
-        app: __K8S_APP_SELECTOR__
-        #ricc-env: prod
-    spec:
-      containers:
-      - name: sol2-__APPNAME__-image
-        image: __APP_IMAGE__ # gcr.io/google-samples/whereami:v1.2.1
-        ports:
-          - containerPort: 8080
-        env:
-        - name: METADATA
-          value: "__APPNAME__-sol2-svc-prod" # DFLT_SOL2_SERVICE_PROD
-        - name: debug-selector
-          value: __K8S_APP_SELECTOR__
-        - name: debug-app-image
-          value: __K8S_APP_IMAGE__
-        - name: debug-app-name
-          value: __APP_NAME__
----
+# HurricaneAlex: remove Deployments and leave only Services
+
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: __APPNAME__-sol2-svc-prod # was: svc-prod10
+# spec:
+#   replicas: 2
+#   selector:
+#     matchLabels:
+#       app: __K8S_APP_SELECTOR__
+#       #ricc-env: prod
+#   template:
+#     metadata:
+#       labels:
+#         app: __K8S_APP_SELECTOR__
+#         #ricc-env: prod
+#     spec:
+#       containers:
+#       - name: sol2-__APPNAME__-image
+#         image: __APP_IMAGE__ # gcr.io/google-samples/whereami:v1.2.1
+#         ports:
+#           - containerPort: 8080
+#         env:
+#         - name: METADATA
+#           value: "__APPNAME__-sol2-svc-prod" # DFLT_SOL2_SERVICE_PROD
+#         - name: debug-selector
+#           value: __K8S_APP_SELECTOR__
+#         - name: debug-app-image
+#           value: __K8S_APP_IMAGE__
+#         - name: debug-app-name
+#           value: __APP_NAME__
+# ---
 apiVersion: v1
 kind: Service
 metadata:

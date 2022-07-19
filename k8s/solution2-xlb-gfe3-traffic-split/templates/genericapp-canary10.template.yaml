@@ -1,36 +1,37 @@
+# HurricaneAlex: remove Deployments and leave only Services
 # kind: Namespace
 # apiVersion: v1
 # metadata:
 #   name: canary
-# #  name: app00 # should be app number
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  # this could be left __APPNAME__-v1
-  name: __APPNAME__-sol2-svc-canary
-  #namespace: canary
-spec:
-  replicas: 2
-  selector: # here pods are 'selected'.
-    matchLabels:
-      app: __K8S_APP_SELECTOR__  # 1. first is linked to second
-      ricc-env: canary
-  template: # here pods are instanced.
-    metadata:
-      labels:
-        app: __K8S_APP_SELECTOR__ # 2. second is linked to first
-        ricc-env: canary
-    spec:
-      containers:
-      - name: sol2-__APPNAME__-image # this could be whatever.
-        image: __APP_IMAGE__ # gcr.io/google-samples/whereami:v1.2.1
-        ports:
-          - containerPort: 8080
-        env:
-        - name: METADATA
-          value: "__APPNAME__-sol2-svc-canary"
----
+# # #  name: app00 # should be app number
+# ---
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   # this could be left __APPNAME__-v1
+#   name: __APPNAME__-sol2-svc-canary
+#   #namespace: canary
+# spec:
+#   replicas: 2
+#   selector: # here pods are 'selected'.
+#     matchLabels:
+#       app: __K8S_APP_SELECTOR__  # 1. first is linked to second
+#       ricc-env: canary
+#   template: # here pods are instanced.
+#     metadata:
+#       labels:
+#         app: __K8S_APP_SELECTOR__ # 2. second is linked to first
+#         ricc-env: canary
+#     spec:
+#       containers:
+#       - name: sol2-__APPNAME__-image # this could be whatever.
+#         image: __APP_IMAGE__ # gcr.io/google-samples/whereami:v1.2.1
+#         ports:
+#           - containerPort: 8080
+#         env:
+#         - name: METADATA
+#           value: "__APPNAME__-sol2-svc-canary"
+# ---
 apiVersion: v1
 kind: Service
 metadata:

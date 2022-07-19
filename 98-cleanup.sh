@@ -25,6 +25,16 @@ set -x
 #bin/kubectl-canary-and-prod delete httproute sol1-app01-eu-w1
 bin/kubectl-canary-and-prod delete httproute app01-eu-w1-sol1
 
+# 202207-19 Just talked to Alex, looks like i do NOt need the deployments in my various solutions, let me REMOVE them
+# and just have the services pointing at my prod stuff :) So __IMAGE__ is pointless :)
+bin/kubectl-triune delete deployment sol1-app01-kupython-canary
+bin/kubectl-triune delete deployment sol1-app02-kuruby-canary
+bin/kubectl-triune delete deployment sol1-app02-kuruby-prod
+bin/kubectl-triune delete deployment app01-sol2-svc-prod
+bin/kubectl-triune delete deployment app01-sol2-svc-canary
+bin/kubectl-triune delete deployment app02-sol2-svc-prod
+bin/kubectl-triune delete deployment app02-sol2-svc-canary
+
 
 
 ########################
