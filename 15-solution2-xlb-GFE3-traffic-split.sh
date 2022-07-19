@@ -94,8 +94,8 @@ SOL2_SERVICE_CANARY="$APP_NAME-$DFLT_SOL2_SERVICE_CANARY"    # => appXX-sol2-svc
 SOL2_SERVICE_PROD="$APP_NAME-$DFLT_SOL2_SERVICE_PROD"        # => appXX-sol2-svc-prod
 
 # Now that I know APPXX I can do this:
-export URLMAP_NAME="${APP_NAME}-$URLMAP_NAME_MTSUFFIX"        # eg: "app02-BLAHBLAH"
-export FWD_RULE="${APP_NAME}-${FWD_RULE_MTSUFFIX}"            # eg: "app02-BLAHBLAH"
+export MYAPP_URLMAP_NAME="${APP_NAME}-$URLMAP_NAME_MTSUFFIX"  # eg: "app02-BLAHBLAH"
+export MYAPP_FWD_RULE="${APP_NAME}-${FWD_RULE_MTSUFFIX}"      # eg: "app02-BLAHBLAH"
 
 # K8S_APP_SELECTOR -> nothing
 echo "##############################################"
@@ -103,8 +103,8 @@ green "As of 18jul22 I declare this script as WORKING."
 #yellow "WORK IN PROGRESS! on 17jul22 I was finally able to get to the end of this script in its entirety after the huge multi-tennant refactor"
 #yellow "TODO(ricc): everything is multi-tennant except the FWD RULE part. Shouls have app01/02 in it.."
 #yellow "Deploy the GKE manifests. This needs to happen first as it creates the NEGs which this script depends upon."
-echo "URLMAP_NAME: $URLMAP_NAME"
-echo "FWD_RULE:    $FWD_RULE"
+echo "MYAPP_URLMAP_NAME:   $MYAPP_URLMAP_NAME"
+echo "MYAPP_FWD_RULE:      $MYAPP_FWD_RULE"
 echo "K8S_APP_SELECTOR:    $K8S_APP_SELECTOR"
 echo "K8S_APP_IMAGE:       $K8S_APP_IMAGE"
 echo "SOL2_SERVICE_CANARY: $SOL2_SERVICE_CANARY"
@@ -223,11 +223,11 @@ done
 
 
 # RIC008 Create a default url-map
-proceed_if_error_matches "The resource 'projects/$PROJECT_ID/global/urlMaps/$URLMAP_NAME' already exists" \
-  gcloud compute url-maps create "$URLMAP_NAME" --default-service "$SOL2_SERVICE_CANARY"
+proceed_if_error_matches "The resource 'projects/$PROJECT_ID/global/urlMaps/$MYAPP_URLMAP_NAME' already exists" \
+  gcloud compute url-maps create "$MYAPP_URLMAP_NAME" --default-service "$SOL2_SERVICE_CANARY"
 
 # Import traffic-split url-map (from file) dmarzi way (obsolete):
-#gcloud compute url-maps import "$URLMAP_NAME" --source='k8s/xlb-gfe3-traffic-split/step2/urlmap-split.yaml'
+#gcloud compute url-maps import "$MYAPP_URLMAP_NAME" --source='k8s/xlb-gfe3-traffic-split/step2/urlmap-split.yaml'
 
 # RIC009b Import traffic-split url-map (from STDIN - so templating is trivially obvious)
 {
@@ -262,40 +262,40 @@ pathMatchers:
     routeAction:
       weightedBackendServices:
       - backendService: https://www.googleapis.com/compute/v1/projects/$PROJECT_ID/global/backendServices/$SOL2_SERVICE_CANARY
-        weight: 89
+        weight: 79
       - backendService: https://www.googleapis.com/compute/v1/projects/$PROJECT_ID/global/backendServices/$SOL2_SERVICE_PROD
-        weight: 11
+        weight: 21
 END_OF_URLMAP_GCLOUD_YAML_CONFIG
-} | tee t.sol15.yaml | gcloud compute url-maps import "$URLMAP_NAME" --source=- --quiet
+} | gcloud compute url-maps import "$MYAPP_URLMAP_NAME" --source=- --quiet
 
 
 #proceed_if_error_matches "The resource 'projects/$PROJECT_ID/global/targetHttpProxies/http-svc9010-lb' already exists" \
 
 # RIC010 Finalize 1/2
 
-white "RIC010: create UrlMap='$URLMAP_NAME' and FwdRule='$FWD_RULE'"
+white "RIC010: create UrlMap='$MYAPP_URLMAP_NAME' and FwdRule='$MYAPP_FWD_RULE'"
 
 proceed_if_error_matches "already exists" \
-  gcloud compute target-http-proxies create "$URLMAP_NAME" --url-map="$URLMAP_NAME"
+  gcloud compute target-http-proxies create "$MYAPP_URLMAP_NAME" --url-map="$MYAPP_URLMAP_NAME"
 
 # TODO(ricc): change 89/11 to 90/10. Just to prove granularity :)
-# "$URLMAP_NAME"
+# "$MYAPP_URLMAP_NAME"
 
 
 # # RIC010 2/2 Finalize
-proceed_if_error_matches "The resource 'projects/$PROJECT_ID/global/forwardingRules/$FWD_RULE' already exists" \
-  gcloud compute forwarding-rules create "$FWD_RULE" \
+proceed_if_error_matches "The resource 'projects/$PROJECT_ID/global/forwardingRules/$MYAPP_FWD_RULE' already exists" \
+  gcloud compute forwarding-rules create "$MYAPP_FWD_RULE" \
     --load-balancing-scheme=EXTERNAL_MANAGED \
     --global \
-    --target-http-proxy="$URLMAP_NAME" \
+    --target-http-proxy="$MYAPP_URLMAP_NAME" \
     --ports=80
 
 # Get IP of this Load Balancer
-IP_FWDRULE=$(gcloud compute forwarding-rules list --filter "$FWD_RULE" | tail -1 | awk '{print $2}')
+IP_FWDRULE=$(gcloud compute forwarding-rules list --filter "$MYAPP_FWD_RULE" | tail -1 | awk '{print $2}')
 
 # why 20-30? since 90% is a 9vs1 in 10 tries. It takes 20-30 to see a few svc2 hits :)
 echo "Now you can try this:             1) IP=$IP_FWDRULE"
-echo 'Now you can try this 20-30 times: 2) curl -H "Host: sol2-xlb-gfe3.example.io" http://'$IP_FWDRULE'/'
+echo 'Now you can try this 20-30 times: 2) curl -H "Host: sol2-passepartout.example.io" http://'$IP_FWDRULE'/'
 
 # solution2_tear_up_k8s
 

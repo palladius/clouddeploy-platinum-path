@@ -45,13 +45,13 @@ done
 white  "== Solution0 (Internal LB)=="
 echo '😞 Sorry, no routable endpoints.'
 
-white  "== Solution1 Artifacts (TODO: get public IPs)=="
+red  "== Solution1 Artifacts (WIP) =="
 # Note they dont get public IPs. But with Daniel it took them 1d to do it so i will wait till tomorrow.
 bin/kubectl-canary get gateways | egrep "sol1-app"
 # This might be pleonastic but hey, ANYTHING for a public IP!
 bin/kubectl-prod get gateways | egrep "sol1-app"
 
-white  "== Solution2 Artifacts =="
+green  "== Solution2 Artifacts (works) =="
 
 for APPXX_ITER in app01 app02 ; do
   FWD_RULE="$APPXX_ITER-${FWD_RULE_MTSUFFIX}"
