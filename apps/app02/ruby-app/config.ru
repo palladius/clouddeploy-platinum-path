@@ -1,4 +1,5 @@
-require './app.rb'
+#require './app.rb'
+require './sinatra.rb'
 
 require 'rack/unreloader'
 Unreloader = Rack::Unreloader.new{App}
