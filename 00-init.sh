@@ -71,6 +71,9 @@ done
 # TODO(ricc): check ENV_SH_CONFIG from sourced to the .dist and suggest to check the HISTORY
 #             for missing VARs.
 
+echo Make sure your bash is AT LEAST v4 or more:
+bash --version | egrep 'GNU bash' | lolcat # | cut -f 4 -d' ' | lolcat
+
 # End of your code here
 _allgood_post_script
 echo Everything is ok.

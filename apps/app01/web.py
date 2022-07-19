@@ -3,16 +3,18 @@ import os
 
 app = Flask(__name__)
 
-@app.route('/')
 
 #version_from_file = 'none'
 #print("[ricc] Starting the super-duper vanilla server in python to say HelloWorld!\n")
 
-
-def index():
+def version_from_file():
   with open("VERSION", "r") as f:
-    version_from_file = "".join(f.readlines())
-  version = version_from_file.rstrip() # "1.1a"
+    return "".join(f.readlines()).rstrip()
+
+@app.route('/')
+def index():
+
+  version = version_from_file() # "1.1a"
   fav_color = os.environ.get('FAVORITE_COLOR')
   env_app_name = os.environ.get('APP_NAME')
   cd_stage =  os.environ.get('CLOUD_DEPLOY_TARGET')
@@ -51,3 +53,10 @@ def index():
     cd_stage=cd_stage,
     cloud_deploy_target_common=cloud_deploy_target_common,
     ric_msg=ric_msg)
+
+@app.route('/statusz')
+def statusz_page():
+    return """app=app01 version={version} target={cloud_deploy_target_common} emoji=🐍""".format(
+      version=  version_from_file() ,
+      cloud_deploy_target_common=os.environ.get('CLOUD_DEPLOY_TARGET_COMMON'),
+    )
