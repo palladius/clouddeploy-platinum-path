@@ -30,6 +30,8 @@ spec:
 #      weight: 90
   - matches:
     - path:
+        # the underscore is to signify this is a special path as I've seen often in appengine. This is order NOT to
+        # interfere with the app which could have a proper /prod/ route but probably not a /_justprod/ one.
         value: /_justprod
     backendRefs:
     - name: sol1-__PREFIX__-prod

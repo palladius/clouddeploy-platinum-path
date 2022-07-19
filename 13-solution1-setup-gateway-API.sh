@@ -40,9 +40,7 @@ echo "GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR:       $GKE_SOLUTION1_XLB_PODSCALIN
 echo "##############################################"
 
 yellow "Usage (as I want it): $0 [app01|app02]"
-
-#exit 47
-#kubectl config get-contexts | grep cicd | grep "$PROJECT_ID" | grep "$REGION"
+white "Now I proceed to apply solution 1 for: $APP_NAME. If wrong, call me with proper usage."
 
 ##################################################
 ## dmarzi001 enable required APIs (project level)
@@ -56,10 +54,13 @@ gcloud services enable \
     trafficdirector.googleapis.com
 
 ##################################################
-## dmarzi015 SetUp Workload ~Identity
+## dmarzi001.5 SetUp Workload ~Identity
 ##################################################
 
 gcloud container clusters update cicd-prod \
+    --region=$REGION \
+    --workload-pool=$PROJECT_ID.svc.id.goog
+gcloud container clusters update cicd-canary \
     --region=$REGION \
     --workload-pool=$PROJECT_ID.svc.id.goog
 # green 'To update your current NodePools to use WokkLoadIdendity use this magic and breaking command (note GKE_METADATA doesnt need change):'
@@ -99,7 +100,8 @@ gcloud container fleet multi-cluster-services describe | grep "state: ACTIVE"
 ##################################################
 ## dmarzi004 enable gateway apis (in prod)
 ##################################################
-kubectl apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
+bin/kubectl-prod   apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
+bin/kubectl-canary apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
 # I should see FOUR not TWO:
 kubectl get gatewayclass
 
@@ -110,15 +112,10 @@ kubectl get gatewayclass
 gcloud container fleet ingress enable \
     --config-membership=/projects/$PROJECT_ID/locations/global/memberships/cicd-prod \
     --project=$PROJECT_ID
+gcloud container fleet ingress enable \
+    --config-membership=/projects/$PROJECT_ID/locations/global/memberships/cicd-canary \
+    --project=$PROJECT_ID
 
-#kubectl apply --context "$GKE_CANARY_CLUSTER_CONTEXT"
-#red Dear friends and colleagues this is STILL WIP. Ricc is implementing this for App01/02 since the POC works for a generic STORE.
-#yellow Try to use app01 with solution01 and make it parametric in ARGV..
-white "Now I proceed to apply solution 1 for: $APP_NAME. If wrong, call me with proper usage."
-
-#4.  enable gateway apis
-kubectl --context="$GKE_CANARY_CLUSTER_CONTEXT" apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
-kubectl --context="$GKE_PROD_CLUSTER_CONTEXT"   apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
 
 ################################################################################
 # Now we do our k8s manifests. Since we're multi-app we need to do some manual plumbing on the manifests
@@ -127,7 +124,6 @@ kubectl --context="$GKE_PROD_CLUSTER_CONTEXT"   apply -k "github.com/kubernetes-
 
 # ensure out dir exists..
 mkdir -p "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/out/"
-
 white This grep output should be null:
 egrep "store|v2" $GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/templates/[a-z]*yaml | egrep -v '^#'
 

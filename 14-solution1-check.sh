@@ -16,18 +16,20 @@ function troubleshoot_solution1_entities() {
     export DEBUG="false"
     bin/kubectl-prod get GatewayClass
     bin/kubectl-prod get Gateway
-    bin/kubectl-prod describe Gateway sol1-app01-eu-w1-ext-gw
+    #bin/kubectl-prod describe Gateway sol1-app01-eu-w1-ext-gw
+    bin/kubectl-prod get httproute | grep sol1
+    yellow Maybe describe one GOOD and one BAD route and see what happens..
 }
 # ARGS: 'canary' "$NAME" "$ADDRESS"
 function _manage_gateway_endpoint() {
     TARGET="$1"
     GATEWAY_NAME="$2"
     ENDPOINT_IP="$3"
-    green "[SOL1::$TARGET] Found a nice Endpoint for '$2': $3. curling now=$URL"
-    #set -x
-    echo "command:         curl -s -H 'host: $URL' 'http://$ENDPOINT_IP/'" # for me tro try from CLI :)
+    #green "[SOL1::$TARGET] Found a nice Endpoint for '$2': $3. curling now=$URL"
+    #echo -en "[$TARGET] '$2'\t" # $3. curling now=$URL"
+    _deb "command:         curl -s -H 'host: $URL' 'http://$ENDPOINT_IP/'" # for me tro try from CLI :)
     curl_result="$( curl -s -H "host: $URL" "http://$ENDPOINT_IP/" 2>&1 )" # sometimes it has no \n so wrapping here.
-    echo "[$TARGET] CURL $URL: $curl_result" | bin/rcg "default backend - 404" "BOLD . RED"
+    echo "[$TARGET] $GATEWAY_NAME CURL $URL to $ENDPOINT_IP => $curl_result" | bin/rcg "default backend - 404" "BOLD . RED"
 
 }
 # Created with codelabba.rb v.1.7a
@@ -41,20 +43,39 @@ set -e
 DEFAULT_APP="app01"                       # app01 / app02
 APP_NAME="${1:-$DEFAULT_APP}"
 URL="sol1-$APP_NAME.example.io"
+PREFIX="${APP_NAME}-${DEFAULT_SHORT_REGION}" # maybe in the future PREFIX = APP-REGION
 
 #bin/kubectl-canary apply -f "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/out/"
 #bin/kubectl-prod   apply -f "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/out/"
 
 if "$DEBUG" ; then
-    echo "APP_NAME:         $APP_NAME"
-    echo "URL: $URL"
+    echo "APP_NAME:  $APP_NAME"
+    echo "URL:       $URL"
+    echo "PREFIX:    $PREFIX"
 fi
 
 #set -x
 yellow "Watch in awe this:"
 bin/kubectl-triune get gateways | egrep "NAME|sol1"
 
-#troubleshoot_solution1_entities
+
+# ReApply k8s manifests:
+white "Silently [re-]applying k8s manifests in $GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/ .."
+{
+    make clean
+    smart_apply_k8s_templates "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR"
+
+    rgrep __ "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/out/" ||
+        echo Ok. No errors. All templated variables seem to have been done.
+
+    bin/kubectl-canary apply -f "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/out/"
+    bin/kubectl-prod   apply -f "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/out/"
+
+    #echo All Good.
+} 1>/dev/null
+
+
+troubleshoot_solution1_entities
 
 ### OPutput should look like this:
 # bin/kubectl-prod get gateway
@@ -73,7 +94,7 @@ bin/kubectl-triune get gateways | egrep "NAME|sol1"
 bin/kubectl-prod get gateway | grep sol1-app | grep True | grep "$APP_NAME" | while read USELESS_HEADER NAME CLASS ADDRESS READY AGE ; do
     _manage_gateway_endpoint 'prod' "$NAME" "$ADDRESS"
 done
-bin/kubectl-canary get gateway | grep sol1-app | grep True | grep "$APP_NAME" | while read USELESS_HEADER NAME CLASS ADDRESS READY AGE ; do
+bin/kubectl-canary get gateway | grep sol1-app | grep True |  grep "$APP_NAME" | while read USELESS_HEADER NAME CLASS ADDRESS READY AGE ; do
     _manage_gateway_endpoint 'canary' "$NAME" "$ADDRESS"
 done
 # yellow "Warning, IP address is currently hard-coded :/"
