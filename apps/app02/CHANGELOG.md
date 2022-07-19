@@ -1,4 +1,5 @@
-v1.30 fixed emoji: https://stackoverflow.com/questions/34621541/why-dont-emojis-render-in-my-html-and-or-php
+* 2022-07-19 v2.0.0 [DEV] Added /statusz for easy grepping. Damn I needed to change EVERYTHING and move to Sinatra. Upgraded to 3 numbers now :)
+* 2022-07-18 v1.30 [DEV] fixed emoji: https://stackoverflow.com/questions/34621541/why-dont-emojis-render-in-my-html-and-or-php
 * 2022-07-18 v1.29 [DEV] Added /statusz for easy grepping. nice ENv from Makefile.
 * 2022-07-18 v1.28 [DEV] fixed env, removed RICCARDO_KUSTOMIZE_ENV and added CloudDeploy env vars.
 * 2022-07-18 v1.27 [DEV] now we have 4 colors, one per different Target. This makes it easy to troubleshoot on Web page.
