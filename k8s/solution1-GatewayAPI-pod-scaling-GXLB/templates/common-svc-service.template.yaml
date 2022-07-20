@@ -14,7 +14,9 @@ kind: Service
 metadata:
   name: sol1-__PREFIX__-common-svc
   annotations:
-    cloud.google.com/neg: '{"exposed_ports": {"8080":{"name": "sol1-__PREFIX__-common-svc"}}}'
+    #cloud.google.com/neg: '{"exposed_ports": {"8080":{"name": "sol1-__PREFIX__-common-svc"}}}'
+    # In case NEG names conflict...
+    cloud.google.com/neg: '{"exposed_ports": {"8080":{"name": ""}}}'
     solution1-history: |
       2022-07-20 V1.4 Now selector is to lax and I can see app01/02 to be inside my balancer. This is GOOD but wrong
                       so I can now restrict to app id.

@@ -13,7 +13,7 @@ metadata:
     cloud.google.com/neg: '{"exposed_ports": {"8080":{"name": ""}}}'
 spec:
   selector:
-    #app: __K8S_APP_SELECTOR__ # TODO_IMPORTANT: re-enable this when it works without. For its enabling ANYTHING to prod :)
+    app: __K8S_APP_SELECTOR__
     ricc-env: prod
   ports:
   - port: 8080

@@ -14,10 +14,10 @@ apiVersion: gateway.networking.k8s.io/v1alpha2
 metadata:
   name: sol1-__PREFIX__
   labels:
-    gateway: sol1-__PREFIX__-http
+    gateway: sol1-__PREFIX__-xgw    # dmarzi_was: external-store-http
 spec:
   parentRefs:
-  - name: sol1-__PREFIX__-http
+  - name: sol1-__PREFIX__-xgw       # dmarzi_was: external-store-http
   hostnames:
   - "sol1-__APPNAME__.example.io"    # kept for easy curl/documented static commands :)
   - "sol1-__PREFIX__.example.io"     # bake in region as well... klets see which is best
