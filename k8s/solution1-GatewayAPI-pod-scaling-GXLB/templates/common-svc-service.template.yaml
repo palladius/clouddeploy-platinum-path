@@ -9,7 +9,7 @@ metadata:
 spec:
   selector:
     #was: app: store
-    ricc-awesome-selector: canary-or-prod # for debug you can tryu: dev-or-staging
+    ricc-awesome-selector: canary-or-prod # DO NOT USE ssdev-or-staging EVER
   ports:
   - port: 8080
     targetPort: 8080

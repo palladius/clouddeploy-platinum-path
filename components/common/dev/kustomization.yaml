@@ -2,7 +2,7 @@ apiVersion: kustomize.config.k8s.io/v1alpha1
 kind: Component
 #nameSuffix: "-dev"
 commonLabels:
-  ricc-awesome-selector: dev-or-staging # nothing serious
+  ricc-awesome-selector: dev-or-staging # nothing serious. Put here in case you want to troubleshoot DevStaging - but then you would need to create Fleet for other 2 clusters so possibly this is useless.
   ricc-env: dev
 commonAnnotations:
   developer: Riccardo Carlesso
