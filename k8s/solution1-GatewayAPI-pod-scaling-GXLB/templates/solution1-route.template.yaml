@@ -22,7 +22,7 @@ spec:
   - "sol1-__APPNAME__.example.io"    # kept for easy curl/documented static commands :)
   - "sol1-__PREFIX__.example.io"     # bake in region as well... klets see which is best
   - "sol1-__APPNAME__.__MY_DOMAIN__" # being changed by script 12 into $MY_DOMAIN.
-  - sol1-passepartout.example.io          # being lazy, so it ALWAYS works for troubleshooting reasons :)
+  - sol1-passepartout.example.io     # being lazy, so it ALWAYS works for troubleshooting reasons :)
   rules:
   - backendRefs:
     - name: sol1-__PREFIX__-common-svc

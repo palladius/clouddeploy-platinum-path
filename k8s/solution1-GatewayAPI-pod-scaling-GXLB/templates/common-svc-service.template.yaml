@@ -1,14 +1,31 @@
-# Values:
-# PREFIX: __PREFIX__
+###########################################################
+# This is a K8S template for Solution1 with some variables.
+# You cant kubectl apply this or you'll get errors.
+#
+# Vars:
+#  APP_NAME:         __APP_NAME__
+#  PREFIX:           __PREFIX__
+#  REGION:           __REGION__
+#  K8S_APP_SELECTOR: __K8S_APP_SELECTOR__
+# .. and so on. in general things with double underscore left and right as Im not a great sedder :)
+###########################################################
 apiVersion: v1
 kind: Service
 metadata:
   name: sol1-__PREFIX__-common-svc
   annotations:
     cloud.google.com/neg: '{"exposed_ports": {"8080":{"name": "sol1-__PREFIX__-common-svc"}}}'
+    solution1-history: |
+      2022-07-20 V1.4 Now selector is to lax and I can see app01/02 to be inside my balancer. This is GOOD but wrong
+                      so I can now restrict to app id.
+      2022-07-20 V1.3 fIXED Canary/Prod so all good.
 spec:
   selector:
     #was: app: store
+    # Both `App`` and `PlatinumAppId`` work. The first is easier to understand (lower cognitive load), while the latter
+    # is less work on template part of things (wink wink Alex)
+    app: __K8S_APP_SELECTOR__ # check on out/ if it works
+    #platinum-app-id: __APP_NAME__ # => 'app01' or 'app02'
     ricc-awesome-selector: canary-or-prod # DO NOT USE ssdev-or-staging EVER
   ports:
   - port: 8080

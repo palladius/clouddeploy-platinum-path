@@ -9,7 +9,8 @@ metadata:
   name: sol1-__K8S_APP_SELECTOR__-prod
   annotations:
     networking.gke.io/max-rate-per-endpoint: "90"
-    cloud.google.com/neg: '{"exposed_ports": {"8080":{"name": "sol1-__K8S_APP_SELECTOR__-prod-neg"}}}'
+#    cloud.google.com/neg: '{"exposed_ports": {"8080":{"name": "sol1-__K8S_APP_SELECTOR__-prod-neg"}}}'
+    cloud.google.com/neg: '{"exposed_ports": {"8080":{"name": ""}}}'
 spec:
   selector:
     #app: __K8S_APP_SELECTOR__ # TODO_IMPORTANT: re-enable this when it works without. For its enabling ANYTHING to prod :)

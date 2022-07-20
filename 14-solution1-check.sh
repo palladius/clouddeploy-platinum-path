@@ -19,6 +19,13 @@ function troubleshoot_solution1_entities() {
     bin/kubectl-prod describe Gateway sol1-app01-eu-w1-ext-gw
     bin/kubectl-prod get httproute | grep sol1
     yellow Maybe describe one GOOD and one BAD route and see what happens..
+
+
+    curl-http-code -H "host: sol1-passepartout.example.io" http://34.111.78.196/
+    curl-http-code -H "host: sol1-passepartout.example.io" http://34.111.78.196/statusz
+    curl-http-code -H "host: sol1-passepartout.example.io" http://34.111.78.196/_justprod/
+    curl-http-code -H "host: sol1-passepartout.example.io" http://34.111.78.196/_justcanary/
+
 }
 # ARGS: 'canary' "$NAME" "$ADDRESS"
 function _manage_gateway_endpoint() {
@@ -60,6 +67,8 @@ if "$DEBUG" ; then
     echo "PREFIX:    $PREFIX"
     echo K8S_APP_SELECTOR: $K8S_APP_SELECTOR
     echo K8S_APP_IMAGE: $K8S_APP_IMAGE
+
+
 fi
 
 #set -x
