@@ -1,26 +1,15 @@
-* P0. Plug the two k8s solutions to my python/ruby appsrather than some silly
-      sample apps :)
+# For v1 release
+
+* P0. Before releaseing, resolve all `TODO_IMPORTANT`: rgrep TODO_IMPORTANT .
 
 * P1. Automate Cloud Build Repo sync to GCR (currently in gcloud alpha status)
 
+* P4. Set up service account in 00-init and use it for the rest. Probably it would be between a 00 and a 01 setup.
+      If it works, backfill it to `codelabba.rb`
+
+* P3. Use `envsubst` instead. (33% done)
+
+
+# For v2 release
+
 * P2. Move bash to Terraform.
-
-* P2. Create under k8s/ a number of WORKING deployment dirs. Possible taconomy could be:
-
-    k8s/
-        prod/
-            deployment-strategy1/ # this works
-
-        test/
-            deployment-strategy2/  # still broken
-            deployment-strategy3/  # or half working
-
-    They should have a Makefile in the root dir since some might have 2 subdirs for multicluster setup (eg MCS).
-
-* P2. Make k8s/xlb-gfe3.../ truly parametric by removing project id in step2/ folder.
-
-* P3. Remove `palladius.it` and personal stuff from k8s manifests.
-
-* P4. Set up service account in 00-init and use it for the rest.Probably it would be between a 00 and a 01 setup. If it works, backfill it to `codelabba.rb`
-
-* P3. Use `envsubst` instead.

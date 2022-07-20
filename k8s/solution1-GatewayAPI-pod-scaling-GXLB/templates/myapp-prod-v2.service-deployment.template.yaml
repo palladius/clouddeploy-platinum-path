@@ -3,31 +3,6 @@
 #  PREFIX:           __PREFIX__
 #  REGION:           __REGION__
 #  K8S_APP_SELECTOR: __K8S_APP_SELECTOR__
-# apiVersion: apps/v1
-# kind: Deployment #HurricaneAlex
-# metadata:
-#   name: sol1-__K8S_APP_SELECTOR__-prod
-# spec:
-#   replicas: 4
-#   selector:
-#     matchLabels:
-#       app: __K8S_APP_SELECTOR__
-#       ricc-env: prod
-#   template:
-#     metadata:
-#       labels:
-#         app: __K8S_APP_SELECTOR__
-#         ricc-env: prod
-#     spec:
-#       containers:
-#       - name: sol1-prod-image-useless #  whereami
-#         image: __K8S_APP_IMAGE__ # not _ _ IMAGE_NAME _ _  # gcr.io/google-samples/whereami:v1.2.1
-#         ports:
-#           - containerPort: 8080
-#         env:
-#         - name: METADATA
-#           value: "sol1-__K8S_APP_SELECTOR__-prod"
-# ---
 apiVersion: v1
 kind: Service
 metadata:

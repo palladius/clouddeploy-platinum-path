@@ -9,7 +9,7 @@ metadata:
 spec:
   selector:
     #was: app: store
-    ricc-awesome-selector: dev-or-staging
+    ricc-awesome-selector: canary-or-prod # for debug you can tryu: dev-or-staging
   ports:
   - port: 8080
     targetPort: 8080

@@ -29,7 +29,9 @@ function _manage_gateway_endpoint() {
     #green "[SOL1::$TARGET] Found a nice Endpoint for '$2': $3. curling now=$URL"
     #echo -en "[$TARGET] '$2'\t" # $3. curling now=$URL"
     _deb "command:         curl -s -H 'host: $TEST_URL' 'http://$ENDPOINT_IP/'" # for me tro try from CLI :)
-    curl_result="$( curl -s -H "host: $TEST_URL" "http://$ENDPOINT_IP/" 2>&1 )" # sometimes it has no \n so wrapping here.
+    set -x
+        curl_result="$( curl -s -H "host: $TEST_URL" "http://$ENDPOINT_IP/" 2>&1 )" # sometimes it has no \n so wrapping here.
+    set +x
     echo "[$TARGET] $GATEWAY_NAME CURL $TEST_URL to $ENDPOINT_IP => $curl_result" | bin/rcg "default backend - 404" "BOLD . RED"
 
 }
@@ -68,14 +70,15 @@ bin/kubectl-triune get gateways | egrep "NAME|sol1"
 # ReApply k8s manifests:
 white "Silently [re-]applying k8s manifests in $GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/ .."
 {
+    # Disabling Exit on error since error can happen here...
+    set +e
     make clean
     smart_apply_k8s_templates "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR"
     cat "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/"out/*.yaml | grep '__' 2>&1
 
-    # checking fir UGLY mistakes like:
+    # Now checking fir UGLY mistakes like:
     # [PROD] sol1--ext-gw              gke-l7-gxlb   34.149.148.162   True    100m
-
-    cat "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/out/"*.yaml | grep '__' ||
+    cat "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/out/"*.yaml | grep '__'  &&
         _fatal "ERR01. Double underscore smells like a needed variable was not found. Exiting to be on safe side" ||
             echo Ok. No errors. All templated variables seem to have been done.
     cat "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/out/"*yaml | rgrep -v '---' | grep -- '--'  &&
@@ -85,7 +88,8 @@ white "Silently [re-]applying k8s manifests in $GKE_SOLUTION1_XLB_PODSCALING_SET
     bin/kubectl-canary apply -f "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/out/"
     bin/kubectl-prod   apply -f "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/out/"
 
-    #echo All Good.
+    echo All Good.
+    set -e
 } 1>/dev/null
 
 
@@ -104,7 +108,8 @@ troubleshoot_solution1_entities
 # [PROD] NAME                      CLASS         ADDRESS         READY   AGE
 # [PROD] sol1-app01-eu-w1-ext-gw   gke-l7-gxlb   34.111.78.196   True    39m
 
-# Making sure the IP address sis up (True), it belongs to the APP called by ARGV[1] and that it is solution 1 stuff.
+# Making sure the IP address sis up (True), it belongs to the APP called by ARGV[1] and that it is solution 1 stufh
+white "== Curling PRD/CAN endpoints now =="
 bin/kubectl-prod get gateway | grep sol1-app | grep True | grep "$APP_NAME" | while read USELESS_HEADER NAME CLASS ADDRESS READY AGE ; do
     _manage_gateway_endpoint 'prod' "$NAME" "$ADDRESS"
 done

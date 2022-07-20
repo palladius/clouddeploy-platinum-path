@@ -1,4 +1,5 @@
-2022-07-19 v0.15.0  Brinigng clarity and cleanliness after Hurricane Alex: https://github.com/palladius/clouddeploy-platinum-path/issues/18
+2022-07-20 v0.16.0  Fixed solution1 (was pointing to canary/dev for debug, now moved to canary/prod)
+2022-07-19 v0.15.0  Bringing clarity and cleanliness after Hurricane Alex: https://github.com/palladius/clouddeploy-platinum-path/issues/18
 2022-07-19 v0.14.0  Substantially changed the code for Solution ONe. I've done two BIG things:
                     1. Looked at all the code here: https://github.com/palladius/clouddeploy-platinum-path/tree/main/k8s/amarcord/original-solution1-dmarzi/_ORIGINAL
                     2. Also changed bname to GatewayClassName to 'gke-l7-gxlb'
