@@ -1,0 +1,51 @@
+###########################################################
+# This is a K8S template for Solution1 with some variables.
+# You cant kubectl apply this or you'll get errors.
+#
+# Vars:
+#  APP_NAME: __APP_NAME__
+#  PREFIX:   __PREFIX__   # contains appname and region as of now.
+#  REGION:   __REGION__
+#
+# .. and so on. in general things with double underscore left and right as Im not a great sedder :)
+###########################################################
+kind: HTTPRoute
+apiVersion: gateway.networking.k8s.io/v1alpha2
+metadata:
+  name: sol1-__PREFIX__
+  labels:
+    gateway: sol1-__PREFIX__-ext-gw    # dmarzi_was: external-store-http
+spec:
+  parentRefs:
+  - name: sol1-__PREFIX__-ext-gw       # dmarzi_was: external-store-http
+  hostnames:
+  - "sol1-__APPNAME__.example.io"    # kept for easy curl/documented static commands :)
+  - "sol1-__PREFIX__.example.io"     # bake in region as well... klets see which is best
+  - "sol1-__APPNAME__.__MY_DOMAIN__" # being changed by script 12 into $MY_DOMAIN.
+  - sol1-passepartout.example.io     # being lazy, so it ALWAYS works for troubleshooting reasons :)
+  - passepartout.example.io          # being even lazier :)
+  - www.example.io                   # now beat this :)
+  rules:
+  # - matches:
+  #   - path:
+  #       # the underscore is to signify this is a special path as I've seen often in appengine. This is order NOT to
+  #       # interfere with the app which could have a proper /prod/ route but probably not a /_justprod/ one.
+  #       value: /_justprod
+  #   backendRefs:
+  #   - name: sol1-__PREFIX__-prod
+  #     port: 8080
+  # - matches:
+  #   - path:
+  #       value: /_justcanary
+  #   backendRefs:
+  #   - name: sol1-__PREFIX__-canary
+  #     port: 8080
+  # # putting after so its the last to match
+  - matches:
+    - path:
+        value: /*
+    backendRefs:
+    - name: sol1-__PREFIX__-common-svc # dmarzi_was: store-common-svc
+      port: 8080
+
+

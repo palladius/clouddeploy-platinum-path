@@ -14,7 +14,8 @@ apiVersion: gateway.networking.k8s.io/v1alpha2
 metadata:
   name: sol1-__PREFIX__-ext-gw     # dmarzi_was: external-store-http. Must be the same name than in other place..
 spec:
-  gatewayClassName: gke-l7-gxlb # do NOT touch :)
+#  gatewayClassName: gke-l7-gxlb # do NOT touch :)
+  gatewayClassName: gke-l7-gxlb-mc # Lets try approach #3 from https://github.com/palladius/clouddeploy-platinum-path/issues/21
   listeners:
   - name: http
     protocol: HTTP

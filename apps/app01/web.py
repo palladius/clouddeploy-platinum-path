@@ -40,7 +40,6 @@ def index():
         CLOUD_DEPLOY_TARGET_COMMON={cloud_deploy_target_common} <br/>
         CLOUD_DEPLOY_TARGET_SHORT_COMMON={cloud_deploy_target_short_common} <br/>
         <br/>
-
         APP_NAME={env_app_name} <br/>
         RICCARDO_MESSAGE={ric_msg}<br/>
         <br/>
@@ -48,6 +47,7 @@ def index():
         Favorite Color COMMON from v1.35: <b style='background-color:{fav_color_common};' >{fav_color_common}</b><br/>
         Favorite Color from v1.4: <b style='background-color:{fav_color};' >{fav_color}</b><br/>
 
+        Link to <a href="/statusz" >Statusz</a>.
         <hr/>
           <center>
            <!-- /statusz --> app01 (🐍) v<b>{ver}</b> target: <b>{cloud_deploy_target_short_common}</b>
@@ -64,7 +64,7 @@ def index():
 
 @app.route('/statusz')
 def statusz_page():
-    return """app=app01 version={version} target={cloud_deploy_target_common} emoji=🐍""".format(
+    return """app=app01 version={version} target={cloud_deploy_target_common} emoji=🐍\n""".format(
       version=  version_from_file() ,
       cloud_deploy_target_common=cloud_deploy_target_short_common(),
     )
