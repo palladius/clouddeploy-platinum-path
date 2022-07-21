@@ -45,3 +45,4 @@ spec:
     backendRefs:
     - name: sol1-__PREFIX__-canary
       port: 8080
+

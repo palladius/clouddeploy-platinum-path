@@ -262,9 +262,9 @@ pathMatchers:
     routeAction:
       weightedBackendServices:
       - backendService: https://www.googleapis.com/compute/v1/projects/$PROJECT_ID/global/backendServices/$SOL2_SERVICE_CANARY
-        weight: 79
+        weight: 22
       - backendService: https://www.googleapis.com/compute/v1/projects/$PROJECT_ID/global/backendServices/$SOL2_SERVICE_PROD
-        weight: 21
+        weight: 78
 END_OF_URLMAP_GCLOUD_YAML_CONFIG
 } | gcloud compute url-maps import "$MYAPP_URLMAP_NAME" --source=- --quiet
 

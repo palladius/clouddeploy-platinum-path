@@ -16,15 +16,10 @@ function troubleshoot_solution1_entities() {
     export DEBUG="false"
     bin/kubectl-prod get GatewayClass
     bin/kubectl-prod get Gateway
-    bin/kubectl-prod describe Gateway sol1-app01-eu-w1-ext-gw
+    #bin/kubectl-prod describe Gateway sol1-app01-eu-w1-ext-gw
     bin/kubectl-prod get httproute | grep sol1
     yellow Maybe describe one GOOD and one BAD route and see what happens..
 
-
-    curl-http-code -H "host: sol1-passepartout.example.io" http://34.111.78.196/
-    curl-http-code -H "host: sol1-passepartout.example.io" http://34.111.78.196/statusz
-    curl-http-code -H "host: sol1-passepartout.example.io" http://34.111.78.196/_justprod/
-    curl-http-code -H "host: sol1-passepartout.example.io" http://34.111.78.196/_justcanary/
 
 }
 # ARGS: 'canary' "$NAME" "$ADDRESS"
@@ -80,26 +75,26 @@ bin/kubectl-triune get gateways | egrep "NAME|sol1"
 white "Silently [re-]applying k8s manifests in $GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/ .."
 {
     # Disabling Exit on error since error can happen here...
-    set +e
+    #set +e
     make clean
     smart_apply_k8s_templates "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR"
-    cat "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/"out/*.yaml | grep '__' 2>&1
+    #cat "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/"out/*.yaml | grep '__' # 2>&1
 
     # Now checking fir UGLY mistakes like:
     # [PROD] sol1--ext-gw              gke-l7-gxlb   34.149.148.162   True    100m
-    cat "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/out/"*.yaml | grep '__'  &&
-        _fatal "ERR01. Double underscore smells like a needed variable was not found. Exiting to be on safe side" ||
-            echo Ok. No errors. All templated variables seem to have been done.
-    cat "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/out/"*yaml | rgrep -v '---' | grep -- '--'  &&
-        _fatal "ERR02. Double dash smells like an EMPTY STRING variable was instanced. Exiting to be on safe side" ||
-            echo Ok. No errors. All templated variables seem to have been done.
+    # cat "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/out/"*.yaml | grep '__'  &&
+    #     _fatal "ERR01. Double underscore smells like a needed variable was not found. Exiting to be on safe side" ||
+    #         echo Ok. No errors. All templated variables seem to have been done.
+    # cat "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/out/"*yaml | rgrep -v '---' | grep -- '--'  &&
+    #     _fatal "ERR02. Double dash smells like an EMPTY STRING variable was instanced. Exiting to be on safe side" ||
+    #         echo Ok. No errors. All templated variables seem to have been done.
 
     bin/kubectl-canary apply -f "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/out/"
     bin/kubectl-prod   apply -f "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/out/"
 
     echo All Good.
-    set -e
-} 1>/dev/null
+    #set -e
+} #1>/dev/null
 
 
 troubleshoot_solution1_entities

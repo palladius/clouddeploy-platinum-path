@@ -6,6 +6,8 @@ metadata:
   name: sol2-__APPNAME__-svc-canary
   annotations:
     networking.gke.io/max-rate-per-endpoint: "10"
+    # I need to specify the NEG name
+    # eg, app01-sol2-svc-canary
     cloud.google.com/neg: '{"exposed_ports": {"8080":{"name": ""}}}'
 spec:
   selector:

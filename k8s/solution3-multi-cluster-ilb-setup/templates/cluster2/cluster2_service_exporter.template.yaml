@@ -5,8 +5,8 @@ metadata:
   name: sol0-ilb-${APP_NAME}-prod # was: dmarzi-app-web-02
 spec:
   ports:
-  - port: 9292
-    targetPort: 9292
+  - port: 8080
+    targetPort: 8080
   selector:
     ricc-awesome-selector: canary-or-prod
 ---

@@ -17,10 +17,10 @@ curl --write-out "[_curl_http_code] %{http_code}  $*\n" --silent --output /dev/n
 
 GATEWAY_REGEX="ext-gw"
 
-bin/kubectl-canary-and-prod get gateway |grep sol1 | grep "$GATEWAY_REGEX" | awk '{print $2 " " $4}' |
-    while read GATEWAY IP ; do
+bin/kubectl-canary-and-prod get gateway | grep "sol1-app0" | grep "$GATEWAY_REGEX" | awk '{print $1 " " $2 " " $4}' |
+    while read ENV GATEWAY IP ; do
 
-    echo == Riccardo manual/boring checks on GATEWAY=$GATEWAY IP=$IP ==
+    echo == [$ENV] Riccardo manual/boring checks on GATEWAY=$GATEWAY IP=$IP ==
     _curl_http_code  http://$IP/
     _curl_http_code  http://$IP/statusz
     #_curl_http_code -H "host: passepartout.example.io" http://$IP/
