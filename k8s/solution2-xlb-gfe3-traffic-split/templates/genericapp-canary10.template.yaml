@@ -3,13 +3,13 @@ apiVersion: v1
 kind: Service
 metadata:
   # This needs to be rennamed to `__APPNAME__-sol2-svc-canary`
-  name: sol2-__APPNAME__-svc-canary
+  name: __APPNAME__-sol2-svc-canary
   annotations:
     networking.gke.io/max-rate-per-endpoint: "10"
     # I need to specify the NEG name
     # eg, app01-sol2-svc-canary
     #cloud.google.com/neg: '{"exposed_ports": {"8080":{"name": ""}}}'
-    cloud.google.com/neg: '{"exposed_ports": {"8080":{"name": "sol2-__APPNAME__-svc-canary-neg"}}}'
+    cloud.google.com/neg: '{"exposed_ports": {"8080":{"name": "__APPNAME__-sol2-svc-canary-neg"}}}'
 spec:
   selector:
     app: __K8S_APP_SELECTOR__ # 4. this needs to be like 1/2.

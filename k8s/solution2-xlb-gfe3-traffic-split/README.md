@@ -7,6 +7,8 @@ Renames:
 * RENAMING `whereami-v1` -> svc1-canary90 -> $APPNAME-sol2-svc1-canary"  -> $APPNAME-sol2-svc-canary
 * RENAMING `whereami-v2` -> svc2-prod10   -> $APPNAME-sol2-svc2-prod"   ->  $APPNAME-sol2-svc-prod
 
+*NOTE* that its  $APPNAME-sol2, not  sol2-$APPNAME (which i've tried for a while but wasnt able to fix it everywhere)
+
 ## dmarzi instructions
 
 # Deploy the applications as usual

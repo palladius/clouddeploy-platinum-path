@@ -128,7 +128,7 @@ clean:
 	# not sure i want to do this...
 	#rm .executed.*
 	rm -f apps/tmp/*
-	rm -f .t.* .tmp.*
+	rm -f .t.* .tmp.* ./.15sh.lastStdOutAndErr
 	@echo OK. Removed tmp files.
 
 observe-endpoints:
