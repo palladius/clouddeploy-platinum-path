@@ -14,6 +14,7 @@ spec:
   - "sol0-ilb-$APP_NAME.example.io"
   - "sol0-ilb-$APP_NAME.$MY_DOMAIN"
   - "sol0-passepartout.example.io"
+  - "passepartout.example.io"
   rules:
   - backendRefs:
     # 90% of traffic to store-west-1 ServiceImport
