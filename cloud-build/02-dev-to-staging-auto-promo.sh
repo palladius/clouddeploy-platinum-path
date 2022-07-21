@@ -45,7 +45,7 @@ echo "REV:              $REV"
 #echo "_DEPLOY_UNIT:     $_DEPLOY_UNIT"
 #echo "_DEPLOY_REGION:   $_DEPLOY_REGION"
 
-set -x 
+set -x
 set -e
 
 # TODO
@@ -70,3 +70,7 @@ LATEST_SUCCESSFUL_RELEASE="$RELEASE_NAME"
 PIPELINE="$ARGV_DEPLOY_UNIT"
 gcloud deploy releases promote --to-target "$DESIRED_STAGE" --region "$CLOUD_DEPLOY_REGION" \
     --release "$LATEST_SUCCESSFUL_RELEASE" --delivery-pipeline=$PIPELINE --quiet
+
+# 7 TODO Ricc, create a TAG with "v$VERSION" and push the tag for AR to pick it up.
+# possibly also symlink it to `LATEST`` or better `LATEST-STAGING` (because we have
+# four latest).

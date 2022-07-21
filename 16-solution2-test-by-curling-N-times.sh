@@ -39,7 +39,9 @@ SOL2_SERVICE_PROD="$APP_NAME-$DFLT_SOL2_SERVICE_PROD"    # => appXX-sol2-svc-pro
 
 #echo "Grepping IP with this string: '''${AppsInterestingHash["$APP_NAME-WEB_EGREP"]}'''"
 SMART_EGREP=${AppsInterestingHash["$APP_NAME-WEB_EGREP"]}
-#solution2_tear_up_k8s
+
+solution2_tear_up_k8s
+
 if "$DEBUG" ; then
     echo "URLMAP_NAME:         $URLMAP_NAME"
     echo "FWD_RULE_FOR_MY_APP: $FWD_RULE_FOR_MY_APP"
@@ -59,7 +61,7 @@ white "Trying $N_TRIES times to curl my host at IP: $IP_FWDRULE_FOR_MY_APP [$FWD
 for i in `seq 1 $N_TRIES`; do
 #    curl -H "Host: ${APP_NAME}-sol2-xlb-gfe3.example.io" $IP_FWDRULE_FOR_MY_APP/statusz 2>/dev/null # | egrep -i 'statusz' # egrep "$SMART_EGREP" | head -1
     curl -H "Host: sol2-passepartout.example.io" $IP_FWDRULE_FOR_MY_APP/  2>/dev/null |grep statusz  # | egrep -i 'statusz' # egrep "$SMART_EGREP" | head -1
-    echo
+    #echo
 done
 echo ''
 

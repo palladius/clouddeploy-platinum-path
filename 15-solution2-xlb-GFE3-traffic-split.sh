@@ -108,14 +108,16 @@ echo "MYAPP_FWD_RULE:      $MYAPP_FWD_RULE"
 echo "K8S_APP_SELECTOR:    $K8S_APP_SELECTOR"
 echo "K8S_APP_IMAGE:       $K8S_APP_IMAGE"
 echo "SOL2_SERVICE_CANARY: $SOL2_SERVICE_CANARY"
-echo "SOL2_SERVICE_PROD: $SOL2_SERVICE_PROD"
+echo "SOL2_SERVICE_PROD:   $SOL2_SERVICE_PROD"
 echo "##############################################"
 
 # Cleaning old templates in case you've renamed something so i dont tear up WO resources with sightly different names
 make clean
-solution2_tear_up_k8s
-# kubectl --context="$GKE_CANARY_CLUSTER_CONTEXT" apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
-# kubectl --context="$GKE_PROD_CLUSTER_CONTEXT" apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
+
+kubectl --context="$GKE_CANARY_CLUSTER_CONTEXT" apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
+kubectl --context="$GKE_PROD_CLUSTER_CONTEXT" apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
+
+solution2_tear_up_k8s # kubectl apply buridone :)
 
 red "00Warning. I've noticed after 7d of failures that as a prerequisite for this to work you need the k8s deployments correctly named. Im going to make this as a prerequisite"
 white "00. Check that Canary and Prod have made it correctly to your k8s systems via some kubectl command:"
