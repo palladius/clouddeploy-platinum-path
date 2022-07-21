@@ -43,7 +43,7 @@ function _grab_NEG_name_by_filter() {
   white "[DEBUG] Grabbing NEG name by filter '$FILTER'" >&2
   gcloud compute network-endpoint-groups list --filter="$FILTER" | grep "$REGION" | awk '{print $1}' | head -1
 }
-# solution2_tear_up_k8s() {
+# solution2_kubectl_apply() {
 #   smart_apply_k8s_templates "$GKE_SOLUTION2_ENVOY_XLB_TRAFFICSPLITTING_SETUP_DIR"
 
 #   # If you changed some name and you get IMMUTABLE error, try to destroy the same resource before:
@@ -117,7 +117,7 @@ make clean
 kubectl --context="$GKE_CANARY_CLUSTER_CONTEXT" apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
 kubectl --context="$GKE_PROD_CLUSTER_CONTEXT" apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
 
-solution2_tear_up_k8s # kubectl apply buridone :)
+solution2_kubectl_apply # kubectl apply buridone :)
 
 red "00Warning. I've noticed after 7d of failures that as a prerequisite for this to work you need the k8s deployments correctly named. Im going to make this as a prerequisite"
 white "00. Check that Canary and Prod have made it correctly to your k8s systems via some kubectl command:"
@@ -299,7 +299,7 @@ IP_FWDRULE=$(gcloud compute forwarding-rules list --filter "$MYAPP_FWD_RULE" | t
 echo "Now you can try this:             1) IP=$IP_FWDRULE"
 echo 'Now you can try this 20-30 times: 2) curl -H "Host: sol2-passepartout.example.io" http://'$IP_FWDRULE'/'
 
-# solution2_tear_up_k8s
+# solution2_kubectl_apply
 
 
 
