@@ -1,0 +1,28 @@
+# ###########################################################
+# # This is a K8S template for Solution1 with some variables.
+# # You cant kubectl apply this or you'll get errors.
+# #
+# # Vars:
+# #  APP_NAME:         __APP_NAME__
+# #  PREFIX:           __PREFIX__
+# #  REGION:           __REGION__
+# #  K8S_APP_SELECTOR: __K8S_APP_SELECTOR__
+# # .. and so on. in general things with double underscore left and right as Im not a great sedder :)
+# ###########################################################
+apiVersion: v1
+kind: Service
+#DOESNT WORK!!! DONT DO IT!
+#[DEV]  error: error validating "k8s/solution1-GatewayAPI-pod-scaling-GXLB/out/myapp-dev.service.yaml": error validating data: ValidationError(Service): unknown field "namespace" in io.k8s.api.core.v1.Service; if you choose to ignore these errors, turn validation off with --validate=false
+#namespace: cicd-dev
+metadata:
+  name: sol1d-__PREFIX__-dev
+  annotations:
+    networking.gke.io/max-rate-per-endpoint: "10"
+  # this is only needed in SOL2 as I call it MANUALLY.
+    cloud.google.com/neg: '{"exposed_ports": {"8080":{"name": ""}}}'
+spec:
+  selector:
+    app: __K8S_APP_SELECTOR__
+    ricc-env: dev
+  ports:
+  - port: 8080

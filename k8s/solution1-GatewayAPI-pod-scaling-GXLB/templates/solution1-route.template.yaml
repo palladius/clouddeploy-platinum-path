@@ -9,40 +9,59 @@
 #
 # .. and so on. in general things with double underscore left and right as Im not a great sedder :)
 ###########################################################
+# the underscore is to signify this is a special path as I've seen often in appengine. This is order NOT to
+# interfere with the app which could have a proper /prod/ route but probably not a /_justprod/ one.
 kind: HTTPRoute
 apiVersion: gateway.networking.k8s.io/v1alpha2
 metadata:
-  name: sol1-__PREFIX__
+  name: sol1d-__PREFIX__
   labels:
-    gateway: sol1-__PREFIX__-ext-gw    # dmarzi_was: external-store-http
+    gateway: sol1d-__PREFIX__-ext-gw    # dmarzi_was: external-store-http
 spec:
   parentRefs:
-  - name: sol1-__PREFIX__-ext-gw       # dmarzi_was: external-store-http
+  - name: sol1d-__PREFIX__-ext-gw       # dmarzi_was: external-store-http
   hostnames:
-  - "sol1-__APPNAME__.example.io"    # kept for easy curl/documented static commands :)
-  - "sol1-__PREFIX__.example.io"     # bake in region as well... klets see which is best
-  - "sol1-__APPNAME__.__MY_DOMAIN__" # being changed by script 12 into $MY_DOMAIN.
-  - sol1-passepartout.example.io     # being lazy, so it ALWAYS works for troubleshooting reasons :)
+  - "sol1d-__APPNAME__.example.io"    # kept for easy curl/documented static commands :)
+  - "sol1d-__PREFIX__.example.io"     # bake in region as well... klets see which is best
+  - "sol1d-__APPNAME__.__MY_DOMAIN__" # being changed by script 12 into $MY_DOMAIN.
+  - sol1d-passepartout.example.io     # being lazy, so it ALWAYS works for troubleshooting reasons :)
   - passepartout.example.io          # being even lazier :)
   - www.example.io                   # now beat this :)
   rules:
   - backendRefs:
-    - name: sol1-__PREFIX__-common-svc # dmarzi_was: store-common-svc
+    - name: sol1d-__PREFIX__-common-svc # dmarzi_was: store-common-svc
       port: 8080
-# While this might work, Im gonna remove this for now.
-#      weight: 90
-  - matches:
-    - path:
-        # the underscore is to signify this is a special path as I've seen often in appengine. This is order NOT to
-        # interfere with the app which could have a proper /prod/ route but probably not a /_justprod/ one.
-        value: /_justprod
-    backendRefs:
-    - name: sol1-__PREFIX__-prod
-      port: 8080
-  - matches:
-    - path:
-        value: /_justcanary
-    backendRefs:
-    - name: sol1-__PREFIX__-canary
-      port: 8080
+  # - matches:
+  #   - path:
+  #       value: /_dev
+  #   backendRefs:
+  #   - name: sol1d-__PREFIX__-dev
+  #     port: 8080
+  # - matches:
+  #   - path:
+  #       value: /_staging
+  #   backendRefs:
+  #   - name: sol1d-__PREFIX__-staging
+  #     port: 8080
 
+# spec:
+#   parentRefs:
+#   - name: external-store-http
+#   hostnames:
+#   - "store.example.io"
+#   rules:
+#   - backendRefs:
+#     - name: store-common-svc
+#       port: 8080
+#   - matches:
+#     - path:
+#         value: /canary
+#     backendRefs:
+#     - name: store-v2
+#       port: 8080
+#   - matches:
+#     - path:
+#         value: /v1
+#     backendRefs:
+#     - name: store-v1
+#       port: 8080

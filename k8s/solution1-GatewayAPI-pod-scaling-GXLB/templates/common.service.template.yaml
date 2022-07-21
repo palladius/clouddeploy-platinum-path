@@ -12,10 +12,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: sol1-__PREFIX__-common-svc # dmarzi_was: store-common-svc
+  name: sol1d-__PREFIX__-common-svc # dmarzi_was: store-common-svc
   annotations:
-    cloud.google.com/neg: '{"exposed_ports": {"8080":{"name": "sol1-__PREFIX__-common-svc"}}}' # dmarzi_was: store-common-svc
+    cloud.google.com/neg: '{"exposed_ports": {"8080":{"name": "sol1d-__PREFIX__-common-svc"}}}' # dmarzi_was: store-common-svc
     solution1-history: |
+      2022-07-21 V1.6 Moved everything from PROD/CANA to DEV cluster.
       2022-07-20 V1.5 Restored opinionated negs. Fixd the bug.
       2022-07-20 V1.4 Now selector is to lax and I can see app01/02 to be inside my balancer. This is GOOD but wrong
                       so I can now restrict to app id.
@@ -27,7 +28,8 @@ spec:
     # is less work on template part of things (wink wink Alex)
     app: __K8S_APP_SELECTOR__ # check on out/ if it works
     #platinum-app-id: __APP_NAME__ # => 'app01' or 'app02'
-    ricc-awesome-selector: canary-or-prod # DO NOT USE ssdev-or-staging EVER
+#    ricc-awesome-selector: canary-or-prod # DO NOT USE ssdev-or-staging EVER
+    ricc-awesome-selector: dev-or-staging
   ports:
   - port: 8080
     targetPort: 8080

@@ -57,12 +57,16 @@ gcloud services enable \
 ## dmarzi001.5 SetUp Workload ~Identity
 ##################################################
 
-gcloud container clusters update cicd-prod \
+gcloud container clusters update cicd-dev \
     --region=$REGION \
     --workload-pool=$PROJECT_ID.svc.id.goog
-gcloud container clusters update cicd-canary \
-    --region=$REGION \
-    --workload-pool=$PROJECT_ID.svc.id.goog
+
+# gcloud container clusters update cicd-prod \
+#     --region=$REGION \
+#     --workload-pool=$PROJECT_ID.svc.id.goog
+# gcloud container clusters update cicd-canary \
+#     --region=$REGION \
+#     --workload-pool=$PROJECT_ID.svc.id.goog
 # green 'To update your current NodePools to use WokkLoadIdendity use this magic and breaking command (note GKE_METADATA doesnt need change):'
 # echo gcloud container node-pools update NODEPOOL_NAME_CHANGEME \
 #     --cluster=$CLUSTER_NAME \
@@ -74,11 +78,11 @@ gcloud container clusters update cicd-canary \
 white "Skipping step2 since it was already done for Solution0."
 
 # default to PROD
-gcloud container clusters get-credentials "cicd-prod" --region "$REGION" # --project "$PROJECT_ID"
+gcloud container clusters get-credentials "cicd-dev" --region "$REGION" # --project "$PROJECT_ID"
 
-
-bin/kubectl-canary auth can-i '*' '*' --all-namespaces | grep yes
-bin/kubectl-prod   auth can-i '*' '*' --all-namespaces | grep yes
+bin/kubectl-dev auth can-i '*' '*' --all-namespaces | grep yes
+#bin/kubectl-canary auth can-i '*' '*' --all-namespaces | grep yes
+#bin/kubectl-prod   auth can-i '*' '*' --all-namespaces | grep yes
 
 ##################################################
 ## dmarzi003 enable multi-cluster services
@@ -100,21 +104,25 @@ gcloud container fleet multi-cluster-services describe | grep "state: ACTIVE"
 ##################################################
 ## dmarzi004 enable gateway apis (in prod)
 ##################################################
-bin/kubectl-prod   apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
-bin/kubectl-canary apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
+bin/kubectl-dev  apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
+#bin/kubectl-prod   apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
+#bin/kubectl-canary apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
 # I should see FOUR not TWO:
-kubectl get gatewayclass
+bin/kubectl-dev get gatewayclass
 
 ##################################################
 ## dmarzi005 enable GKE gateway controller just in GKE01.
 ##################################################
 # UNLESS `gcloud container fleet ingress describe | ... greps both canary and prod`
-gcloud container fleet ingress enable \
-    --config-membership=/projects/$PROJECT_ID/locations/global/memberships/cicd-prod \
-    --project=$PROJECT_ID
-gcloud container fleet ingress enable \
-    --config-membership=/projects/$PROJECT_ID/locations/global/memberships/cicd-canary \
-    --project=$PROJECT_ID
+# gcloud container fleet ingress enable \
+#     --config-membership=/projects/$PROJECT_ID/locations/global/memberships/cicd-dev \
+#     --project=$PROJECT_ID
+# gcloud container fleet ingress enable \
+#     --config-membership=/projects/$PROJECT_ID/locations/global/memberships/cicd-prod \
+#     --project=$PROJECT_ID
+# gcloud container fleet ingress enable \
+#     --config-membership=/projects/$PROJECT_ID/locations/global/memberships/cicd-canary \
+#     --project=$PROJECT_ID
 
 
 ################################################################################
@@ -150,7 +158,8 @@ smart_apply_k8s_templates "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR"
 
 #kubectl --context="$GKE_CANARY_CLUSTER_CONTEXT" apply -f "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/out/"
 #kubectl --context="$GKE_PROD_CLUSTER_CONTEXT"   apply -f "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/out/"
-kubectl --context="$GKE_DEV_CLUSTER_CONTEXT" apply -f "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/out/"
+#kubectl --context="$GKE_DEV_CLUSTER_CONTEXT" apply -f "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/out/"
+bin/kubectl-dev apply -f "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/out/"
 
 # Check everything ok:
 bin/kubectl-triune get all | grep "sol1"

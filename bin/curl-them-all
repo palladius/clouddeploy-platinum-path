@@ -45,11 +45,22 @@ done
 white  "== Solution0 (Internal LB)=="
 echo '😞 Sorry, no routable endpoints.'
 
-red  "== Solution1 Artifacts (WIP) =="
+red  "== Solution1dev Artifacts (WIP) =="
 # Note they dont get public IPs. But with Daniel it took them 1d to do it so i will wait till tomorrow.
-bin/kubectl-canary get gateways | egrep "sol1-app"
+#bin/kubectl-canary get gateways | egrep "sol1-app"
 # This might be pleonastic but hey, ANYTHING for a public IP!
-bin/kubectl-prod get gateways | egrep "sol1-app"
+#bin/kubectl-prod get gateways | egrep "sol1-app"
+bin/kubectl-dev get gateways | egrep "sol1d"
+
+for APPXX_ITER in app01 app02 ; do
+  GW_RULE="sol1d-$APPXX_ITER-eu-w1-ext-gw"
+  white "Solution1: $APPXX_ITER GW_RULE='$GW_RULE'"
+  #IP_FWDRULE=$(gcloud compute forwarding-rules list --filter "$FWD_RULE" 2>/dev/null | tail -1 | awk '{print $2}' )
+  bin/kubectl-dev get gateways | egrep "sol1d" | grep True | while read ENV GATEWAY_NAME class IP_GATEWAY ALWAYSTRUE TIME_UP ; do
+     _smart_curl "$IP_GATEWAY" 80 "$APPXX_ITER" "[$ENV] GW_RULE $GW_RULE"
+     echodo curl -s -H "host: passepartout.example.io" "http://$IP_GATEWAY:8080/statusz"
+  done
+done
 
 green  "== Solution2 Artifacts (works) =="
 
