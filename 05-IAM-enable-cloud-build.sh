@@ -9,6 +9,11 @@ function _get_roles_for_service_account() {
   gcloud projects get-iam-policy $PROJECT_ID --filter  bindings.members=serviceAccount:"$1" --flatten="bindings[].members" | grep role: | lolcat
 }
 
+#########################################################################################################
+# This script provides Cloud Build and Compute Serbive accounts with the necessary privileges to
+# run our pipeline.
+#########################################################################################################
+
 # Add your code here:
 # Thanks willisc: https://github.com/palladius/next21-demo-golden-path/blob/main/demo-startup.sh
 # SLOW!!!
@@ -33,10 +38,13 @@ for SUCCINCT_ROLE in \
 done
 
 
-# 2. Add roles to service account for the GKE nodes (which is usually the default compute account)
+# 2. Add roles to GCE service account for the GKE nodes (which is usually the default compute account)
 for SUCCINCT_ROLE in \
     artifactregistry.reader \
-    container.nodeServiceAgent ; do
+    container.developer \
+    container.nodeServiceAgent \
+    storage.objectCreator \
+    ; do
   gcloud projects add-iam-policy-binding --member="serviceAccount:${GCE_SVC_ACCT}" --role "roles/$SUCCINCT_ROLE" "$PROJECT_ID"
 done
 
