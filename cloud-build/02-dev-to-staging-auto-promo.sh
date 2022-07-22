@@ -7,10 +7,15 @@ SCRIPT_VERSION="0.10b"
 # 2022-06-10 0.9  Still doesnt work.
 
 # This will be called
-ARGV_DEPLOY_UNIT="$1"
-ARGV_DEPLOY_REGION="$2" # deploy region
-ARGV_DATETIME="$3"      # should be _ARTIFACT_REPONAME
+ARGV_DEPLOY_UNIT="$1"               # eg 'app02'
+ARGV_DEPLOY_REGION="$2"             # eg 'europe-west1' deploy region
+ARGV_DATETIME="$3"      # it is the short _ARTIFACT_REPONAME, eg ARTIFACT_REPONAME=cicd-plat
 ARGV_DATETIME2="$4"
+
+ARTIFACT_REPONAME="$3"
+export SKAFFOLD_DEFAULT_REPO="${REGION}-docker.pkg.dev/$PROJECT_ID/$ARTIFACT_REPONAME"
+export ARTIFACT_LONG_REPO_PATH="$SKAFFOLD_DEFAULT_REPO"
+export APPXX="$1"
 
 # Fixing this error:
 # ERROR: (gcloud.deploy.releases.create) INVALID_ARGUMENT: resource ids must be lower-case letters, numbers, and hyphens, with the first character a letter, the last a letter or a number, and a 63 character maximum
@@ -40,6 +45,7 @@ echo "CBENV_BUILD_ID:   $CBENV_BUILD_ID"
 echo "PROJECT_ID:       $PROJECT_ID"
 echo "PROJECT_NUMBER:   $PROJECT_NUMBER"
 echo "REV:              $REV"
+echo "SKAFFOLD_DEFAULT_REPO: '$SKAFFOLD_DEFAULT_REPO'"
 # This dont work:
 #echo "CBENV_DATETIME1:  $CBENV_DATETIME1"
 #echo "CBENV_DATETIME2:  $CBENV_DATETIME2"
@@ -104,5 +110,55 @@ gcloud artifacts docker images list "$ARTIFACT_LONG_REPO_PATH" ||
 # </watch in awe>
 echo "Riccardo You need to automate sth like this now: gcloud artifacts docker tags add europe-west1-docker.pkg.dev/cicd-platinum-test001/cicd-plat/ricc-app02-kuruby-skaffold:50c9d16 europe-west1-docker.pkg.dev/cicd-platinum-test001/cicd-plat/ricc-app02-kuruby-skaffold:ricc-gcloud"
 echo "and to make it work you need to parametrize (1) the big long path, then (2) 50c9d16 (easy grep) and thats it. to do 2 you first need 1."
+
+# Step 1 done. I just need to get the `ricc-app02-kuruby-skaffold` part. I hate the day i made this different from app name :)
+#
+# $ gcloud artifacts docker tags list $ARTIFACT_LONG_REPO_PATH/ricc-app02-kuruby-skaffold  --limit 1 --format yaml
+# Listing items under project cicd-platinum-test001, location europe-west1, repository cicd-plat.
+
+# ---
+# image: europe-west1-docker.pkg.dev/cicd-platinum-test001/cicd-plat/ricc-app02-kuruby-skaffold
+# tag: projects/cicd-platinum-test001/locations/europe-west1/repositories/cicd-plat/packages/ricc-app02-kuruby-skaffold/tags/2893429
+# version: projects/cicd-platinum-test001/locations/europe-west1/repositories/cicd-plat/packages/ricc-app02-kuruby-skaffold/versions/sha256:4b1fe68c55c25763d4a2617db4a5d9939bc6e61c5e7130a8268b2ba913061dd7
+LATEST_TAG_FOR_MY_APP=$(gcloud artifacts docker tags list $ARTIFACT_LONG_REPO_PATH/   --format yaml | grep "$APPXX" | egrep "^tag:" | head -1 |  cut -f 2 -d' '  ) # | cut -f 10 -d'/'
+# Smart! Since i dont know here the name of the image but I know it GREPS app0X I'll use this information:
+# $ gcloud artifacts docker tags list $ARTIFACT_LONG_REPO_PATH/   --format yaml | grep app01 | grep tag | head
+# Listing items under project cicd-platinum-test001, location europe-west1, repository cicd-plat.
+# tag: projects/cicd-platinum-test001/locations/europe-west1/repositories/cicd-plat/packages/skaf-app01-python-buildpacks/tags/2893429
+# tag: projects/cicd-platinum-test001/locations/europe-west1/repositories/cicd-plat/packages/skaf-app01-python-buildpacks/tags/2bd4353
+# tag: projects/cicd-platinum-test001/locations/europe-west1/repositories/cicd-plat/packages/skaf-app01-python-buildpacks/tags/3b451cd
+# tag: projects/cicd-platinum-test001/locations/europe-west1/repositories/cicd-plat/packages/skaf-app01-python-buildpacks/tags/50c9d16
+# tag: projects/cicd-platinum-test001/locations/europe-west1/repositories/cicd-plat/packages/skaf-app01-python-buildpacks/tags/ea60714
+
+# No it doesnt work i need both the TAG and the IMAGE so I need to grep both and make an EXACT query in yaml. Look at this how amazing
+
+# gcloud artifacts docker tags list $ARTIFACT_LONG_REPO_PATH/   --format yaml --filter image~app02 --limit 1
+# Listing items under project cicd-platinum-test001, location europe-west1, repository cicd-plat.
+
+# ---
+# image: europe-west1-docker.pkg.dev/cicd-platinum-test001/cicd-plat/ricc-app02-kuruby-skaffold
+# tag: projects/cicd-platinum-test001/locations/europe-west1/repositories/cicd-plat/packages/ricc-app02-kuruby-skaffold/tags/2893429
+# version: projects/cicd-platinum-test001/locations/europe-west1/repositories/cicd-plat/packages/ricc-app02-kuruby-skaffold/versions/sha256:4b1fe68c55c25763d4a2617db4a5d9939bc6e61c5e7130a8268b2ba913061dd7
+
+gcloud artifacts docker tags list $ARTIFACT_LONG_REPO_PATH/  --format yaml --filter image~"$APPXX" --limit 1
+
+function _latest_image_yaml() {
+  gcloud artifacts docker tags list $ARTIFACT_LONG_REPO_PATH/  --format yaml --filter image~"$APPXX" --limit 1
+}
+
+LATEST_IMAGE_YAML="$(_latest_image_yaml)"
+LATEST_IMAGE=$(_latest_image_yaml | egrep "^image: " | cut -f 2 -d' ') # eg, "europe-west1-docker.pkg.dev/cicd-platinum-test001/cicd-plat/ricc-app02-kuruby-skaffold"
+LATEST_TAG=$(_latest_image_yaml | egrep "^tag: " | cut -f 2 -d' ' | cut -f 10 -d/ )   # eg, "projects/cicd-platinum-test001/locations/europe-west1/repositories/cicd-plat/packages/ricc-app02-kuruby-skaffold/tags/2893429" => 2893429
+# This will fail for python :/
+#BUGGED_TAG=$(gcloud artifacts docker tags list "$ARTIFACT_LONG_REPO_PATH/ricc-app02-kuruby-skaffold"  --limit 1 --format yaml | egrep "^tag:" |  cut -f 2 -d' ' | cut -f 10 -d/)
+#echo "BUGGED_TAG: $BUGGED_TAG"
+
+COMMAND_TO_TAG_IS_NOW="gcloud artifacts docker tags add $LATEST_IMAGE:$LATEST_TAG $LATEST_IMAGE:latest-cb2"
+echo "COMMAND_TO_TAG_IS_NOW: $COMMAND_TO_TAG_IS_NOW"
+echo "LATEST_IMAGE_YAML: $LATEST_IMAGE_YAML"
+
+gcloud artifacts docker tags add $LATEST_IMAGE:$LATEST_TAG $LATEST_IMAGE:latest-cb2
+gcloud artifacts docker tags add $LATEST_IMAGE:$LATEST_TAG $LATEST_IMAGE:$DOCKER_IMAGE_VERSION
+
 
 echo Build ended correctly.
