@@ -21,11 +21,15 @@ gcloud auth configure-docker $REGION-docker.pkg.dev
 
 # DEV
 for STANDARD_CLUSTER_NAME in cicd-dev "cicd-canary"  "cicd-prod" ; do
-  # 2022-07-22: changed NumNodes from 3 to 2.
+  # 2022-07-22: changed NumNodes from 3 to 2. TESTED_OK
+  # 2022-07-22: Added Workload Identity by defautl. Not tested yet!
+  # docs: https://cloud.google.com/sdk/gcloud/reference/container/clusters/create
+  # Note:
   proceed_if_error_matches 'ResponseError: code=409, message=Already exists:' \
     gcloud container --project "$PROJECT_ID" clusters create "$STANDARD_CLUSTER_NAME" --region "$REGION" \
       --release-channel "regular" --network "projects/$PROJECT_ID/global/networks/default" --subnetwork "projects/$PROJECT_ID/regions/$REGION/subnetworks/default" \
       --num-nodes=2 \
+      --workload-pool="$PROJECT_ID.svc.id.goog" \
       --cluster-ipv4-cidr "/17" --services-ipv4-cidr "/22" --enable-ip-alias
 done
 

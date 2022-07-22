@@ -40,7 +40,6 @@ proceed_if_error_matches "already exists" \
 #     --project=$PROJECT_ID
 
 #1.5 Enable Workload Identity
-
 gcloud container clusters update "$CLUSTER_1" \
     --region=$GCLOUD_REGION \
     --workload-pool=$PROJECT_ID.svc.id.goog
