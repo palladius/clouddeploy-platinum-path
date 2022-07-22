@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-SCRIPT_VERSION="0.10a"
+SCRIPT_VERSION="0.10b"
 ## HISTORY
 # 2022-07-22 0.10 Starting working with auto-tagging. Cautiously
 # 2022-06-10 0.9  Still doesnt work.
@@ -90,7 +90,19 @@ echo "2  ARTIFACT_REPONAME=$ARTIFACT_REPONAME"
 gcloud artifacts docker images list "$ARTIFACT_LONG_REPO_PATH" ||
   echo Some error maybe ARTIFACT_LONG_REPO_PATH/SKAFFOLD_DEFAULT_REPO unknown. But skaffold has it so should be inferrable from image..
 
+#$ gcloud artifacts docker tags list $ARTIFACT_LONG_REPO_PATH/ricc-app02-kuruby-skaffold
+# Listing items under project cicd-platinum-test001, location europe-west1, repository cicd-plat.
 
+# TAG       IMAGE                                                                                   DIGEST
+# 50c9d16   europe-west1-docker.pkg.dev/cicd-platinum-test001/cicd-plat/ricc-app02-kuruby-skaffold  sha256:00b5cdfe12283126f96838dbdc3dae409f20837a516c6a50d0febc12b1ab777e
+# ea60714   europe-west1-docker.pkg.dev/cicd-platinum-test001/cicd-plat/ricc-app02-kuruby-skaffold  sha256:00b5cdfe12283126f96838dbdc3dae409f20837a516c6a50d0febc12b1ab777e
+# manhouse  europe-west1-docker.pkg.dev/cicd-platinum-test001/cicd-plat/ricc-app02-kuruby-skaffold  sha256:00b5cdfe12283126f96838dbdc3dae409f20837a516c6a50d0febc12b1ab777e
 
+# THSI WORKS! Now I just need to automate it!!!
+# <watch in awe>
+# $ gcloud artifacts docker tags add europe-west1-docker.pkg.dev/cicd-platinum-test001/cicd-plat/ricc-app02-kuruby-skaffold:50c9d16 europe-west1-docker.pkg.dev/cicd-platinum-test001/cicd-plat/ricc-app02-kuruby-skaffold:ricc-gcloud
+# </watch in awe>
+echo "Riccardo You need to automate sth like this now: gcloud artifacts docker tags add europe-west1-docker.pkg.dev/cicd-platinum-test001/cicd-plat/ricc-app02-kuruby-skaffold:50c9d16 europe-west1-docker.pkg.dev/cicd-platinum-test001/cicd-plat/ricc-app02-kuruby-skaffold:ricc-gcloud"
+echo "and to make it work you need to parametrize (1) the big long path, then (2) 50c9d16 (easy grep) and thats it. to do 2 you first need 1."
 
-echo Build2 ended correctly.
+echo Build ended correctly.
