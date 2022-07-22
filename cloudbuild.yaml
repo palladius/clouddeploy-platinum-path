@@ -109,9 +109,10 @@ steps:
     - 'CBENV_DATETIME1=$$DATE-$$TIME'
     - "CBENV_DATETIME2=$$DATE-$$TIME"
     - RELEASE_FILE_PATH=/workspace/.cb.releasename
+    - "ARTIFACT_REPONAME=$_ARTIFACT_REPONAME"
     args:
       - '-c'
-      - cloud-build/02-dev-to-staging-auto-promo.sh "$_DEPLOY_UNIT" "$_DEPLOY_REGION"
+      - cloud-build/02-dev-to-staging-auto-promo.sh "$_DEPLOY_UNIT" "$_DEPLOY_REGION" "$_ARTIFACT_REPONAME"
 options:
   # This allows for missing ENV variables.
   substitution_option: 'ALLOW_LOOSE'

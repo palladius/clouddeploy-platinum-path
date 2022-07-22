@@ -9,7 +9,7 @@ SCRIPT_VERSION="0.10b"
 # This will be called
 ARGV_DEPLOY_UNIT="$1"
 ARGV_DEPLOY_REGION="$2" # deploy region
-ARGV_DATETIME="$3"
+ARGV_DATETIME="$3"      # should be _ARTIFACT_REPONAME
 ARGV_DATETIME2="$4"
 
 # Fixing this error:
