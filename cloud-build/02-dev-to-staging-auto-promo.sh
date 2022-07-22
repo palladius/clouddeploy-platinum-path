@@ -1,8 +1,9 @@
 #!/bin/bash
 
 
-SCRIPT_VERSION="0.10b"
+SCRIPT_VERSION="0.10c"
 ## HISTORY
+# 2022-07-22 0.11 Let's say the first CB2 tagging works :)
 # 2022-07-22 0.10 Starting working with auto-tagging. Cautiously
 # 2022-06-10 0.9  Still doesnt work.
 
@@ -39,14 +40,22 @@ echo "BASH_DATETIME:    $BASH_DATETIME"             # Edward: +%y%m%d-%s but i d
 echo "SUPERDUPER_MAGIC_VERSION:  $SUPERDUPER_MAGIC_VERSION" # The REAL thing, scrapes for VERSION number in proper apps/$MYAPP/VERSION :)
 echo "ARGV1:            $1" # 1. ARGV_DEPLOY_UNIT, eg 'app02'
 echo "ARGV2:            $2" # 2. ARGV_DEPLOY_REGION, eg 'europe-west1'
-echo "ARGV3:            $3" # 3. ARGV_DATETIME - useless, eg '$DATE-£TIME' - useless
-echo "ARGV4:            $4" # 3. ARGV_DATETIME - useless, eg '$DATE-£TIME' - useless
+echo "ARGV3:            $3" # 3.
+echo "ARGV4:            $4" # 4. TBD
 echo "FOO:              $FOO"
 echo "CBENV_BUILD_ID:   $CBENV_BUILD_ID"
 echo "PROJECT_ID:       $PROJECT_ID"
 echo "PROJECT_NUMBER:   $PROJECT_NUMBER"
 echo "REV:              $REV"
+
+echo "== CBv2 vars =="
 echo "SKAFFOLD_DEFAULT_REPO: '$SKAFFOLD_DEFAULT_REPO'"
+echo "ARTIFACT_REPONAME: $ARTIFACT_REPONAME"
+echo "REGION: $REGION"
+echo "SKAFFOLD_DEFAULT_REPO: $SKAFFOLD_DEFAULT_REPO"
+echo "ARTIFACT_LONG_REPO_PATH: $ARTIFACT_LONG_REPO_PATH"
+echo "APPXX: $APPXX"
+
 # This dont work:
 #echo "CBENV_DATETIME1:  $CBENV_DATETIME1"
 #echo "CBENV_DATETIME2:  $CBENV_DATETIME2"
@@ -90,12 +99,12 @@ function cleanup_for_cloudbuild() {
 export SUPERDUPER_MAGIC_VERSION=$(cat "apps/$ARGV_DEPLOY_UNIT/VERSION" | cleanup_for_cloudbuild )
 # This wil make a "2.1BLAh" into a "2-1blah"
 # Adding a 'v' for better semantics
-export DOCKER_IMAGE_VERSION="v$SUPERDUPER_MAGIC_VERSION"
+export DOCKER_IMAGE_VERSION="v${SUPERDUPER_MAGIC_VERSION}"
 
 echo "1 _ARTIFACT_REPONAME=$_ARTIFACT_REPONAME"
 echo "2  ARTIFACT_REPONAME=$ARTIFACT_REPONAME"
-gcloud artifacts docker images list "$ARTIFACT_LONG_REPO_PATH" ||
-  echo Some error maybe ARTIFACT_LONG_REPO_PATH/SKAFFOLD_DEFAULT_REPO unknown. But skaffold has it so should be inferrable from image..
+# gcloud artifacts docker images list "$ARTIFACT_LONG_REPO_PATH" ||
+#   echo Some error maybe ARTIFACT_LONG_REPO_PATH/SKAFFOLD_DEFAULT_REPO unknown. But skaffold has it so should be inferrable from image..
 
 #$ gcloud artifacts docker tags list $ARTIFACT_LONG_REPO_PATH/ricc-app02-kuruby-skaffold
 # Listing items under project cicd-platinum-test001, location europe-west1, repository cicd-plat.
@@ -155,11 +164,18 @@ LATEST_TAG=$(_latest_image_yaml | egrep "^tag: " | cut -f 2 -d' ' | cut -f 10 -d
 #echo "BUGGED_TAG: $BUGGED_TAG"
 
 COMMAND_TO_TAG_IS_NOW="gcloud artifacts docker tags add $LATEST_IMAGE:$LATEST_TAG $LATEST_IMAGE:latest-cb2"
+
+####################
+# LATEST echoes
 echo "COMMAND_TO_TAG_IS_NOW: $COMMAND_TO_TAG_IS_NOW"
 echo "LATEST_IMAGE_YAML: $LATEST_IMAGE_YAML"
+echo "SUPERDUPER_MAGIC_VERSION: $SUPERDUPER_MAGIC_VERSION"
+echo "DOCKER_IMAGE_VERSION: $DOCKER_IMAGE_VERSION"
 
-gcloud artifacts docker tags add $LATEST_IMAGE:$LATEST_TAG $LATEST_IMAGE:latest-cb2
-gcloud artifacts docker tags add $LATEST_IMAGE:$LATEST_TAG $LATEST_IMAGE:$DOCKER_IMAGE_VERSION
+gcloud artifacts docker tags add "$LATEST_IMAGE:$LATEST_TAG" "$LATEST_IMAGE:latest-cb2"
+gcloud artifacts docker tags add "$LATEST_IMAGE:$LATEST_TAG" "$LATEST_IMAGE:$DOCKER_IMAGE_VERSION"
+gcloud artifacts docker tags add "$LATEST_IMAGE:$LATEST_TAG" "$LATEST_IMAGE:v${SUPERDUPER_MAGIC_VERSION}"
+
 
 
 echo Build ended correctly.
