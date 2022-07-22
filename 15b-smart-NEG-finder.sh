@@ -25,6 +25,7 @@ DEFAULT_APP="app01"                                # app01 / app02
 APP_NAME="${1:-$DEFAULT_APP}"
 
 export MYAPP_URLMAP_NAME="${APP_NAME}-$URLMAP_NAME_MTSUFFIX-v2"  # eg: "app02-BLAHBLAH"
+export MYAPP_FWD_RULE="${APP_NAME}-${FWD_RULE_MTSUFFIX}-fwd-v2"      # eg: "app02-BLAHBLAH"
 
 function find_neg_by_target_and_cluster() {
     echo "When you know how it works for one iterate through all four"
@@ -62,9 +63,10 @@ function get_3negs_by_service_name() {
 }
 
 # should all be TRUE :) just deactivating as LAZY
-STEP1_CREATE_BACKEND_SERVICES="false"
-STEP2_CREATE_LOADS_OF_NEGS="false"
+STEP1_CREATE_BACKEND_SERVICES="true"
+STEP2_CREATE_LOADS_OF_NEGS="true"
 STEP3_CREATE_URLMAP="true"
+STEP4_FINAL_HTTPLB="true"
 # retrieve NEG in the 3 zones.
 # jq 'select(.zone != null) | .zone'
 # _kubectl_on_prod get svcneg/k8s1-5d9efb9b-default-app01-sol2-svc-prod-8080-dc533d84 -o json |
@@ -132,7 +134,7 @@ if "$STEP3_CREATE_URLMAP" ; then
 
     { cat << END_OF_URLMAP_GCLOUD_YAML_CONFIG
 # This comment will be lost in a bash pipe, like tears in the rain...
-defaultService: https://www.googleapis.com/compute/v1/projects/$PROJECT_ID/global/backendServices/$SOL2_SERVICE_PROD
+defaultService: https://www.googleapis.com/compute/v1/projects/$PROJECT_ID/global/backendServices/$SOL2_SERVICE_CANARY
 hostRules:
 - hosts:
     # This is for ease of troubleshoot
@@ -151,7 +153,7 @@ pathMatchers:
         httpStatus: 503
         percentage: 100.0
     weightedBackendServices:
-    - backendService: https://www.googleapis.com/compute/v1/projects/$PROJECT_ID/global/backendServices/$SOL2_SERVICE_PROD
+    - backendService: https://www.googleapis.com/compute/v1/projects/$PROJECT_ID/global/backendServices/$SOL2_SERVICE_CANARY
       weight: 1
   # Note this will stop wprking in the future. good luck with STDIN with this error:
   # WARNING: The name of the Url Map must match the value of the 'name' attribute in the YAML file. Future versions of gcloud will fail with an error.
@@ -172,4 +174,19 @@ END_OF_URLMAP_GCLOUD_YAML_CONFIG
     cat k8s/solution2-xlb-gfe3-traffic-split/.tmp-urlmap-v2.yaml |
         # take from STDIN
         gcloud compute url-maps import "$MYAPP_URLMAP_NAME" --source=- --quiet
+fi
+
+if "$STEP4_FINAL_HTTPLB"; then
+
+    white "RIC010: create UrlMap='$MYAPP_URLMAP_NAME' and FwdRule='$MYAPP_FWD_RULE'"
+    proceed_if_error_matches "already exists" \
+        gcloud compute target-http-proxies create "$MYAPP_URLMAP_NAME" --url-map="$MYAPP_URLMAP_NAME"
+
+    proceed_if_error_matches "The resource 'projects/$PROJECT_ID/global/forwardingRules/$MYAPP_FWD_RULE' already exists" \
+      gcloud compute forwarding-rules create "$MYAPP_FWD_RULE" \
+        --load-balancing-scheme=EXTERNAL_MANAGED \
+        --global \
+        --target-http-proxy="$MYAPP_URLMAP_NAME" \
+        --ports=80
+
 fi
