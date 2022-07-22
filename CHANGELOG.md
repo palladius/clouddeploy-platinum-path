@@ -1,3 +1,4 @@
+2022-07-22 v0.17.2  Last day before holidays. Seems like I might be able to fix SOL2 in extremis before OOO?!?
 2022-07-21 v0.17.0  Moving clusters to Standard, no autpilot. Why? The first few hours it fails to deploy and its bad for
                     a demo. Cheaper on the long run, but more frustrating at the beginning.
 2022-07-20 v0.16.0  Fixed solution1 (was pointing to canary/dev for debug, now moved to canary/prod)

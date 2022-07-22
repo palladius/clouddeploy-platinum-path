@@ -1,0 +1,19 @@
+# # Trying to see what happens if I add this which should point to BOTH canary and prod :)
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   # This needs to be rennamed to `__APPNAME__-sol2-svc-canary`
+#   name: __APPNAME__-sol2-svc-both
+#   annotations:
+#     networking.gke.io/max-rate-per-endpoint: "10"
+# #    cloud.google.com/neg: '{"exposed_ports": {"8080":{"name": "__APPNAME__-sol2-svc-both-neg"}}}'
+#     cloud.google.com/neg: '{"exposed_ports": {"8080":{"name": ""}}}'
+# spec:
+#   selector:
+#     app: __K8S_APP_SELECTOR__
+#     #ricc-env: canary
+#     #ricc-env: prod
+#     ricc-awesome-selector: canary-or-prod
+#   ports:
+#   - port: 8080
+#     targetPort: 8080

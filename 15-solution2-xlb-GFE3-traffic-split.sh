@@ -66,6 +66,9 @@ source .env.sh || _fatal 'Couldnt source this'
 #set -x
 set -e
 
+# Now script 15b is taking care of everyting. In want to keep the code working but until its here uncommented
+# I also want to be able to get i back, hence the desperate diciture.
+export YOU_ARE_REALLY_DESPERATE="false"
 
 ########################
 # Add your code here
@@ -174,10 +177,11 @@ proceed_if_error_matches "The resource 'projects/$PROJECT_ID/global/backendServi
 #                    echodo gcloud compute network-endpoint-groups list --filter="$SOL2_SERVICE_CANARY" | grep "$REGION" | awk '{print $1}' | head -1
 #SVC_UGLY_NEG_NAME_CANARY=$(gcloud compute network-endpoint-groups list --filter="$SOL2_SERVICE_CANARY" | grep "$REGION" | awk '{print $1}' | head -1)
 
-SVC_UGLY_NEG_NAME_CANARY=$(_grab_NEG_name_by_filter "$SOL2_SERVICE_CANARY")
-_assert_neg_exists_for_service "$SOL2_SERVICE_CANARY" SVC_UGLY_NEG_NAME_CANARY "$SVC_UGLY_NEG_NAME_CANARY"
-echo "NEG1 Found: $(yellow "$SVC_UGLY_NEG_NAME_CANARY")."
-
+if "$YOU_ARE_REALLY_DESPERATE"; then
+  SVC_UGLY_NEG_NAME_CANARY=$(_grab_NEG_name_by_filter "$SOL2_SERVICE_CANARY")
+  _assert_neg_exists_for_service "$SOL2_SERVICE_CANARY" SVC_UGLY_NEG_NAME_CANARY "$SVC_UGLY_NEG_NAME_CANARY"
+  echo "NEG1 Found: $(yellow "$SVC_UGLY_NEG_NAME_CANARY")."
+fi
 # RIC004
 # add the first backend with NEGs from the canary-$SOL2_SERVICE_CANARY (EXAMPLE BELOW)
 # Lets assume the zones are A B C
@@ -195,17 +199,18 @@ echo "NEG1 Found: $(yellow "$SVC_UGLY_NEG_NAME_CANARY")."
 # app01-sol2-svc-canary-neg                      europe-west1-b  GCE_VM_IP_PORT  0
 # app01-sol2-svc-canary-neg                      europe-west1-c  GCE_VM_IP_PORT  1
 
-gcloud compute network-endpoint-groups list | grep "$SOL2_SERVICE_CANARY" |
-  while read NEGNAME GREPPED_ZONE ENDPOINT_TYPE SIZE ; do
-  proceed_if_error_matches "Duplicate network endpoint groups in backend service." \
-    gcloud compute backend-services add-backend "$SOL2_SERVICE_CANARY" \
-            --network-endpoint-group="$SVC_UGLY_NEG_NAME_CANARY" \
-            --network-endpoint-group-zone="$GREPPED_ZONE" \
-            --balancing-mode=RATE \
-            --max-rate-per-endpoint=10 \
-            --global
-done
-
+if "$YOU_ARE_REALLY_DESPERATE"; then
+        gcloud compute network-endpoint-groups list | grep "$SOL2_SERVICE_CANARY" |
+          while read NEGNAME GREPPED_ZONE ENDPOINT_TYPE SIZE ; do
+          proceed_if_error_matches "Duplicate network endpoint groups in backend service." \
+            gcloud compute backend-services add-backend "$SOL2_SERVICE_CANARY" \
+                    --network-endpoint-group="$SVC_UGLY_NEG_NAME_CANARY" \
+                    --network-endpoint-group-zone="$GREPPED_ZONE" \
+                    --balancing-mode=RATE \
+                    --max-rate-per-endpoint=10 \
+                    --global
+        done
+fi
 # RIC005 create backend for the V2 of the whereami application.
 # [Multitenancy] 17jul22 bring this command UP since here it fails. well i'll leave it twice as no biggie..
 proceed_if_error_matches "The resource 'projects/$PROJECT_ID/global/backendServices/$SOL2_SERVICE_PROD' already exists" \
@@ -218,24 +223,25 @@ proceed_if_error_matches "The resource 'projects/$PROJECT_ID/global/backendServi
 
 # RIC006 grab the names of the NEGs for $SOL2_SERVICE_CANARY
 
-SVC_UGLY_NEG_NAME_PROD=$(_grab_NEG_name_by_filter "$SOL2_SERVICE_PROD" )
-#2022-07-14: for the first time in my life i could experience a gcloud crash..
-_assert_neg_exists_for_service "$SOL2_SERVICE_PROD" SVC_UGLY_NEG_NAME_PROD "$SVC_UGLY_NEG_NAME_PROD"
-echo "NEG2 Found: $(yellow "$SVC_UGLY_NEG_NAME_PROD")."
+if "$YOU_ARE_REALLY_DESPERATE"; then
+      SVC_UGLY_NEG_NAME_PROD=$(_grab_NEG_name_by_filter "$SOL2_SERVICE_PROD" )
+      #2022-07-14: for the first time in my life i could experience a gcloud crash..
+      _assert_neg_exists_for_service "$SOL2_SERVICE_PROD" SVC_UGLY_NEG_NAME_PROD "$SVC_UGLY_NEG_NAME_PROD"
+      echo "NEG2 Found: $(yellow "$SVC_UGLY_NEG_NAME_PROD")."
 
-# RIC007 add the first backend with NEGs from the canary-$SOL2_SERVICE_PROD (EXAMPLE BELOW)
+      # RIC007 add the first backend with NEGs from the canary-$SOL2_SERVICE_PROD (EXAMPLE BELOW)
 
-#for ITERATIVE_ZONE in $REGION-a $REGION-b $REGION-c ; do
-_get_zones_by_region "$REGION" | while read ITERATIVE_ZONE ; do
-  proceed_if_error_matches "Duplicate network endpoint groups in backend service." \
-    gcloud compute backend-services add-backend "$SOL2_SERVICE_PROD" \
-      --network-endpoint-group="$SVC_UGLY_NEG_NAME_PROD" \
-      --network-endpoint-group-zone="$ITERATIVE_ZONE" \
-      --balancing-mode=RATE \
-      --max-rate-per-endpoint=10 \
-      --global
-done
-
+      #for ITERATIVE_ZONE in $REGION-a $REGION-b $REGION-c ; do
+      _get_zones_by_region "$REGION" | while read ITERATIVE_ZONE ; do
+        proceed_if_error_matches "Duplicate network endpoint groups in backend service." \
+          gcloud compute backend-services add-backend "$SOL2_SERVICE_PROD" \
+            --network-endpoint-group="$SVC_UGLY_NEG_NAME_PROD" \
+            --network-endpoint-group-zone="$ITERATIVE_ZONE" \
+            --balancing-mode=RATE \
+            --max-rate-per-endpoint=10 \
+            --global
+      done
+fi
 
 # RIC008 Create a default url-map
 proceed_if_error_matches "The resource 'projects/$PROJECT_ID/global/urlMaps/$MYAPP_URLMAP_NAME' already exists" \

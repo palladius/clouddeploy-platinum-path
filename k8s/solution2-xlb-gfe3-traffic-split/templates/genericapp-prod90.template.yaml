@@ -5,8 +5,9 @@ metadata:
   name: __APPNAME__-sol2-svc-prod # was: svc-prod90 # former svc2-prod90
   annotations:
     networking.gke.io/max-rate-per-endpoint: "10"
-#    cloud.google.com/neg: '{"exposed_ports": {"8080":{"name": ""}}}'
-    cloud.google.com/neg: '{"exposed_ports": {"8080":{"name": "__APPNAME__-sol2-svc-prod-neg"}}}'
+    cloud.google.com/neg: '{"exposed_ports": {"8080":{"name": ""}}}'
+# Name NEEDS to be autodetected because it needs to be different per cluster.
+#    cloud.google.com/neg: '{"exposed_ports": {"8080":{"name": "__APPNAME__-sol2-svc-prod-neg"}}}'
 spec:
   selector:
     app: __K8S_APP_SELECTOR__
