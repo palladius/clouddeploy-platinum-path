@@ -1,8 +1,9 @@
 #!/bin/bash
 
 
-SCRIPT_VERSION="0.9d"
+SCRIPT_VERSION="0.10a"
 ## HISTORY
+# 2022-07-22 0.10 Starting working with auto-tagging. Cautiously
 # 2022-06-10 0.9  Still doesnt work.
 
 # This will be called
@@ -63,7 +64,7 @@ RELEASE_NAME=$(cat "$RELEASE_FILE_PATH")
 echo "5. RELEASE_NAME=$RELEASE_NAME"
 # /workspace/.cb.releasename
 
-# do something with this... like
+# 6. do something with this... like
 DESIRED_STAGE="staging"
 CLOUD_DEPLOY_REGION="$ARGV_DEPLOY_REGION"
 LATEST_SUCCESSFUL_RELEASE="$RELEASE_NAME"
@@ -74,3 +75,19 @@ gcloud deploy releases promote --to-target "$DESIRED_STAGE" --region "$CLOUD_DEP
 # 7 TODO Ricc, create a TAG with "v$VERSION" and push the tag for AR to pick it up.
 # possibly also symlink it to `LATEST`` or better `LATEST-STAGING` (because we have
 # four latest).
+echo "Step 07. Magic tagging now.."
+function cleanup_for_cloudbuild() {
+  tr '[:upper:]' '[:lower:]' | sed -e 's/[^a-z0-9-]/-/g'
+}
+# This is script version, like apps/app01/VERSION => "2.1blah"
+export SUPERDUPER_MAGIC_VERSION=$(cat "apps/$ARGV_DEPLOY_UNIT/VERSION" | cleanup_for_cloudbuild )
+# This wil make a "2.1BLAh" into a "2-1blah"
+# Adding a 'v' for better semantics
+export DOCKER_IMAGE_VERSION="v$SUPERDUPER_MAGIC_VERSION"
+gcloud artifacts docker images list "$ARTIFACT_LONG_REPO_PATH" ||
+  echo Some error maybe ARTIFACT_LONG_REPO_PATH unknown. But skaffold has it so should be inferrable from image..
+
+
+
+
+echo Build2 ended correctly.

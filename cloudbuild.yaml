@@ -112,3 +112,6 @@ steps:
     args:
       - '-c'
       - cloud-build/02-dev-to-staging-auto-promo.sh "$_DEPLOY_UNIT" "$_DEPLOY_REGION"
+options:
+  # This allows for missing ENV variables.
+  substitution_option: 'ALLOW_LOOSE'
