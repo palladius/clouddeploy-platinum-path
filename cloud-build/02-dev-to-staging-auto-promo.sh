@@ -12,7 +12,8 @@ ARGV_DEPLOY_REGION="$2"             # eg 'europe-west1' deploy region
 ARGV_DATETIME="$3"      # it is the short _ARTIFACT_REPONAME, eg ARTIFACT_REPONAME=cicd-plat
 ARGV_DATETIME2="$4"
 
-ARTIFACT_REPONAME="$3"
+export ARTIFACT_REPONAME="$3"
+export REGION="$2"
 export SKAFFOLD_DEFAULT_REPO="${REGION}-docker.pkg.dev/$PROJECT_ID/$ARTIFACT_REPONAME"
 export ARTIFACT_LONG_REPO_PATH="$SKAFFOLD_DEFAULT_REPO"
 export APPXX="$1"
