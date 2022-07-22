@@ -39,7 +39,9 @@ proceed_if_error_matches "already exists" \
 #     trafficdirector.googleapis.com \
 #     --project=$PROJECT_ID
 
-#1.5 Enable Workload Identity
+#1.5 Enable Workload Identity [missing from marzini]
+# TODO(ricc): remove me once testing the creation of GKE clusters with WrklId.
+# Note that in AutoPilot this is not needed.
 gcloud container clusters update "$CLUSTER_1" \
     --region=$GCLOUD_REGION \
     --workload-pool=$PROJECT_ID.svc.id.goog
