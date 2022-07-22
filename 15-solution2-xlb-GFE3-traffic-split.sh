@@ -181,17 +181,30 @@ echo "NEG1 Found: $(yellow "$SVC_UGLY_NEG_NAME_CANARY")."
 # RIC004
 # add the first backend with NEGs from the canary-$SOL2_SERVICE_CANARY (EXAMPLE BELOW)
 # Lets assume the zones are A B C
-#  for ITERATIVE_ZONE in $REGION-a $REGION-b $REGION-c ; do - but some regions dont have A B C so...
-_get_zones_by_region "$REGION" | while read ITERATIVE_ZONE ; do
+# _get_zones_by_region "$REGION" | while read ITERATIVE_ZONE ; do
+#   proceed_if_error_matches "Duplicate network endpoint groups in backend service." \
+#     gcloud compute backend-services add-backend "$SOL2_SERVICE_CANARY" \
+#             --network-endpoint-group="$SVC_UGLY_NEG_NAME_CANARY" \
+#             --network-endpoint-group-zone="$ITERATIVE_ZONE" \
+#             --balancing-mode=RATE \
+#             --max-rate-per-endpoint=10 \
+#             --global
+# done
+# Not all Zone have a neg, for instance it could just be n A and B
+# gcloud compute network-endpoint-groups list | grep app01-sol2-svc-canary-neg
+# app01-sol2-svc-canary-neg                      europe-west1-b  GCE_VM_IP_PORT  0
+# app01-sol2-svc-canary-neg                      europe-west1-c  GCE_VM_IP_PORT  1
+
+gcloud compute network-endpoint-groups list | grep "$SOL2_SERVICE_CANARY" |
+  while read NEGNAME GREPPED_ZONE ENDPOINT_TYPE SIZE ; do
   proceed_if_error_matches "Duplicate network endpoint groups in backend service." \
     gcloud compute backend-services add-backend "$SOL2_SERVICE_CANARY" \
             --network-endpoint-group="$SVC_UGLY_NEG_NAME_CANARY" \
-            --network-endpoint-group-zone="$ITERATIVE_ZONE" \
+            --network-endpoint-group-zone="$GREPPED_ZONE" \
             --balancing-mode=RATE \
             --max-rate-per-endpoint=10 \
             --global
 done
-
 
 # RIC005 create backend for the V2 of the whereami application.
 # [Multitenancy] 17jul22 bring this command UP since here it fails. well i'll leave it twice as no biggie..
@@ -246,7 +259,9 @@ hostRules:
   - ${APP_NAME}-sol2-xlb-gfe3.$MY_DOMAIN
     # this is part of the new Passepartout philosophy for ease of troubleshooting
   - sol2-passepartout.example.io
-  pathMatcher: path-matcher-1
+  - passepartout.example.io
+  - www.example.io
+  pathMatcher: path-matcher-dmarzi
 pathMatchers:
 - defaultRouteAction:
     faultInjectionPolicy:
@@ -256,7 +271,9 @@ pathMatchers:
     weightedBackendServices:
     - backendService: https://www.googleapis.com/compute/v1/projects/$PROJECT_ID/global/backendServices/$SOL2_SERVICE_CANARY
       weight: 1
-  name: path-matcher-1
+  # Note this will stop wprking in the future. good luck with STDIN with this error:
+  # WARNING: The name of the Url Map must match the value of the 'name' attribute in the YAML file. Future versions of gcloud will fail with an error.
+  name: path-matcher-dmarzi
   routeRules:
   - matchRules:
     - prefixMatch: /
@@ -268,7 +285,8 @@ pathMatchers:
       - backendService: https://www.googleapis.com/compute/v1/projects/$PROJECT_ID/global/backendServices/$SOL2_SERVICE_PROD
         weight: 78
 END_OF_URLMAP_GCLOUD_YAML_CONFIG
-} | gcloud compute url-maps import "$MYAPP_URLMAP_NAME" --source=- --quiet
+} | tee k8s/solution2-xlb-gfe3-traffic-split/.tmp-urlmap.yaml |
+gcloud compute url-maps import "$MYAPP_URLMAP_NAME" --source=- --quiet
 
 
 #proceed_if_error_matches "The resource 'projects/$PROJECT_ID/global/targetHttpProxies/http-svc9010-lb' already exists" \

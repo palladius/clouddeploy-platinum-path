@@ -96,7 +96,6 @@ function cleanup_for_cloudbuild() {
   tr '[:upper:]' '[:lower:]' | sed -e 's/[^a-z0-9-]/-/g'
 }
 # This is script version, like apps/app01/VERSION => "2.1blah"
-export SUPERDUPER_MAGIC_VERSION=$(cat "apps/$ARGV_DEPLOY_UNIT/VERSION" | cleanup_for_cloudbuild )
 # This wil make a "2.1BLAh" into a "2-1blah"
 # Adding a 'v' for better semantics
 export DOCKER_IMAGE_VERSION="v${SUPERDUPER_MAGIC_VERSION}"
