@@ -74,6 +74,9 @@ done
 echo Make sure your bash is AT LEAST v4 or more:
 bash --version | egrep 'GNU bash' | lolcat # | cut -f 4 -d' ' | lolcat
 
+# Feel free to add this PS1 to your bashrc :)
+#export PS1="\[\e]0;${PROJECT_ID:-MissingProject}\a\]\u@\h:\[\033[1;34m\]\w$([[ -n $PROJECT_ID ]] && printf " \[\033[1;33m\](%s)" "${PROJECT_ID}" )\[\033[00m\]$ \[\033k\033\\"
+
 # End of your code here
 _allgood_post_script
 echo Everything is ok.
