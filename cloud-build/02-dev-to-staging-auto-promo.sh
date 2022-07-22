@@ -84,8 +84,11 @@ export SUPERDUPER_MAGIC_VERSION=$(cat "apps/$ARGV_DEPLOY_UNIT/VERSION" | cleanup
 # This wil make a "2.1BLAh" into a "2-1blah"
 # Adding a 'v' for better semantics
 export DOCKER_IMAGE_VERSION="v$SUPERDUPER_MAGIC_VERSION"
+
+echo "1 _ARTIFACT_REPONAME=$_ARTIFACT_REPONAME"
+echo "2  ARTIFACT_REPONAME=$ARTIFACT_REPONAME"
 gcloud artifacts docker images list "$ARTIFACT_LONG_REPO_PATH" ||
-  echo Some error maybe ARTIFACT_LONG_REPO_PATH unknown. But skaffold has it so should be inferrable from image..
+  echo Some error maybe ARTIFACT_LONG_REPO_PATH/SKAFFOLD_DEFAULT_REPO unknown. But skaffold has it so should be inferrable from image..
 
 
 
