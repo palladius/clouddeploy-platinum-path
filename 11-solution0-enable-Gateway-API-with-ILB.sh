@@ -30,14 +30,23 @@ proceed_if_error_matches "already exists" \
 
 
 # 1. # enable required APIs (project level)
-#TODO(ricc): refactor to 00
-gcloud services enable \
-    container.googleapis.com \
-    gkehub.googleapis.com \
-    multiclusterservicediscovery.googleapis.com \
-    multiclusteringress.googleapis.com \
-    trafficdirector.googleapis.com \
-    --project=$PROJECT_ID
+# refactored into 00
+# gcloud services enable \
+#     container.googleapis.com \
+#     gkehub.googleapis.com \
+#     multiclusterservicediscovery.googleapis.com \
+#     multiclusteringress.googleapis.com \
+#     trafficdirector.googleapis.com \
+#     --project=$PROJECT_ID
+
+#1.5 Enable Workload Identity
+
+gcloud container clusters update "$CLUSTER_1" \
+    --region=$GCLOUD_REGION \
+    --workload-pool=$PROJECT_ID.svc.id.goog
+gcloud container clusters update "$CLUSTER_2" \
+    --region=$GCLOUD_REGION \
+    --workload-pool=$PROJECT_ID.svc.id.goog
 
 #2. register clusters to the fleet (cluster level)
 gcloud container fleet memberships register "$CLUSTER_1" \

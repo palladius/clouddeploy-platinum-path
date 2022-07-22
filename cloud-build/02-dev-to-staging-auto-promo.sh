@@ -1,9 +1,9 @@
 #!/bin/bash
 
 
-SCRIPT_VERSION="0.10c"
+SCRIPT_VERSION="0.11"
 ## HISTORY
-# 2022-07-22 0.11 Let's say the first CB2 tagging works :)
+# 2022-07-22 0.11 Let's say the first CB2 tagging works :) Tag to latest works. tag to v$VERSION still buggy: https://screenshot.googleplex.com/7mEvUQ8N3URY3De
 # 2022-07-22 0.10 Starting working with auto-tagging. Cautiously
 # 2022-06-10 0.9  Still doesnt work.
 
@@ -173,6 +173,7 @@ echo "SUPERDUPER_MAGIC_VERSION: $SUPERDUPER_MAGIC_VERSION"
 echo "DOCKER_IMAGE_VERSION: $DOCKER_IMAGE_VERSION"
 
 gcloud artifacts docker tags add "$LATEST_IMAGE:$LATEST_TAG" "$LATEST_IMAGE:latest-cb2"
+gcloud artifacts docker tags add "$LATEST_IMAGE:$LATEST_TAG" "$LATEST_IMAGE:latest" # a big day for humanity!
 gcloud artifacts docker tags add "$LATEST_IMAGE:$LATEST_TAG" "$LATEST_IMAGE:$DOCKER_IMAGE_VERSION"
 gcloud artifacts docker tags add "$LATEST_IMAGE:$LATEST_TAG" "$LATEST_IMAGE:v${SUPERDUPER_MAGIC_VERSION}"
 

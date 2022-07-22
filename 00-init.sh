@@ -24,7 +24,12 @@ gcloud services enable \
   clouddeploy.googleapis.com \
   compute.googleapis.com \
   container.googleapis.com \
-  sourcerepo.googleapis.com
+  sourcerepo.googleapis.com \
+    gkehub.googleapis.com \
+    multiclusterservicediscovery.googleapis.com \
+    multiclusteringress.googleapis.com \
+    trafficdirector.googleapis.com
+    # last 4 are for ILB setup.
 
 # Set defaults..
 gcloud config set run/region "$REGION"
