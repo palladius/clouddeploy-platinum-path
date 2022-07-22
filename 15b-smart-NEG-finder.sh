@@ -1,7 +1,7 @@
 #!/bin/bash
 source .env.sh || fatal "Config doesnt exist please create .env.sh"
 
-set -x
+#set -x
 set -e
 
 ## This is a test script which needs to be reconciled into the 15.sh.
@@ -23,6 +23,8 @@ set -e
 
 DEFAULT_APP="app01"                                # app01 / app02
 APP_NAME="${1:-$DEFAULT_APP}"
+K8S_APP_SELECTOR="${AppsInterestingHash["$APP_NAME-SELECTOR"]}"
+K8S_APP_IMAGE="${AppsInterestingHash["$APP_NAME-IMAGE"]}"
 
 export MYAPP_URLMAP_NAME="${APP_NAME}-$URLMAP_NAME_MTSUFFIX-v2"  # eg: "app02-BLAHBLAH"
 export MYAPP_FWD_RULE="${APP_NAME}-${FWD_RULE_MTSUFFIX}-fwd-v2"      # eg: "app02-BLAHBLAH"
@@ -54,15 +56,16 @@ yellow "================================================================"
 
 #_kubectl_on_canary describe svcneg/k8s1-a2ee2205-default-app01-sol2-svc-canary-8080-ac75b011
 
-function get_3negs_by_service_name() {
-    # todo not only prod
-    CLUSTER="$1"
-    _kubectl_on_target "$CLUSTER" get svcneg/k8s1-5d9efb9b-default-app01-sol2-svc-prod-8080-dc533d84 -o json 2>/dev/null |
-        jq -r "select(.metadata.labels.\"networking.gke.io/service-name\" == \"app01-sol2-svc-prod\") .status.networkEndpointGroups[].selfLink , .metadata.labels.\"networking.gke.io/service-name\""
+# function get_3negs_by_service_name() {
+#     # todo not only prod
+#     CLUSTER="$1"
+#     _kubectl_on_target "$CLUSTER" get svcneg/k8s1-5d9efb9b-default-app01-sol2-svc-prod-8080-dc533d84 -o json 2>/dev/null |
+#         jq -r "select(.metadata.labels.\"networking.gke.io/service-name\" == \"app01-sol2-svc-prod\") .status.networkEndpointGroups[].selfLink , .metadata.labels.\"networking.gke.io/service-name\""
 
-}
+# }
 
 # should all be TRUE :) just deactivating as LAZY
+STEP0_APPLY_MANIFESTS="true"
 STEP1_CREATE_BACKEND_SERVICES="true"
 STEP2_CREATE_LOADS_OF_NEGS="true"
 STEP3_CREATE_URLMAP="true"
@@ -76,6 +79,14 @@ STEP4_FINAL_HTTPLB="true"
 # _kubectl_on_prod get svcneg -o json 2>/dev/null |
 #     jq -r "select(.metadata.labels.\"networking.gke.io/service-name\" == \"app01-sol2-svc-prod\") .status.networkEndpointGroups[].selfLink , .metadata.labels.\"networking.gke.io/service-name\""
 
+
+if "$STEP0_APPLY_MANIFESTS" ; then
+
+    kubectl --context="$GKE_CANARY_CLUSTER_CONTEXT" apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
+    kubectl --context="$GKE_PROD_CLUSTER_CONTEXT" apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
+
+    solution2_kubectl_apply # kubectl apply buridone :)
+fi
 
 if "$STEP1_CREATE_BACKEND_SERVICES"; then
     for TYPE_OF_TRAFFIC in canary prod ; do
