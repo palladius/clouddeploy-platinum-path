@@ -2,6 +2,8 @@
 
 source ./.env.sh || exit 42
 
+N_TESTS="20"
+
 _smart_curl() {
   IP=$1
   PORT=$2
@@ -72,6 +74,15 @@ for APPXX_ITER in app01 app02 ; do
     red "NOT FOUND IP for FWD_RULE '$FWD_RULE' for $APPXX_ITER. Skipping."
   else
     _smart_curl "$IP_FWDRULE" 80 "$APPXX_ITER" "FwdRule $FWD_RULE"
+    # now if it works...
+    #bin/solution2-simple-curl "$APPXX_ITER"
+
+
+    for i in $(seq 1 "$N_TESTS" ); do
+      ret=$(curl -s -H 'host: www.example.io' http://$IP_FWDRULE/statusz)
+      echo "$ret"
+    done | sort | uniq -c
+
   fi
 done
 

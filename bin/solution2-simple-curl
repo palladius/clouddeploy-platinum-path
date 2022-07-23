@@ -1,0 +1,21 @@
+#! /opt/homebrew/bin/bash
+
+#echo Yes Im playing on my local Mac..
+
+source .env.sh >/dev/null
+
+APP="${1:-app01}"
+N_TESTS="12"
+
+#gcloud compute forwarding-rules list --filter "$FWD_RULE_FOR_MY_APP" | lolcat
+
+
+for APP in app01 app02 ; do
+    LB_NAME="$APP-$URLMAP_NAME_MTSUFFIX"
+    IP_FWDRULE_FOR_MY_APP=$(gcloud compute forwarding-rules list --filter "$LB_NAME" | tail -1 | awk '{print $2}')
+    _deb "IP_FWDRULE[$APP]: $IP_FWDRULE_FOR_MY_APP"
+    for i in $(seq 1 "$N_TESTS" ); do
+        ret=$(curl -s -H 'host: www.example.io' http://$IP_FWDRULE_FOR_MY_APP/statusz)
+        echo "$ret"
+    done # | sort | uniq -c
+done
