@@ -29,16 +29,28 @@ K8S_APP_IMAGE="${AppsInterestingHash["$APP_NAME-IMAGE"]}"
 export MYAPP_URLMAP_NAME="${APP_NAME}-$URLMAP_NAME_MTSUFFIX-v2"  # eg: "app02-BLAHBLAH"
 export MYAPP_FWD_RULE="${APP_NAME}-${FWD_RULE_MTSUFFIX}-fwd-v2"      # eg: "app02-BLAHBLAH"
 
-function find_neg_by_target_and_cluster() {
-    echo "When you know how it works for one iterate through all four"
-    TARGET="$1"
-    CLUSTER="$2"
-}
 
-yellow "================================================================"
+_check_your_os_supports_bash_arrays
+
+# uname -a | grep Darwin &&
+#   _fatal "Sorry Mac doesnt support bashes yet. Unless you install it view brew and add /opt/homebrew/opt/bash/bin/bash to path :)" ||
+#     echo "All good, Bash v5 should support Arrays."
+# On Mac, I'm tryiong brew install bash
+
+# function find_neg_by_target_and_cluster() {
+#     echo "When you know how it works for one iterate through all four"
+#     TARGET="$1"
+#     CLUSTER="$2"
+# }
+
+white "================================================================"
 white  "Note. This script needs to be destroyed and reconciled once it works ;)"
-yellow "APP_NAME:      $APP_NAME"
-yellow "================================================================"
+white "APP_NAME:           $APP_NAME"
+white "MYAPP_URLMAP_NAME:  $MYAPP_URLMAP_NAME"
+white "MYAPP_FWD_RULE:     $MYAPP_FWD_RULE"
+white "K8S_APP_SELECTOR:   $K8S_APP_SELECTOR"
+white "K8S_APP_IMAGE:      $K8S_APP_IMAGE"
+white "================================================================"
 
 # per rimuovere NEG vecchi devi prima rimuovere SERVIZI vecchi
 # yellow Show NEG in cluster prod:
