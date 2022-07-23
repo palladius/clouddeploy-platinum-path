@@ -49,17 +49,20 @@ if "$DEBUG" ; then
     echo "K8S_APP_IMAGE:       $K8S_APP_IMAGE"
     echo "SOL2_SERVICE_CANARY: $SOL2_SERVICE_CANARY"
     echo "SOL2_SERVICE_PROD:   $SOL2_SERVICE_PROD"
+    echo  IP to ping:
+    echo "MYAPP_URLMAP_NAME:   $MYAPP_URLMAP_NAME"
 fi
 # echo 01a Showing CANARY Endpoints: SOL2_SERVICE_CANARY
 # gcloud compute network-endpoint-groups list --filter="$SOL2_SERVICE_CANARY" | lolcat
 # echo 01b Showing PROD Endpoints: SOL2_SERVICE_PROD
 # gcloud compute network-endpoint-groups list --filter="$SOL2_SERVICE_PROD" | lolcat
+gcloud compute forwarding-rules list --filter "$FWD_RULE_FOR_MY_APP" | lolcat
 
 IP_FWDRULE_FOR_MY_APP=$(gcloud compute forwarding-rules list --filter "$FWD_RULE_FOR_MY_APP" | tail -1 | awk '{print $2}')
 echo
 white "Trying $N_TRIES times to curl my host at IP: $IP_FWDRULE_FOR_MY_APP [$FWD_RULE_FOR_MY_APP]..."
 for i in `seq 1 $N_TRIES`; do
-    curl -H "Host: sol2-passepartout.example.io" $IP_FWDRULE_FOR_MY_APP/  2>/dev/null |grep statusz  # | egrep -i 'statusz' # egrep "$SMART_EGREP" | head -1
+    echodo curl -H "Host: ww.example.io" http://$IP_FWDRULE_FOR_MY_APP/statusz   # | egrep -i 'statusz' # egrep "$SMART_EGREP" | head -1
 done
 echo ''
 

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 source .env.sh || fatal "Config doesnt exist please create .env.sh"
 
 #set -x
@@ -50,6 +50,10 @@ white "MYAPP_URLMAP_NAME:  $MYAPP_URLMAP_NAME"
 white "MYAPP_FWD_RULE:     $MYAPP_FWD_RULE"
 white "K8S_APP_SELECTOR:   $K8S_APP_SELECTOR"
 white "K8S_APP_IMAGE:      $K8S_APP_IMAGE"
+white "FWD_RULE_MTSUFFIX:  $FWD_RULE_MTSUFFIX"
+white "URLMAP_NAME_MTSUFFIX: $URLMAP_NAME_MTSUFFIX"
+white "BASH:               $BASH"
+white "BASH_VERSION:       $BASH_VERSION"
 white "================================================================"
 
 # per rimuovere NEG vecchi devi prima rimuovere SERVIZI vecchi
