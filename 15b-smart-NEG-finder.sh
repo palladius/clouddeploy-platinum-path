@@ -1,8 +1,14 @@
 #!/usr/bin/env bash
 source .env.sh || fatal "Config doesnt exist please create .env.sh"
 
+VER="1.1"
 #set -x
 set -e
+
+# 2022-07-23 1.1 changed some names and dflt path to PROD, not canary.
+# 2022-07-23 --- BUG: Seems like calling script with app02 drains some serviceds to app01 (!!) so it seems to me like either script 15 or 15b have some
+#                     common variables/setups. Yyikes!
+# 2022-07-22 1.0 first functional version.
 
 ## This is a test script which needs to be reconciled into the 15.sh.
 
@@ -101,7 +107,7 @@ if "$STEP0_APPLY_MANIFESTS" ; then
     kubectl --context="$GKE_CANARY_CLUSTER_CONTEXT" apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
     kubectl --context="$GKE_PROD_CLUSTER_CONTEXT" apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
 
-    solution2_kubectl_apply # kubectl apply buridone :)
+    solution2_kubectl_apply "$APP_NAME" # kubectl apply buridone :)
 fi
 
 if "$STEP1_CREATE_BACKEND_SERVICES"; then
@@ -152,16 +158,16 @@ fi
 
 
 if "$STEP3_CREATE_URLMAP" ; then
-    SOL2_SERVICE_PROD="$APP_NAME-sol2-svc-prod"
-    SOL2_SERVICE_CANARY="$APP_NAME-sol2-svc-canary"
+    APPDEPENDENT_SOL2_SERVICE_PROD="$APP_NAME-sol2-svc-prod"
+    APPDEPENDENT_SOL2_SERVICE_CANARY="$APP_NAME-sol2-svc-canary"
 
     proceed_if_error_matches "The resource 'projects/$PROJECT_ID/global/urlMaps/$MYAPP_URLMAP_NAME' already exists" \
-        gcloud compute url-maps create "$MYAPP_URLMAP_NAME" --default-service "$SOL2_SERVICE_PROD"
+        gcloud compute url-maps create "$MYAPP_URLMAP_NAME" --default-service "$APPDEPENDENT_SOL2_SERVICE_PROD"
 
 
     { cat << END_OF_URLMAP_GCLOUD_YAML_CONFIG
 # This comment will be lost in a bash pipe, like tears in the rain...
-defaultService: https://www.googleapis.com/compute/v1/projects/$PROJECT_ID/global/backendServices/$SOL2_SERVICE_CANARY
+defaultService: https://www.googleapis.com/compute/v1/projects/$PROJECT_ID/global/backendServices/$APPDEPENDENT_SOL2_SERVICE_PROD
 hostRules:
 - hosts:
     # This is for ease of troubleshoot
@@ -180,7 +186,7 @@ pathMatchers:
         httpStatus: 503
         percentage: 100.0
     weightedBackendServices:
-    - backendService: https://www.googleapis.com/compute/v1/projects/$PROJECT_ID/global/backendServices/$SOL2_SERVICE_CANARY
+    - backendService: https://www.googleapis.com/compute/v1/projects/$PROJECT_ID/global/backendServices/$APPDEPENDENT_SOL2_SERVICE_CANARY
       weight: 1
   # Note this will stop wprking in the future. good luck with STDIN with this error:
   # WARNING: The name of the Url Map must match the value of the 'name' attribute in the YAML file. Future versions of gcloud will fail with an error.
@@ -191,9 +197,9 @@ pathMatchers:
     priority: 1
     routeAction:
       weightedBackendServices:
-      - backendService: https://www.googleapis.com/compute/v1/projects/$PROJECT_ID/global/backendServices/$SOL2_SERVICE_CANARY
+      - backendService: https://www.googleapis.com/compute/v1/projects/$PROJECT_ID/global/backendServices/$APPDEPENDENT_SOL2_SERVICE_CANARY
         weight: 22
-      - backendService: https://www.googleapis.com/compute/v1/projects/$PROJECT_ID/global/backendServices/$SOL2_SERVICE_PROD
+      - backendService: https://www.googleapis.com/compute/v1/projects/$PROJECT_ID/global/backendServices/$APPDEPENDENT_SOL2_SERVICE_PROD
         weight: 78
 END_OF_URLMAP_GCLOUD_YAML_CONFIG
 } | tee k8s/solution2-xlb-gfe3-traffic-split/.tmp-urlmap-v2.yaml
