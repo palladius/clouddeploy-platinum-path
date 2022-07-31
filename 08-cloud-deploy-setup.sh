@@ -13,12 +13,6 @@ function delete_old_pipelines() {
 }
 # Add your code here:
 
-# # Add roles to default compute engine service account
-# PROJECT_NUMBER=$(gcloud projects list --filter="$PROJECT_ID" --format="value(PROJECT_NUMBER)")
-# GCE_SVC_ACCT="${PROJECT_NUMBER}-compute@developer.gserviceaccount.com"
-# gcloud projects add-iam-policy-binding --member="serviceAccount:${GCE_SVC_ACCT}" --role "roles/storage.objectCreator" "$PROJECT_ID"
-# gcloud projects add-iam-policy-binding --member="serviceAccount:${GCE_SVC_ACCT}" --role "roles/container.developer" "$PROJECT_ID"
-
 CLOUD_DEPLOY_TEMPLATING_VER="1-2"
 
 cat clouddeploy.template.yaml |
@@ -28,8 +22,7 @@ cat clouddeploy.template.yaml |
   tee .tmp.clouddeploy.yaml |
   egrep 'cluster|VER'
 
-#yellow TODO
-# Zurich doesnt work, :( euw6
+# In Zurich doesnt work, :( euw6
 gcloud --project $PROJECT_ID deploy apply --file .tmp.clouddeploy.yaml --region "$CLOUD_DEPLOY_REGION"
 
 
