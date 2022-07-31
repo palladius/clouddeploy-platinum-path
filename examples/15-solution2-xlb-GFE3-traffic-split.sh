@@ -15,34 +15,34 @@ function _fatal() {
     echo "[FATAL] $*" >&1
     exit 42
 }
-# function _get_zones_by_region() {
-#   #    🐼 gcloud compute zones list | egrep ^europe-west1
-#   # europe-west1-b             europe-west1             UP
-#   # europe-west1-d             europe-west1             UP
-#   # europe-west1-c             europe-west1             UP
-#   REGION="$1"
-#   gcloud compute zones list | egrep "^$REGION" | awk '{print $1}'
-# }
-# function _assert_neg_exists_for_service() {
-#   SOL2_SERVICE_NAME="$1"
-#   NEG_ID="$2"
-#   SVC_UGLY_NEG_NAME="$3"
+function _get_zones_by_region() {
+  #    🐼 gcloud compute zones list | egrep ^europe-west1
+  # europe-west1-b             europe-west1             UP
+  # europe-west1-d             europe-west1             UP
+  # europe-west1-c             europe-west1             UP
+  REGION="$1"
+  gcloud compute zones list | egrep "^$REGION" | awk '{print $1}'
+}
+function _assert_neg_exists_for_service() {
+  SOL2_SERVICE_NAME="$1"
+  NEG_ID="$2"
+  SVC_UGLY_NEG_NAME="$3"
 
-#   if [ -z "$SVC_UGLY_NEG_NAME" ]; then
-#     echo "BEGIN \$SVC_UGLY_NEG_NAME ($NEG_ID) is empty. No NEGS found for '$SOL2_SERVICE_NAME'."
-#     gcloud compute network-endpoint-groups list --filter="$SOL2_SERVICE_NAME" | lolcat
-#     gcloud compute network-endpoint-groups list --filter="$SOL2_SERVICE_NAME" | grep "$REGION" | awk '{print $1}' | head -1
-#     _fatal "END(_assert_neg_exists_for_service) \$SVC_UGLY_NEG_NAME ($NEG_ID) is empty. No NEGS found for '$SOL2_SERVICE_NAME'."
-#   else
-#     echo "_assert_neg_exists_for_service() NEG $NEG_ID Found: $(yellow $SVC_UGLY_NEG_NAME)."
-#   fi
-# }
+  if [ -z "$SVC_UGLY_NEG_NAME" ]; then
+    echo "BEGIN \$SVC_UGLY_NEG_NAME ($NEG_ID) is empty. No NEGS found for '$SOL2_SERVICE_NAME'."
+    gcloud compute network-endpoint-groups list --filter="$SOL2_SERVICE_NAME" | lolcat
+    gcloud compute network-endpoint-groups list --filter="$SOL2_SERVICE_NAME" | grep "$REGION" | awk '{print $1}' | head -1
+    _fatal "END(_assert_neg_exists_for_service) \$SVC_UGLY_NEG_NAME ($NEG_ID) is empty. No NEGS found for '$SOL2_SERVICE_NAME'."
+  else
+    echo "_assert_neg_exists_for_service() NEG $NEG_ID Found: $(yellow $SVC_UGLY_NEG_NAME)."
+  fi
+}
 
-# function _grab_NEG_name_by_filter() {
-#   FILTER="$1"
-#   white "[DEBUG] Grabbing NEG name by filter '$FILTER'" >&2
-#   gcloud compute network-endpoint-groups list --filter="$FILTER" | grep "$REGION" | awk '{print $1}' | head -1
-# }
+function _grab_NEG_name_by_filter() {
+  FILTER="$1"
+  white "[DEBUG] Grabbing NEG name by filter '$FILTER'" >&2
+  gcloud compute network-endpoint-groups list --filter="$FILTER" | grep "$REGION" | awk '{print $1}' | head -1
+}
 # solution2_kubectl_apply() {
 #   smart_apply_k8s_templates "$GKE_SOLUTION2_ENVOY_XLB_TRAFFICSPLITTING_SETUP_DIR"
 
@@ -170,21 +170,34 @@ if "$YOU_ARE_REALLY_DESPERATE"; then
   # echo "NEG1 Found: $(yellow "$SVC_UGLY_NEG_NAME_CANARY")."
 fi
 # RIC004
+# add the first backend with NEGs from the canary-$SOL2_SERVICE_CANARY (EXAMPLE BELOW)
+# Lets assume the zones are A B C
+# _get_zones_by_region "$REGION" | while read ITERATIVE_ZONE ; do
+#   proceed_if_error_matches "Duplicate network endpoint groups in backend service." \
+#     gcloud compute backend-services add-backend "$SOL2_SERVICE_CANARY" \
+#             --network-endpoint-group="$SVC_UGLY_NEG_NAME_CANARY" \
+#             --network-endpoint-group-zone="$ITERATIVE_ZONE" \
+#             --balancing-mode=RATE \
+#             --max-rate-per-endpoint=10 \
+#             --global
+# done
+# Not all Zone have a neg, for instance it could just be n A and B
+# gcloud compute network-endpoint-groups list | grep app01-sol2-svc-canary-neg
+# app01-sol2-svc-canary-neg                      europe-west1-b  GCE_VM_IP_PORT  0
+# app01-sol2-svc-canary-neg                      europe-west1-c  GCE_VM_IP_PORT  1
 
-
-# if "$YOU_ARE_REALLY_DESPERATE"; then
-#         gcloud compute network-endpoint-groups list | grep "$SOL2_SERVICE_CANARY" |
-#           while read NEGNAME GREPPED_ZONE ENDPOINT_TYPE SIZE ; do
-#           proceed_if_error_matches "Duplicate network endpoint groups in backend service." \
-#             gcloud compute backend-services add-backend "$SOL2_SERVICE_CANARY" \
-#                     --network-endpoint-group="$SVC_UGLY_NEG_NAME_CANARY" \
-#                     --network-endpoint-group-zone="$GREPPED_ZONE" \
-#                     --balancing-mode=RATE \
-#                     --max-rate-per-endpoint=10 \
-#                     --global
-#         done
-# fi
-
+if "$YOU_ARE_REALLY_DESPERATE"; then
+        gcloud compute network-endpoint-groups list | grep "$SOL2_SERVICE_CANARY" |
+          while read NEGNAME GREPPED_ZONE ENDPOINT_TYPE SIZE ; do
+          proceed_if_error_matches "Duplicate network endpoint groups in backend service." \
+            gcloud compute backend-services add-backend "$SOL2_SERVICE_CANARY" \
+                    --network-endpoint-group="$SVC_UGLY_NEG_NAME_CANARY" \
+                    --network-endpoint-group-zone="$GREPPED_ZONE" \
+                    --balancing-mode=RATE \
+                    --max-rate-per-endpoint=10 \
+                    --global
+        done
+fi
 # RIC005 create backend for the V2 of the whereami application.
 # [Multitenancy] 17jul22 bring this command UP since here it fails. well i'll leave it twice as no biggie..
 proceed_if_error_matches "The resource 'projects/$PROJECT_ID/global/backendServices/$SOL2_SERVICE_PROD' already exists" \
@@ -197,25 +210,25 @@ proceed_if_error_matches "The resource 'projects/$PROJECT_ID/global/backendServi
 
 # RIC006 grab the names of the NEGs for $SOL2_SERVICE_CANARY
 
-# if "$YOU_ARE_REALLY_DESPERATE"; then
-#       SVC_UGLY_NEG_NAME_PROD=$(_grab_NEG_name_by_filter "$SOL2_SERVICE_PROD" )
-#       #2022-07-14: for the first time in my life i could experience a gcloud crash..
-#       _assert_neg_exists_for_service "$SOL2_SERVICE_PROD" SVC_UGLY_NEG_NAME_PROD "$SVC_UGLY_NEG_NAME_PROD"
-#       echo "NEG2 Found: $(yellow "$SVC_UGLY_NEG_NAME_PROD")."
+if "$YOU_ARE_REALLY_DESPERATE"; then
+      SVC_UGLY_NEG_NAME_PROD=$(_grab_NEG_name_by_filter "$SOL2_SERVICE_PROD" )
+      #2022-07-14: for the first time in my life i could experience a gcloud crash..
+      _assert_neg_exists_for_service "$SOL2_SERVICE_PROD" SVC_UGLY_NEG_NAME_PROD "$SVC_UGLY_NEG_NAME_PROD"
+      echo "NEG2 Found: $(yellow "$SVC_UGLY_NEG_NAME_PROD")."
 
-#       # RIC007 add the first backend with NEGs from the canary-$SOL2_SERVICE_PROD (EXAMPLE BELOW)
+      # RIC007 add the first backend with NEGs from the canary-$SOL2_SERVICE_PROD (EXAMPLE BELOW)
 
-#       #for ITERATIVE_ZONE in $REGION-a $REGION-b $REGION-c ; do
-#       _get_zones_by_region "$REGION" | while read ITERATIVE_ZONE ; do
-#         proceed_if_error_matches "Duplicate network endpoint groups in backend service." \
-#           gcloud compute backend-services add-backend "$SOL2_SERVICE_PROD" \
-#             --network-endpoint-group="$SVC_UGLY_NEG_NAME_PROD" \
-#             --network-endpoint-group-zone="$ITERATIVE_ZONE" \
-#             --balancing-mode=RATE \
-#             --max-rate-per-endpoint=10 \
-#             --global
-#       done
-# fi
+      #for ITERATIVE_ZONE in $REGION-a $REGION-b $REGION-c ; do
+      _get_zones_by_region "$REGION" | while read ITERATIVE_ZONE ; do
+        proceed_if_error_matches "Duplicate network endpoint groups in backend service." \
+          gcloud compute backend-services add-backend "$SOL2_SERVICE_PROD" \
+            --network-endpoint-group="$SVC_UGLY_NEG_NAME_PROD" \
+            --network-endpoint-group-zone="$ITERATIVE_ZONE" \
+            --balancing-mode=RATE \
+            --max-rate-per-endpoint=10 \
+            --global
+      done
+fi
 
 # RIC008 Create a default url-map
 proceed_if_error_matches "The resource 'projects/$PROJECT_ID/global/urlMaps/$MYAPP_URLMAP_NAME' already exists" \
@@ -224,7 +237,6 @@ proceed_if_error_matches "The resource 'projects/$PROJECT_ID/global/urlMaps/$MYA
 # Import traffic-split url-map (from file) dmarzi way (obsolete):
 #gcloud compute url-maps import "$MYAPP_URLMAP_NAME" --source='k8s/xlb-gfe3-traffic-split/step2/urlmap-split.yaml'
 
-if "$YOU_ARE_REALLY_DESPERATE"; then
 # RIC009b Import traffic-split url-map (from STDIN - so templating is trivially obvious)
 {
 # this curly bracket doesnt open subshell. I didnt know! I used normal brackets before today.
@@ -269,32 +281,37 @@ END_OF_URLMAP_GCLOUD_YAML_CONFIG
 } | tee k8s/solution2-xlb-gfe3-traffic-split/.tmp-urlmap.yaml |
 gcloud compute url-maps import "$MYAPP_URLMAP_NAME" --source=- --quiet
 
-fi
+
+#proceed_if_error_matches "The resource 'projects/$PROJECT_ID/global/targetHttpProxies/http-svc9010-lb' already exists" \
 
 # RIC010 Finalize 1/2
 
-# white "RIC010: create UrlMap='$MYAPP_URLMAP_NAME' and FwdRule='$MYAPP_FWD_RULE'"
+white "RIC010: create UrlMap='$MYAPP_URLMAP_NAME' and FwdRule='$MYAPP_FWD_RULE'"
 
-# proceed_if_error_matches "already exists" \
-#   gcloud compute target-http-proxies create "$MYAPP_URLMAP_NAME" --url-map="$MYAPP_URLMAP_NAME"
+proceed_if_error_matches "already exists" \
+  gcloud compute target-http-proxies create "$MYAPP_URLMAP_NAME" --url-map="$MYAPP_URLMAP_NAME"
+
+# TODO(ricc): change 89/11 to 90/10. Just to prove granularity :)
+# "$MYAPP_URLMAP_NAME"
 
 
-
-# # # RIC010 2/2 Finalize
-# proceed_if_error_matches "The resource 'projects/$PROJECT_ID/global/forwardingRules/$MYAPP_FWD_RULE' already exists" \
-#   gcloud compute forwarding-rules create "$MYAPP_FWD_RULE" \
-#     --load-balancing-scheme=EXTERNAL_MANAGED \
-#     --global \
-#     --target-http-proxy="$MYAPP_URLMAP_NAME" \
-#     --ports=80
+# # RIC010 2/2 Finalize
+proceed_if_error_matches "The resource 'projects/$PROJECT_ID/global/forwardingRules/$MYAPP_FWD_RULE' already exists" \
+  gcloud compute forwarding-rules create "$MYAPP_FWD_RULE" \
+    --load-balancing-scheme=EXTERNAL_MANAGED \
+    --global \
+    --target-http-proxy="$MYAPP_URLMAP_NAME" \
+    --ports=80
 
 # Get IP of this Load Balancer
 IP_FWDRULE=$(gcloud compute forwarding-rules list --filter "$MYAPP_FWD_RULE" | tail -1 | awk '{print $2}')
 
 # why 20-30? since 90% is a 9vs1 in 10 tries. It takes 20-30 to see a few svc2 hits :)
-yellow "Now you can try this:             1) IP=$IP_FWDRULE"
-yellow 'Now you can try this 20-30 times: 2) curl -H "Host: sol2-passepartout.example.io" http://'$IP_FWDRULE'/'
-yellow ".. or simply call bin/curl-them-all"
+echo "Now you can try this:             1) IP=$IP_FWDRULE"
+echo 'Now you can try this 20-30 times: 2) curl -H "Host: sol2-passepartout.example.io" http://'$IP_FWDRULE'/'
+
+# solution2_kubectl_apply
+
 
 
 ########################
@@ -302,7 +319,7 @@ yellow ".. or simply call bin/curl-them-all"
 ########################
 
 # Check everything ok:
-#bin/kubectl-triune get all | grep "sol2"
+bin/kubectl-triune get all | grep "sol2"
 
 green "Everything is ok. Now check your newly created '$APP_NAME' LB for its IP (should be '$IP_FWDRULE')"
 

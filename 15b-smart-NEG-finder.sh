@@ -10,6 +10,12 @@ set -e
 #                     common variables/setups. Yyikes!
 # 2022-07-22 1.0 first functional version.
 
+SCRIPT_LOG_FILE=".15bsh.lastStdOutAndErr"
+# Logging output both in STD XX and on file
+echo "Logging output and error ro: $SCRIPT_LOG_FILE"
+exec > >(tee -a "$SCRIPT_LOG_FILE") 2>&1
+
+
 ## This is a test script which needs to be reconciled into the 15.sh.
 
 # _kubectl_on_prod describe service app01-sol2-svc-canary
@@ -212,6 +218,7 @@ fi
 if "$STEP4_FINAL_HTTPLB"; then
 
     white "RIC010: create UrlMap='$MYAPP_URLMAP_NAME' and FwdRule='$MYAPP_FWD_RULE'"
+
     proceed_if_error_matches "already exists" \
         gcloud compute target-http-proxies create "$MYAPP_URLMAP_NAME" --url-map="$MYAPP_URLMAP_NAME"
 

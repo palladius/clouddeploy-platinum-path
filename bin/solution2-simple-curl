@@ -1,6 +1,6 @@
 #! /opt/homebrew/bin/bash
 
-#echo Yes Im playing on my local Mac..
+echo "Yes Im playing on my local Mac.. wont work on your Linux machine Im afraid unless you change line1."
 
 source .env.sh >/dev/null
 
