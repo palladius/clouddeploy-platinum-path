@@ -29,6 +29,7 @@ for SUCCINCT_ROLE in \
     artifactregistry.writer \
     container.developer \
     iam.serviceAccountUser \
+    cloudbuild.connectionAdmin \
     clouddeploy.jobRunner \
     clouddeploy.releaser \
     source.reader \
@@ -41,6 +42,7 @@ done
 # 2. Add roles to GCE service account for the GKE nodes (which is usually the default compute account)
 for SUCCINCT_ROLE in \
     artifactregistry.reader \
+    cloudbuild.connectionAdmin \
     container.developer \
     container.nodeServiceAgent \
     storage.objectCreator \
