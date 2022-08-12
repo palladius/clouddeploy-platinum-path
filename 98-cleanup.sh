@@ -4,11 +4,6 @@ function _fatal() {
     echo "$*" >&1
     exit 42
 }
-function _after_allgood_post_script() {
-    echo "[$0] All good on $(date)"
-    CLEANED_UP_DOLL0="$(basename $0)"
-    touch .executed_ok."$CLEANED_UP_DOLL0".touch
-}
 
 # Created with codelabba.rb v.1.7a
 source .env.sh || _fatal 'Couldnt source this'

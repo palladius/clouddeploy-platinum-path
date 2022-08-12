@@ -29,5 +29,5 @@ cloud-build-local --config="cloudbuild.yaml" --dryrun=false \
   --push "apps/$MODULE_TO_BUILD/"
 
 # End of your code here
-_allgood_post_script()
+_allgood_post_script
 echo Everything is ok.
