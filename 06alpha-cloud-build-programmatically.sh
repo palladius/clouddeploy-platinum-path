@@ -9,7 +9,7 @@ set -x
 set -e
 
 # Execute code here.
-
+yellow '!WARNING! This is currently in alpha and requries project id whitelisting'
 # Following instructions at https://docs.google.com/document/d/1TxMJOAzyth-MMx7boimLY7iEnaDKOu3ZX2QoTzuxUNU/preview#
 
 #1 create service account by calling API in wrong way (!)
@@ -49,6 +49,7 @@ gcloud alpha builds triggers create repository \
       --branch-pattern='main' --build-config="cloudbuild.yaml" \
       --region=us-central1
 
+echo 'TODO(ricc): once and if youre satisfied with this workload you need to update names to be compatible with the ones in script 07'
 
 # End of your code here
 _allgood_post_script
