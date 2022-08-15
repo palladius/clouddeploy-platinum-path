@@ -12,7 +12,22 @@
 kind: Gateway
 apiVersion: gateway.networking.k8s.io/v1alpha2
 metadata:
-  name: sol1d-__PREFIX__-ext-gw     # dmarzi_was: external-store-http. Must be the same name than in other place..
+  name: sol1a-__PREFIX__-ext-gw2mc     # dmarzi_was: external-store-http. Must be the same name than in other place..
+spec:
+#  gatewayClassName: gke-l7-gxlb # do NOT touch :)
+  gatewayClassName: gke-l7-gxlb-mc # Post-Croatian test
+  listeners:
+  - name: http
+    protocol: HTTP
+    port: 80               # I've also tried 8080
+    allowedRoutes:
+      kinds:
+      - kind: HTTPRoute
+---
+kind: Gateway
+apiVersion: gateway.networking.k8s.io/v1alpha2
+metadata:
+  name: sol1a-__PREFIX__-ext-gw     # dmarzi_was: external-store-http. Must be the same name than in other place..
 spec:
   gatewayClassName: gke-l7-gxlb # do NOT touch :)
   listeners:

@@ -81,7 +81,8 @@ white "Skipping step2 since it was already done for Solution0."
 gcloud container clusters get-credentials "cicd-prod" --region "$REGION" # --project "$PROJECT_ID"
 
 # Fixing #CanProd2Dev4debug
-# #CanProd2Dev4debug bin/kubectl-dev auth can-i '*' '*' --all-namespaces | grep yes
+# #CanProd2Dev4debug
+bin/kubectl-dev auth can-i '*' '*' --all-namespaces | grep yes
 bin/kubectl-canary auth can-i '*' '*' --all-namespaces | grep yes
 bin/kubectl-prod   auth can-i '*' '*' --all-namespaces | grep yes
 
@@ -105,12 +106,14 @@ gcloud container fleet multi-cluster-services describe | grep "state: ACTIVE"
 ##################################################
 ## dmarzi004 enable gateway apis (in prod)
 ##################################################
-##CanProd2Dev4debug bin/kubectl-dev  apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
+##CanProd2Dev4debug
+bin/kubectl-dev  apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
 bin/kubectl-prod   apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
 bin/kubectl-canary apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
 # I should see FOUR not TWO: #CanProd2Dev4debug
 bin/kubectl-canary get gatewayclass
 bin/kubectl-prod get gatewayclass
+bin/kubectl-dev get gatewayclass
 
 ##################################################
 ## dmarzi005 enable GKE gateway controller just in GKE01.
@@ -122,9 +125,9 @@ bin/kubectl-prod get gatewayclass
 # gcloud container fleet ingress enable \
 #     --config-membership=/projects/$PROJECT_ID/locations/global/memberships/cicd-prod \
 #     --project=$PROJECT_ID
-# gcloud container fleet ingress enable \
-#     --config-membership=/projects/$PROJECT_ID/locations/global/memberships/cicd-canary \
-#     --project=$PROJECT_ID
+gcloud container fleet ingress enable \
+    --config-membership=/projects/$PROJECT_ID/locations/global/memberships/cicd-canary \
+    --project=$PROJECT_ID
 
 
 ################################################################################

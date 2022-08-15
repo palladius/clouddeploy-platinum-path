@@ -30,21 +30,23 @@ bin/kubectl-dev get gateway | _egrep_ipaddress | grep "sol1" | grep "$GATEWAY_RE
     while read ENV GATEWAY IP ; do
 
     echo == [$ENV] Riccardo manual/boring checks on GATEWAY=$GATEWAY IP=$IP ==
-    _curl_http_code  http://$IP/
+    #_curl_http_code  http://$IP/
     _curl_http_code  http://$IP/statusz
     #_curl_http_code -H "host: passepartout.example.io" http://$IP/
-    _curl_http_code -H "Host: sol1-passepartout.example.io" http://$IP/
-    _curl_http_code -H "host: www.example.io" http://$IP/statusz
+    _curl_http_code -H "host: sol-passepartout.example.io" http://$IP/statusz
+    _curl_http_code -H "host: www.example.io"              http://$IP/statusz
     # These are still failing..
-    _curl_http_code -H "host: passepartout.example.io" http://$IP/_justprod/
-    _curl_http_code -H "Host: sol1-passepartout.example.io" http://$IP/_justcanary/
+    #_curl_http_code -H "host: passepartout.example.io"      http://$IP/_justprod/
+    #_curl_http_code -H "host: sol1-passepartout.example.io" http://$IP/_justcanary/
 
     # if i works, statusz is single line by construction :)
     # TODO: oly do if the original curl of http://$IP/ works.
-    curl -s -H "host: passepartout.example.io" http://$IP/statusz 2>/dev/null | head -1
+    #curl -s -H "host: passepartout.example.io" http://$IP/statusz 2>/dev/null | head -1
     echo
 
 done
+
+bin/kubectl-prod get all,gateway,httproute
 
 yellow Iterating now the False Gateways:
 bin/kubectl-dev get gateway | grep sol1 | grep False..
@@ -60,12 +62,13 @@ yellow 'Crazy idea. Getting 2 existing pods in "ns:cicd-dev" dev stuff and move 
 
 mkdir -p k8s/solution1-GatewayAPI-pod-scaling-GXLB/tmp/
 if /bin/false ; then
-kubectl --context="$GKE_DEV_CLUSTER_CONTEXT" --namespace cicd-dev  get deployments.apps app01-kupython -o yaml > \
+    kubectl --context="$GKE_DEV_CLUSTER_CONTEXT" --namespace cicd-dev get deployments.apps app01-kupython -o yaml > \
         k8s/solution1-GatewayAPI-pod-scaling-GXLB/tmp/app01-kupython.deployment.yaml|
             sed -e 's/name: app01-kupython/name: app01-kupython-tmp-sol1d/'
     kubectl --context="$GKE_DEV_CLUSTER_CONTEXT" --namespace cicd-dev  get deployments.apps app02-kuruby -o yaml > \
         k8s/solution1-GatewayAPI-pod-scaling-GXLB/tmp/app02-kuruby.deployment.yaml |
             sed -e 's/name: app02-kuruby/name: app02-kuruby-tmp-sol1d/'
 fi
+
 # no cicd-dev this time but BASE namespace :)
 kubectl --context="$GKE_DEV_CLUSTER_CONTEXT" apply -f  k8s/solution1-GatewayAPI-pod-scaling-GXLB/tmp/

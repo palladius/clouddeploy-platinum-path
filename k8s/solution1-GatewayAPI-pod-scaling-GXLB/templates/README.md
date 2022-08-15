@@ -22,3 +22,9 @@ More info in https://github.com/palladius/clouddeploy-platinum-path/issues/22
 
 * changed all `sol1-` to `sol1d-`
 * changing pointer from `ricc-awesome-selector: canary-or-prod` to `dev-or-staging`
+
+# 2022-08-15
+
+* moved so0l1d to sol1a.
+* leaving sol1d in DEV under tmp/ folder (not checked in :/ )
+* moving back to CAN/PROD for the selector, so now I hacve TMP/ pointing to dev and TEMPLATES/ pointing to CANPROD.

@@ -14,54 +14,43 @@
 kind: HTTPRoute
 apiVersion: gateway.networking.k8s.io/v1alpha2
 metadata:
-  name: sol1d-__PREFIX__
+  name: sol1a-__PREFIX__
   labels:
-    gateway: sol1d-__PREFIX__-ext-gw    # dmarzi_was: external-store-http
+    gateway: sol1a-__PREFIX__-ext-gw    # dmarzi_was: external-store-http
 spec:
   parentRefs:
-  - name: sol1d-__PREFIX__-ext-gw       # dmarzi_was: external-store-http
+  - name: sol1a-__PREFIX__-ext-gw       # dmarzi_was: external-store-http
   hostnames:
-  - "sol1d-__APPNAME__.example.io"    # kept for easy curl/documented static commands :)
-  - "sol1d-__PREFIX__.example.io"     # bake in region as well... klets see which is best
-  - "sol1d-__APPNAME__.__MY_DOMAIN__" # being changed by script 12 into $MY_DOMAIN.
-  - sol1d-passepartout.example.io     # being lazy, so it ALWAYS works for troubleshooting reasons :)
+  - sol1a-__APPNAME__.example.io     # kept for easy curl/documented static commands :)
+  - sol1a-__PREFIX__.example.io      # bake in region as well... klets see which is best
+  - sol1a-__APPNAME__.__MY_DOMAIN__  # being changed by script 12 into $MY_DOMAIN.
+  - sol1a-passepartout.example.io    # being lazy, so it ALWAYS works for troubleshooting reasons :)
+  - sol1-passepartout.example.io
   - passepartout.example.io          # being even lazier :)
   - www.example.io                   # now beat this :)
   rules:
   - backendRefs:
-    - name: sol1d-__PREFIX__-common-svc # dmarzi_was: store-common-svc
+    - name: sol1a-__PREFIX__-common-svc # dmarzi_was: store-common-svc
       port: 8080
-  # - matches:
-  #   - path:
-  #       value: /_dev
-  #   backendRefs:
-  #   - name: sol1d-__PREFIX__-dev
-  #     port: 8080
-  # - matches:
-  #   - path:
-  #       value: /_staging
-  #   backendRefs:
-  #   - name: sol1d-__PREFIX__-staging
-  #     port: 8080
-
-# spec:
-#   parentRefs:
-#   - name: external-store-http
-#   hostnames:
-#   - "store.example.io"
-#   rules:
-#   - backendRefs:
-#     - name: store-common-svc
-#       port: 8080
-#   - matches:
-#     - path:
-#         value: /canary
-#     backendRefs:
-#     - name: store-v2
-#       port: 8080
-#   - matches:
-#     - path:
-#         value: /v1
-#     backendRefs:
-#     - name: store-v1
-#       port: 8080
+---
+kind: HTTPRoute
+apiVersion: gateway.networking.k8s.io/v1alpha2
+metadata:
+  name: sol1a-__PREFIX__-mc
+  labels:
+    gateway: sol1a-__PREFIX__-ext-gw2mc    # dmarzi_was: external-store-http
+spec:
+  parentRefs:
+  - name: sol1a-__PREFIX__-ext-gw2mc       # dmarzi_was: external-store-http
+  hostnames:
+  - sol1a-__APPNAME__.example.io     # kept for easy curl/documented static commands :)
+  - sol1a-__PREFIX__.example.io      # bake in region as well... klets see which is best
+  - sol1a-__APPNAME__.__MY_DOMAIN__  # being changed by script 12 into $MY_DOMAIN.
+  - sol1a-passepartout.example.io    # being lazy, so it ALWAYS works for troubleshooting reasons :)
+  - sol1-passepartout.example.io
+  - passepartout.example.io          # being even lazier :)
+  - www.example.io                   # now beat this :)
+  rules:
+  - backendRefs:
+    - name: sol1a-__PREFIX__-common-svc # dmarzi_was: store-common-svc
+      port: 8080

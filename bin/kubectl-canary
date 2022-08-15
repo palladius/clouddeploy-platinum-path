@@ -2,7 +2,8 @@
 
 source ./.env.sh || exit 42
 
-#kubectl --context="$GKE_DEV_CLUSTER_CONTEXT" --namespace cicd-dev "$@" 2>&1 | _prepend "[DEV]  " | _ignore_verbose_warnings
-#kubectl --context="$GKE_DEV_CLUSTER_CONTEXT"    "$@" 2>&1 | _prepend "[STAG] " | _ignore_verbose_warnings
-kubectl --context="$GKE_CANARY_CLUSTER_CONTEXT" "$@" 2>&1 | _prepend "[CANA] "| _filter_k8s_errors | _colorize_kubectl_output
-#kubectl --context="$GKE_PROD_CLUSTER_CONTEXT"   "$@" 2>&1 | _prepend "[PROD] "
+if [ "$VANILLA" = "TRUE" ] ; then
+    kubectl --context="$GKE_CANARY_CLUSTER_CONTEXT" "$@"
+else
+    kubectl --context="$GKE_CANARY_CLUSTER_CONTEXT" "$@" 2>&1 | _prepend "[CANA] "| _filter_k8s_errors | _colorize_kubectl_output
+fi

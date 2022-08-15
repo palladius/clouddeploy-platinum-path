@@ -15,7 +15,7 @@ kind: Service
 #[DEV]  error: error validating "k8s/solution1-GatewayAPI-pod-scaling-GXLB/out/myapp-dev.service.yaml": error validating data: ValidationError(Service): unknown field "namespace" in io.k8s.api.core.v1.Service; if you choose to ignore these errors, turn validation off with --validate=false
 #namespace: cicd-dev
 metadata:
-  name: sol1d-__PREFIX__-dev
+  name: sol1a-__PREFIX__-dev
   annotations:
     networking.gke.io/max-rate-per-endpoint: "10"
   # this is only needed in SOL2 as I call it MANUALLY.
