@@ -1,3 +1,5 @@
+2022-08-15 v0.18.2  Fixed big #CanProd2Dev4debug bug
+2022-08-15 v0.18.2  Obsoleted solution 0/3. There can be only.. 2! :)
 2022-08-15 v0.18.1  Renamed consistently `dmarzi-proxy` to `platinumn-proxy`
 2022-08-   v0.18.0  Back from OOO. Now coding the 6.5 solution leveraging Cloud Build’s new Repos API.
 2022-07-22 v0.17.2  Last day before holidays. Seems like I might be able to fix SOL2 in extremis before OOO?!?

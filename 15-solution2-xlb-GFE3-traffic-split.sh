@@ -168,6 +168,7 @@ if "$YOU_ARE_REALLY_DESPERATE"; then
   # SVC_UGLY_NEG_NAME_CANARY=$(_grab_NEG_name_by_filter "$SOL2_SERVICE_CANARY")
   # _assert_neg_exists_for_service "$SOL2_SERVICE_CANARY" SVC_UGLY_NEG_NAME_CANARY "$SVC_UGLY_NEG_NAME_CANARY"
   # echo "NEG1 Found: $(yellow "$SVC_UGLY_NEG_NAME_CANARY")."
+  echo -en ''
 fi
 # RIC004
 

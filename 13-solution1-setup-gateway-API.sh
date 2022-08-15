@@ -77,12 +77,13 @@ gcloud container clusters update cicd-dev \
 ##################################################
 white "Skipping step2 since it was already done for Solution0."
 
-# default to PROD
-gcloud container clusters get-credentials "cicd-dev" --region "$REGION" # --project "$PROJECT_ID"
+# default to PROD #CanProd2Dev4debug
+gcloud container clusters get-credentials "cicd-prod" --region "$REGION" # --project "$PROJECT_ID"
 
-bin/kubectl-dev auth can-i '*' '*' --all-namespaces | grep yes
-#bin/kubectl-canary auth can-i '*' '*' --all-namespaces | grep yes
-#bin/kubectl-prod   auth can-i '*' '*' --all-namespaces | grep yes
+# Fixing #CanProd2Dev4debug
+# #CanProd2Dev4debug bin/kubectl-dev auth can-i '*' '*' --all-namespaces | grep yes
+bin/kubectl-canary auth can-i '*' '*' --all-namespaces | grep yes
+bin/kubectl-prod   auth can-i '*' '*' --all-namespaces | grep yes
 
 ##################################################
 ## dmarzi003 enable multi-cluster services
@@ -104,11 +105,12 @@ gcloud container fleet multi-cluster-services describe | grep "state: ACTIVE"
 ##################################################
 ## dmarzi004 enable gateway apis (in prod)
 ##################################################
-bin/kubectl-dev  apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
-#bin/kubectl-prod   apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
-#bin/kubectl-canary apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
-# I should see FOUR not TWO:
-bin/kubectl-dev get gatewayclass
+##CanProd2Dev4debug bin/kubectl-dev  apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
+bin/kubectl-prod   apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
+bin/kubectl-canary apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
+# I should see FOUR not TWO: #CanProd2Dev4debug
+bin/kubectl-canary get gatewayclass
+bin/kubectl-prod get gatewayclass
 
 ##################################################
 ## dmarzi005 enable GKE gateway controller just in GKE01.
@@ -156,10 +158,9 @@ smart_apply_k8s_templates "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR"
 #yellow Now we can issue a kubectl on the out dir..
 #echo "TODO:  kubectl apply -f $GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/out/"
 
-#kubectl --context="$GKE_CANARY_CLUSTER_CONTEXT" apply -f "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/out/"
-#kubectl --context="$GKE_PROD_CLUSTER_CONTEXT"   apply -f "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/out/"
-#kubectl --context="$GKE_DEV_CLUSTER_CONTEXT" apply -f "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/out/"
-bin/kubectl-dev apply -f "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/out/"
+# #CanProd2Dev4debug bin/kubectl-dev apply -f "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/out/"
+bin/kubectl-canary apply -f "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/out/"
+bin/kubectl-prod   apply -f "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/out/"
 
 # Check everything ok:
 bin/kubectl-triune get all | grep "sol1"

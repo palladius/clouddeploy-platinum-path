@@ -24,8 +24,13 @@ proceed_if_error_matches "already exists" \
      --role=ACTIVE \
      --region="$GCLOUD_REGION" \
      --network='default' \
-     --range='192.168.0.0/24' # changed after dmarzi_-_proxy rename..
+     --enable-private-ip-google-access \
+     --range='192.168.1.0/24' # changed after dmarzi_-_proxy (192.168.0.0/24) rename..
 
+# wont work with enable Pvt IP from above :/ but it DOES work
+gcloud compute networks subnets update platinum-proxy --enable-private-ip-google-access
+
+exit 42
 # bingo! https://screenshot.googleplex.com/h5ZXAUgy5wWrvqh
 
 

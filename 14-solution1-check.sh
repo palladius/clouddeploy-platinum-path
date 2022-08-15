@@ -35,11 +35,11 @@ function _manage_gateway_endpoint() {
 # Created with codelabba.rb v.1.7a
 source .env.sh || _fatal 'Couldnt source this'
 set -e
+set -x
 
 ########################
 # Add your code here
 ########################
-#  We're going to use  - "sol1-__APPNAME__.example.io"    # kept for easy curl/documented static commands :)
 DEFAULT_APP="app01"                       # app01 / app02
 APP_NAME="${1:-$DEFAULT_APP}"
 K8S_APP_SELECTOR="${AppsInterestingHash["$APP_NAME-SELECTOR"]}"
@@ -84,9 +84,9 @@ white "Silently [re-]applying k8s manifests in $GKE_SOLUTION1_XLB_PODSCALING_SET
     #     _fatal "ERR02. Double dash smells like an EMPTY STRING variable was instanced. Exiting to be on safe side" ||
     #         echo Ok. No errors. All templated variables seem to have been done.
 
-#    bin/kubectl-canary apply -f "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/out/"
-#    bin/kubectl-prod   apply -f "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/out/"
-    bin/kubectl-dev apply -f "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/out/"
+    bin/kubectl-canary apply -f "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/out/"
+    bin/kubectl-prod   apply -f "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/out/"
+    # #CanProd2Dev4debug bin/kubectl-dev    apply -f "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/out/"
 
 
     echo All Good.
@@ -110,18 +110,19 @@ troubleshoot_solution1_entities
 # [PROD] sol1-app01-eu-w1-ext-gw   gke-l7-gxlb   34.111.78.196   True    39m
 
 # Making sure the IP address sis up (True), it belongs to the APP called by ARGV[1] and that it is solution 1 stufh
-# white "== Curling PRD/CAN endpoints now =="
-# bin/kubectl-prod get gateway | grep sol1-app | grep True | grep "$APP_NAME" | while read USELESS_HEADER NAME CLASS ADDRESS READY AGE ; do
-#     _manage_gateway_endpoint 'prod' "$NAME" "$ADDRESS"
-# done
-# bin/kubectl-canary get gateway | grep sol1-app | grep True |  grep "$APP_NAME" | while read USELESS_HEADER NAME CLASS ADDRESS READY AGE ; do
-#     _manage_gateway_endpoint 'canary' "$NAME" "$ADDRESS"
-# done
-
-white "== Curling DEV endpoints now =="
-bin/kubectl-dev get gateway | grep sol1 | grep True | grep "$APP_NAME" | while read USELESS_HEADER NAME CLASS ADDRESS READY AGE ; do
+white "== Curling PRD/CAN endpoints now =="
+bin/kubectl-prod get gateway | grep sol1-app | grep True | grep "$APP_NAME" | while read USELESS_HEADER NAME CLASS ADDRESS READY AGE ; do
     _manage_gateway_endpoint 'prod' "$NAME" "$ADDRESS"
 done
+bin/kubectl-canary get gateway | grep sol1-app | grep True |  grep "$APP_NAME" | while read USELESS_HEADER NAME CLASS ADDRESS READY AGE ; do
+    _manage_gateway_endpoint 'canary' "$NAME" "$ADDRESS"
+done
+
+# #CanProd2Dev4debug removing dev, back to normal world :)
+#white "== Curling DEV endpoints now =="
+# #CanProd2Dev4debug bin/kubectl-dev get gateway | grep sol1 | grep True | grep "$APP_NAME" | while read USELESS_HEADER NAME CLASS ADDRESS READY AGE ; do
+#    _manage_gateway_endpoint 'prod' "$NAME" "$ADDRESS"
+#done
 
 # yellow "Warning, IP address is currently hard-coded :/"
 # #LB_NAME="http-svc9010-lb"
