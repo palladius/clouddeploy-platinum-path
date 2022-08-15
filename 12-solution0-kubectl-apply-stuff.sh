@@ -55,15 +55,14 @@ set -x
 ###########################################################
 # Step 6. Apply the GW Config on Cluster 1.
 # this is the STATIC by Daniel, not the multitenant from jul15: #MultiAppK8sRefactoring
-# kubectl --context=$GKE_CANARY_CLUSTER_CONTEXT apply -f "$GKE_SOLUTION0_ILB_SETUP_DIR/cluster1/"
-# kubectl --context=$GKE_PROD_CLUSTER_CONTEXT   apply -f "$GKE_SOLUTION0_ILB_SETUP_DIR/cluster2/"
-#echo TODO kubectl apply -f "$GKE_SOLUTION0_ILB_SETUP_DIR/out/"
 kubectl --context="$GKE_CANARY_CLUSTER_CONTEXT" apply -f "$GKE_SOLUTION0_ILB_SETUP_DIR/out/cluster1/"
 kubectl --context="$GKE_PROD_CLUSTER_CONTEXT"   apply -f "$GKE_SOLUTION0_ILB_SETUP_DIR/out/cluster2/"
 
 echo Restoring cluster 1.
 gcloud container clusters get-credentials "$CLUSTER_1"  --region "$GCLOUD_REGION" --project "$PROJECT_ID"
 
+# This means that app01 ILB diverts traffic to both app01 and app02 apps. And same for app02 ILB.
+# Until I get this to work its pointless to restrict thje traffic further as having more endpoints ultimately helps.
 red "WARNING: The ILB hasnt been tested yet. TODO(ricc): Try creating a GCE vm and curl the internal ILB IP: "
 gcloud compute forwarding-rules list |grep ilb | lolcat
 

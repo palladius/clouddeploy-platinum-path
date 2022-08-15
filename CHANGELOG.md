@@ -1,4 +1,5 @@
-2022-07-22 v0.18.0  Back from OOO. Now coding the 6.5 solution leveraging Cloud Build’s new Repos API.
+2022-08-15 v0.18.1  Renamed consistently `dmarzi-proxy` to `platinumn-proxy`
+2022-08-   v0.18.0  Back from OOO. Now coding the 6.5 solution leveraging Cloud Build’s new Repos API.
 2022-07-22 v0.17.2  Last day before holidays. Seems like I might be able to fix SOL2 in extremis before OOO?!?
 2022-07-21 v0.17.0  Moving clusters to Standard, no autpilot. Why? The first few hours it fails to deploy and its bad for
                     a demo. Cheaper on the long run, but more frustrating at the beginning.

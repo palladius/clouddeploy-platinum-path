@@ -17,14 +17,14 @@ PROJECT_NUMBER=$(gcloud projects list --filter="$PROJECT_ID" --format="value(PRO
 
 # CREATING IN region XXX
 # NOTE: Even though this is regional, you can have only one of this in a reg
-# Changed dmarzi-proxy to "platinum-proxy-$GCLOUD_REGION" in case you want to change region after starting this :)
+# Changed dmarzi_proxy to "platinum-proxy-$GCLOUD_REGION" in case you want to change region after starting this :)
 proceed_if_error_matches "already exists" \
-     gcloud compute networks subnets create "dmarzi-proxy" \
+     gcloud compute networks subnets create "platinum-proxy" \
      --purpose=REGIONAL_MANAGED_PROXY \
      --role=ACTIVE \
      --region="$GCLOUD_REGION" \
      --network='default' \
-     --range='192.168.0.0/24' # changed after dmarzi-proxy rename..
+     --range='192.168.0.0/24' # changed after dmarzi_-_proxy rename..
 
 # bingo! https://screenshot.googleplex.com/h5ZXAUgy5wWrvqh
 

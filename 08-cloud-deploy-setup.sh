@@ -5,12 +5,13 @@ source .env.sh || fatal "Config doesnt exist please create .env.sh"
 set -x
 set -e
 
-function delete_old_pipelines() {
-  echo This is just as a memento for future cleanup:
-  gcloud deploy delivery-pipelines delete app01-python-v1-0alpha
-  gcloud deploy delivery-pipelines delete app01-python
-  gcloud deploy delivery-pipelines delete app02-ruby
-}
+# function delete_old_pipelines() {
+#   echo This is just as a memento for future cleanup:
+#   gcloud deploy delivery-pipelines delete app01-python-v1-0alpha
+#   gcloud deploy delivery-pipelines delete app01-python
+#   gcloud deploy delivery-pipelines delete app02-ruby
+# }
+
 # Add your code here:
 
 CLOUD_DEPLOY_TEMPLATING_VER="1-2"
