@@ -77,7 +77,7 @@ class App < Sinatra::Base
     return html_string
   end
   get '/statusz' do
-    "app=app02 version=#{$VERSION} target=#{cloud_deploy_target} emoji=💎\n"
+    "app=app02 emoji=💎 target=#{cloud_deploy_target} version=#{$VERSION}\n"
   end
 end
 
