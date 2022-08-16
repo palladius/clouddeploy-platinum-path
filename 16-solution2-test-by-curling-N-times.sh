@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DEFAULT_N_TRIES="15"
+DEFAULT_N_TRIES="20"
 N_TRIES="$DEFAULT_N_TRIES"
 #N_TRIES=${1:-$DEFAULT_N_TRIES}
 
@@ -57,10 +57,14 @@ for i in `seq 1 $N_TRIES`; do
     #echo curl -H "Host: www.example.io" "http://$MYAPP_IP_FWDRULE/statusz" 2>/dev/null
     _echodo curl -H "Host: www.example.io" "http://$MYAPP_IP_FWDRULE/statusz" 2>/dev/null
     # | egrep -i 'statusz' # egrep "$SMART_EGREP" | head -1
-done
-echo ''
+done | tee ".t.$MYAPP_FWD_RULE"
 
+echo 'Stats:'
+cat ".t.$MYAPP_FWD_RULE" | sort| uniq -c
 
+echo "Expected values:"
+echo "- PROD:   $(green "${PROD_PERCENTAGE}%") -> ~ $(($N_TRIES * $PROD_PERCENTAGE / 100))/$N_TRIES"
+echo "- CANARY: $(yellow $CANARY_PERCENTAGE)% -> ~ $(($N_TRIES * $CANARY_PERCENTAGE / 100))/$N_TRIES"
 ########################
 # End of your code here
 ########################

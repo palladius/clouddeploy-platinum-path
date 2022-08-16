@@ -352,9 +352,9 @@ pathMatchers:
     routeAction:
       weightedBackendServices:
       - backendService: https://www.googleapis.com/compute/v1/projects/$PROJECT_ID/global/backendServices/$APPDEPENDENT_SOL2_SERVICE_CANARY
-        weight: 22
+        weight: $CANARY_PERCENTAGE # 22
       - backendService: https://www.googleapis.com/compute/v1/projects/$PROJECT_ID/global/backendServices/$APPDEPENDENT_SOL2_SERVICE_PROD
-        weight: 78
+        weight: $PROD_PERCENTAGE # 78
 END_OF_URLMAP_GCLOUD_YAML_CONFIG
 } | tee k8s/solution2-xlb-gfe3-traffic-split/.tmp-urlmap-v2.yaml
     cat k8s/solution2-xlb-gfe3-traffic-split/.tmp-urlmap-v2.yaml | lolcat

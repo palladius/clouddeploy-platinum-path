@@ -54,7 +54,16 @@ to build it.
 * `apps/app02/` This is a sample Ruby app.
 
 They both expose a single Web page (`/`) with a lot of debug useful information, usually
-surfaced by proper ENV vars.
+surfaced by proper ENV vars. They also expose a second convenience endpoint (`/statusz`)
+with a one-liner description (used by scripts), such as:
+
+```
+app=app01 version=2.23 target=prod emoji=🐍
+app=app01 version=2.22 target=canary emoji=🐍
+[..]
+app=app02 version=2.0.6 target=prod emoji=💎
+app=app02 version=2.0.7 target=canary emoji=💎
+```
 
 ## Build philosophy
 
@@ -80,6 +89,13 @@ into script numbering ;)
 More info on historical code under `k8s/amarcord/` (Romagnolo Italian for *I remember*)
 
 *(XLB: eXternal Load Balancer)*
+
+### Solution 2
+
+This is what you'll see when you get this to work:
+
+<img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/solution2 app01 python sample.png" alt="Solution 2 exmaple" align='center' />
+
 
 ## Lesson learnt
 
