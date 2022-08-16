@@ -1,4 +1,5 @@
 * 2022-08-16 v2.0.7 [DEV] Somewhere between 2.0.4 and 2.0.6 the trailing \n in statusz was fixed :)
+* 2022-07-23 v2.0.4 [DEV] 2.0.4 or 2.0.5 commit 30163926b67c04b4232da94b19b79f8d034d4b83 fixed the \n in /statusz
 * 2022-07-19 v2.0.3 [DEV] BugFix: KeyError at /
                     key not found: "CLOUD_DEPLOY_TARGET_COMMON" Did you mean? "CLOUD_DEPLOY_TARGET_SHORT_COMMON"
                     file: sinatra.rb location: fetch line: 54
