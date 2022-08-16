@@ -274,10 +274,13 @@ if "$STEP1_CREATE_BACKEND_SERVICES"; then
 fi
 # $APP_NAME
   if "$STEP2_CREATE_LOADS_OF_NEGS" ; then
+    echo 'Now we do something complicated. For both Canary and Prod clusters, and both C/P types of traffix, we find the'
+    echo 'NEG names and we link them to the SERVICE_NAME which is f(AppXX,TypeOfTraffic), eg "app01-sol2-svc-prod"'
     for MY_CLUSTER in canary prod ; do
         for TYPE_OF_TRAFFIC in canary prod ; do
             SERVICE_NAME="${APP_NAME}-sol2-svc-$TYPE_OF_TRAFFIC"
             yellow "+ MY_CLUSTER=$MY_CLUSTER :: TYPE_OF_TRAFFIC=$TYPE_OF_TRAFFIC SERVICE_NAME:$SERVICE_NAME"
+            # Find NEG in cluster XX
             NEG_NAME=$(_kubectl_on_target "$MY_CLUSTER" get svcneg 2>/dev/null | grep "$SERVICE_NAME" | awk '{print $1}')
             echo "[$MY_CLUSTER] 1. NEG NAME: '${NEG_NAME}'"
             echo "[$MY_CLUSTER] 2. Lets now iterate through the N zones:"
