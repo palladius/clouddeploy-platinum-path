@@ -3,5 +3,11 @@
 source ./.env.sh || exit 42
 
 # Being lazy and wrapping CAN and PROD for solutions 0,1,2..
-kubectl --context="$GKE_CANARY_CLUSTER_CONTEXT" "$@" 2>&1 | _prepend "[CANA] "| _filter_k8s_errors | _colorize_kubectl_output
-kubectl --context="$GKE_PROD_CLUSTER_CONTEXT"   "$@" 2>&1 | _prepend "[PROD] "| _filter_k8s_errors | _colorize_kubectl_output
+
+if [ "$VANILLA" = "TRUE" ] ; then
+    kubectl --context="$GKE_CANARY_CLUSTER_CONTEXT" "$@"
+    kubectl --context="$GKE_PROD_CLUSTER_CONTEXT"   "$@"
+else
+    kubectl --context="$GKE_CANARY_CLUSTER_CONTEXT" "$@" 2>&1 | _prepend "[CANA] "| _filter_k8s_errors | _colorize_kubectl_output
+    kubectl --context="$GKE_PROD_CLUSTER_CONTEXT"   "$@" 2>&1 | _prepend "[PROD] "| _filter_k8s_errors | _colorize_kubectl_output
+fi
