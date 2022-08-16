@@ -10,7 +10,14 @@ PIPELINE="${1:-app01}"
 INITIAL_STAGE="${2:-dev}"    # seems useless, probably cos I just deploy a release which is independent on which stage it is. Good to learn :)
 DESIRED_STAGE="${3:-staging}"
 
-yellow "Usage: $0 [appXX] [STAGE_FROM] [STAGE_TO] (STAGES can be: dev, staging, canary, production)"
+if [ $# -eq 0 ]; then
+    yellow "Usage: $0 [appXX] [STAGE_FROM] [STAGE_TO] (STAGES can be: dev, staging, canary, production)"
+#else
+fi
+
+echo "You called: $0 appXX=$(red "$PIPELINE") STAGE_FROM=$(yellow $INITIAL_STAGE) STAGE_TO=$(green $DESIRED_STAGE)"
+#exit 0
+
 # COPIED FROM 09... IF FAST ENOUGH i COULD actually move to .env.sh
 LATEST_SUCCESSFUL_RELEASE="$(get_latest_successful_release_by_pipeline "$PIPELINE" )"
 
@@ -19,11 +26,13 @@ if [ -z "$LATEST_SUCCESSFUL_RELEASE" ]; then
     gcloud deploy releases list --delivery-pipeline="$PIPELINE" --format 'table(renderState,name)'
     exit 153
 fi
+
 green "Now promoting DEV to STAG for PIPELINE=$PIPELINE (from ARGV1) and RELEASE=$LATEST_SUCCESSFUL_RELEASE.."
+
 set -x
+
 gcloud deploy releases promote --to-target "$DESIRED_STAGE" --region "$CLOUD_DEPLOY_REGION" \
     --release "$LATEST_SUCCESSFUL_RELEASE" --delivery-pipeline="$PIPELINE" --quiet
-
 
 
 # End of your code here

@@ -22,7 +22,7 @@ BAD_SOL1_REGEX="sol1a|sol1d|service/kubernetes"
 source ./.env.sh || exit 42
 
 function _curl_http_code() {
-    curl --write-out "[_curl_http_code] %{http_code}  $*\n" --silent --output /dev/null "$@" |
+    curl --write-out "[_curl_http_code] %{http_code}  $*\n" --silent --output /dev/null "$1" |
         bin/rcg "200" GREEN |
         bin/rcg "404" RED |
         bin/rcg "000" RED |

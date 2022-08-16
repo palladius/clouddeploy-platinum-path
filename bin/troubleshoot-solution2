@@ -13,13 +13,11 @@ SOL2_SERVICE_PROD="$APP_NAME-$DFLT_SOL2_SERVICE_PROD"        # => appXX-sol2-svc
 
 function _cleanup_everything() {
     yellow "Deleting SOL2 NEGs which are not utizlied by some APP: DEVCONSOLE/compute/networkendpointgroups/list"
-#    gcloud compute network-endpoint-groups delete  k8s1-5945097b-default-app02-sol2-svc-prod-8080-3397e844 k8s1-76848129-default-app01-sol2-svc-prod-8080-4e001410 k8s1-5945097b-default-app02-sol2-svc-canary-8080-22cf9896
     gcloud compute network-endpoint-groups list --filter="sol2" | grep -v NAME | sort | while read NAME ZONE BLAH SIZE ; do
         #echo "$NAME --zone $ZONE"
         echodo gcloud compute network-endpoint-groups delete "$NAME" --zone "$ZONE" --quiet
     done
- #   exit 1
-#        xargs --max-args=1 gcloud compute network-endpoint-groups delete --quiet
+
     green DONE.
 }
 # app01 35.190.75.32 34.111.78.196
@@ -28,7 +26,8 @@ function _cleanup_everything() {
 #for IP in 35.190.75.32 34.111.78.196 34.110.176.245 34.117.113.218 ; do
 
 function _curl_http_code() {
-    curl --write-out "[_curl_http_code] %{http_code}  $*\n" --silent --output /dev/null "$@" |
+    #echo "[removeme] _curl_http_code $*"
+    curl --write-out "[_curl_http_code] %{http_code} $*\n" --silent --output /dev/null "$1" |
         bin/rcg "200" GREEN |
         bin/rcg "404" RED |
         bin/rcg "000" RED |
@@ -47,47 +46,29 @@ fi
 
 
 # eg, app01-sol2-svc-prod
-echo SOL2_SERVICE_PROD:   $SOL2_SERVICE_PROD
-echo SOL2_SERVICE_CANARY: $SOL2_SERVICE_CANARY
+echo "SOL2_SERVICE_PROD:   $SOL2_SERVICE_PROD"
+echo "SOL2_SERVICE_CANARY: $SOL2_SERVICE_CANARY"
 
-# GATEWAY_REGEX="ext-gw"
-#set -x
 bin/kubectl-canary-and-prod get all,gateway,httproute | grep  "$SOL2_SERVICE_PROD"
 
 bin/kubectl-triune get all | grep "sol2"
 
 #gcloud compute network-endpoint-groups list --filter="canary-whereami-v2"
 
-gcloud compute network-endpoint-groups list --filter="sol2" | while read NAME ZONE BLAH SIZE ; do
+gcloud compute network-endpoint-groups list --filter="sol2"  | grep -v NAME | while read NAME ZONE BLAH SIZE ; do
     echo "$NAME"
 done | sort | uniq -c
 
 yellow "Total sol2 tri-NEGs: $(gcloud compute network-endpoint-groups list --filter="sol2" | wc -l)"
 
-# bin/kubectl-canary-and-prod get gateway | grep "sol1-app0" | grep "$GATEWAY_REGEX" | awk '{print $1 " " $2 " " $4}' |
-#     while read ENV GATEWAY IP ; do
-
-#     echo == [$ENV] Riccardo manual/boring checks on GATEWAY=$GATEWAY IP=$IP ==
-#     _curl_http_code  http://$IP/
-#     _curl_http_code  http://$IP/statusz
-#     #_curl_http_code -H "host: passepartout.example.io" http://$IP/
-#     _curl_http_code -H "Host: sol1-passepartout.example.io" http://$IP/
-#     _curl_http_code -H "host: www.example.io" http://$IP/statusz
-#     # These are still failing..
-#     _curl_http_code -H "host: passepartout.example.io" http://$IP/_justprod/
-#     _curl_http_code -H "Host: sol1-passepartout.example.io" http://$IP/_justcanary/
-
-#     # if i works, statusz is single line by construction :)
-#     # TODO: oly do if the original curl of http://$IP/ works.
-#     curl -s -H "host: passepartout.example.io" http://$IP/statusz 2>/dev/null | head -1
-#     echo
-
 # done
-yellow "FWD RULEs:"
+yellow "+ FWD RULEs:"
 gcloud compute forwarding-rules list  | grep sol2
 
-gcloud compute forwarding-rules list  | grep sol2 | sort |uniq| while read NAME IP PROTOCOL TARGET ; do
-    _curl_http_code http://$IP/ "FWDRULE=$NAME TARGET=$TARGET"
-    echo Check LB interesting URL: "$DEVCONSOLE/net-services/loadbalancing/details/httpAdvanced/$TARGET"
+for APP in app01 app02 ; do
+    echo "== Aplication $(yellow $APP) =="
+    gcloud compute forwarding-rules list | grep sol2 | grep "$APP" | sort |uniq| while read NAME IP PROTOCOL TARGET ; do
+        _curl_http_code http://$IP/ "FWDRULE=$NAME TARGET=$TARGET"
+        echo Check LB interesting URL: "$DEVCONSOLE/net-services/loadbalancing/details/httpAdvanced/$TARGET"
+    done
 done
-
