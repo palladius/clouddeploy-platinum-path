@@ -28,3 +28,7 @@ More info in https://github.com/palladius/clouddeploy-platinum-path/issues/22
 * moved so0l1d to sol1a.
 * leaving sol1d in DEV under tmp/ folder (not checked in :/ )
 * moving back to CAN/PROD for the selector, so now I hacve TMP/ pointing to dev and TEMPLATES/ pointing to CANPROD.
+
+# 2022-08-16
+
+* moving back to SOL1D but renaming to SOL1SC (to signify Single cluster)

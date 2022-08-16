@@ -47,16 +47,18 @@ done
 # white  "== Solution0 (Internal LB)=="
 # echo '😞 Sorry, no routable endpoints.'
 
-red  "== Solution1dev Artifacts (WIP) =="
+red  "== Solution1 Artifacts (WIP) =="
 # Note they dont get public IPs. But with Daniel it took them 1d to do it so i will wait till tomorrow.
-bin/kubectl-canary get gateways | egrep "sol1sc-app"
+#bin/kubectl-canary get gateways | egrep "sol1sc-app"
 # This might be pleonastic but hey, ANYTHING for a public IP!
-bin/kubectl-prod get gateways | egrep "sol1sc-app"
-# #CanProd2Dev4debug bin/kubectl-dev get gateways | egrep "sol1OLD"
+#bin/kubectl-prod get gateways | egrep "sol1sc-app"
+# #CanProd2Dev4debug
+bin/kubectl-dev     get gateways | egrep "sol1sc-app"
+bin/kubectl-staging get gateways | egrep "sol1sc-app"
 
 # #CanProd2Dev4debug
 # for APPXX_ITER in app01 app02 ; do
-#   GW_RULE="sol1d-$APPXX_ITER-eu-w1-ext-gw"
+#   GW_RULE="sol1d-$APPXX_ITER-${DEFAULT_SHORT_REGION}-ext-gw"
 #   white "Solution1: $APPXX_ITER GW_RULE='$GW_RULE'"
 #   #IP_FWDRULE=$(gcloud compute forwarding-rules list --filter "$FWD_RULE" 2>/dev/null | tail -1 | awk '{print $2}' )
 #   bin/kubectl-dev get gateways | egrep "sol1D_OLD" | grep True | while read ENV GATEWAY_NAME class IP_GATEWAY ALWAYSTRUE TIME_UP ; do
@@ -65,9 +67,11 @@ bin/kubectl-prod get gateways | egrep "sol1sc-app"
 #   done
 # done
 
+#DEFAULT_SHORT_REGION = eu-w1
+
+
 for APPXX_ITER in app01 app02 ; do
-  # TODO(ricc): this is not correct, should be smart region
-  GW_RULE="sol1sc-$APPXX_ITER-eu-w1-ext-gw"
+  GW_RULE="sol1sc-$APPXX_ITER-${DEFAULT_SHORT_REGION}-ext-gw"
   white "Solution1: $APPXX_ITER GW_RULE='$GW_RULE'"
   #IP_FWDRULE=$(gcloud compute forwarding-rules list --filter "$FWD_RULE" 2>/dev/null | tail -1 | awk '{print $2}' )
   bin/kubectl-prod get gateways | egrep "sol1sc" | grep True | while read ENV GATEWAY_NAME class IP_GATEWAY ALWAYSTRUE TIME_UP ; do
