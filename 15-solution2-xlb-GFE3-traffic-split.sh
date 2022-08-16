@@ -56,6 +56,10 @@ DEFAULT_APP="app01"                                # app01 / app02
 APP_NAME="${1:-$DEFAULT_APP}"
 #K8S_APP_SELECTOR="${2:-$DEFAULT_APP_SELECTOR}"
 #K8S_APP_IMAGE="${3:-$DEFAULT_APP_IMAGE}"#
+
+# Note: Mac doesnt support BASH arrays unless you install bash v5+
+_check_your_os_supports_bash_arrays
+
 # Default from Magic Hash Array :)
 # MultiTenant solution (parametric in $1)
 K8S_APP_SELECTOR="${AppsInterestingHash["${APP_NAME}-SELECTOR"]}" # app01-kupython / app02-kuruby
@@ -69,10 +73,10 @@ export APPDEPENDENT_SOL2_SERVICE_CANARY="${APP_NAME}-${DFLT_SOL2_SERVICE_CANARY}
 # Now that I know APPXX I can do this:
 #export MYAPP_URLMAP_NAME="${APP_NAME}-$URLMAP_NAME_MTSUFFIX"  # eg: "app02-BLAHBLAH"
 #export MYAPP_FWD_RULE="${APP_NAME}-${FWD_RULE_MTSUFFIX}"      # eg: "app02-BLAHBLAH"
-export MYAPP_URLMAP_NAME="${APP_NAME}-$URLMAP_NAME_MTSUFFIX-vm3"  # we have normal and v2
-export MYAPP_FWD_RULE="${APP_NAME}-${FWD_RULE_MTSUFFIX}-fwd-vm3"  # => "vmerge" (vm3)
-
-
+#export MYAPP_URLMAP_NAME="${APP_NAME}-${URLMAP_NAME_MTSUFFIX}-vm3"  # we have normal and v2
+#export MYAPP_FWD_RULE="${APP_NAME}-${FWD_RULE_MTSUFFIX}-fwd-vm3"  # => "vmerge" (vm3)
+export MYAPP_URLMAP_NAME="$(_urlmap_name_by_app "$APP_NAME" )" # "${APP_NAME}-${URLMAP_NAME_MTSUFFIX}-vm3"  # we have normal and v2
+export MYAPP_FWD_RULE="$(_fwd_rule_by_app $APP_NAME)"
 
 # should all be TRUE :) just deactivating as LAZY
 STEP0_APPLY_MANIFESTS="true"
@@ -81,8 +85,6 @@ STEP2_CREATE_LOADS_OF_NEGS="true"
 STEP3_CREATE_URLMAP="true"
 STEP4_FINAL_HTTPLB="true"
 
-# Note: Mac doesnt support BASH arrays unless you install bash v5+
-_check_your_os_supports_bash_arrays
 
 white "================================================================"
 green  " [script-A] As of 18jul22 I declare this script as WORKING."
@@ -341,8 +343,8 @@ pathMatchers:
       weight: 1
   # Note this will stop wprking in the future. good luck with STDIN with this error:
   # WARNING: The name of the Url Map must match the value of the 'name' attribute in the YAML file. Future versions of gcloud will fail with an error.
-  #name: path-matcher-1
-  name: $MYAPP_URLMAP_NAME
+  name: path-matcher-1
+  #name: $MYAPP_URLMAP_NAME
   routeRules:
   - matchRules:
     - prefixMatch: /
@@ -392,4 +394,3 @@ yellow '[scriptA] Now you can try this 20-30 times: 2) curl -H "Host: sol2-passe
 yellow "[scriptA] .. or simply call bin/curl-them-all"
 
 _allgood_post_script
-echo Everything is ok from MERGED 15 script.

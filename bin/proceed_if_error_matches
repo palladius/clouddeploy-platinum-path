@@ -10,18 +10,19 @@ COMMAND="$@"
 OUTPUT="$("$@" 2>&1)"
 RET=$?
 
-if [ "0" = "$RET" ] ; then 
+if [ "0" = "$RET" ] ; then
     #green "[DEB] cmd returned 0, we are ok anyhow"
     exit 0
 else
     # ERROR
-    #red "NOPE. need to dig deeper. ERR=$RET"
-    echo "[DEB] $OUTPUT" | lolcat 
-    if echo "$OUTPUT" | grep -q "$ERROR_MSG" ; then 
-        yellow "[proceed_if_error_matches] '$COMMAND' returns $RET but matches regex '$ERROR_MSG'!! Saved in corner"
+    # Need to dig deeper. ERR=$RET"
+    echo "[DEB] $OUTPUT" | lolcat
+    if echo "$OUTPUT" | grep -q "$ERROR_MSG" ; then
+        # in italian we say 'Saved in corner' since we like soccer
+        yellow "[proceed_if_error_matches] '$COMMAND' returns $RET but matches regex '$ERROR_MSG'! It was a narrow squeak"
         exit 0
     else
-        #red "[DEB] I've tried everything but cmd failed with no regex to save him. Sorry, exiting with $RET"
+        # A failure is a failure
         exit "$RET"
     fi
 fi
