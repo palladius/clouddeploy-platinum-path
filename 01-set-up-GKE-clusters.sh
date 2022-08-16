@@ -7,6 +7,10 @@ set -e
 
 # Add your code here:
 
+# Creating network as per Alex comment:
+proceed_if_error_matches 'already exists' \
+  gcloud compute networks create 'default' --subnet-mode=auto #       --mtu=1460
+
 echo "Here we set up a few clusters, this will take a few minutes. Good time to get a coffee or tea. Note we set up everything in region $REGION" | lolcat
 
 gcloud auth configure-docker $REGION-docker.pkg.dev
