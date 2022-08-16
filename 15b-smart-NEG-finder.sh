@@ -56,16 +56,16 @@ _check_your_os_supports_bash_arrays
 # }
 
 white "================================================================"
-white  "Note. This script needs to be destroyed and reconciled once it works ;)"
-white "APP_NAME:           $APP_NAME"
-white "MYAPP_URLMAP_NAME:  $MYAPP_URLMAP_NAME"
-white "MYAPP_FWD_RULE:     $MYAPP_FWD_RULE"
-white "K8S_APP_SELECTOR:   $K8S_APP_SELECTOR"
-white "K8S_APP_IMAGE:      $K8S_APP_IMAGE"
-white "FWD_RULE_MTSUFFIX:  $FWD_RULE_MTSUFFIX"
+white "  Note. This script needs to be destroyed and reconciled once it works ;)"
+white "APP_NAME:             $APP_NAME"
+white "MYAPP_URLMAP_NAME:    $MYAPP_URLMAP_NAME"
+white "MYAPP_FWD_RULE:       $MYAPP_FWD_RULE"
+white "K8S_APP_SELECTOR:     $K8S_APP_SELECTOR"
+white "K8S_APP_IMAGE:        $K8S_APP_IMAGE"
+white "FWD_RULE_MTSUFFIX:    $FWD_RULE_MTSUFFIX"
 white "URLMAP_NAME_MTSUFFIX: $URLMAP_NAME_MTSUFFIX"
-white "BASH:               $BASH"
-white "BASH_VERSION:       $BASH_VERSION"
+white "BASH:                 $BASH"
+white "BASH_VERSION:         $BASH_VERSION"
 white "================================================================"
 
 # per rimuovere NEG vecchi devi prima rimuovere SERVIZI vecchi
@@ -129,7 +129,7 @@ if "$STEP1_CREATE_BACKEND_SERVICES"; then
     done
 fi
 # $APP_NAME
-    if "$STEP2_CREATE_LOADS_OF_NEGS" ; then
+  if "$STEP2_CREATE_LOADS_OF_NEGS" ; then
     for MY_CLUSTER in canary prod ; do
         for TYPE_OF_TRAFFIC in canary prod ; do
             SERVICE_NAME="$APP_NAME-sol2-svc-$TYPE_OF_TRAFFIC"
@@ -160,7 +160,7 @@ fi
         #_kubectl_on_target canary get svcneg
         done
     done
-fi
+  fi
 
 
 if "$STEP3_CREATE_URLMAP" ; then

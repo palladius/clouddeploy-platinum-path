@@ -1,4 +1,5 @@
-2022-08-15 v0.18.2  Fixed big #CanProd2Dev4debug bug
+2022-08-16 v0.18.4  Fixed big #CanProd2Dev4debug bug for real. Not fixing it would have been better actually :)
+2022-08-15 v0.18.3  Trying to fix big #CanProd2Dev4debug bug
 2022-08-15 v0.18.2  Obsoleted solution 0/3. There can be only.. 2! :)
 2022-08-15 v0.18.1  Renamed consistently `dmarzi-proxy` to `platinumn-proxy`
 2022-08-   v0.18.0  Back from OOO. Now coding the 6.5 solution leveraging Cloud Build’s new Repos API.

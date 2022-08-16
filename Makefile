@@ -38,6 +38,8 @@ hiroshima:
 	@echo deleting all GKE resources...
 	kubectl delete all
 
+get-all:
+	bin/kubectl-prod get all,svcneg,httproute,gateway
 
 show-latest-succesful-releases:
 	./09-show-latest-successful-releases.sh app01

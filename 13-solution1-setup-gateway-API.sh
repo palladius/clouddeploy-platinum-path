@@ -108,26 +108,22 @@ gcloud container fleet multi-cluster-services describe | grep "state: ACTIVE"
 ##################################################
 ##CanProd2Dev4debug
 bin/kubectl-dev  apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
-bin/kubectl-prod   apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
-bin/kubectl-canary apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
+bin/kubectl-staging  apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
 # I should see FOUR not TWO: #CanProd2Dev4debug
-bin/kubectl-canary get gatewayclass
-bin/kubectl-prod get gatewayclass
 bin/kubectl-dev get gatewayclass
+bin/kubectl-staging get gatewayclass
 
 ##################################################
 ## dmarzi005 enable GKE gateway controller just in GKE01.
 ##################################################
 # UNLESS `gcloud container fleet ingress describe | ... greps both canary and prod`
-# gcloud container fleet ingress enable \
-#     --config-membership=/projects/$PROJECT_ID/locations/global/memberships/cicd-dev \
-#     --project=$PROJECT_ID
+gcloud container fleet ingress enable \
+    --config-membership=/projects/$PROJECT_ID/locations/global/memberships/cicd-dev \
+    --project=$PROJECT_ID ||
+        echo OK if this gives error
 # gcloud container fleet ingress enable \
 #     --config-membership=/projects/$PROJECT_ID/locations/global/memberships/cicd-prod \
 #     --project=$PROJECT_ID
-gcloud container fleet ingress enable \
-    --config-membership=/projects/$PROJECT_ID/locations/global/memberships/cicd-canary \
-    --project=$PROJECT_ID
 
 
 ################################################################################
@@ -161,12 +157,14 @@ smart_apply_k8s_templates "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR"
 #yellow Now we can issue a kubectl on the out dir..
 #echo "TODO:  kubectl apply -f $GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/out/"
 
-# #CanProd2Dev4debug bin/kubectl-dev apply -f "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/out/"
-bin/kubectl-canary apply -f "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/out/"
-bin/kubectl-prod   apply -f "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/out/"
+# #CanProd2Dev4debug
+bin/kubectl-dev     apply -f "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/out/"
+bin/kubectl-staging apply -f "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/out/"
+#bin/kubectl-canary apply -f "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/out/"
+#bin/kubectl-prod   apply -f "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR/out/"
 
 # Check everything ok:
-bin/kubectl-triune get all | grep "sol1"
+bin/kubectl-triune get all | grep "sol1sc"
 
 #######################
 # End of your code here

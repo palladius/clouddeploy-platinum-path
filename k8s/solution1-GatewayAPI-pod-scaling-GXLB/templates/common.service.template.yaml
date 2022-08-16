@@ -12,12 +12,16 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: sol1a-__PREFIX__-common-svc # dmarzi_was: store-common-svc
+  name: sol1sc-__PREFIX__-common-svc # dmarzi_was: store-common-svc
   annotations:
-#    cloud.google.com/neg: '{"exposed_ports": {"8080":{"name": "sol1a-__PREFIX__-common-svc"}}}' # dmarzi_was: store-common-svc
     cloud.google.com/neg: '{"exposed_ports": {"8080":{"name": ""}}}' # dmarzi_was: store-common-svc
     solution1-history: |
-      2022-07-21 V1.7 Moved sol1D to sol1a (D is for Daniel/Dev) and A is for Automated. Also trying to use
+      TODO(Ricc): when this all works, restore the "platinum-app-id: __APP_NAME__"
+
+      2022-08-16 V1.8 Moved back to SOL1D, anzi `sol1sc` (single cluster) to signify I learnt my lesson.
+                      It was the right way I just forgot during vacay :)
+
+      2022-08-15 V1.7 Moved sol1D to SOL1A (D is for Daniel/Dev) and A is for Automated. Also trying to use
                       gke-l7-gxlb-mc in the desperate hope it solves everything. Problem was, sol1 is intrinsically
                       single-cluster so, as is, can only be implemented in SC mode, which means that 4/4 and 1/1 pods
                       never become a 5/5 since you have 4stag in stag cluster and 1 prod in prod cluster. For an easy
@@ -34,8 +38,8 @@ spec:
     # is less work on template part of things (wink wink Alex)
     app: __K8S_APP_SELECTOR__ # check on out/ if it works
     #platinum-app-id: __APP_NAME__ # => 'app01' or 'app02'
-    ricc-awesome-selector: canary-or-prod # DO NOT USE ssdev-or-staging EVER
-#    ricc-awesome-selector: dev-or-staging
+    #ricc-awesome-selector: canary-or-prod # DO NOT USE ssdev-or-staging EVER
+    ricc-awesome-selector: dev-or-staging
   ports:
   - port: 8080
     targetPort: 8080

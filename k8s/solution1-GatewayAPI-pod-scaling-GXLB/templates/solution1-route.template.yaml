@@ -14,43 +14,22 @@
 kind: HTTPRoute
 apiVersion: gateway.networking.k8s.io/v1alpha2
 metadata:
-  name: sol1a-__PREFIX__
+  name: sol1sc-__PREFIX__
   labels:
-    gateway: sol1a-__PREFIX__-ext-gw    # dmarzi_was: external-store-http
+    gateway: sol1sc-__PREFIX__-ext-gw    # dmarzi_was: external-store-http
 spec:
   parentRefs:
-  - name: sol1a-__PREFIX__-ext-gw       # dmarzi_was: external-store-http
+  - name: sol1sc-__PREFIX__-ext-gw       # dmarzi_was: external-store-http
   hostnames:
-  - sol1a-__APPNAME__.example.io     # kept for easy curl/documented static commands :)
-  - sol1a-__PREFIX__.example.io      # bake in region as well... klets see which is best
-  - sol1a-__APPNAME__.__MY_DOMAIN__  # being changed by script 12 into $MY_DOMAIN.
-  - sol1a-passepartout.example.io    # being lazy, so it ALWAYS works for troubleshooting reasons :)
+  - sol1sc-__APPNAME__.example.io     # kept for easy curl/documented static commands :)
+  - sol1sc-__PREFIX__.example.io      # bake in region as well... klets see which is best
+  - sol1sc-__APPNAME__.__MY_DOMAIN__  # being changed by script 12 into $MY_DOMAIN.
+  - sol1sc-passepartout.example.io    # being lazy, so it ALWAYS works for troubleshooting reasons :)
   - sol1-passepartout.example.io
   - passepartout.example.io          # being even lazier :)
   - www.example.io                   # now beat this :)
+  - 2022.08.16.lastupdate.example.io  # EHEH to see dev/ops relation
   rules:
   - backendRefs:
-    - name: sol1a-__PREFIX__-common-svc # dmarzi_was: store-common-svc
-      port: 8080
----
-kind: HTTPRoute
-apiVersion: gateway.networking.k8s.io/v1alpha2
-metadata:
-  name: sol1a-__PREFIX__-mc
-  labels:
-    gateway: sol1a-__PREFIX__-ext-gw2mc    # dmarzi_was: external-store-http
-spec:
-  parentRefs:
-  - name: sol1a-__PREFIX__-ext-gw2mc       # dmarzi_was: external-store-http
-  hostnames:
-  - sol1a-__APPNAME__.example.io     # kept for easy curl/documented static commands :)
-  - sol1a-__PREFIX__.example.io      # bake in region as well... klets see which is best
-  - sol1a-__APPNAME__.__MY_DOMAIN__  # being changed by script 12 into $MY_DOMAIN.
-  - sol1a-passepartout.example.io    # being lazy, so it ALWAYS works for troubleshooting reasons :)
-  - sol1-passepartout.example.io
-  - passepartout.example.io          # being even lazier :)
-  - www.example.io                   # now beat this :)
-  rules:
-  - backendRefs:
-    - name: sol1a-__PREFIX__-common-svc # dmarzi_was: store-common-svc
+    - name: sol1sc-__PREFIX__-common-svc # dmarzi_was: store-common-svc
       port: 8080
