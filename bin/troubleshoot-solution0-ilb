@@ -31,6 +31,10 @@ echo if it works you can just . u need to create a test VM IN SAME REGION to con
 # uif u want to expose this FwdRule you can create a HTTP LB with PSC-NEG
 # and point it to a ServiceAcctchment that points to First Regional LB
 # (basically my fwd rule)
+
+white "Solution0 - related kubectl stuff:"
+bin/kubectl-triune get all,gateway,httproute |grep sol0
+
 white "Solution0 - related endpoints:"
 make endpoints-show | grep "sol0"
 
