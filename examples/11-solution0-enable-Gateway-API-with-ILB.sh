@@ -28,21 +28,11 @@ proceed_if_error_matches "already exists" \
      --range='192.168.1.0/24' # changed after dmarzi_-_proxy (192.168.0.0/24) rename..
 
 # wont work with enable Pvt IP from above :/ but it DOES work
-gcloud compute networks subnets update platinum-proxy --enable-private-ip-google-access
-
-exit 42
+#gcloud compute networks subnets update platinum-proxy --enable-private-ip-google-access
 # bingo! https://screenshot.googleplex.com/h5ZXAUgy5wWrvqh
+# but useless: I cant create anything inside it. It's just a private space for Envoy-based GFEs
 
-
-# 1. # enable required APIs (project level)
-# refactored into 00
-# gcloud services enable \
-#     container.googleapis.com \
-#     gkehub.googleapis.com \
-#     multiclusterservicediscovery.googleapis.com \
-#     multiclusteringress.googleapis.com \
-#     trafficdirector.googleapis.com \
-#     --project=$PROJECT_ID
+# 1. # enable required APIs (project level) => refactored into 00
 
 #1.5 Enable Workload Identity [missing from marzini]
 # TODO(ricc): remove me once testing the creation of GKE clusters with WrklId.

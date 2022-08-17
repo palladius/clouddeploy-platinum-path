@@ -12,11 +12,33 @@ echo "TODO check for Fwdrule in region=$REGION in dflt subnet of GKE. if u have 
 echo now pr001 is broken and prj002 has 4 working ones so start there.
 echo if it works you can just . u need to create a test VM IN SAME REGION to connect to Fwedrule."
 
+
+# ORDER IS RIDICULOUSLY WRONG :) so its conceptual order.
+# 10. Create LB                                    (requires Svless NEG => 2,3)
+# 15. Create Serverless NEG                        => requires SvcAtt
+# 20. "ServiceAcctchment" of ILB TYPE.             (requires 3)
+#     Two types: some attach to LB some to G APIs. I need LB but docs [1] explain the other one
+# 30. Create NAT_SUBNET (needed by 2)
+
+# [1] Docs: https://cloud.google.com/vpc/docs/configure-private-service-connect-controls
+# but you need to:
+# gcloud compute backend-services create BACKEND_SERVICE_NAME \
+# --load-balancing-scheme=(EX)TERNAL_MANAGED \ # instead of INternal.
+# --protocol=HTTPS \
+# --region=REGION
+# instead of External Managed.
+
 # uif u want to expose this FwdRule you can create a HTTP LB with PSC-NEG
 # and point it to a ServiceAcctchment that points to First Regional LB
 # (basically my fwd rule)
+white "Solution0 - related endpoints:"
+make endpoints-show | grep "sol0"
+
 yellow "1. automatically generated FwdRules:"
 gcloud compute forwarding-rules list | grep sol0 | grep "app0" # --filter ""
+
+gcloud compute forwarding-rules list | grep sol0 | grep "app0" ||
+    _fatal "No FwdRules in this project. Something got wrong. Trying deleting gcloud artifacts and run script 11 again."
 
 #yellow "2. Script-generated FwdRules:"
 #gcloud compute forwarding-rules list | grep ilb

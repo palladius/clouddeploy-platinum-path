@@ -19,8 +19,9 @@ APP_NAME="${1:-$DEFAULT_APP}"
 
 K8S_APP_SELECTOR="${AppsInterestingHash["$APP_NAME-SELECTOR"]}"
 K8S_APP_IMAGE="${AppsInterestingHash["$APP_NAME-IMAGE"]}"
-export URLMAP_NAME="${APP_NAME}-$URLMAP_NAME_MTSUFFIX"        # eg: "app02-BLAHBLAH"
-export FWD_RULE="${APP_NAME}-${FWD_RULE_MTSUFFIX}"            # eg: "app02-BLAHBLAH"
+
+export URLMAP_NAME_SOL1="${APP_NAME}-sol1-$URLMAP_NAME_MTSUFFIX"        # eg: "app02-sol1-BLAHBLAH"
+export FWD_RULE_SOL1="${APP_NAME}-sol1-${FWD_RULE_MTSUFFIX}"            # eg: "app02-sol1-BLAHBLAH"
 
 ########################################################################
 # Add your code here:
@@ -31,11 +32,11 @@ yellow "WORK IN PROGRESS! huge multi-tennant refactor in progress"
 #yellow "TODO(ricc): everything is multi-tennant except the FWD RULE part. Shouls have app01/02 in it.."
 #yellow "Deploy the GKE manifests. This needs to happen first as it creates the NEGs which this script depends upon."
 
-echo "APP_NAME:    $APP_NAME"
-echo "URLMAP_NAME: $URLMAP_NAME"
-echo "FWD_RULE:    $FWD_RULE"
-echo "K8S_APP_SELECTOR:    $K8S_APP_SELECTOR (useless in sol1)"
-echo "K8S_APP_IMAGE:       $K8S_APP_IMAGE    (useless in sol1)"
+echo "APP_NAME:         $APP_NAME"
+echo "URLMAP_NAME_SOL1: $URLMAP_NAME_SOL1"
+echo "FWD_RULE_SOL1:    $FWD_RULE_SOL1"
+echo "K8S_APP_SELECTOR: $K8S_APP_SELECTOR (useless in sol1)"
+echo "K8S_APP_IMAGE:    $K8S_APP_IMAGE    (useless in sol1)"
 echo "GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR:       $GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR"
 echo "##############################################"
 
@@ -119,8 +120,7 @@ bin/kubectl-staging get gatewayclass
 # UNLESS `gcloud container fleet ingress describe | ... greps both canary and prod`
 gcloud container fleet ingress enable \
     --config-membership=/projects/$PROJECT_ID/locations/global/memberships/cicd-dev \
-    --project=$PROJECT_ID ||
-        echo OK if this gives error
+    --project=$PROJECT_ID # ||        echo OK if this gives error
 # gcloud container fleet ingress enable \
 #     --config-membership=/projects/$PROJECT_ID/locations/global/memberships/cicd-prod \
 #     --project=$PROJECT_ID
