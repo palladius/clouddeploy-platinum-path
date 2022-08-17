@@ -1,17 +1,29 @@
 #!/bin/bash
 
 # DEVCONSOLE/net-services/loadbalancing/details/internalRegionalHttp/europe-west6/gkemcg1-default-dmarzi-apps-http-7r6w1rwor5as?project=cicd-platinum-test001&cloudshell=false&e=-13802955
+source ./.env.sh || exit 42
 
-fuinction _delete_existing_ilbs() {
+function _delete_existing_ilbs() {
     echo TODO
 }
 
 
-
-echo TODO check for Fwdrule in region=$REGION in dflt subnet of GKE. if u have it good. if u dont it can NEVER work.
+echo "TODO check for Fwdrule in region=$REGION in dflt subnet of GKE. if u have it good. if u dont it can NEVER work.
 echo now pr001 is broken and prj002 has 4 working ones so start there.
-echo if it works you can just . u need to create a test VM IN SAME REGION to connect to Fwedrule.
+echo if it works you can just . u need to create a test VM IN SAME REGION to connect to Fwedrule."
 
 # uif u want to expose this FwdRule you can create a HTTP LB with PSC-NEG
 # and point it to a ServiceAcctchment that points to First Regional LB
 # (basically my fwd rule)
+yellow "1. automatically generated FwdRules:"
+gcloud compute forwarding-rules list | grep sol0 | grep "app0" # --filter ""
+
+#yellow "2. Script-generated FwdRules:"
+#gcloud compute forwarding-rules list | grep ilb
+
+yellow "2. FwdRules by AppId:"
+IP_APP01=$(gcloud compute forwarding-rules list | grep "sol0-ilb-app01" | awk '{print $3}')
+IP_APP02=$(gcloud compute forwarding-rules list | grep "sol0-ilb-app02" | awk '{print $3}')
+
+echo "- App01: IP_FWD_RULE_01: $(green $IP_APP01)"
+echo "- App02: IP_FWD_RULE_02: $(green $IP_APP02)"
