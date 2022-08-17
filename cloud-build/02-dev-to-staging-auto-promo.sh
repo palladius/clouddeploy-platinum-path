@@ -174,7 +174,7 @@ echo "DOCKER_IMAGE_VERSION: $DOCKER_IMAGE_VERSION"
 gcloud artifacts docker tags add "$LATEST_IMAGE:$LATEST_TAG" "$LATEST_IMAGE:latest-cb2"
 gcloud artifacts docker tags add "$LATEST_IMAGE:$LATEST_TAG" "$LATEST_IMAGE:latest" # a big day for humanity!
 gcloud artifacts docker tags add "$LATEST_IMAGE:$LATEST_TAG" "$LATEST_IMAGE:$DOCKER_IMAGE_VERSION"
-gcloud artifacts docker tags add "$LATEST_IMAGE:$LATEST_TAG" "$LATEST_IMAGE:v${SUPERDUPER_MAGIC_VERSION}"
+gcloud artifacts docker tags add "$LATEST_IMAGE:$LATEST_TAG" "$LATEST_IMAGE:${SUPERDUPER_MAGIC_VERSION}"
 
 
 
