@@ -152,6 +152,7 @@ SOLUTION1_TEMPLATING_VER="1.1"
 
 # MultiAppK8sRefactoring: first script (just ported to obsolete script 2)
 make clean
+# huge "kubectl apply":
 smart_apply_k8s_templates "$GKE_SOLUTION1_XLB_PODSCALING_SETUP_DIR"
 
 #yellow Now we can issue a kubectl on the out dir..
