@@ -171,10 +171,10 @@ echo "LATEST_IMAGE_YAML: $LATEST_IMAGE_YAML"
 echo "SUPERDUPER_MAGIC_VERSION: $SUPERDUPER_MAGIC_VERSION"
 echo "DOCKER_IMAGE_VERSION: $DOCKER_IMAGE_VERSION"
 
-# gcloud artifacts docker tags add "$LATEST_IMAGE:$LATEST_TAG" "$LATEST_IMAGE:latest-cb2" # does not work from run 2 as we would need tag.delete permissions which artifactregistry.writer role won't give us
-# gcloud artifacts docker tags add "$LATEST_IMAGE:$LATEST_TAG" "$LATEST_IMAGE:latest" # does not work from run 2 as we would need tag.delete permissions which artifactregistry.writer role won't give us
+gcloud artifacts docker tags add "$LATEST_IMAGE:$LATEST_TAG" "$LATEST_IMAGE:latest-cb2"
+gcloud artifacts docker tags add "$LATEST_IMAGE:$LATEST_TAG" "$LATEST_IMAGE:latest"
 gcloud artifacts docker tags add "$LATEST_IMAGE:$LATEST_TAG" "$LATEST_IMAGE:$DOCKER_IMAGE_VERSION"
-gcloud artifacts docker tags add "$LATEST_IMAGE:$LATEST_TAG" "$LATEST_IMAGE:${SUPERDUPER_MAGIC_VERSION}"
+gcloud artifacts docker tags add "$LATEST_IMAGE:$LATEST_TAG" "$LATEST_IMAGE:v$SUPERDUPER_MAGIC_VERSION" # this is the same as $DOCKER_IMAGE_VERSION?
 
 
 
