@@ -72,6 +72,11 @@ gcloud container --project "$PROJECT_ID" clusters create-auto "cicd-prod" --regi
   --cluster-ipv4-cidr "/17" --services-ipv4-cidr "/22" # --labels "env=prod"
 
 
+for ITER_CLUSTER in cicd-canary cicd-prod cicd-dev ; do
+   gcloud container clusters get-credentials "$ITER_CLUSTER" --region "$GKE_REGION"
+   #2>/dev/null ||
+   #    yellow "This will fail before you run step 01... so no biggie if this fails."
+done
 
 #############################################################
 # Create Artifact Registry
