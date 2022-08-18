@@ -69,6 +69,7 @@ touch ".$APPNAME.appname"
 
 # sets `kubetcl`` context to this cluster, I'll do DEV CANARY PROD but keep DEV
 # LAST so it will stick so do NOT change the order :)
+
 # for ITER_CLUSTER in cicd-canary cicd-prod cicd-dev ; do
 #   # Muting STDERR since we don't really care. Will fail. Or maybe we should move to AFTER GKE
 #   gcloud container clusters get-credentials "$ITER_CLUSTER" --region "$GKE_REGION" 2>/dev/null ||
