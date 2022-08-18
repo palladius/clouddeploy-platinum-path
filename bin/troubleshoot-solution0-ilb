@@ -7,7 +7,6 @@ function _delete_existing_ilbs() {
     echo TODO
 }
 
-
 echo "TODO check for Fwdrule in region=$REGION in dflt subnet of GKE. if u have it good. if u dont it can NEVER work.
 echo now pr001 is broken and prj002 has 4 working ones so start there.
 echo if it works you can just . u need to create a test VM IN SAME REGION to connect to Fwedrule."
