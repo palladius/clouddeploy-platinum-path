@@ -2,7 +2,7 @@
 kind: Gateway
 apiVersion: gateway.networking.k8s.io/v1alpha2
 metadata:
-  name: sol0-ilb-$APP_NAME-http
+  name: sol0-ilb-${APP_NAME}-http # was   name: dmarzi-apps-http
 spec:
   gatewayClassName: gke-l7-rilb-mc
   listeners:
@@ -16,4 +16,13 @@ spec:
         from: Selector
         selector:
           matchLabels:
-            gateway: sol0-ilb-$APP_NAME-http
+            gateway: sol0-ilb-${APP_NAME}-http
+# there might be annotations to spciefy the proxy where it goes?
+# it will pick one available: dmarzi-proxy or whatevs-proxy
+# The Frontend IP will be picked from the subnet of the nodes if pvt cluster
+# or as external cluster
+# I have:
+# - Public IP master
+# - random node in GKE has external IP (35.241.142.235)
+# It shoudl take a FE IP from Node subnet (in my case default/default). in eu-w1
+# 10.132.15.203: 10.132.0.0/20

@@ -1,0 +1,54 @@
+#!/bin/bash
+
+# DEVCONSOLE/net-services/loadbalancing/details/internalRegionalHttp/europe-west6/gkemcg1-default-dmarzi-apps-http-7r6w1rwor5as?project=cicd-platinum-test001&cloudshell=false&e=-13802955
+source ./.env.sh || exit 42
+
+function _delete_existing_ilbs() {
+    echo TODO
+}
+
+echo "TODO check for Fwdrule in region=$REGION in dflt subnet of GKE. if u have it good. if u dont it can NEVER work.
+echo now pr001 is broken and prj002 has 4 working ones so start there.
+echo if it works you can just . u need to create a test VM IN SAME REGION to connect to Fwedrule."
+
+
+# ORDER IS RIDICULOUSLY WRONG :) so its conceptual order.
+# 10. Create LB                                    (requires Svless NEG => 2,3)
+# 15. Create Serverless NEG                        => requires SvcAtt
+# 20. "ServiceAcctchment" of ILB TYPE.             (requires 3)
+#     Two types: some attach to LB some to G APIs. I need LB but docs [1] explain the other one
+# 30. Create NAT_SUBNET (needed by 2)
+
+# [1] Docs: https://cloud.google.com/vpc/docs/configure-private-service-connect-controls
+# but you need to:
+# gcloud compute backend-services create BACKEND_SERVICE_NAME \
+# --load-balancing-scheme=(EX)TERNAL_MANAGED \ # instead of INternal.
+# --protocol=HTTPS \
+# --region=REGION
+# instead of External Managed.
+
+# uif u want to expose this FwdRule you can create a HTTP LB with PSC-NEG
+# and point it to a ServiceAcctchment that points to First Regional LB
+# (basically my fwd rule)
+
+white "Solution0 - related kubectl stuff:"
+bin/kubectl-triune get all,gateway,httproute |grep sol0
+
+white "Solution0 - related endpoints:"
+make endpoints-show | grep "sol0"
+
+yellow "1. automatically generated FwdRules:"
+gcloud compute forwarding-rules list | grep sol0 | grep "app0" # --filter ""
+
+gcloud compute forwarding-rules list | grep sol0 | grep "app0" ||
+    _fatal "No FwdRules in this project. Something got wrong. Trying deleting gcloud artifacts and run script 11 again."
+
+#yellow "2. Script-generated FwdRules:"
+#gcloud compute forwarding-rules list | grep ilb
+
+yellow "2. FwdRules by AppId:"
+IP_APP01=$(gcloud compute forwarding-rules list | grep "sol0-ilb-app01" | awk '{print $3}')
+IP_APP02=$(gcloud compute forwarding-rules list | grep "sol0-ilb-app02" | awk '{print $3}')
+
+echo "- App01: IP_FWD_RULE_01: $(green $IP_APP01)"
+echo "- App02: IP_FWD_RULE_02: $(green $IP_APP02)"

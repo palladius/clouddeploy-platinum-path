@@ -1,3 +1,4 @@
+2022-08-16 v0.18.7  01.sh: creates default network if it doesnt exist.
 2022-08-16 v0.18.5  Started the #BigMerge for script 15 and 15b for #Solution2
 2022-08-16 v0.18.4  Fixed big #CanProd2Dev4debug bug for real. Not fixing it would have been better actually :)
 2022-08-15 v0.18.3  Trying to fix big #CanProd2Dev4debug bug

@@ -126,11 +126,11 @@ breadcrumb-navigation:
 
 clean:
 	echo 'Removing tmp files created by scripts..'
-	rm -f k8s/*/out/*.yaml
+	rm -f k8s/*/out/*.yaml k8s/*/out/cluster*/*.yaml
 	# not sure i want to do this...
 	#rm .executed.*
 	rm -f apps/tmp/*
-	rm -f .t.* .tmp.* ./.15sh.lastStdOutAndErr
+	rm -f .t.* .tmp.* ./.15sh.lastStdOutAndErr t1 t2 t
 	@echo OK. Removed tmp files.
 
 observe-endpoints:

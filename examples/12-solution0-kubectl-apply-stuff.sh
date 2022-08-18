@@ -45,8 +45,6 @@ done
 
 
 red "WARNING: The ILB selector just uses canary-or-prod, not appname. Once it works and OVER reaches I can then specify. This fix is for another day."
-white "Solution0 - related endpoints:"
-make endpoints-show | grep "sol0"
 
 set -x
 
@@ -54,12 +52,28 @@ set -x
 # [RICC03] APPLY
 ###########################################################
 # Step 6. Apply the GW Config on Cluster 1.
+DELETE_K8S_STUFF_BEFORE_APPLY="false"
+
+if "$DELETE_K8S_STUFF_BEFORE_APPLY" ; then
+    # DELETE ALL BEFORE applying in case something is stuck
+    yellow "Deleting cluster config and re-applying.."
+    kubectl --context="$GKE_CANARY_CLUSTER_CONTEXT" delete -f "$GKE_SOLUTION0_ILB_SETUP_DIR/out/cluster1/" ||
+        echo Might fail but still good to run it.
+    kubectl --context="$GKE_PROD_CLUSTER_CONTEXT"   delete -f "$GKE_SOLUTION0_ILB_SETUP_DIR/out/cluster2/" ||
+        echo Might fail but still good to run it.
+    sleep 5
+fi
+
 # this is the STATIC by Daniel, not the multitenant from jul15: #MultiAppK8sRefactoring
 kubectl --context="$GKE_CANARY_CLUSTER_CONTEXT" apply -f "$GKE_SOLUTION0_ILB_SETUP_DIR/out/cluster1/"
 kubectl --context="$GKE_PROD_CLUSTER_CONTEXT"   apply -f "$GKE_SOLUTION0_ILB_SETUP_DIR/out/cluster2/"
 
 echo Restoring cluster 1.
 gcloud container clusters get-credentials "$CLUSTER_1"  --region "$GCLOUD_REGION" --project "$PROJECT_ID"
+
+# white "Solution0 - related endpoints:"
+# make endpoints-show | grep "sol0" ||
+#     _fatal "No SOL0 endpoints found. Exiting"
 
 # This means that app01 ILB diverts traffic to both app01 and app02 apps. And same for app02 ILB.
 # Until I get this to work its pointless to restrict thje traffic further as having more endpoints ultimately helps.
