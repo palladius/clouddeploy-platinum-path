@@ -14,15 +14,13 @@ DEFAULT_APP_SELECTOR="app01-kupython"     # app01-kupython / app02-kuruby
 DEFAULT_APP_IMAGE="skaf-app01-python-buildpacks"   # skaf-app01-python-buildpacks // ricc-app02-kuruby-skaffold
 
 APP_NAME="${1:-$DEFAULT_APP}"
-#K8S_APP_SELECTOR="${2:-$DEFAULT_APP_SELECTOR}"
-#K8S_APP_IMAGE="${3:-$DEFAULT_APP_IMAGE}" # "skaf-app01-python-buildpacks"
 
 K8S_APP_SELECTOR="${AppsInterestingHash["$APP_NAME-SELECTOR"]}"
 K8S_APP_IMAGE="${AppsInterestingHash["$APP_NAME-IMAGE"]}"
 
 export URLMAP_NAME_SOL1="${APP_NAME}-sol1-$URLMAP_NAME_MTSUFFIX"        # eg: "app02-sol1-BLAHBLAH"
 export FWD_RULE_SOL1="${APP_NAME}-sol1-${FWD_RULE_MTSUFFIX}"            # eg: "app02-sol1-BLAHBLAH"
-
+export CLUSTER_DEV="cicd-dev"
 ########################################################################
 # Add your code here:
 ########################################################################
@@ -87,6 +85,11 @@ gcloud container fleet memberships register "$CLUSTER_1" \
 
 gcloud container fleet memberships register "$CLUSTER_2" \
      --gke-cluster "$GCLOUD_REGION/$CLUSTER_2" \
+     --enable-workload-identity \
+     --project="$PROJECT_ID" --quiet
+
+gcloud container fleet memberships register "$CLUSTER_DEV" \
+     --gke-cluster "$GCLOUD_REGION/$CLUSTER_DEV" \
      --enable-workload-identity \
      --project="$PROJECT_ID" --quiet
 

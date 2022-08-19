@@ -69,7 +69,7 @@ gcloud container fleet multi-cluster-services enable \
 gcloud projects add-iam-policy-binding "$PROJECT_ID" \
      --member "serviceAccount:$PROJECT_ID.svc.id.goog[gke-mcs/gke-mcs-importer]" \
      --role "roles/compute.networkViewer" \
-     --project=$PROJECT_ID
+     --project="$PROJECT_ID"
 
 #4.  enable gateway apis
 kubectl --context="$GKE_CANARY_CLUSTER_CONTEXT" apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
