@@ -76,22 +76,27 @@ gcloud container clusters update cicd-dev \
 ##################################################
 ## dmarzi002 register clusters to the fleet (cluster level)
 ##################################################
+
 #white "Skipping step2 since it was already done for Solution0."
 # Actually lets get it back since... SOL0 might go to sleep :)
-gcloud container fleet memberships register "$CLUSTER_1" \
-     --gke-cluster "$GCLOUD_REGION/$CLUSTER_1" \
-     --enable-workload-identity \
-     --project="$PROJECT_ID" --quiet
+_gcloud_container_fleet_memberships_register_if_needed cicd-dev
+_gcloud_container_fleet_memberships_register_if_needed "$CLUSTER_1"
+_gcloud_container_fleet_memberships_register_if_needed "$CLUSTER_2"
+# gcloud container fleet memberships register "$CLUSTER_1" \
+#      --gke-cluster "$GCLOUD_REGION/$CLUSTER_1" \
+#      --enable-workload-identity \
+#      --project="$PROJECT_ID" --quiet
 
-gcloud container fleet memberships register "$CLUSTER_2" \
-     --gke-cluster "$GCLOUD_REGION/$CLUSTER_2" \
-     --enable-workload-identity \
-     --project="$PROJECT_ID" --quiet
+# gcloud container fleet memberships register "$CLUSTER_2" \
+#      --gke-cluster "$GCLOUD_REGION/$CLUSTER_2" \
+#      --enable-workload-identity \
+#      --project="$PROJECT_ID" --quiet
 
-gcloud container fleet memberships register "$CLUSTER_DEV" \
-     --gke-cluster "$GCLOUD_REGION/$CLUSTER_DEV" \
-     --enable-workload-identity \
-     --project="$PROJECT_ID" --quiet
+# # only for the New Generation SOL1 which uses also DEV.
+# gcloud container fleet memberships register "$CLUSTER_DEV" \
+#      --gke-cluster "$GCLOUD_REGION/$CLUSTER_DEV" \
+#      --enable-workload-identity \
+#      --project="$PROJECT_ID" --quiet
 
 
 # default to PROD #CanProd2Dev4debug

@@ -63,7 +63,7 @@ bin/kubectl-staging get gateways | egrep "sol1sc-app"
 #   #IP_FWDRULE=$(gcloud compute forwarding-rules list --filter "$FWD_RULE" 2>/dev/null | tail -1 | awk '{print $2}' )
 #   bin/kubectl-dev get gateways | egrep "sol1D_OLD" | grep True | while read ENV GATEWAY_NAME class IP_GATEWAY ALWAYSTRUE TIME_UP ; do
 #      _smart_curl "$IP_GATEWAY" 80 "$APPXX_ITER" "[$ENV] GW_RULE $GW_RULE"
-#      echodo curl -s -H "host: passepartout.example.io" "http://$IP_GATEWAY:8080/statusz"
+#      _echodo curl -s -H "host: passepartout.example.io" "http://$IP_GATEWAY:8080/statusz"
 #   done
 # done
 
@@ -76,7 +76,7 @@ for APPXX_ITER in app01 app02 ; do
   #IP_FWDRULE=$(gcloud compute forwarding-rules list --filter "$FWD_RULE" 2>/dev/null | tail -1 | awk '{print $2}' )
   bin/kubectl-prod get gateways | egrep "sol1sc" | grep True | while read ENV GATEWAY_NAME class IP_GATEWAY ALWAYSTRUE TIME_UP ; do
      _smart_curl "$IP_GATEWAY" 80 "$APPXX_ITER" "[$ENV] GW_RULE $GW_RULE"
-     echodo curl -s -H "host: passepartout.example.io" "http://$IP_GATEWAY:8080/statusz"
+     _echodo curl -s -H "host: passepartout.example.io" "http://$IP_GATEWAY:8080/statusz"
   done
 done
 
