@@ -22,6 +22,7 @@ set -e
 # TeamNumber ; TeamName ; CloudBuild file ; Source To Be listening
 TEAMS[0]='T1py;app01;cloudbuild.yaml;apps/app01/;green'
 TEAMS[1]='T2rb;app02;cloudbuild.yaml;apps/app02/;red'
+TEAMS[2]='T3js;app03;cloudbuild.yaml;apps/app03/;purple'
 #TEAMS[2]='T3;frontend;cloudbuild-super-parametric.yaml;src/frontend/;yellow'
 #TEAMS[3]='T4;loadgenerator;cloudbuild-super-parametric.yaml;src/loadgenerator/;red'
 

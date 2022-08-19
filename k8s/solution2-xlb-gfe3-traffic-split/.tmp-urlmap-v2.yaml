@@ -1,0 +1,36 @@
+# This comment will be lost in a bash pipe, like tears in the rain...
+defaultService: https://www.googleapis.com/compute/v1/projects/cicd-platinum-test010/global/backendServices/app01-sol2-svc-prod
+hostRules:
+- hosts:
+    # This is for ease of troubleshoot
+  - app01-sol2-xlb-gfe3.example.io
+    # This is for you to use your REAL domain - with Cloud DNS you can just curl the final hostname. Not covered by this demo.
+  - app01-sol2-xlb-gfe3.aablsk.example.com
+    # this is part of the new Passepartout philosophy for ease of troubleshooting
+  - sol2-passepartout.example.io
+  - passepartout.example.io
+  - www.example.io
+  pathMatcher: path-matcher-1
+pathMatchers:
+- defaultRouteAction:
+    faultInjectionPolicy:
+      abort:
+        httpStatus: 503
+        percentage: 100.0
+    weightedBackendServices:
+    - backendService: https://www.googleapis.com/compute/v1/projects/cicd-platinum-test010/global/backendServices/app01-sol2-svc-canary
+      weight: 1
+  # Note this will stop wprking in the future. good luck with STDIN with this error:
+  # WARNING: The name of the Url Map must match the value of the 'name' attribute in the YAML file. Future versions of gcloud will fail with an error.
+  name: path-matcher-1
+  #name: app01-sol2-ummt-sol2
+  routeRules:
+  - matchRules:
+    - prefixMatch: /
+    priority: 1
+    routeAction:
+      weightedBackendServices:
+      - backendService: https://www.googleapis.com/compute/v1/projects/cicd-platinum-test010/global/backendServices/app01-sol2-svc-canary
+        weight: 20 # 22
+      - backendService: https://www.googleapis.com/compute/v1/projects/cicd-platinum-test010/global/backendServices/app01-sol2-svc-prod
+        weight: 80 # 78

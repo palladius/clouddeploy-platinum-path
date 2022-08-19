@@ -1,0 +1,42 @@
+apiVersion: skaffold/v2beta26
+kind: Config
+metadata:
+  name: app03
+build:
+  artifacts:
+  - image: aablsk-app03-kunode-skaffold
+    context: .
+    docker:
+      target: production
+    sync:
+      infer:
+      - '*.js'
+      - '*.json'
+profiles:
+  - name: dev
+    deploy:
+      kustomize:
+        paths: ["k8s/overlays/dev"]
+    build:
+      artifacts:
+        - image: aablsk-app03-kunode-skaffold
+          context: .
+          docker:
+            target: development
+          sync:
+            infer:
+            - '**/*.js'
+            - '**/*.json'
+      
+  - name: staging
+    deploy:
+      kustomize:
+        paths: ["k8s/overlays/staging"]
+  - name: canary
+    deploy:
+      kustomize:
+        paths: ["k8s/overlays/canary"]
+  - name: production
+    deploy:
+      kustomize:
+        paths: ["k8s/overlays/production"]

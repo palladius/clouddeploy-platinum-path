@@ -1,0 +1,26 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../base
+components:
+  - ../../../../../components/common/prod
+replicas:
+  - name: app03-kunode
+    # If you have plenty of capacity, please turn to 9 (9 vs 1 is 90%/10%) but 4 is a better example as it demonstrates (4 vs 1 is 80%/20%) with half the pods.
+    count: 4
+patches:
+- patch: |-
+    - op: add
+      path: "/spec/template/spec/containers/0/env/-"
+      value:
+        name: CLOUD_DEPLOY_TARGET #RICCARDO_KUSTOMIZE_ENV
+        value: "04 Prod - Production"
+# - patch: |-
+#     - op: add
+#       path: "/spec/template/spec/containers/0/env/-"
+#       value:
+#         name: FAVORITE_COLOR
+#         value: white # prod is WHITE :)
+  target:
+    kind: Deployment
+    name: app03-kunode

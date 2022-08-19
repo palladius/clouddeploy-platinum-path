@@ -66,6 +66,32 @@ serialPipeline:
    profiles: [production]
 ---
 apiVersion: deploy.cloud.google.com/v1
+kind: DeliveryPipeline
+metadata:
+  name: app03
+  annotations:
+    #ricc: was also here and loves ruby
+    about: This is a NodeJS sample web frontend built with Docker
+  labels:
+    lang: nodejs
+    CDT_VER: _MY_VERSION_
+    ricc_app_id: '03'
+description: |
+    Delivery pipeline for CI/CD App03 (in node) and then 
+    packaged via Docker.
+    CDTv _MY_VERSION_
+serialPipeline:
+  stages:
+  - targetId: dev
+    profiles: [dev]
+  - targetId: staging
+    profiles: [staging]
+  - targetId: canary-production
+    profiles: [canary]
+  - targetId: production
+    profiles: [production]
+---
+apiVersion: deploy.cloud.google.com/v1
 kind: Target
 metadata:
  name: dev
@@ -104,3 +130,14 @@ description:  |
   promoting all traffic to prod.
 gke:
  cluster: projects/MY_PROJECT_ID/locations/MY_REGION/clusters/cicd-prod
+---
+apiVersion: deploy.cloud.google.com/v1
+kind: Target
+metadata:
+  name: canary-production
+description:  |
+  03 (only app03) production cluster with canary deployment.
+  Used to showcase canary deployment within a single cluster
+  before promoting all traffic to newest version.
+gke:
+  cluster: projects/MY_PROJECT_ID/locations/MY_REGION/clusters/cicd-prod
