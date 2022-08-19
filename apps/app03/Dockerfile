@@ -3,6 +3,7 @@ WORKDIR /app
 COPY package.json .
 COPY yarn.lock .
 RUN yarn install --production
+COPY VERSION .
 
 FROM build as development
 RUN yarn install

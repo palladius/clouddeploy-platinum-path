@@ -1,8 +1,8 @@
-const packageJson = require('../package.json')
+const fs = require('fs')
 const express = require('express')
 const app = express()
 
-const version = packageJson.version
+const version = fs.readFileSync('VERSION', 'utf-8')
 const appName = process.env.APP_NAME
 const favoriteColor = process.env.FAVORITE_COLOR || '#03fca9'
 const favoriteColorCommon = process.env.FAVORITE_COLOR_COMMON || '#282828'

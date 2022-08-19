@@ -1,6 +1,5 @@
 {
   "name": "app03",
-  "version": "1.0.0",
   "main": "app.js",
   "repository": "https://github.com/palladius/clouddeploy-platinum-path",
   "author": "aablsk",
