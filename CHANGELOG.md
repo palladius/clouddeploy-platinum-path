@@ -1,3 +1,4 @@
+2022-08-19 v0.18.10 Cloud Build script2: muted magic tagging as broken.
 2022-08-19 v0.18.9  07.sh: only builds on MAIN branch.
 2022-08-16 v0.18.7  01.sh: creates default network if it doesnt exist.
 2022-08-16 v0.18.5  Started the #BigMerge for script 15 and 15b for #Solution2
