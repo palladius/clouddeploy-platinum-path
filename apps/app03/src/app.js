@@ -20,7 +20,7 @@ app.get('/', (req, res) => {
     
         Hello world from Skaffold in NodeJS! This is a demonstrative app to demonstrate CI/CD with Cloud Deploy and Cloud Build<br/>
 
-        I read version from package.json file and this ./VERSION file is actually read by the build pipeline
+        I read version VERSION file and this ./VERSION file is actually read by the build pipeline
         into the Cloud Deploy release name - wOOOt!<br/><br/>
 
         FAVORITE_COLOR=${favoriteColor}<br/>
