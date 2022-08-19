@@ -10,6 +10,8 @@ PIPELINE="${1:-app01}"
 INITIAL_STAGE="${2:-dev}"    # seems useless, probably cos I just deploy a release which is independent on which stage it is. Good to learn :)
 DESIRED_STAGE="${3:-staging}"
 
+#gcloud config set deploy/region "$CLOUD_DEPLOY_REGION"
+
 if [ $# -eq 0 ]; then
     yellow "Usage: $0 [appXX] [STAGE_FROM] [STAGE_TO] (STAGES can be: dev, staging, canary, production)"
 #else
@@ -24,7 +26,7 @@ LATEST_SUCCESSFUL_RELEASE="$(get_latest_successful_release_by_pipeline "$PIPELIN
 if [ -z "$LATEST_SUCCESSFUL_RELEASE" ]; then
     _error "🥺 Sorry, no release found. Probably you need to build something to dev/canary first. Have you committed code to $PIPELINE yet? Have you followed Riccardo tutorial 🙃? Let me show you what I see:"
     set -x
-    gcloud deploy releases list --delivery-pipeline="$PIPELINE" --format 'table(renderState,name)'
+    gcloud deploy releases list --delivery-pipeline="$PIPELINE" --region "$CLOUD_DEPLOY_REGION" --format 'table(renderState,name)'
     exit 153
 fi
 

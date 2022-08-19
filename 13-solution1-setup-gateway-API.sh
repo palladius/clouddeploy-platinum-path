@@ -14,15 +14,13 @@ DEFAULT_APP_SELECTOR="app01-kupython"     # app01-kupython / app02-kuruby
 DEFAULT_APP_IMAGE="skaf-app01-python-buildpacks"   # skaf-app01-python-buildpacks // ricc-app02-kuruby-skaffold
 
 APP_NAME="${1:-$DEFAULT_APP}"
-#K8S_APP_SELECTOR="${2:-$DEFAULT_APP_SELECTOR}"
-#K8S_APP_IMAGE="${3:-$DEFAULT_APP_IMAGE}" # "skaf-app01-python-buildpacks"
 
 K8S_APP_SELECTOR="${AppsInterestingHash["$APP_NAME-SELECTOR"]}"
 K8S_APP_IMAGE="${AppsInterestingHash["$APP_NAME-IMAGE"]}"
 
 export URLMAP_NAME_SOL1="${APP_NAME}-sol1-$URLMAP_NAME_MTSUFFIX"        # eg: "app02-sol1-BLAHBLAH"
 export FWD_RULE_SOL1="${APP_NAME}-sol1-${FWD_RULE_MTSUFFIX}"            # eg: "app02-sol1-BLAHBLAH"
-
+export CLUSTER_DEV="cicd-dev"
 ########################################################################
 # Add your code here:
 ########################################################################
@@ -47,12 +45,14 @@ white "Now I proceed to apply solution 1 for: $APP_NAME. If wrong, call me with 
 ## dmarzi001 enable required APIs (project level)
 ##################################################
 
-gcloud services enable \
-    container.googleapis.com \
-    gkehub.googleapis.com \
-    multiclusterservicediscovery.googleapis.com \
-    multiclusteringress.googleapis.com \
-    trafficdirector.googleapis.com
+# Refactored in 00-init.
+
+# gcloud services enable \
+#     container.googleapis.com \
+#     gkehub.googleapis.com \
+#     multiclusterservicediscovery.googleapis.com \
+#     multiclusteringress.googleapis.com \
+ #   trafficdirector.googleapis.com
 
 ##################################################
 ## dmarzi001.5 SetUp Workload ~Identity
@@ -76,7 +76,23 @@ gcloud container clusters update cicd-dev \
 ##################################################
 ## dmarzi002 register clusters to the fleet (cluster level)
 ##################################################
-white "Skipping step2 since it was already done for Solution0."
+#white "Skipping step2 since it was already done for Solution0."
+# Actually lets get it back since... SOL0 might go to sleep :)
+gcloud container fleet memberships register "$CLUSTER_1" \
+     --gke-cluster "$GCLOUD_REGION/$CLUSTER_1" \
+     --enable-workload-identity \
+     --project="$PROJECT_ID" --quiet
+
+gcloud container fleet memberships register "$CLUSTER_2" \
+     --gke-cluster "$GCLOUD_REGION/$CLUSTER_2" \
+     --enable-workload-identity \
+     --project="$PROJECT_ID" --quiet
+
+gcloud container fleet memberships register "$CLUSTER_DEV" \
+     --gke-cluster "$GCLOUD_REGION/$CLUSTER_DEV" \
+     --enable-workload-identity \
+     --project="$PROJECT_ID" --quiet
+
 
 # default to PROD #CanProd2Dev4debug
 gcloud container clusters get-credentials "cicd-prod" --region "$REGION" # --project "$PROJECT_ID"

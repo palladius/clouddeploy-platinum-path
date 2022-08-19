@@ -97,7 +97,9 @@ echo "Step 07. Magic tagging now.."
 
 echo 'TODO(ricc/bielski): I have amazing auto-tagging code which is 99% working. That 1% breaks everything else'
 echo 'so Im going to stop it for now. https://github.com/palladius/clouddeploy-platinum-path/issues/25'
-exit 0
+
+# Probably fixed by Alex, lets see if it works now.
+#exit 0
 
 function cleanup_for_cloudbuild() {
   tr '[:upper:]' '[:lower:]' | sed -e 's/[^a-z0-9-]/-/g'

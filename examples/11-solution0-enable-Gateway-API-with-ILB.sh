@@ -38,22 +38,22 @@ proceed_if_error_matches "already exists" \
 # TODO(ricc): remove me once testing the creation of GKE clusters with WrklId.
 # Note that in AutoPilot this is not needed.
 gcloud container clusters update "$CLUSTER_1" \
-    --region=$GCLOUD_REGION \
-    --workload-pool=$PROJECT_ID.svc.id.goog
+    --region="$GCLOUD_REGION" \
+    --workload-pool="$PROJECT_ID.svc.id.goog"
 gcloud container clusters update "$CLUSTER_2" \
-    --region=$GCLOUD_REGION \
-    --workload-pool=$PROJECT_ID.svc.id.goog
+    --region="$GCLOUD_REGION" \
+    --workload-pool="$PROJECT_ID.svc.id.goog"
 
 #2. register clusters to the fleet (cluster level)
 gcloud container fleet memberships register "$CLUSTER_1" \
      --gke-cluster "$GCLOUD_REGION/$CLUSTER_1" \
      --enable-workload-identity \
-     --project=$PROJECT_ID --quiet
+     --project="$PROJECT_ID" --quiet
 
-gcloud container fleet memberships register $CLUSTER_2 \
-     --gke-cluster $GCLOUD_REGION/$CLUSTER_2 \
+gcloud container fleet memberships register "$CLUSTER_2" \
+     --gke-cluster "$GCLOUD_REGION/$CLUSTER_2" \
      --enable-workload-identity \
-     --project=$PROJECT_ID --quiet
+     --project="$PROJECT_ID" --quiet
 
 # Cluster 1
 _deb "Cluster mapping: CANARY CLUSTER_1=$CLUSTER_1"
@@ -69,7 +69,7 @@ gcloud container fleet multi-cluster-services enable \
 gcloud projects add-iam-policy-binding "$PROJECT_ID" \
      --member "serviceAccount:$PROJECT_ID.svc.id.goog[gke-mcs/gke-mcs-importer]" \
      --role "roles/compute.networkViewer" \
-     --project=$PROJECT_ID
+     --project="$PROJECT_ID"
 
 #4.  enable gateway apis
 kubectl --context="$GKE_CANARY_CLUSTER_CONTEXT" apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"

@@ -11,7 +11,6 @@ OUTPUT="$("$@" 2>&1)"
 RET=$?
 
 if [ "0" = "$RET" ] ; then
-    #green "[DEB] cmd returned 0, we are ok anyhow"
     exit 0
 else
     # ERROR
@@ -19,7 +18,7 @@ else
     echo "[DEB] $OUTPUT" | lolcat
     if echo "$OUTPUT" | grep -q "$ERROR_MSG" ; then
         # in italian we say 'Saved in corner' since we like soccer
-        yellow "[proceed_if_error_matches] '$COMMAND' returns $RET but matches regex '$ERROR_MSG'! It was a narrow squeak"
+        echo "[proceed_if_error_matches] '$COMMAND' returns $RET but matches regex '$ERROR_MSG'! It was a narrow squeak"
         exit 0
     else
         # A failure is a failure
