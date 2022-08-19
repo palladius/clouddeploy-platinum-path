@@ -25,7 +25,8 @@ TEAMS[1]='T2rb;app02;cloudbuild.yaml;apps/app02/;red'
 #TEAMS[2]='T3;frontend;cloudbuild-super-parametric.yaml;src/frontend/;yellow'
 #TEAMS[3]='T4;loadgenerator;cloudbuild-super-parametric.yaml;src/loadgenerator/;red'
 
-TRIGGERVERSION="1-7"
+TRIGGERVERSION="1-8"
+# 1.8  20220819 Only pushes on MAIN branch, as suggested by bielski.
 # 1.7  20220708 Changed colors cos Ruby is Red and Python is green, but more importantly I dont want to confuse people with blue/green deployment since app_id is orthogonal to deployment stage.
 # 1.6  20220610 Added 'cloud-build/**' to trigger changes.
 # 1.5b 20220603 I didnt change a thing but DESTROYED everything since i had 4 triggers, 2 in 1.5a and 2 in 1.3 so wanted to have a clean slate.
@@ -59,9 +60,11 @@ for TEAM_ARR in "${TEAMS[@]}"; do
     SUBSTITUTIONS="_DEPLOY_UNIT=$TEAM_NAME,_REGION=$REGION,_ARTIFACT_REPONAME=$ARTIFACT_REPONAME,_DEPLOY_REGION=$CLOUD_DEPLOY_REGION"
 
     set -x
-    # This sets up on GCR
+    # This sets up the mirror on GCR
+    BRANCH_PATTERN="^main$" # bielski suggests to only trigger on main.
+    #was:      gcloud alpha builds triggers create github --repo-owner="$GITHUB_REPO_OWNER" --repo-name="$GITHUB_REPO_NAME" --branch-pattern='.*' \
     proceed_if_error_matches 'generic::already_exists: trigger' \
-      gcloud alpha builds triggers create github --repo-owner="$GITHUB_REPO_OWNER" --repo-name="$GITHUB_REPO_NAME" --branch-pattern='.*' \
+      gcloud alpha builds triggers create github --repo-owner="$GITHUB_REPO_OWNER" --repo-name="$GITHUB_REPO_NAME" --branch-pattern="$BRANCH_PATTERN" \
       --description="[$TEAM_NUMBER] CB trigger from CLI for $TEAM_NAME module" --included-files="${SRC_SUBFOLDER}**,*.yaml,cloud-build/**" \
       --build-config cloudbuild.yaml --substitutions="$SUBSTITUTIONS" \
       --name "$TEAM_NUMBER-CLIv$TRIGGERVERSION-$TEAM_NAME"
