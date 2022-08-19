@@ -15,7 +15,7 @@ function _cleanup_everything() {
     yellow "Deleting SOL2 NEGs which are not utizlied by some APP: DEVCONSOLE/compute/networkendpointgroups/list"
     gcloud compute network-endpoint-groups list --filter="sol2" | grep -v NAME | sort | while read NAME ZONE BLAH SIZE ; do
         #echo "$NAME --zone $ZONE"
-        echodo gcloud compute network-endpoint-groups delete "$NAME" --zone "$ZONE" --quiet
+        _echodo gcloud compute network-endpoint-groups delete "$NAME" --zone "$ZONE" --quiet
     done
 
     green DONE.
