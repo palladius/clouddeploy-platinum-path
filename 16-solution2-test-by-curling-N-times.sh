@@ -59,7 +59,6 @@ _check_your_os_supports_bash_arrays
 
 K8S_APP_SELECTOR="${AppsInterestingHash["$APP_NAME-SELECTOR"]}"
 K8S_APP_IMAGE="${AppsInterestingHash["$APP_NAME-IMAGE"]}"
-SMART_EGREP=${AppsInterestingHash["$APP_NAME-WEB_EGREP"]} # useless now:)
 
 export MYAPP_URLMAP_NAME="$(_urlmap_name_by_app "$APP_NAME" )" # "${APP_NAME}-${URLMAP_NAME_MTSUFFIX}-vm3"  # we have normal and v2
 export MYAPP_FWD_RULE="$(_fwd_rule_by_app $APP_NAME)"
@@ -83,7 +82,6 @@ MYAPP_IP_FWDRULE=$(gcloud compute forwarding-rules list --filter "$MYAPP_FWD_RUL
 if "$DEBUG" ; then
     echo "K8S_APP_SELECTOR:    $K8S_APP_SELECTOR"
     echo "K8S_APP_IMAGE:       $K8S_APP_IMAGE"
-    echo "SMART_EGREP:         $SMART_EGREP"
     echo "SOL2_SERVICE_CANARY: $SOL2_SERVICE_CANARY"
     echo "SOL2_SERVICE_PROD:   $SOL2_SERVICE_PROD"
     echo "MYAPP_FWD_RULE:      $MYAPP_FWD_RULE"
@@ -95,7 +93,6 @@ white "Trying $N_TRIES times to curl my host at IP: $MYAPP_IP_FWDRULE [$MYAPP_FW
 for i in `seq 1 $N_TRIES`; do
     #echo curl -H "Host: www.example.io" "http://$MYAPP_IP_FWDRULE/statusz" 2>/dev/null
     _echodo curl -H "Host: www.example.io" "http://$MYAPP_IP_FWDRULE/statusz" 2>/dev/null
-    # | egrep -i 'statusz' # egrep "$SMART_EGREP" | head -1
 done | tee ".t.$MYAPP_FWD_RULE"
 
 echo 'Stats:'

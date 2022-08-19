@@ -27,7 +27,7 @@ spec:
       - name: app02-kuruby
         image: ricc-app02-kuruby-skaffold    # Dockerized
         ports:
-        - containerPort: 8080 # it MUST be 9292 since puma uses this by DFLT. Note on ContainerPort: My pod esxpects traffic here.
+        - containerPort: 8080 # it MUST be 9292 since puma uses this by DFLT. Note on ContainerPort: My pod expects traffic here.
         env:
         - name: RACK_ENV # https://docs.pivotal.io/application-service/2-7/buildpacks/ruby/ruby-tips.html
           value: "development" # todo consider updating to DEPLOYMENT :) https://www.hezmatt.org/~mpalmer/blog/2013/10/13/rack_env-its-not-for-you.html

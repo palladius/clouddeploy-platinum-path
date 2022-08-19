@@ -29,7 +29,7 @@ spec:
       - name: app03-kunode
         image: aablsk-app03-kunode-skaffold    # Dockerized
         ports:
-        - containerPort: 8080 # it MUST be 9292 since puma uses this by DFLT. Note on ContainerPort: My pod esxpects traffic here.
+        - containerPort: 8080
         env:
         - name: APP_NAME
           value: A Wonderful App in NodeJS (app03)
