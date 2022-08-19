@@ -87,8 +87,8 @@ STEP4_FINAL_HTTPLB="true"
 
 
 white "================================================================"
-green  " [script-A] As of 18jul22 I declare this script as WORKING."
-yellow " [script-B] Note. This script needs to be destroyed and reconciled once it works ;)"
+green  " [script-AB] As of 19aug I declare this script as NEARLY WORKING."
+# just need to swap the kubectl apply with the testy
 white "APP_NAME:             $APP_NAME"
 echo  "SOL2_SERVICE_CANARY:  $SOL2_SERVICE_CANARY"
 echo  "SOL2_SERVICE_PROD:    $SOL2_SERVICE_PROD"
@@ -117,18 +117,21 @@ white "00. Check that Canary and Prod have made it correctly to your k8s systems
 # (kubectl --context="$GKE_CANARY_CLUSTER_CONTEXT" get service | grep sol2
 #  kubectl --context="$GKE_PROD_CLUSTER_CONTEXT" get service | grep sol2
 # )
+
+
 # 2022-08-16 NEW FR: Add APPNAME regex to grep - so wont proceed for app02 if it has just infra for app01.
+# 2022-08-19 #CHECK_BEFORE_APPLY this cant work since we check before we apply manifests :/
 VANILLA=true bin/kubectl-canary-and-prod get service | grep "$APP_NAME-sol2" | grep canary ||
-   red "Looks like no CANARY services are working. Work on your CI/CD pipeline to have working solution2 CANARY Services before bothering me :)"
+   red "Looks like no CANARY services are working. This is ok since we havent run the kubectl apply yet; this error will disappear on further executions"
 
 VANILLA=true bin/kubectl-canary-and-prod get service | grep "$APP_NAME-sol2" | grep prod ||
-   red "Looks like no PROD services are working. Work on your CI/CD pipeline to have working solution2 PROD Services before bothering me :)"
+   red "Looks like no PROD services are working. This is ok since we havent run the kubectl apply yet; this error will disappear on further executions"
 
-green "It seems you have at least ONE entry for PROD and one entry for CANARY. If not please fix it before going on."
-
+#green "It seems you have at least ONE entry for PROD and one entry for CANARY. If not please fix it before going on."
 
 white "01. Showing gcloud NEGs for sol2:" # uhm only canary [why?]
-gcloud compute network-endpoint-groups list  | grep "$APP_NAME-sol2"
+gcloud compute network-endpoint-groups list  | grep "$APP_NAME-sol2" ||
+  red "No NEGs yet. This is ok since we havent run the kubectl apply yet; this error will disappear on further executions"
 
 
 # RIC001 create health check for the backends (one for all Apps) #global
@@ -221,44 +224,12 @@ echo
 # 2022-07-22 1.0 first functional version.
 
 
-# PROD cluster, CANARY service
-# FRAWESOME SCRIPT!
-#bin/kubectl-prod get svcneg -o yaml | egrep "name:|networking.gke.io/service-name:" # | grep app01-sol2-svc-canary
-
-# which NEG has app01-sol2-svc-canary?
-# => k8s1-5d9efb9b-default-app01-sol2-svc-canary-8080-5e454a9e
-
-# per rimuovere NEG vecchi devi prima rimuovere SERVIZI vecchi
-# yellow Show NEG in cluster prod:
-# bin/kubectl-prod get svcneg | grep app01-sol2-svc-canary
-# bin/kubectl-prod get svcneg | grep app01-sol2-svc-prod
-# yellow Show NEG in cluster canary:
-# bin/kubectl-canary get svcneg | grep app01-sol2-svc-canary
-# bin/kubectl-canary get svcneg | grep app01-sol2-svc-prod
-#bin/kubectl-prod get svcneg | grep app01-sol2-svc-canary
-#bin/kubectl-prod get svcneg | grep app01-sol2-svc-prod
-
-# k8s1-5d9efb9b-default-app01-sol2-svc-canary-8080-5e454a9e
-# dmarz: dentro al nome del NEG hai tutto,
-
-
-#_kubectl_on_canary describe svcneg/k8s1-a2ee2205-default-app01-sol2-svc-canary-8080-ac75b011
-
-# retrieve NEG in the 3 zones.
-# jq 'select(.zone != null) | .zone'
-# bin/kubectl-prod get svcneg/k8s1-5d9efb9b-default-app01-sol2-svc-prod-8080-dc533d84 -o json |
-#     jq -r "select(.metadata.labels.\"networking.gke.io/service-name\" == \"app01-sol2-svc-prod\") .status.networkEndpointGroups[].selfLink , .metadata.labels.\"networking.gke.io/service-name\""
-
-# yellow now on all:
-# bin/kubectl-prod get svcneg -o json 2>/dev/null |
-#     jq -r "select(.metadata.labels.\"networking.gke.io/service-name\" == \"app01-sol2-svc-prod\") .status.networkEndpointGroups[].selfLink , .metadata.labels.\"networking.gke.io/service-name\""
-
-
 if "$STEP0_APPLY_MANIFESTS" ; then
 
     kubectl --context="$GKE_CANARY_CLUSTER_CONTEXT" apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
     kubectl --context="$GKE_PROD_CLUSTER_CONTEXT" apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
 
+    # 2022-08-19 #CHECK_BEFORE_APPLY this needs to be applied BEFORE the check :)
     solution2_kubectl_apply "$APP_NAME" # kubectl apply buridone :)
 fi
 
@@ -275,9 +246,26 @@ if "$STEP1_CREATE_BACKEND_SERVICES"; then
     done
 fi
 # $APP_NAME
+
+# This is the HARDEST part of the script to comprehend. Big shoutout to dmarzi for helping on this. In a nutshell,
+# This is a "gray way" for gcloud to interact with k8s and I'd expect this problem to be solved soon by someone else.
+# (and maybe it is already as a friend in Cloud PSO has created a NEG k8s provider IIRC). But I'm divagating.
+
+
   if "$STEP2_CREATE_LOADS_OF_NEGS" ; then
     echo 'Now we do something complicated. For both Canary and Prod clusters, and both C/P types of traffix, we find the'
     echo 'NEG names and we link them to the SERVICE_NAME which is f(AppXX,TypeOfTraffic), eg "app01-sol2-svc-prod"'
+
+    # This code iterates through the Solution 2 clusters (CANARY and PROD) and through ther type of traffic that both
+    # support (again, CANARY and PROD) for the appXX given as $1 (!). For each of these 4 combos:
+    # * builds a SERVICE_NAME which is function of APP and TRAFFIC
+    # * it retrieces the NEG name via kubectl, say 'NEG_I'
+    # * it finds the array of NEG_RESOURCES associated to $NEG_I, eg 'k8s1-5d9efb9b-default-app01-sol2-svc-prod-8080-dc533d84'
+    # * for each NEG_RESOURCE of these 3-ish $NEG_RESOURCES (which are in 2-3 random zones), it does the following:
+    #   * it does the manual `gcloud plumbing` of associating the NEG to the Backend.
+    # This code used to be a simple grep when I had a single service, but now you need to "grep intelligently" and
+    # cannot rely on just the NEG name so you have to.. I'll say swallow the pill 😉
+
     for MY_CLUSTER in canary prod ; do
         for TYPE_OF_TRAFFIC in canary prod ; do
             SERVICE_NAME="${APP_NAME}-sol2-svc-$TYPE_OF_TRAFFIC"
@@ -389,8 +377,11 @@ green "Everything is ok. Now check your newly created '$APP_NAME' LB for its IP 
 IP_FWDRULE=$(gcloud compute forwarding-rules list --filter "$MYAPP_FWD_RULE" | tail -1 | awk '{print $2}')
 
 # why 20-30? since 90% is a 9vs1 in 10 tries. It takes 20-30 to see a few svc2 hits :)
-yellow "[scriptA] Now you can try this:             1) IP=$IP_FWDRULE"
+yellow "[scriptA] MYAPP_FWD_RULE=$MYAPP_FWD_RULE"
+yellow "[scriptA] IP_FWDRULE=$IP_FWDRULE"
+#yellow "[scriptA] Now you can try this:             1) IP=$IP_FWDRULE"
 yellow '[scriptA] Now you can try this 20-30 times: 2) curl -H "Host: sol2-passepartout.example.io" http://'$IP_FWDRULE'/'
+yellow "[scriptA] .. or simply call the 16 script: $(ls 16*sh)"
 yellow "[scriptA] .. or simply call bin/curl-them-all"
 
 _allgood_post_script

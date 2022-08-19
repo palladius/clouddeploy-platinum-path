@@ -9,11 +9,50 @@ source .env.sh || _fatal 'Couldnt source this'
 #set -x
 set -e
 
+_cleanup_appxx() {
+    APP_NAME="$1"
+    echo "$0: todo cleanup $APP_NAME".
+    solution2_kubectl_teardown
+#    _gcloud_delete_negs_matching_ "$APP_NAME-sol2"
+# gcloud compute network-endpoint-groups  delete k8s1-475b6352-default-app01-sol2-svc-canary-8080-8cec9f32 --zone europe-west1-b --quiet
+#  - The network_endpoint_group resource 'projects/cicd-platinum-test001/zones/europe-west1-b/networkEndpointGroups/k8s1-475b6352-default-app01-sol2-svc-canary-8080-8cec9f32' is already being used by 'projects/cicd-platinum-test001/global/backendServices/app01-sol2-svc-canary'
+# I need to clean deeper :)
+
+# delete backend service "app01-sol2-svc-canary":
+
+# 2. gcloud compute backend-services delete --global "app01-sol2-svc-canary" --quiet
+#ERROR: (gcloud.compute.backend-services.delete) Some requests did not succeed:
+# - The backend_service resource 'projects/cicd-platinum-test001/global/backendServices/app01-sol2-svc-canary' is already being used by 'projects/cicd-platinum-test001/global/urlMaps/app01-croatia01'
+
+# 3. gcloud compute url-maps delete app01-croatia01-sol2 --quiet
+# ERROR: (gcloud.compute.url-maps.delete) Could not fetch resource:
+ #- The url_map resource 'projects/cicd-platinum-test001/global/urlMaps/app02-croatia01-sol2' is already being used by 'projects/cicd-platinum-test001/global/targetHttpProxies/app02-croatia01-sol2'
+
+# 4. remove the app02-croatia01-sol2 proxy - this is becoming too fun :)
+ #- The url_map resource 'projects/cicd-platinum-test001/global/urlMaps/app02-croatia01-sol2' is already being used by 'projects/cicd-platinum-test001/global/targetHttpProxies/app02-croatia01-sol2'
+
+#gcloud compute target-http-proxies delete app02-croatia01-sol2 --quiet
+#ERROR: (gcloud.compute.target-http-proxies.delete) Could not fetch resource:
+# - The target_http_proxy resource 'projects/cicd-platinum-test001/global/targetHttpProxies/app02-croatia01-sol2' is already being used by 'projects/cicd-platinum-test001/global/forwardingRules/app02-croatia01-frmt-sol2'
+
+# 5. Ok this is too funny not to write a friction log :)
+# gcloud compute forwarding-rules delete app02-croatia01-frmt-sol2 --global --quiet
+
+]# and it WORKS!
+}
+
 ########################
 # Add your code here
 ########################
 DEFAULT_APP="app01"                                # app01 / app02
 APP_NAME="${1:-$DEFAULT_APP}"
+
+if [ CLEANUP = "$APP_NAME" ] ; then
+    yellow "== $0: CLEANUP =="
+    _cleanup_appxx app01
+    _cleanup_appxx app02
+    exit 0
+fi
 
 # Note: Mac doesnt support BASH arrays unless you install bash v5+
 _check_your_os_supports_bash_arrays

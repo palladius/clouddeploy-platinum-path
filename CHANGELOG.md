@@ -1,3 +1,4 @@
+2022-08-19 v0.18.11 Added CLEANUP functionality for script 15/16 which is now inside 16 for simplicity.
 2022-08-19 v0.18.10 Cloud Build script2: muted magic tagging as broken.
 2022-08-19 v0.18.9  07.sh: only builds on MAIN branch.
 2022-08-16 v0.18.7  01.sh: creates default network if it doesnt exist.
