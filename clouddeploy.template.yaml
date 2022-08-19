@@ -24,7 +24,7 @@ metadata:
     CDT_VER: _MY_VERSION_
     ricc_app_id: '01'
 description: |
-  Delivery pipeline for CI CD App01 (in python) and then 
+  Delivery pipeline for CI CD App01 (in python) and then
   packaged via buildpacks.
   CDTv _MY_VERSION_
 #  ricc_language: python
@@ -51,7 +51,7 @@ metadata:
     CDT_VER: _MY_VERSION_
     ricc_app_id: '02'
 description: |
-    Delivery pipeline for CI/CD App02 (in ruby) and then 
+    Delivery pipeline for CI/CD App02 (in ruby) and then
     packaged via Docker.
     CDTv _MY_VERSION_
 serialPipeline:
@@ -64,80 +64,84 @@ serialPipeline:
    profiles: [canary]
  - targetId: production
    profiles: [production]
----
-apiVersion: deploy.cloud.google.com/v1
-kind: DeliveryPipeline
-metadata:
-  name: app03
-  annotations:
-    #ricc: was also here and loves ruby
-    about: This is a NodeJS sample web frontend built with Docker
-  labels:
-    lang: nodejs
-    CDT_VER: _MY_VERSION_
-    ricc_app_id: '03'
-description: |
-    Delivery pipeline for CI/CD App03 (in node) and then 
-    packaged via Docker.
-    CDTv _MY_VERSION_
-serialPipeline:
-  stages:
-  - targetId: dev
-    profiles: [dev]
-  - targetId: staging
-    profiles: [staging]
-  - targetId: canary-production
-    profiles: [canary]
-  - targetId: production
-    profiles: [production]
----
-apiVersion: deploy.cloud.google.com/v1
-kind: Target
-metadata:
- name: dev
-description: 01 Development cluster (internal, autopush)
-gke:
- cluster: projects/MY_PROJECT_ID/locations/MY_REGION/clusters/cicd-dev
----
-apiVersion: deploy.cloud.google.com/v1
-kind: Target
-metadata:
- name: staging
-description: 02 Staging cluster (internal, more testing)
-gke:
- cluster: projects/MY_PROJECT_ID/locations/MY_REGION/clusters/cicd-dev
----
-apiVersion: deploy.cloud.google.com/v1
-kind: Target
-metadata:
- name: canary
-description: |
-  03 canary cluster (external, rather stable).
-  Used for Traffic Splitting to bedew 90% of traffic into
-  the canary target (and remaining 10% to prod) for some time before
-  promoting all traffic to prod.
-gke:
- cluster: projects/MY_PROJECT_ID/locations/MY_REGION/clusters/cicd-canary
----
-apiVersion: deploy.cloud.google.com/v1
-kind: Target
-metadata:
- name: production
-description:  |
-  04 production cluster (external, as stable as it can be).
-  Used for Traffic Splitting to bedew 10% of Traffic into
-  this canary (while 90% goes to canary) for some time before
-  promoting all traffic to prod.
-gke:
- cluster: projects/MY_PROJECT_ID/locations/MY_REGION/clusters/cicd-prod
----
-apiVersion: deploy.cloud.google.com/v1
-kind: Target
-metadata:
-  name: canary-production
-description:  |
-  03 (only app03) production cluster with canary deployment.
-  Used to showcase canary deployment within a single cluster
-  before promoting all traffic to newest version.
-gke:
-  cluster: projects/MY_PROJECT_ID/locations/MY_REGION/clusters/cicd-prod
+## This is currently being tested by Riccardo and Alex. If you want to activate app03, you can just locally uncomment
+## This code and the 07 script one-liner to activate app03 build trigger. TODSO use ENABLE_APP03
+##
+
+# ---
+# apiVersion: deploy.cloud.google.com/v1
+# kind: DeliveryPipeline
+# metadata:
+#   name: app03
+#   annotations:
+#     #ricc: was also here and loves ruby
+#     about: This is a NodeJS sample web frontend built with Docker
+#   labels:
+#     lang: nodejs
+#     CDT_VER: _MY_VERSION_
+#     ricc_app_id: '03'
+# description: |
+#     Delivery pipeline for CI/CD App03 (in node) and then
+#     packaged via Docker.
+#     CDTv _MY_VERSION_
+# serialPipeline:
+#   stages:
+#   - targetId: dev
+#     profiles: [dev]
+#   - targetId: staging
+#     profiles: [staging]
+#   - targetId: canary-production
+#     profiles: [canary]
+#   - targetId: production
+#     profiles: [production]
+# ---
+# apiVersion: deploy.cloud.google.com/v1
+# kind: Target
+# metadata:
+#  name: dev
+# description: 01 Development cluster (internal, autopush)
+# gke:
+#  cluster: projects/MY_PROJECT_ID/locations/MY_REGION/clusters/cicd-dev
+# ---
+# apiVersion: deploy.cloud.google.com/v1
+# kind: Target
+# metadata:
+#  name: staging
+# description: 02 Staging cluster (internal, more testing)
+# gke:
+#  cluster: projects/MY_PROJECT_ID/locations/MY_REGION/clusters/cicd-dev
+# ---
+# apiVersion: deploy.cloud.google.com/v1
+# kind: Target
+# metadata:
+#  name: canary
+# description: |
+#   03 canary cluster (external, rather stable).
+#   Used for Traffic Splitting to bedew 90% of traffic into
+#   the canary target (and remaining 10% to prod) for some time before
+#   promoting all traffic to prod.
+# gke:
+#  cluster: projects/MY_PROJECT_ID/locations/MY_REGION/clusters/cicd-canary
+# ---
+# apiVersion: deploy.cloud.google.com/v1
+# kind: Target
+# metadata:
+#  name: production
+# description:  |
+#   04 production cluster (external, as stable as it can be).
+#   Used for Traffic Splitting to bedew 10% of Traffic into
+#   this canary (while 90% goes to canary) for some time before
+#   promoting all traffic to prod.
+# gke:
+#  cluster: projects/MY_PROJECT_ID/locations/MY_REGION/clusters/cicd-prod
+# ---
+# apiVersion: deploy.cloud.google.com/v1
+# kind: Target
+# metadata:
+#   name: canary-production
+# description:  |
+#   03 (only app03) production cluster with canary deployment.
+#   Used to showcase canary deployment within a single cluster
+#   before promoting all traffic to newest version.
+# gke:
+#   cluster: projects/MY_PROJECT_ID/locations/MY_REGION/clusters/cicd-prod

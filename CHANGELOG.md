@@ -1,3 +1,4 @@
+2022-08-19 v0.19.3  hidden app03 from most people :)
 2022-08-19 v0.19.2  deprecated SMART_EGREP
 2022-08-19 v0.19.1  [bielski] added app03 :)
 2022-08-19 v0.19.0  Sol1 is now working!
