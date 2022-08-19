@@ -88,10 +88,17 @@ PIPELINE="$ARGV_DEPLOY_UNIT"
 gcloud deploy releases promote --to-target "$DESIRED_STAGE" --region "$CLOUD_DEPLOY_REGION" \
     --release "$LATEST_SUCCESSFUL_RELEASE" --delivery-pipeline=$PIPELINE --quiet
 
+
 # 7 TODO Ricc, create a TAG with "v$VERSION" and push the tag for AR to pick it up.
 # possibly also symlink it to `LATEST`` or better `LATEST-STAGING` (because we have
 # four latest).
+
 echo "Step 07. Magic tagging now.."
+
+echo 'TODO(ricc/bielski): I have amazing auto-tagging code which is 99% working. That 1% breaks everything else'
+echo 'so Im going to stop it for now'
+exit 0
+
 function cleanup_for_cloudbuild() {
   tr '[:upper:]' '[:lower:]' | sed -e 's/[^a-z0-9-]/-/g'
 }
@@ -175,7 +182,5 @@ gcloud artifacts docker tags add "$LATEST_IMAGE:$LATEST_TAG" "$LATEST_IMAGE:late
 gcloud artifacts docker tags add "$LATEST_IMAGE:$LATEST_TAG" "$LATEST_IMAGE:latest" # a big day for humanity!
 gcloud artifacts docker tags add "$LATEST_IMAGE:$LATEST_TAG" "$LATEST_IMAGE:$DOCKER_IMAGE_VERSION"
 gcloud artifacts docker tags add "$LATEST_IMAGE:$LATEST_TAG" "$LATEST_IMAGE:v${SUPERDUPER_MAGIC_VERSION}"
-
-
 
 echo Build ended correctly.
