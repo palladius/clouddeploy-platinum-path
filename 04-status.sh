@@ -23,9 +23,10 @@ function show_k8s_stuff() {
 
 function show_gcloud_stuff() {
     echo "+ Let's count the images for each artifact:"
-    gcloud artifacts docker images list "$ARTIFACT_LONG_REPO_PATH" | awk '{print $1}' | sort | uniq -c
-    gcloud deploy delivery-pipelines list | egrep "name:|targetId"
-    gcloud compute target-http-proxies list
+    gcloud artifacts docker images list "$ARTIFACT_LONG_REPO_PATH" | awk '{print $1}' | sort | uniq -c || echo ''
+    gcloud deploy delivery-pipelines list | egrep "name:|targetId" || echo ''
+        #echo 'Something failed here. No biggie' # this fails on a vanilla installation. Dont want this to compromise anything.
+    gcloud compute target-http-proxies list || echo ''
 }
 
 # Add your code here:

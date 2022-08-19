@@ -22,7 +22,8 @@ echo "You called: $0 appXX=$(red "$PIPELINE") STAGE_FROM=$(yellow $INITIAL_STAGE
 LATEST_SUCCESSFUL_RELEASE="$(get_latest_successful_release_by_pipeline "$PIPELINE" )"
 
 if [ -z "$LATEST_SUCCESSFUL_RELEASE" ]; then
-    _error "Sorry, no release found. Probably you need to build something to dev/canary first. Have you committed code to $PIPELINE yet? Let me show you what I see:"
+    _error "🥺 Sorry, no release found. Probably you need to build something to dev/canary first. Have you committed code to $PIPELINE yet? Have you followed Riccardo tutorial 🙃? Let me show you what I see:"
+    set -x
     gcloud deploy releases list --delivery-pipeline="$PIPELINE" --format 'table(renderState,name)'
     exit 153
 fi
