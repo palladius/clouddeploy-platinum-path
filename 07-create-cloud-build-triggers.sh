@@ -64,7 +64,7 @@ for TEAM_ARR in "${TEAMS[@]}"; do
     BRANCH_PATTERN="^main$" # bielski suggests to only trigger on main.
     #was:      gcloud alpha builds triggers create github --repo-owner="$GITHUB_REPO_OWNER" --repo-name="$GITHUB_REPO_NAME" --branch-pattern='.*' \
     #    proceed_if_error_matches 'ALREADY_EXISTS: trigger' \
-    proceed_if_error_matches 'already_exists: trigger' \
+    proceed_if_error_matches 'ALREADY_EXISTS: trigger' \
       gcloud beta builds triggers create github --repo-owner="$GITHUB_REPO_OWNER" --repo-name="$GITHUB_REPO_NAME" --branch-pattern="$BRANCH_PATTERN" \
       --description="[$TEAM_NUMBER] CB trigger from CLI for $TEAM_NAME module" --included-files="${SRC_SUBFOLDER}**,*.yaml,cloud-build/**" \
       --build-config cloudbuild.yaml --substitutions="$SUBSTITUTIONS" \
