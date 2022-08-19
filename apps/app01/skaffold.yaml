@@ -7,10 +7,10 @@ build:
 #  - image: skaff old-buildpa cks # old name
   - image: skaf-app01-python-buildpacks
     #context: my-python-app # not sure what this is for.. this should point to the folder in which the Procfile resides, will default to . I believe
-    sync:
-      infer:
-      - '*.py'
-      - VERSION
+    # sync: 
+      # buildpacks filesync support for python is not available: https://skaffold.dev/docs/pipeline-stages/filesync/
+      # use either manual sync or skip this
+      # infer is not supported for buildpacks
     buildpacks:
       builder: "gcr.io/buildpacks/builder:v1"
       trustBuilder: true

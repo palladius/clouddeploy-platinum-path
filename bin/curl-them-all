@@ -45,7 +45,7 @@ bin/kubectl-triune get service | grep app02 | grep -v none | while read stage ap
 done
 
 white  "== Solution0 (Internal LB)=="
-echo '😞 Sorry, no routable endpoints. However let me find the Private IP for you. TODO: Try tourbleshoot sol0 script.'
+echo '😞 Sorry, no routable endpoints. However let me find the Private IP for you. TODO: Try troubleshoot sol0 script.'
 
 red  "== Solution1 Artifacts (WIP) =="
 # Note they dont get public IPs. But with Daniel it took them 1d to do it so i will wait till tomorrow.
