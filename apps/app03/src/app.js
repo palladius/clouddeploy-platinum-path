@@ -2,7 +2,8 @@ const fs = require('fs')
 const express = require('express')
 const app = express()
 
-const version = fs.readFileSync('VERSION', 'utf-8')
+// chomping
+const version = fs.readFileSync('VERSION', 'utf-8').split("\n")[0]
 const appName = process.env.APP_NAME
 const favoriteColor = process.env.FAVORITE_COLOR || '#03fca9'
 const favoriteColorCommon = process.env.FAVORITE_COLOR_COMMON || '#282828'
