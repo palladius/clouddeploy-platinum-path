@@ -18,6 +18,7 @@ gcloud config set project $PROJECT_ID
 PROJECT_ID=$(gcloud config get-value project)
 
 # Enable APIs...
+echo Enabling service APIs. This might take a minute or two... 🕰
 gcloud services enable \
   artifactregistry.googleapis.com \
   cloudbuild.googleapis.com \
@@ -67,7 +68,7 @@ which skaffold >/dev/null && echo skaffold exists. All good. ||
 
 touch ".$APPNAME.appname"
 
-# sets `kubetcl`` context to this cluster, I'll do DEV CANARY PROD but keep DEV
+# sets `kubectl`` context to this cluster, I'll do DEV CANARY PROD but keep DEV
 # LAST so it will stick so do NOT change the order :)
 
 # for ITER_CLUSTER in cicd-canary cicd-prod cicd-dev ; do
