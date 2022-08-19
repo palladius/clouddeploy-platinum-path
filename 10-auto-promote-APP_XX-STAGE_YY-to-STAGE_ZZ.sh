@@ -10,6 +10,8 @@ PIPELINE="${1:-app01}"
 INITIAL_STAGE="${2:-dev}"    # seems useless, probably cos I just deploy a release which is independent on which stage it is. Good to learn :)
 DESIRED_STAGE="${3:-staging}"
 
+#gcloud config set deploy/region "$CLOUD_DEPLOY_REGION"
+
 if [ $# -eq 0 ]; then
     yellow "Usage: $0 [appXX] [STAGE_FROM] [STAGE_TO] (STAGES can be: dev, staging, canary, production)"
 #else
