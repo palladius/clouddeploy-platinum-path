@@ -43,9 +43,6 @@ export MYAPP_FWD_RULE="$(_fwd_rule_by_app $APP_NAME)"
 SOL2_SERVICE_CANARY="$APP_NAME-$DFLT_SOL2_SERVICE_CANARY"    # => appXX-sol2-svc-canary
 SOL2_SERVICE_PROD="$APP_NAME-$DFLT_SOL2_SERVICE_PROD"    # => appXX-sol2-svc-prod
 
-
-
-_fatal "remove this once it works"
 # Apply manifests..
 solution2_kubectl_apply # kubectk apply
 
