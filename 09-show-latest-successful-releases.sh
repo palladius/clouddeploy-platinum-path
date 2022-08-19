@@ -18,6 +18,7 @@ fi
 # Add your code here:
 echo 10. INSPECTING CD PIPELINE="$PIPELINE"
 gcloud deploy releases list --delivery-pipeline "$PIPELINE" \
+    --region "$REGION" \
     --filter renderState=SUCCEEDED \
     --format="table[box,title='Latest Successful Releases for $PIPELINE'](createTime:sort=1, name:label=LongBoringName, renderState, skaffoldVersion, skaffoldConfigPath)" \
     --sort-by=~createTime \
