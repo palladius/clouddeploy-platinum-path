@@ -9,15 +9,11 @@ _smart_curl() {
   PORT=$2
   PRE_COMMENT="$3" # must be short and hopefuly static in length
   POST_COMMENT="$4"
+  POST_ENDPOINT="${5:-}"
   #https://stackoverflow.com/questions/6136022/script-to-get-the-http-status-code-of-a-list-of-urls
-  curl -s -o /dev/null --silent --head --write-out "HTTP_RESPONSE: $PRE_COMMENT %{http_code} for http://$IP:$PORT/\t'$POST_COMMENT'\n" "http://$IP:$PORT/" |
-    bin/rcg 200 "BOLD . GREEN" | bin/rcg 500 "BOLD . RED"  | bin/rcg 503 "BOLD . RED" | bin/rcg 000 "YELLOW"
-    # | sed 's/200/\o33[47;31;1m&\e[0m/'
+  curl -s -o /dev/null --silent --head --write-out "HTTP_RESPONSE: $PRE_COMMENT %{http_code} for http://$IP:$PORT/$POST_ENDPOINT\t'$POST_COMMENT'\n" "http://$IP:$PORT/$POST_ENDPOINT" |
+    bin/rcg 200 "BOLD . GREEN" | bin/rcg 500 "BOLD . RED"  | bin/rcg 503 "BOLD . RED" | bin/rcg 000 "YELLOW"  | bin/rcg 404 "RED"
     # If colleagues complain i can simply hardcode sed as per
-    # sed 's/200/\o33[47;31;1m&\e[0m/' file
-
-#@    highlight green "200" |
- #   highlight red "500"
 }
 
 echo Getting status of my 8 apps them all WOW:
@@ -44,10 +40,10 @@ bin/kubectl-triune get service | grep app02 | grep -v none | while read stage ap
   _smart_curl $PUBLIC_IP 8080 "$stage"
 done
 
-white  "== Solution0 (Internal LB)=="
+echo  "== Solution0 (Internal LB) =="
 echo '😞 Sorry, no routable endpoints. However let me find the Private IP for you. TODO: Try troubleshoot sol0 script.'
 
-red  "== Solution1 Artifacts (WIP) =="
+white  "== Solution1 Artifacts (nearly there) =="
 # Note they dont get public IPs. But with Daniel it took them 1d to do it so i will wait till tomorrow.
 #bin/kubectl-canary get gateways | egrep "sol1sc-app"
 # This might be pleonastic but hey, ANYTHING for a public IP!
@@ -70,13 +66,14 @@ bin/kubectl-staging get gateways | egrep "sol1sc-app"
 #DEFAULT_SHORT_REGION = eu-w1
 
 
+# Solution1 - DEV cluster (STAG has same IPs so its redundant)
 for APPXX_ITER in app01 app02 ; do
   GW_RULE="sol1sc-$APPXX_ITER-${DEFAULT_SHORT_REGION}-ext-gw"
   white "Solution1: $APPXX_ITER GW_RULE='$GW_RULE'"
   #IP_FWDRULE=$(gcloud compute forwarding-rules list --filter "$FWD_RULE" 2>/dev/null | tail -1 | awk '{print $2}' )
-  bin/kubectl-prod get gateways | egrep "sol1sc" | grep True | while read ENV GATEWAY_NAME class IP_GATEWAY ALWAYSTRUE TIME_UP ; do
-     _smart_curl "$IP_GATEWAY" 80 "$APPXX_ITER" "[$ENV] GW_RULE $GW_RULE"
-     _echodo curl -s -H "host: passepartout.example.io" "http://$IP_GATEWAY:8080/statusz"
+  VANILLA=TRUE bin/kubectl-dev get gateways 2>/dev/null | egrep "sol1sc" | grep True | while read GATEWAY_NAME class IP_GATEWAY ALWAYSTRUE TIME_UP ; do
+     _smart_curl "$IP_GATEWAY" 80 "$APPXX_ITER" "[$ENV] GW_RULE $GW_RULE" statusz
+     _echodo curl -s -H "host: www.example.io" "http://$IP_GATEWAY:80/statusz"
   done
 done
 
