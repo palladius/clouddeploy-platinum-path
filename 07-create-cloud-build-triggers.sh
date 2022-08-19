@@ -56,14 +56,14 @@ for TEAM_ARR in "${TEAMS[@]}"; do
     #gray $TEAMS
     gsutil cp /tmp/MyEmptyFile gs://$SKAFFOLD_BUCKET/skaffold-cache/$TEAM_NAME.txt
 
-    SUBSTIUTIONS="_DEPLOY_UNIT=$TEAM_NAME,_REGION=$REGION,_ARTIFACT_REPONAME=$ARTIFACT_REPONAME,_DEPLOY_REGION=$CLOUD_DEPLOY_REGION"
+    SUBSTITUTIONS="_DEPLOY_UNIT=$TEAM_NAME,_REGION=$REGION,_ARTIFACT_REPONAME=$ARTIFACT_REPONAME,_DEPLOY_REGION=$CLOUD_DEPLOY_REGION"
 
     set -x
     # This sets up on GCR
     proceed_if_error_matches 'generic::already_exists: trigger' \
       gcloud alpha builds triggers create github --repo-owner="$GITHUB_REPO_OWNER" --repo-name="$GITHUB_REPO_NAME" --branch-pattern='.*' \
       --description="[$TEAM_NUMBER] CB trigger from CLI for $TEAM_NAME module" --included-files="${SRC_SUBFOLDER}**,*.yaml,cloud-build/**" \
-      --build-config cloudbuild.yaml --substitutions="$SUBSTIUTIONS" \
+      --build-config cloudbuild.yaml --substitutions="$SUBSTITUTIONS" \
       --name "$TEAM_NUMBER-CLIv$TRIGGERVERSION-$TEAM_NAME"
 
     # Important note: bYou might want to add "" --region "$REGION" "" which was needed for some.
