@@ -1,0 +1,24 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: cicd-dev
+resources:
+  - ../../base
+  - namespace.yaml
+components:
+  - ../../../../../components/common/dev
+patches:
+- patch: |-
+    - op: add
+      path: "/spec/template/spec/containers/0/env/-"
+      value:
+        name: CLOUD_DEPLOY_TARGET #RICCARDO_KUSTOMIZE_ENV
+        value: "01 Dev (Development)"
+    # - op: add
+    #   path: "/spec/template/spec/containers/0/env/-"
+    #   value:
+    #     name: FAVORITE_COLOR_DUPE
+    #     value: red
+  target:
+    kind: Deployment
+    name: app03-kunode
+# add ...

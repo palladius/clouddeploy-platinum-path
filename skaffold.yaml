@@ -10,3 +10,5 @@ requires:
     path: apps/app01/skaffold.yaml
   - configs: [app02]
     path: apps/app02/skaffold.yaml
+  - configs: [app03]
+    path: apps/app03/skaffold.yaml
