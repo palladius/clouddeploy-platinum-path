@@ -6,9 +6,8 @@ const version = fs.readFileSync('VERSION', 'utf-8')
 const appName = process.env.APP_NAME
 const favoriteColor = process.env.FAVORITE_COLOR || '#03fca9'
 const favoriteColorCommon = process.env.FAVORITE_COLOR_COMMON || '#282828'
-const deployStage = process.env.CLOUD_DEPLOY_TARGET
-const deployStageCommon = process.env.CLOUD_DEPLOY_TARGET_COMMON || '🥹🥹🥹'
-const deployStageCommonShort = process.env.CLOUD_DEPLOY_TARGET_SHORT_COMMON || '🤯🤯🤯'
+const deployStage = process.env.COMMON_CLOUD_DEPLOY_TARGET
+const deployStageCommonShort = process.env.CLOUD_DEPLOY_TARGET_SHORT_COMMON || '🥹🥹🥹'
 const message = process.env.RICCARDO_MESSAGE
 
 const getStatuszMessage = () => `app=app03 (🌻) version=${version} target=${deployStageCommonShort} emoji=🥹\n`
@@ -24,8 +23,8 @@ app.get('/', (req, res) => {
         into the Cloud Deploy release name - wOOOt!<br/><br/>
 
         FAVORITE_COLOR=${favoriteColor}<br/>
-        CD_TARGET=${deployStage} <br/>
-        CLOUD_DEPLOY_TARGET_COMMON=${deployStageCommon} <br/>
+        CLOUD_DEPLOY_TARGET=${deployStage} <br/>
+        CLOUD_DEPLOY_TARGET_COMMON=${deployStageCommonShort} <br/>
         <br/>
         APP_NAME=${appName} <br/>
         RICCARDO_MESSAGE=${message}<br/>
