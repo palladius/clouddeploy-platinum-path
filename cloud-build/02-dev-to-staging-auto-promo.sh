@@ -96,7 +96,7 @@ gcloud deploy releases promote --to-target "$DESIRED_STAGE" --region "$CLOUD_DEP
 echo "Step 07. Magic tagging now.."
 
 echo 'TODO(ricc/bielski): I have amazing auto-tagging code which is 99% working. That 1% breaks everything else'
-echo 'so Im going to stop it for now'
+echo 'so Im going to stop it for now. https://github.com/palladius/clouddeploy-platinum-path/issues/25'
 exit 0
 
 function cleanup_for_cloudbuild() {
