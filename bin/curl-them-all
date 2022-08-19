@@ -10,8 +10,9 @@ _smart_curl() {
   PRE_COMMENT="$3" # must be short and hopefuly static in length
   POST_COMMENT="$4"
   POST_ENDPOINT="${5:-}"
+  HOST_HEADER="${6:-}"
   #https://stackoverflow.com/questions/6136022/script-to-get-the-http-status-code-of-a-list-of-urls
-  curl -s -o /dev/null --silent --head --write-out "HTTP_RESPONSE: $PRE_COMMENT %{http_code} for http://$IP:$PORT/$POST_ENDPOINT\t'$POST_COMMENT'\n" "http://$IP:$PORT/$POST_ENDPOINT" |
+  curl -s -H "$HOST_HEADER" -o /dev/null --silent --head --write-out "HTTP_RESPONSE: $PRE_COMMENT %{http_code} for http://$IP:$PORT/$POST_ENDPOINT\t'$POST_COMMENT'\n" "http://$IP:$PORT/$POST_ENDPOINT" |
     bin/rcg 200 "BOLD . GREEN" | bin/rcg 500 "BOLD . RED"  | bin/rcg 503 "BOLD . RED" | bin/rcg 000 "YELLOW"  | bin/rcg 404 "RED"
     # If colleagues complain i can simply hardcode sed as per
 }
@@ -72,8 +73,9 @@ for APPXX_ITER in app01 app02 ; do
   white "Solution1: $APPXX_ITER GW_RULE='$GW_RULE'"
   #IP_FWDRULE=$(gcloud compute forwarding-rules list --filter "$FWD_RULE" 2>/dev/null | tail -1 | awk '{print $2}' )
   VANILLA=TRUE bin/kubectl-dev get gateways 2>/dev/null | egrep "sol1sc" | grep True | while read GATEWAY_NAME class IP_GATEWAY ALWAYSTRUE TIME_UP ; do
-     _smart_curl "$IP_GATEWAY" 80 "$APPXX_ITER" "[$ENV] GW_RULE $GW_RULE" statusz
-     _echodo curl -s -H "host: www.example.io" "http://$IP_GATEWAY:80/statusz"
+     _smart_curl "$IP_GATEWAY" 80 "$APPXX_ITER" "[$ENV] GW_RULE $GW_RULE" statusz 'host: www.example.io'
+     #_echodo
+     curl -s -H "host: www.example.io" "http://$IP_GATEWAY:80/statusz"
   done
 done
 
