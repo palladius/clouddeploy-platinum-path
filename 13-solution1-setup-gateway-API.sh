@@ -47,12 +47,14 @@ white "Now I proceed to apply solution 1 for: $APP_NAME. If wrong, call me with 
 ## dmarzi001 enable required APIs (project level)
 ##################################################
 
-gcloud services enable \
-    container.googleapis.com \
-    gkehub.googleapis.com \
-    multiclusterservicediscovery.googleapis.com \
-    multiclusteringress.googleapis.com \
-    trafficdirector.googleapis.com
+# Refactored in 00-init.
+
+# gcloud services enable \
+#     container.googleapis.com \
+#     gkehub.googleapis.com \
+#     multiclusterservicediscovery.googleapis.com \
+#     multiclusteringress.googleapis.com \
+ #   trafficdirector.googleapis.com
 
 ##################################################
 ## dmarzi001.5 SetUp Workload ~Identity
@@ -76,7 +78,18 @@ gcloud container clusters update cicd-dev \
 ##################################################
 ## dmarzi002 register clusters to the fleet (cluster level)
 ##################################################
-white "Skipping step2 since it was already done for Solution0."
+#white "Skipping step2 since it was already done for Solution0."
+# Actually lets get it back since... SOL0 might go to sleep :)
+gcloud container fleet memberships register "$CLUSTER_1" \
+     --gke-cluster "$GCLOUD_REGION/$CLUSTER_1" \
+     --enable-workload-identity \
+     --project="$PROJECT_ID" --quiet
+
+gcloud container fleet memberships register "$CLUSTER_2" \
+     --gke-cluster "$GCLOUD_REGION/$CLUSTER_2" \
+     --enable-workload-identity \
+     --project="$PROJECT_ID" --quiet
+
 
 # default to PROD #CanProd2Dev4debug
 gcloud container clusters get-credentials "cicd-prod" --region "$REGION" # --project "$PROJECT_ID"
