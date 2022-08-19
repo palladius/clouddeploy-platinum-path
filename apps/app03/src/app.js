@@ -11,18 +11,20 @@ const deployStage = process.env.COMMON_CLOUD_DEPLOY_TARGET
 const deployStageCommonShort = process.env.CLOUD_DEPLOY_TARGET_SHORT_COMMON || '🥹🥹🥹'
 const message = process.env.RICCARDO_MESSAGE
 
-// Former icons:🚀✨🫶
-const getStatuszMessage = () => `app=app03 version=${version} target=${deployStageCommonShort} emoji=🧊\n`
+// Former icons:🚀✨🫶🧊 STATUSZ
+const getStatuszMessage = () => `app=app03 version=${version} target=${deployStageCommonShort} emoji=🪢\n`
 
 app.get('/', (req, res) => {
     res.send(`
-    <h1>App03(🧊) v<b>${version}</b></h1>
+    <h1>App03(🪢🧊) v<b>${version}</b></h1>
 
 
         Hell🌻 w🌻rld fr🌻m Skaff🌻ld in N🌻deJS! This is a dem🌻nstrative app t🌻 dem🌻nstrate CI/CD with Cl🌻ud Depl🌻y and Cl🌻ud Build<br/>
 
         I read versi🌻n VERSI🌻N file and this ./VERSI🌻N file is actually read by the build pipeline
         int🌻 the Cl🌻ud Depl🌻y release name - w🌻🌻🌻t!<br/><br/>
+
+        Please help me choose the best icon for NodeJS: 🟢🟩📗🥬🍏💚🪢(knot=node)
 
         FAVORITE_COLOR=${favoriteColor}<br/>
         CLOUD_DEPLOY_TARGET=${deployStage} <br/>
