@@ -102,7 +102,7 @@ first-half:
 	./01-set-up-GKE-clusters.sh
 	./02-setup-skaffold-cache-bucket.sh
 	./03-configure-artifact-repo-and-docker.sh
-	./04-status.sh
+	#./04-status.sh
 	./05-IAM-enable-cloud-build.sh
 	#./06-cloud-build-locally.sh
 	echo All good: first half done.
@@ -112,13 +112,14 @@ second-half:
 	./08-cloud-deploy-setup.sh
 	./09-show-latest-successful-releases.sh app01
 	./09-show-latest-successful-releases.sh app02
-	./10-auto-promote-APP_XX-STAGE_YY-to-STAGE_ZZ.sh
-	./11-solution0-enable-Gateway-API-with-ILB.sh
-	./12-solution0-kubectl-apply-stuff.sh
-	./13-solution1-setup-gateway-API.sh
-	./14-solution1-check.sh
-	./15-solution2-xlb-GFE3-traffic-split.sh
-	./16-solution2-test-by-curling-N-times.sh
+	./10-auto-promote-APP_XX-STAGE_YY-to-STAGE_ZZ.sh app01 dev canary
+	./10-auto-promote-APP_XX-STAGE_YY-to-STAGE_ZZ.sh app01 dev production
+	# Apply solution1 to app02
+	./13-solution1-setup-gateway-API.sh        app02
+	./14-solution1-check.sh                    app02
+	# Apply solution2 to app01.
+	./15-solution2-xlb-GFE3-traffic-split.sh   app01
+	./16-solution2-test-by-curling-N-times.sh  app01
 
 breadcrumb-navigation:
 	@echo "I hope youre a fan of Hansel and Gretel too. As Zoolander fan, I am."
