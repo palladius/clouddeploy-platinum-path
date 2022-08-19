@@ -10,17 +10,18 @@ const deployStage = process.env.COMMON_CLOUD_DEPLOY_TARGET
 const deployStageCommonShort = process.env.CLOUD_DEPLOY_TARGET_SHORT_COMMON || '🥹🥹🥹'
 const message = process.env.RICCARDO_MESSAGE
 
-const getStatuszMessage = () => `app=app03 (🌻) version=${version} target=${deployStageCommonShort} emoji=🚀✨🫶\n`
+// Former icons:🚀✨🫶
+const getStatuszMessage = () => `app=app03 version=${version} target=${deployStageCommonShort} emoji=🧊\n`
 
 app.get('/', (req, res) => {
     res.send(`
-    <h1>App03 (🌻) v<b>${version}</b></h1>
+    <h1>App03(🧊) v<b>${version}</b></h1>
 
-    
-        Hello world from Skaffold in NodeJS! This is a demonstrative app to demonstrate CI/CD with Cloud Deploy and Cloud Build<br/>
 
-        I read version VERSION file and this ./VERSION file is actually read by the build pipeline
-        into the Cloud Deploy release name - wOOOt!<br/><br/>
+        Hell🌻 w🌻rld fr🌻m Skaff🌻ld in N🌻deJS! This is a dem🌻nstrative app t🌻 dem🌻nstrate CI/CD with Cl🌻ud Depl🌻y and Cl🌻ud Build<br/>
+
+        I read versi🌻n VERSI🌻N file and this ./VERSI🌻N file is actually read by the build pipeline
+        int🌻 the Cl🌻ud Depl🌻y release name - w🌻🌻🌻t!<br/><br/>
 
         FAVORITE_COLOR=${favoriteColor}<br/>
         CLOUD_DEPLOY_TARGET=${deployStage} <br/>
@@ -30,10 +31,7 @@ app.get('/', (req, res) => {
         RICCARDO_MESSAGE=${message}<br/>
         <br/>
 
-        Favorite Color COMMON from v1.35: <b style='background-color:${favoriteColorCommon};' >${favoriteColorCommon}</b><br/>
-        Favorite Color from v1.4: <b style='background-color:${favoriteColor};' >${favoriteColor}</b><br/>
-
-        Link to <a href="/statusz" >Statusz</a>.
+        Link t🌻 <a href="/statusz" >Statusz</a>.
         <hr/>
           <center>
            <!-- /statusz --> ${getStatuszMessage()}
