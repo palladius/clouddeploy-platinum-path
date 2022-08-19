@@ -45,16 +45,17 @@ gcloud container clusters update "$CLUSTER_2" \
     --workload-pool="$PROJECT_ID.svc.id.goog"
 
 #2. register clusters to the fleet (cluster level)
-gcloud container fleet memberships register "$CLUSTER_1" \
-     --gke-cluster "$GCLOUD_REGION/$CLUSTER_1" \
-     --enable-workload-identity \
-     --project="$PROJECT_ID" --quiet
+# gcloud container fleet memberships register "$CLUSTER_1" \
+#      --gke-cluster "$GCLOUD_REGION/$CLUSTER_1" \
+#      --enable-workload-identity \
+#      --project="$PROJECT_ID" --quiet
 
-gcloud container fleet memberships register "$CLUSTER_2" \
-     --gke-cluster "$GCLOUD_REGION/$CLUSTER_2" \
-     --enable-workload-identity \
-     --project="$PROJECT_ID" --quiet
-
+# gcloud container fleet memberships register "$CLUSTER_2" \
+#      --gke-cluster "$GCLOUD_REGION/$CLUSTER_2" \
+#      --enable-workload-identity \
+#      --project="$PROJECT_ID" --quiet
+_gcloud_container_fleet_memberships_register_if_needed "$CLUSTER_1"
+_gcloud_container_fleet_memberships_register_if_needed "$CLUSTER_2"
 # Cluster 1
 _deb "Cluster mapping: CANARY CLUSTER_1=$CLUSTER_1"
 _deb "Cluster mapping: PROD   CLUSTER_2=$CLUSTER_2"
