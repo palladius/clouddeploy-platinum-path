@@ -11,7 +11,7 @@ const deployStageCommon = process.env.CLOUD_DEPLOY_TARGET_COMMON || '🥹🥹�
 const deployStageCommonShort = process.env.CLOUD_DEPLOY_TARGET_SHORT_COMMON || '🤯🤯🤯'
 const message = process.env.RICCARDO_MESSAGE
 
-const getStatuszMessage = () => `app=app03 (🌻) version=${version} target=${deployStageCommonShort} emoji=🌻\n`
+const getStatuszMessage = () => `app=app03 (🌻) version=${version} target=${deployStageCommonShort} emoji=🥹\n`
 
 app.get('/', (req, res) => {
     res.send(`
