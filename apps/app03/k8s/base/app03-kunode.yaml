@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: app03-kunode
+spec:
+  ports:
+  - port: 8080
+    targetPort: 8080
+  type: LoadBalancer
+  selector:
+    app: app03-kunode
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app03-kunode
+spec:
+  selector:
+    matchLabels:
+      app: app03-kunode
+  template:
+    metadata:
+      labels:
+        app: app03-kunode
+    spec:
+      containers:
+      - name: app03-kunode
+        image: aablsk-app03-kunode-skaffold    # Dockerized
+        ports:
+        - containerPort: 8080 # it MUST be 9292 since puma uses this by DFLT. Note on ContainerPort: My pod esxpects traffic here.
+        env:
+        - name: APP_NAME
+          value: A Wonderful App in NodeJS (app03)
+        - name: RICCARDO_MESSAGE
+          value: |
+            Hi! This is NOT Riccardo 😱🙀😳
+        - name: FAVORITE_COLOR
+          value: pink # default bkg color, will make it white in prod and yellow in canary.
