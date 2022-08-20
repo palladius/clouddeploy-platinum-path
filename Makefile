@@ -98,13 +98,13 @@ kustomize-ruby-diff-prod-and-canary:
 
 
 first-half:
-	./00-init.sh
-	./01-set-up-GKE-clusters.sh
-	./02-setup-skaffold-cache-bucket.sh
-	./03-configure-artifact-repo-and-docker.sh
-	#./04-status.sh
-	./05-IAM-enable-cloud-build.sh
-	#./06-cloud-build-locally.sh
+	bash ./00-init.sh
+	bash ./01-set-up-GKE-clusters.sh
+	bash ./02-setup-skaffold-cache-bucket.sh
+	bash ./03-configure-artifact-repo-and-docker.sh
+	#bash ./04-status.sh
+	bash ./05-IAM-enable-cloud-build.sh
+	#bash ./06-cloud-build-locally.sh
 	echo All good: first half done.
 
 second-half:

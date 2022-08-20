@@ -2,8 +2,10 @@
 
 # Created with codelabba.rb v.1.4a
 source .env.sh || fatal "Config doesnt exist please create .env.sh"
-#set -x
-set -e
+
+# STATUS script should NOT have -e enabled :)
+#set -e
+
 
 function show_k8s_stuff() {
 #     GKE_DEV_CLUSTER_CONTEXT="gke_cicd-platinum-test001_europe-west6_cicd-dev"
@@ -23,18 +25,17 @@ function show_k8s_stuff() {
 
 function show_gcloud_stuff() {
     echo "+ Let's count the images for each artifact:"
-    gcloud artifacts docker images list "$ARTIFACT_LONG_REPO_PATH" | awk '{print $1}' | sort | uniq -c || echo ''
-    gcloud deploy delivery-pipelines list | egrep "name:|targetId" || echo ''
-        #echo 'Something failed here. No biggie' # this fails on a vanilla installation. Dont want this to compromise anything.
-    gcloud compute target-http-proxies list || echo ''
+    gcloud artifacts docker images list "$ARTIFACT_LONG_REPO_PATH" | awk '{print $1}' | sort | uniq -c #  || echo ''
+    gcloud deploy delivery-pipelines list | egrep "name:|targetId" #|| echo ''
+    gcloud compute target-http-proxies list # || echo ''
 }
 
 # Add your code here:
 SHOW_VERBOSE_STUFF="false"
 SHOW_GCLOUD_ENTITIES="true"
 SHOW_DEVCONSOLE_LINKS="true"
-SHOW_KUBERNETES_STUFF="false"
-SHOW_SKAFFOLD_STUFF="false"
+SHOW_KUBERNETES_STUFF="true"
+SHOW_SKAFFOLD_STUFF="true"
 
 echo "+ REGION for DEPLOY:          $CLOUD_DEPLOY_REGION"
 echo "+ REGION for GKE:             $GKE_REGION"
