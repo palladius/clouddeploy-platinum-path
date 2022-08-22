@@ -2,7 +2,6 @@
 
 source ./.env.sh || exit 42
 
-#echo "VANILLA: '$VANILLA'"
 if [ "$VANILLA" = "TRUE" ] ; then
     kubectl --context="$GKE_PROD_CLUSTER_CONTEXT"   "$@"
 else

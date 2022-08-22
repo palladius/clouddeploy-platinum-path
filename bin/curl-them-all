@@ -101,4 +101,6 @@ for APPXX_ITER in app01 app02 ; do
   fi
 done
 
+./troubleshoot-solution4
+
 echo "END of $0"
