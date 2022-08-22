@@ -3,6 +3,11 @@
 # DEVCONSOLE/net-services/loadbalancing/details/internalRegionalHttp/europe-west6/gkemcg1-default-dmarzi-apps-http-7r6w1rwor5as?project=cicd-platinum-test001&cloudshell=false&e=-13802955
 source ./.env.sh || exit 42
 
+N_TRIES="20"
+
+function get_bifidus_loadbalancer_by_service() {
+    bin/kubectl-prod get service app03-kunode  --no-headers 2>/dev/null
+}
 white "== Solution 4 (vanilla SOL1 by bielski) =="
 
 echo "1. Theoretical pod split:"
@@ -13,20 +18,20 @@ TOTAL_PODS=$(( $N_PROD_PODS + $N_CANARY_PODS ))
 PROD_PERCENTAGE=$(( $N_PROD_PODS * 100 / $TOTAL_PODS ))
 CANARY_PERCENTAGE=$(( $N_CANARY_PODS * 100 / $TOTAL_PODS ))
 
-echo "Number of App03 PODs in PROD:   $(green  $N_PROD_PODS)/$TOTAL_PODS (~ ${PROD_PERCENTAGE}%)"
+echo "- Number of App03 PODs in PROD:   $(green  $N_PROD_PODS)/$TOTAL_PODS (~ ${PROD_PERCENTAGE}%)"
 #bin/kubectl-prod get pods -l 'ricc-awesome-selector=canary-or-prod,app=app03-kunode,deploy.cloud.google.com/target-id=production' --no-headers
-echo "Number of App03 PODs in CANARY: $(yellow $N_CANARY_PODS)/$TOTAL_PODS (~ ${CANARY_PERCENTAGE}%)"
+echo "- Number of App03 PODs in CANARY: $(yellow $N_CANARY_PODS)/$TOTAL_PODS (~ ${CANARY_PERCENTAGE}%)"
 #bin/kubectl-prod get pods -l 'ricc-awesome-selector=canary-or-prod,app=app03-kunode,deploy.cloud.google.com/target-id=canary-production' --no-headers
 
 #SOL4_LB_IP_ADDRESS="146.148.6.155"
-bin/kubectl-prod get service app03-kunode  --no-headers
 #NAME           TYPE           CLUSTER-IP   EXTERNAL-IP     PORT(S)        AGE
 #app03-kunode   LoadBalancer   10.21.3.54   146.148.6.155   80:31216/TCP   2d17h
-SOL4_LB_IP_ADDRESS="$(bin/kubectl-prod get service app03-kunode --no-headers | awk '{print $4}')"
-echo "IP address of bifidus endpoint: $(white $SOL4_LB_IP_ADDRESS)"
+SOL4_LB_IP_ADDRESS="$(get_bifidus_loadbalancer_by_service | awk '{print $4}')"
+echo "+ IP address of bifidus endpoint: $(white $SOL4_LB_IP_ADDRESS)"
+get_bifidus_loadbalancer_by_service
 
-echo "2. Practical example split:"
+echo "2. Practical example (curling same endpoint $N_TRIES times to see how it distributes across Prod/Canary):"
 
-seq 1 20 | while read USELESS_ID ; do
+seq 1 "$N_TRIES" | while read USELESS_ID ; do
     curl "http://$SOL4_LB_IP_ADDRESS/statusz" 2>/dev/null
 done | sort | uniq -c

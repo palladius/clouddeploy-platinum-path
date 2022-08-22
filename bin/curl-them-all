@@ -31,7 +31,7 @@ echo Getting status of my 8 apps them all WOW:
 #_smart_curl 35.195.165.153 8080 "[DEV ] app01-kupython"
 #_smart_curl 35.241.210.233 80   "[DEV ] app02-kuruby"
 
-white  "== app01: python web app (latest version: '$(cat apps/app01/VERSION)')=="
+white  "== app01: 🐍 python web app (latest version: '$(cat apps/app01/VERSION)')=="
 bin/kubectl-triune get service | grep app01 | grep -v none | while read stage app LB PVTIP PUBLIC_IP BLURB TIME ; do
   _smart_curl $PUBLIC_IP 8080 "$stage"
 done
@@ -40,6 +40,13 @@ white  "== app02: ruby web app (latest version: '$(cat apps/app02/VERSION)')=="
 bin/kubectl-triune get service | grep app02 | grep -v none | while read stage app LB PVTIP PUBLIC_IP BLURB TIME ; do
   _smart_curl $PUBLIC_IP 8080 "$stage"
 done
+
+if $ENABLE_APP03 ; then
+  white  "== app03: 🧊 Node web app (latest version: '$(cat apps/app03/VERSION)')=="
+  bin/kubectl-triune get service | grep app03 | grep -v none | while read stage app LB PVTIP PUBLIC_IP BLURB TIME ; do
+    _smart_curl $PUBLIC_IP 80 "$stage"
+  done
+fi
 
 echo  "== Solution0 (Internal LB) =="
 echo '😞 Sorry, no routable endpoints. However let me find the Private IP for you. TODO: Try troubleshoot sol0 script.'
@@ -101,6 +108,6 @@ for APPXX_ITER in app01 app02 ; do
   fi
 done
 
-./troubleshoot-solution4
+bin/troubleshoot-solution4
 
 echo "END of $0"
