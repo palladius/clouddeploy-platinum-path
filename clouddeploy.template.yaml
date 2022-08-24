@@ -6,7 +6,7 @@
 # and PROD to be in PROD cluster. We want to use this set up to showcase
 # Canary behaviour through Edward Thiele idea.
 #
-# Schema is well documented here:
+# CD Schema is well documented here:
 # https://cloud.google.com/deploy/docs/api/reference/rest/v1/projects.locations.deliveryPipelines
 # Tags/Labels/Annotations are documented here:
 # https://cloud.google.com/deploy/docs/labels-annotations
@@ -28,7 +28,6 @@ description: |
   Delivery pipeline for CI CD App01 (in python) and then
   packaged via buildpacks.
   CDTv _MY_VERSION_
-#  ricc_language: python
 serialPipeline:
  stages:
  - targetId: dev
@@ -66,10 +65,10 @@ serialPipeline:
    profiles: [canary]
  - targetId: production
    profiles: [production]
-## This is currently being tested by Riccardo and Alex. If you want to activate app03, you can just locally uncomment
-## This code and the 07 script one-liner to activate app03 build trigger. TODSO use ENABLE_APP03
-
 ---
+## This is currently being tested by Riccardo and Alex. If you want to activate app03, you can just locally uncomment
+## This code and the 07 script one-liner to activate app03 build trigger. Make sure to use ENABLE_APP03 in your
+## `.env.sh` env as per `.env.sh.dist`.
 apiVersion: deploy.cloud.google.com/v1
 kind: DeliveryPipeline
 metadata:
@@ -100,6 +99,9 @@ serialPipeline:
   - targetId: production
     profiles: [production]
 ---
+# Note there are FIVE targets across all apps, but only FOUR are use in each APP.
+# - App01/App02 will use normally D/S/C/P.
+# - App03 will use D/S/CP/P where CP is Canary (stage) on Production (cluster).
 apiVersion: deploy.cloud.google.com/v1
 kind: Target
 metadata:
