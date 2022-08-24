@@ -14,10 +14,8 @@ function _get_roles_for_service_account() {
 # run our pipeline.
 #########################################################################################################
 
-# Add your code here:
-# Thanks willisc: https://github.com/palladius/next21-demo-golden-path/blob/main/demo-startup.sh
-# SLOW!!!
-PROJECT_NUMBER=$(gcloud projects list --filter="$PROJECT_ID" --format="value(PROJECT_NUMBER)")
+# Fetch Project Number from Project ID:
+PROJECT_NUMBER=$(gcloud projects describe "$PROJECT_ID" --format="value(projectNumber)")
 # Cloud Build SA:
 CLOUD_BUILD_SVC_ACCT="${PROJECT_NUMBER}@cloudbuild.gserviceaccount.com"
 # GCE SA:

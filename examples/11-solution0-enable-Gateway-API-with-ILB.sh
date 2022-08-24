@@ -4,7 +4,7 @@
 source .env.sh || fatal 'Couldnt source this'
 set -e
 
-PROJECT_NUMBER=$(gcloud projects list --filter="$PROJECT_ID" --format="value(PROJECT_NUMBER)")
+PROJECT_NUMBER=$(gcloud projects describe "$PROJECT_ID" --format="value(projectNumber)")
 
 ################################################################################################################
 # This script sets the foundations for Solution 0/3 (Internal Load Balancer with Traffic Splitting)
