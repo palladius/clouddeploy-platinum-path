@@ -58,10 +58,6 @@ if $VERBOSE ; then
 fi
 
 
-#fatal 42 Debugging it..
-
-
-
 # End of your code here
 _allgood_post_script
 echo Everything is ok.

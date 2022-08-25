@@ -1,7 +1,11 @@
 #!/bin/bash
 
+function _fatal() {
+    echo "$*" >&2
+    exit 42
+}
 # Created with codelabba.rb v.1.4a
-source .env.sh || fatal "Config doesnt exist please create .env.sh"
+source .env.sh || _fatal "Config doesnt exist please create .env.sh"
 set -x
 set -e
 

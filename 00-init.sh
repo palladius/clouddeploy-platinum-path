@@ -7,7 +7,6 @@ function _fatal() {
     echo "$*" >&1
     exit 42
 }
-
 source '.env.sh' || _fatal "Config doesnt exist please create .env.sh"
 
 gcloud config configurations create $GCLOUD_CONFIG ||
