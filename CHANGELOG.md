@@ -1,3 +1,4 @@
+2022-08-19 v0.19.7  Minor fixes for prerelease `1.0alpha`
 2022-08-19 v0.19.6  Fixed _fatal in first 4 scripts. Should suffice.
 2022-08-19 v0.19.5  sintactic sugar around solution4 (new vanilla sol1)
 2022-08-19 v0.19.4  minor fixes from home

@@ -5,7 +5,6 @@ function _fatal() {
 }
 # Created with codelabba.rb v.1.4a
 source .env.sh || _fatal "Config doesnt exist please create .env.sh"
-set -x
 set -e
 
 # Add your code here:
@@ -27,7 +26,11 @@ gcloud auth configure-docker $REGION-docker.pkg.dev
 ##############################################################################
 
 # DEV
-for STANDARD_CLUSTER_NAME in cicd-dev "cicd-canary"  "cicd-prod" ; do
+echo
+white 'Creating THREE Clusters. This might take 5-10min... good time for a coffee 🕰'
+echo
+
+for STANDARD_CLUSTER_NAME in "cicd-dev" "cicd-canary" "cicd-prod" ; do
   # 2022-07-22: changed NumNodes from 3 to 2. TESTED_OK
   # 2022-07-22: Added Workload Identity by defautl. Not tested yet!
   # docs: https://cloud.google.com/sdk/gcloud/reference/container/clusters/create

@@ -8,16 +8,13 @@ source .env.sh || fatal "Config doesnt exist please create .env.sh"
 
 
 function show_k8s_stuff() {
-#     GKE_DEV_CLUSTER_CONTEXT="gke_cicd-platinum-test001_europe-west6_cicd-dev"
-# GKE_CANARY_CLUSTER_CONTEXT="gke_cicd-platinum-test001_europe-west6_cicd-canary"
-# GKE_PROD_CLUSTER_CONTEXT="gke_cicd-platinum-test001_europe-west6_cicd-prod"
     # I have 3 clusters and for each I want to show things..
     for CONTEXT in $GKE_DEV_CLUSTER_CONTEXT $GKE_CANARY_CLUSTER_CONTEXT $GKE_PROD_CLUSTER_CONTEXT ; do
         yellow "== ClusterContext: $CONTEXT =="
         # https://stackoverflow.com/questions/33942709/run-a-single-kubectl-command-for-a-specific-project-and-cluster
         # if it doesnt work this should work: kubectl config use-context CONTEXT_NAME
         # RIP echo_do
-        echo kubectl --context="$CONTEXT" get service,gatewayclass 2>/dev/null
+        echo "kubectl --context=$CONTEXT get service,gatewayclass 2>/dev/null"
              kubectl --context="$CONTEXT" get service,gatewayclass 2>/dev/null ||
                 echo "Possibly empty output for cluster in $CONTEXT"
     done
