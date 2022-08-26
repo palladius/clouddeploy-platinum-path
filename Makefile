@@ -102,10 +102,12 @@ first-half:
 	bash ./01-set-up-GKE-clusters.sh
 	bash ./02-setup-skaffold-cache-bucket.sh
 	bash ./03-configure-artifact-repo-and-docker.sh
+# useless
 	#bash ./04-status.sh
 	bash ./05-IAM-enable-cloud-build.sh
-	#bash ./06-cloud-build-locally.sh
-	echo All good: first half done.
+#useless
+#bash ./06-cloud-build-locally.sh
+	echo All good: first half done. Now follow instructions for the manual part in README.md before proceeding to second half.
 
 second-half:
 	./07-create-cloud-build-triggers.sh

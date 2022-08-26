@@ -30,6 +30,7 @@ echo
 white 'Creating THREE Clusters. This might take 5-10min... good time for a coffee 🕰'
 echo
 
+set -x
 for STANDARD_CLUSTER_NAME in "cicd-dev" "cicd-canary" "cicd-prod" ; do
   # 2022-07-22: changed NumNodes from 3 to 2. TESTED_OK
   # 2022-07-22: Added Workload Identity by defautl. Not tested yet!
@@ -42,6 +43,7 @@ for STANDARD_CLUSTER_NAME in "cicd-dev" "cicd-canary" "cicd-prod" ; do
       --workload-pool="$PROJECT_ID.svc.id.goog" \
       --cluster-ipv4-cidr "/17" --services-ipv4-cidr "/22" --enable-ip-alias
 done
+set +x
 
 # proceed_if_error_matches 'ResponseError: code=409, message=Already exists:' \
 # gcloud container --project "$PROJECT_ID" clusters create "cicd-dev" --region "$REGION" \
