@@ -17,7 +17,7 @@ gcloud config set project $PROJECT_ID
 PROJECT_ID=$(gcloud config get-value project)
 
 # Enable APIs...
-echo Enabling service APIs. This might take a minute or two... 🕰
+echo 'Enabling service APIs. This might take a minute or two... 🕰'
 gcloud services enable \
   artifactregistry.googleapis.com \
   cloudbuild.googleapis.com \
