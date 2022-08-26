@@ -47,20 +47,23 @@ elements {
     card gke as dev_gke {
       name "Dev Cluster"
     }
-    card gke as canary_gke {
-       name "Canary Cluster (unused)"
-    }
-    card gke as prod_gke {
-      name "Prod Cluster"
-    }
-  } #/GKE Cluster group
+    #card gke as canary_gke {
+    #   name "Canary Cluster (unused)"
+    #}
+    #card gke as prod_gke {
+    #  name "Prod Cluster"
+    #}
 
-   group prod_gke_cluster {
+    group prod_gke_cluster {
+       name "Prod GKE Cluster"
+       #display_name "boh aaa"
+       icon_url "https://drive.google.com/file/d/1TdtWW0BeQCspKETqeGgZWOgy5lcpK9jI/view"
+       #description "zoom 2"
       # Google blue for Clusters: 4c8bf5
       background_color "#e8f4f8" # super light
 
-    card kubernetes as staging_pod1 {
-      name "App03 Node pod1 (staging)"
+    card kubernetes as canary_pod1 {
+      name "App03 Node pod1 (canary)"
     }
     card kubernetes as prod_pod2 {
       name "App03 Node pod2 (prod)"
@@ -79,6 +82,10 @@ elements {
     }
 
   } #/GKE Cluster group
+
+
+  } #/GKE Cluster group
+
 
 
    # App03 Delivery Pipeline
@@ -121,7 +128,8 @@ elements {
   group solution2_GFE_TS {
 #    background_color "#F4B400" # Google yellow
     background_color "#ffffe0" # Light yellow
-    name "[Solution 2] Vanilla GKE Service + Pod Splitting"
+    # this is solution 4 technically.
+    name "Vanilla GKE Service + Pod Splitting"
 
     card kubernetes as app03_endpoint {
       name "http://1.2.3.4/"
@@ -155,8 +163,8 @@ paths {
   csr --> build03
 
   # needed just to sort GKE from left to right
-  dev_gke ..> canary_gke
-  canary_gke ..> prod_gke
+  dev_gke ..> prod_gke_cluster # prod_gke
+  #canary_gke ..> prod_gke
   #build03 -down-> dev_gke
   #dev_gke <-down- qa
   build03 --> target_dev_app03
@@ -169,12 +177,14 @@ paths {
   target_canary_app03 --> target_prod_app03
 
   target_dev_app03 -down-> dev_gke
-
   target_staging_app03 -down-> dev_gke
 
-  target_canary_app03 -down-> prod_gke
+  target_canary_app03 -down-> canary_pod1 # prod_gke
 
-  target_prod_app03 -down-> prod_gke
+  target_prod_app03 -down-> prod_pod2 # prod_gke
+target_prod_app03 -down-> prod_pod3 # prod_gke
+target_prod_app03 -down-> prod_pod4 # prod_gke
+target_prod_app03 -down-> prod_pod5 # prod_gke
 
   # Users consume Load Balancer endpoint.
   # its UGLY
@@ -188,7 +198,7 @@ paths {
   #app03_bes_prod
   prod_kunode_service <-- app03_endpoint
 
-  staging_pod1 ..> prod_kunode_service
+  canary_pod1 ..> prod_kunode_service
   prod_pod2 ..> prod_kunode_service
   prod_pod3 ..> prod_kunode_service
   prod_pod4 ..> prod_kunode_service
