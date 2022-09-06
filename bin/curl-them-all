@@ -41,12 +41,12 @@ bin/kubectl-triune get service | grep app02 | grep -v none | while read stage ap
   _smart_curl $PUBLIC_IP 8080 "$stage"
 done
 
-if $ENABLE_APP03 ; then
+#if $ENABLE_APP03 ; then
   white  "== app03: 🧊 Node web app (latest version: '$(cat apps/app03/VERSION)')=="
   bin/kubectl-triune get service | grep app03 | grep -v none | while read stage app LB PVTIP PUBLIC_IP BLURB TIME ; do
     _smart_curl $PUBLIC_IP 80 "$stage"
   done
-fi
+#fi
 
 echo  "== Solution0 (Internal LB) =="
 echo '😞 Sorry, no routable endpoints. However let me find the Private IP for you. TODO: Try troubleshoot sol0 script.'
@@ -86,7 +86,7 @@ for APPXX_ITER in app01 app02 ; do
   done
 done
 
-green  "== Solution2 Artifacts (works) =="
+white  "== Solution2 Artifacts (works) =="
 
 for APPXX_ITER in app01 app02 ; do
   FWD_RULE="$APPXX_ITER-${FWD_RULE_MTSUFFIX}"
@@ -108,6 +108,7 @@ for APPXX_ITER in app01 app02 ; do
   fi
 done
 
+white "== Lets now try the SOL4 part (which seems to hang) =="
 bin/troubleshoot-solution4
 
 echo "END of $0"

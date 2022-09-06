@@ -260,7 +260,7 @@ fi
     # This code iterates through the Solution 2 clusters (CANARY and PROD) and through ther type of traffic that both
     # support (again, CANARY and PROD) for the appXX given as $1 (!). For each of these 4 combos:
     # * builds a SERVICE_NAME which is function of APP and TRAFFIC
-    # * it retrieces the NEG name via kubectl, say 'NEG_I'
+    # * it retrieves the NEG name via kubectl, say 'NEG_I'
     # * it finds the array of NEG_RESOURCES associated to $NEG_I, eg 'k8s1-5d9efb9b-default-app01-sol2-svc-prod-8080-dc533d84'
     # * for each NEG_RESOURCE of these 3-ish $NEG_RESOURCES (which are in 2-3 random zones), it does the following:
     #   * it does the manual `gcloud plumbing` of associating the NEG to the Backend.

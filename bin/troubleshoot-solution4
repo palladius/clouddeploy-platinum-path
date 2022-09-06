@@ -26,13 +26,14 @@ echo "- Number of App03 PODs in CANARY: $(yellow $N_CANARY_PODS)/$TOTAL_PODS (~ 
 #SOL4_LB_IP_ADDRESS="146.148.6.155"
 #NAME           TYPE           CLUSTER-IP   EXTERNAL-IP     PORT(S)        AGE
 #app03-kunode   LoadBalancer   10.21.3.54   146.148.6.155   80:31216/TCP   2d17h
-SOL4_LB_IP_ADDRESS="$(get_bifidus_loadbalancer_by_service | awk '{print $4}')"
+SOL4_LB_IP_ADDRESS="$(get_bifidus_loadbalancer_by_service | awk '{print $5}')"
 echo "+ IP address of bifidus endpoint: $(white $SOL4_LB_IP_ADDRESS)"
 get_bifidus_loadbalancer_by_service
 
 echo "2. Practical example (curling same endpoint $N_TRIES times to see how it distributes across Prod/Canary):"
 
 seq 1 "$N_TRIES" | while read USELESS_ID ; do
+    #echo "DEB seems to hang.. USELESS_ID=$USELESS_ID SOL4_LB_IP_ADDRESS=$SOL4_LB_IP_ADDRESS"
     curl "http://$SOL4_LB_IP_ADDRESS/statusz" 2>/dev/null
 done | tee t
 
