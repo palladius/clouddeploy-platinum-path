@@ -12,7 +12,7 @@
 # 2022-07-07 v1.1 Added the Backendservices to both Apps.
 ##########################################################################################
 meta {
-  title "Canary Pipeline GKE+CB+CD App03 v1.4"
+  title "Pod Balancing - Canary Pipeline GKE+CB+CD App03 v1.4"
 }
 
 

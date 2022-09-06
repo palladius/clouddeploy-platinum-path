@@ -34,4 +34,6 @@ echo "2. Practical example (curling same endpoint $N_TRIES times to see how it d
 
 seq 1 "$N_TRIES" | while read USELESS_ID ; do
     curl "http://$SOL4_LB_IP_ADDRESS/statusz" 2>/dev/null
-done | sort | uniq -c
+done | tee t
+
+cat t | sort | uniq -c
