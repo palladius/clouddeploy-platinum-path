@@ -17,8 +17,7 @@ kind: DeliveryPipeline
 metadata:
   name: app01
   annotations:
-    #ricc: was here # testing an annotation
-    about: This is a python sample web frontend built with BuildPacks
+    about: This is a Python sample web frontend built with BuildPacks
   labels:
     lang: python
     CDT_VER: _MY_VERSION_
@@ -74,7 +73,6 @@ kind: DeliveryPipeline
 metadata:
   name: app03
   annotations:
-    #ricc: was also here and loves ruby
     about: This is a NodeJS sample web frontend built with Docker (currently under TESTING)
   labels:
     lang: nodejs
@@ -127,6 +125,7 @@ description: |
   Used for Traffic Splitting to bedew 90% of traffic into
   the canary target (and remaining 10% to prod) for some time before
   promoting all traffic to prod.
+# Used by App01 and App02 for Solution2.
 gke:
  cluster: projects/MY_PROJECT_ID/locations/MY_REGION/clusters/cicd-canary
 ---
@@ -150,5 +149,6 @@ description:  |
   03 (only app03) production cluster with canary deployment.
   Used to showcase canary deployment within a single cluster
   before promoting all traffic to newest version.
+# Used by App03 for Solution4 (simple solution).
 gke:
   cluster: projects/MY_PROJECT_ID/locations/MY_REGION/clusters/cicd-prod

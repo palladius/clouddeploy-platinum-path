@@ -138,6 +138,7 @@ gcloud compute network-endpoint-groups list  | grep "$APP_NAME-sol2" ||
 proceed_if_error_matches "global/healthChecks/http-neg-check' already exists" \
     gcloud compute health-checks create http http-neg-check --port 8080
 
+echo 'WARNING: I believe this code is called TWICE. TODO(ricc): CLEANUP!!!'
 # RIC002 create backend for the V1 of the whereami application (one per app) #multitennant
 proceed_if_error_matches "The resource 'projects/$PROJECT_ID/global/backendServices/$SOL2_SERVICE_CANARY' already exists" \
     gcloud compute backend-services create "$SOL2_SERVICE_CANARY" \
@@ -275,8 +276,7 @@ fi
             echo "[$MY_CLUSTER] 1. NEG NAME: '${NEG_NAME}'"
             echo "[$MY_CLUSTER] 2. Lets now iterate through the N zones:"
             _kubectl_on_target "$MY_CLUSTER" get "svcneg/$NEG_NAME" -o json  2>/dev/null |
-                jq -r "select(.metadata.labels.\"networking.gke.io/service-name\" == \"$SERVICE_NAME\") .status.networkEndpointGroups[].selfLink " | # , .metadata.labels.\"networking.gke.io/service-name\"
-    #            jq -r "select(.metadata.labels.\"networking.gke.io/service-name\" == \"app01-sol2-svc-prod\") .status.networkEndpointGroups[].selfLink " | # , .metadata.labels.\"networking.gke.io/service-name\"
+                jq -r "select(.metadata.labels.\"networking.gke.io/service-name\" == \"$SERVICE_NAME\") .status.networkEndpointGroups[].selfLink " |
         # https://www.googleapis.com/compute/v1/projects/cicd-platinum-test003/zones/europe-west1-b/networkEndpointGroups/k8s1-5d9efb9b-default-app01-sol2-svc-prod-8080-dc533d84
         # https://www.googleapis.com/compute/v1/projects/cicd-platinum-test003/zones/europe-west1-c/networkEndpointGroups/k8s1-5d9efb9b-default-app01-sol2-svc-prod-8080-dc533d84
         # https://www.googleapis.com/compute/v1/projects/cicd-platinum-test003/zones/europe-west1-d/networkEndpointGroups/k8s1-5d9efb9b-default-app01-sol2-svc-prod-8080-dc533d84
@@ -285,16 +285,14 @@ fi
                         EXTRACTED_ZONE=$(echo $NEG_RESOURCE | cut -f 9 -d/ ) # changes
                         EXTRACTED_NEG_NAME=$(echo $NEG_RESOURCE | cut -f 11 -d/ )   # always the same
                         #_deb "TODO stuff with it: zone=$EXTRACTED_ZONE NEG=$EXTRACTED_NEG_NAME"
-                        #echo TODO after dmarzi ok
                         proceed_if_error_matches "Duplicate network endpoint groups in backend service." \
-                        gcloud compute backend-services add-backend "$SERVICE_NAME" \
-                            --network-endpoint-group="$EXTRACTED_NEG_NAME" \
-                            --network-endpoint-group-zone="$EXTRACTED_ZONE" \
-                            --balancing-mode=RATE \
-                            --max-rate-per-endpoint=10 \
-                            --global
+                          gcloud compute backend-services add-backend "$SERVICE_NAME" \
+                              --network-endpoint-group="$EXTRACTED_NEG_NAME" \
+                              --network-endpoint-group-zone="$EXTRACTED_ZONE" \
+                              --balancing-mode=RATE \
+                              --max-rate-per-endpoint=10 \
+                              --global
                     done
-        #_kubectl_on_target canary get svcneg
         done
     done
   fi
