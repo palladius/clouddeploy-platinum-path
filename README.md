@@ -17,6 +17,8 @@ among my TODOs).
 
 Doc: go/ricc-cd-canary-doc
 
+**This is not an officially supported Google product.**
+
 ## High-level architecture
 
 <img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/Ricc%20Canary%20deployment%202022.png" alt="Architecture v1.1" align='right' />

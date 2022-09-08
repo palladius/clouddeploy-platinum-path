@@ -1,3 +1,4 @@
+2022-08-26 v0.20.1  Going through offical releasing (go/oss-your-code)
 2022-08-26 v0.19.8  Minor fixes for prerelease `1.0alpha`
 2022-08-26 release `1.0alpha`  https://github.com/palladius/clouddeploy-platinum-path/releases/tag/1.0alpha
 2022-08-26 v0.19.7  Minor fixes for prerelease `1.0alpha`
