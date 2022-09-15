@@ -37,14 +37,16 @@ Doc: go/ricc-cd-canary-doc
 You should be good to go!
 
 For more shenaningans you might need to install `lolcat` (`gem install lolcat`) as
-it colors my life and most likely yours too. If you insist on a gray life, just
-rename lolcat to cat :) Other scripts can all be found in my Swiss-Army Knife repo:
-https://github.com/palladius/sakura/
+it colors my life and most likely yours too. Some scripts in here can all be found
+in my [Swiss-Army Knife repo](https://github.com/palladius/sakura/), but the ones needed
+for this are all uinder `bin/`.
 
 ### Manual part (step 6.5)
 
 I'm working on it in a Google Doc ATM (go/ricc-cd-canary-doc). When finished
-I'll migrate text and images here.
+I'll migrate text and images here. Meanwhile, you can follow the official docs here:
+
+* To connect your github repo: https://cloud.google.com/build/docs/automating-builds/github/build-repos-from-github
 
 ## The apps
 
@@ -52,8 +54,9 @@ The app part is really the NON-interesting part here. I tried to keep it as simp
 possible. You can complicate it as long as you have a Dockerfile or a Buildpack
 to build it.
 
-* `apps/app01/` This is a sample Python app.
-* `apps/app02/` This is a sample Ruby app.
+* `apps/app01/` This is a sample 🐍 *Python* app.
+* `apps/app02/` This is a sample 💎 *Ruby* app.
+* `apps/app03/` This is a sample 🧊 *Node.js* app.
 
 They both expose a single Web page (`/`) with a lot of debug useful information, usually
 surfaced by proper ENV vars. They also expose a second convenience endpoint (`/statusz`)
@@ -65,19 +68,25 @@ app=app01 version=2.22 target=canary emoji=🐍
 [..]
 app=app02 version=2.0.6 target=prod emoji=💎
 app=app02 version=2.0.7 target=canary emoji=💎
+[..]
+app=app03 version=1.0.2 target=prod emoji=🧊
 ```
 
 ## Build philosophy
 
-* Every commit to TRUNK will trigger a Cloud Build, no matter what. In particular, any
-change to the code to app01 will trigger a build in the APP01 pipeline, and same for App02.
-Yes, it's that beautiful.
+* Every commit to `main` will trigger a Cloud Build, provided code is in some `apps/appXX/` . In particular, any change to the code to app01 will trigger a build in the APP01 pipeline, and so on. **Yes**, it's that beautiful.
+
 * Promotion DEV -> STAGING. This is a second BUILD which also executes `make test` in the
 `app/MYAPP` folder.
 
+* *For picky people*. Note that in the real world, the promotion from DEV to STAGING wouldn't happen after Unit Tests (rather integration tests), but for this demo I wanted as many releases out as possible with minimal manual intervention, so I did it this way. In a real scenario, a failed `make test` would prevent the DEV release altogether.
+
 ## Deploy philosophy
 
-4 targets have been created, as you can see above.
+4 targets have been created.
+
+* **App01** and **App02** have 4 stages, with canary and production making it to two separated GKE cluster with the same name. This has been done to demonstrate a complex, multi-cluster case.
+* **App03** has been configured differently, with Canary and Production stages *both* pushing to prod GKe cluster. This has been done to demonstrate a simpler use case.
 
 ## Canary solutions
 
