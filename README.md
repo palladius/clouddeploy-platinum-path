@@ -103,13 +103,13 @@ More info on historical code under `k8s/amarcord/` (Romagnolo Italian for *I rem
 
 *(XLB: eXternal Load Balancer)*
 
-### Simple solution: single-cluster pod-splitting thru k8s service
+### Simple solution: single-cluster pod-splitting (🟢🟢🟢🟢🟡) thru k8s service
 
 *(formerly known as: Solution 4)*
 
 TODO(ricc): images
 
-### Complex solution: multi-cluster traffic-splitting canarying through Gateway API , envoy-backed XLB and 🪡 lot of weaving
+### Complex solution: multi-cluster traffic-splitting canarying through Gateway API , envoy-backed ⚖️ XLB and 🪡 lot of weaving
 
 *(formerly known as: Solution 2)*
 
