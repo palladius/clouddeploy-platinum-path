@@ -91,17 +91,27 @@ app=app03 version=1.0.2 target=prod emoji=🧊
 ## Canary solutions
 
 Historically, 3 solutions have been provided. History is important since it plays a role
-into script numbering ;)
+into script numbering ;) so here we are. A fourth solution has been added in July 22.
 
 * Solution0: ILB + TrafficSplitting. Doesnt have public IP. Initial code: https://github.com/palladius/clouddeploy-platinum-path/pull/3/files (script 11)
 * Solution1: Global XLB + Gateway API + Pod splitting.
 * Solution2: Envoy-based new XLB
+* Solution3: *symlink* to solution0
+* **Soultion4** (**simple solution**): single-cluster pod-splitting for `app03`.
 
-More info on historical code under `k8s/amarcord/` (Romagnolo Italian for *I remember*)
+More info on historical code under `k8s/amarcord/` (Romagnolo Italian for *I remember*, plus [memorable movie by Federico Fellini](https://en.wikipedia.org/wiki/Amarcord)).
 
 *(XLB: eXternal Load Balancer)*
 
-### Solution 2
+### Simple solution: single-cluster pod-splitting thru k8s service
+
+*(formerly known as: Solution 4)*
+
+TODO(ricc): images
+
+### Complex solution: multi-cluster traffic-splitting canarying through Gateway API , envoy-backed XLB and 🪡 lot of weaving
+
+*(formerly known as: Solution 2)*
 
 This is what you'll see when you get this to work:
 
