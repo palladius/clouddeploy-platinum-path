@@ -131,9 +131,13 @@ This is what you'll see when you get this to work:
 
 <img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/solution2 app01 python sample.png?raw=true" alt="Solution 2 example" align='center' />
 
-Relative img test
+Relative img test1
 
 ![3apps](./doc/solution2 app01 python sample.png)
+
+Relative img test2
+
+![3apps](./blob/main/doc/solution2 app01 python sample.png)
 
 
 ## Lesson learnt
