@@ -1,11 +1,11 @@
-# clouddeploy-platinum-path
+# Canary Solutions with GCP Cloud Deploy
 
 Self: https://github.com/palladius/clouddeploy-platinum-path
 
 This repo tries to demo a few applications (under `apps/`) and it's path to
 deployment via Google Cloud Platform's `Cloud Build` + `Cloud Deploy`.
-Since a lot of setup is needed, I took inspiration from `willisc7` Golde Path
-repo (see below).
+Since a lot of setup is needed, I took inspiration from `willisc7`'s
+[Gold Path repo](https://github.com/willisc7/next21-demo-golden-path) (see below).
 
 I've tried to simplify the app and the `skaffold` part and concentrated on
 automating the installation of Service Accounts, clusters, etc. all in
@@ -13,7 +13,9 @@ single scripts with a catchy name.
 
 Note that EVERYTHING is automated except linking the external repo to Cloud
 Build (talked to the PM, this is currently possible in alpha API and it's
-among my TODOs).
+among my TODOs). All the shell scripts you see in the main directory have been
+extensively tested, all the experimental code is under
+[examples/](https://github.com/palladius/clouddeploy-platinum-path/tree/main/examples).
 
 Doc: go/ricc-cd-canary-doc
 
@@ -70,6 +72,7 @@ app=app02 version=2.0.6 target=prod emoji=💎
 app=app02 version=2.0.7 target=canary emoji=💎
 [..]
 app=app03 version=1.0.2 target=prod emoji=🧊
+app=app03 version=1.0.3 target=canary emoji=🧊
 ```
 
 ## Build philosophy
@@ -83,25 +86,36 @@ app=app03 version=1.0.2 target=prod emoji=🧊
 
 ## Deploy philosophy
 
-4 targets have been created.
+4 targets have been created:
 
-* **App01** and **App02** have 4 stages, with canary and production making it to two separated GKE cluster with the same name. This has been done to demonstrate a complex, multi-cluster case.
-* **App03** has been configured differently, with Canary and Production stages *both* pushing to prod GKe cluster. This has been done to demonstrate a simpler use case.
+1. **dev**. Every successful commit lands here. Deploys to **dev** GKE cluster.
+1. **staging**. Also deploys to **dev** GKE cluster.
+1. **canary** *OR* **canary-production** (depends on app, see below). A release in this state will get a small
+  percentage of traffic.
+2. **production**. A release in this state will get *most* traffic. Deploys to **prod** GKE cluster.
+
+Note on apps and third stage (*canary**):
+
+* **App01** and **App02** have **canary** as 3rd stage, which pushes to a **canary** GKE cluster.
+  This has been done to demonstrate a complex, multi-cluster case.
+* **App03** been configured differently with **canary-production** as 3rd stage , with Canary and Production stages
+  *both* pushing to prod GKe cluster. This has been done to demonstrate a simpler use case.
 
 ## Canary solutions
 
 Historically, 3 solutions have been provided. History is important since it plays a role
-into script numbering ;) so here we are. A fourth solution has been added in July 22.
+into script numbering and ordering ;) which was hard to change. A fourth solution has been added in July 22.
 
-* Solution0: ILB + TrafficSplitting. Doesnt have public IP. Initial code: https://github.com/palladius/clouddeploy-platinum-path/pull/3/files (script 11)
-* Solution1: Global XLB + Gateway API + Pod splitting.
-* Solution2: Envoy-based new XLB
-* Solution3: *symlink* to solution0
-* **Soultion4** (**simple solution**): single-cluster pod-splitting for `app03`.
+* ❌ ~~Solution0: ILB + TrafficSplitting. Doesnt have public IP.~~ [Initial code (script 11)](https://github.com/palladius/clouddeploy-platinum-path/pull/3/files)
+* ❌ ~~Solution1: Global XLB + Gateway API + Pod splitting.~~
+* ✅ **Solution2**: Envoy-based GXLB + Gateway API +proper Traffic Splitting (**complex solution**) (for `app01` and `app02`).
+* ❌ ~~Solution3: *symlink* to solution0~~
+* ✅ **Solution4** (**simple solution**): single-cluster Pod Splitting (`app03`).
 
-More info on historical code under `k8s/amarcord/` (Romagnolo Italian for *I remember*, plus [memorable movie by Federico Fellini](https://en.wikipedia.org/wiki/Amarcord)).
+More info on historical code under `k8s/amarcord/` (Romagnolo Italian for *I remember*, plus a
+[memorable movie by Federico Fellini](https://en.wikipedia.org/wiki/Amarcord)).
 
-*(XLB: eXternal Load Balancer)*
+*(GXLB: Global eXternal Load Balancer)*
 
 ### Simple solution: single-cluster pod-splitting (🟢🟢🟢🟢🟡) thru k8s service
 
