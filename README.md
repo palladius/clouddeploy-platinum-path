@@ -1,4 +1,4 @@
-# Canary Solutions with GCP Cloud Deploy
+# 🐤 Canary Solutions with GCP Cloud Deploy
 
 Self: https://github.com/palladius/clouddeploy-platinum-path
 
@@ -16,8 +16,6 @@ Build (talked to the PM, this is currently possible in alpha API and it's
 among my TODOs). All the shell scripts you see in the main directory have been
 extensively tested, all the experimental code is under
 [examples/](https://github.com/palladius/clouddeploy-platinum-path/tree/main/examples).
-
-Doc: go/ricc-cd-canary-doc
 
 **This is not an officially supported Google product.**
 
@@ -60,6 +58,8 @@ to build it.
 * `apps/app02/` This is a sample 💎 *Ruby* app.
 * `apps/app03/` This is a sample 🧊 *Node.js* app.
 
+<img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/3apps.png?raw=true" alt="Three Apps" align='center' />
+
 They both expose a single Web page (`/`) with a lot of debug useful information, usually
 surfaced by proper ENV vars. They also expose a second convenience endpoint (`/statusz`)
 with a one-liner description (used by scripts), such as:
@@ -96,10 +96,10 @@ app=app03 version=1.0.3 target=canary emoji=🧊
 
 Note on apps and third stage (*canary**):
 
-* **App01** and **App02** have **canary** as 3rd stage, which pushes to a **canary** GKE cluster.
+* **App01**🐍 and **App02**💎 have **canary** as 3rd stage, which pushes to a **canary** GKE cluster.
   This has been done to demonstrate a complex, multi-cluster case.
-* **App03** been configured differently with **canary-production** as 3rd stage , with Canary and Production stages
-  *both* pushing to prod GKe cluster. This has been done to demonstrate a simpler use case.
+* **App03**🧊 been configured differently with **canary-production** as 3rd stage , with Canary and Production stages
+  *both* pushing to prod GKE cluster. This has been done to demonstrate a simpler use case.
 
 ## Canary solutions
 
@@ -129,7 +129,7 @@ TODO(ricc): images
 
 This is what you'll see when you get this to work:
 
-<img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/solution2 app01 python sample.png" alt="Solution 2 exmaple" align='center' />
+<img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/solution2 app01 python sample.png?raw=true" alt="Solution 2 example" align='center' />
 
 
 ## Lesson learnt
@@ -140,6 +140,7 @@ This is what you'll see when you get this to work:
   its configuration "online" is based on a 1-month-old manifest which pointed to the earliest version.
   If you do, destroying everything and rebuilding seems the only safe choice, and since I don't want it
   I suggest you: don't change the NAMES, change just everything else :)
+
 * As a corollary, when you name a resource, make sure you spend **time** to add the right dimensions: is it
   function of APPNAME? If yes, it should have APPNAMe inside the name (like "appo1-frontend"). Is it
   regional? If yes, then make sure some sort of region string is in the name so you can have the US and EU
@@ -160,3 +161,4 @@ This is what you'll see when you get this to work:
 * Alex Bielski for his support in getting a `Cloud Build` to work with multiple
   Skaffold modules, plus Skaffold *caching* and `kustomize` erudition.
 * Yuki Furuyama for GCPDraw. Absolutely stunning. Making diagrams have never been so fun!
+* ricc@: go/ricc-cd-canary-doc
