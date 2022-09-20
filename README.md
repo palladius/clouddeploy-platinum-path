@@ -101,6 +101,11 @@ Note on apps and third stage (*canary**):
 * **App03**🧊 been configured differently with **canary-production** as 3rd stage , with Canary and Production stages
   *both* pushing to prod GKE cluster. This has been done to demonstrate a simpler use case.
 
+Confused? See this graph:
+
+<img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/bifid tetra-pipeline.png?raw=true" alt="Four targets, 2 solutions depending on app" align='center' />
+
+
 ## Canary solutions
 
 Historically, 3 solutions have been provided. History is important since it plays a role
@@ -131,15 +136,6 @@ This is what you'll see when you get this to work:
 
 <img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/solution2 app01 python sample.png?raw=true" alt="Solution 2 example" align='center' />
 
-Relative img test1
-
-![3apps](./doc/solution2 app01 python sample.png)
-
-Relative img test2
-
-![3apps](./blob/main/doc/solution2 app01 python sample.png)
-
-
 ## Lesson learnt
 
 * Never EVER change name of entities, particularly if they are pointed by different products/modules.
@@ -148,7 +144,6 @@ Relative img test2
   its configuration "online" is based on a 1-month-old manifest which pointed to the earliest version.
   If you do, destroying everything and rebuilding seems the only safe choice, and since I don't want it
   I suggest you: don't change the NAMES, change just everything else :)
-
 * As a corollary, when you name a resource, make sure you spend **time** to add the right dimensions: is it
   function of APPNAME? If yes, it should have APPNAMe inside the name (like "appo1-frontend"). Is it
   regional? If yes, then make sure some sort of region string is in the name so you can have the US and EU
