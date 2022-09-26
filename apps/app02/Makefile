@@ -19,7 +19,11 @@ test:
 
 kustomize-render:
 	@echo See in parent directory
+	kustomize build k8s/overlays/dev
 	kustomize build k8s/overlays/staging
+	kustomize build k8s/overlays/canary
+	kustomize build k8s/overlays/prod
+
 #echo 02. Now trying to skaffold build this gentleman..
 # NOPE THIS DOESNT WORK YET IN THE CLOUD :/ ./skaffold-wrapper.sh build
 #	echo Lets pretend this doesnt build.
