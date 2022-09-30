@@ -145,6 +145,34 @@ Note:  Cluster Build can take several minutes to complete. You can check progres
    This script creates a bucket which we'll use as Skaffold
    Cache. This will make your Cloud Builds super-fast! Thanks Alex the tip!
 
+
+
+3. boh
+4. todo
+5. todo
+6. todo
+7. todo
+8. todo
+9. todo
+10. todo
+11. todo
+12. todo
+13. a
+14. a
+15. `15-solution2-xlb-GFE3-traffic-split.sh` **Set up traffic split (solution 2!)**
+
+TODSO(text): at least i put the image
+
+<img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/app02-sol2-svc-canaryprod-neg-view.png?raw=true" alt="Solution 2 NEG view on GCP GCLB page" align='center' />
+
+
+16. a
+
+
+
+
+
+
 ## Other great scripts
 
 I've disseminated `bin/` with scripts that I utilized for testing my solutions. You might find them useful (and send me
@@ -154,14 +182,6 @@ a PR to fix the errors ). Some examples:
 
 <img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/curl-them-all-screenshot.png?raw=true" alt="curl-them-all script example" align='center' />
 
-
-1.  Set up traffic split (solution 2!)
-
-TODSO(text): at least i put the image
-
-<img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/app02-sol2-svc-canaryprod-neg-view.png?raw=true" alt="Solution 2 NEG view on GCP GCLB page" align='center' />
-
-16.
 
 ## Express Install
 
