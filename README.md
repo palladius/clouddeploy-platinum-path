@@ -121,6 +121,7 @@ The root directory of my repo has a number of bash scripts which could discourag
 ### Scripts from 1 to 16
 
 0. `00-init.sh`. **Initialization**
+
   This scripts parses the ENV vars in env.sh and sets your GCLOUD, SKAFFOLD and GKE environment for
   success. If you leave this project, do something else with gcloud or GKE and come back to it tomorrow, its always safe
   to execute it once or even twice.
@@ -128,6 +129,7 @@ The root directory of my repo has a number of bash scripts which could discourag
     🐧ricc@derek:~/clouddeploy-platinum-path$ ./00-init.sh
 
 1. (`./01-set-up-GKE-clusters.sh`).  **Setting up GKE clusters**
+
   This script sets up 3 autopilot clusters:
 
 * cicd-noauto-canary. It will contain canary workloads (pre-prod)
@@ -143,10 +145,18 @@ Note:  Cluster Build can take several minutes to complete. You can check progres
    This script creates a bucket which we'll use as Skaffold
    Cache. This will make your Cloud Builds super-fast! Thanks Alex the tip!
 
+## Other great scripts
 
+I've disseminated `bin/` with scripts that I utilized for testing my solutions. You might find them useful (and send me
+a PR to fix the errors ). Some examples:
+
+    🐧ricc@derek:$ bin/curl-them-all
+
+<img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/curl-them-all-screenshot.png?raw=true" alt="curl-them-all script example" align='center' />
 
 
 ## Express Install
+
 * Make sure you did the mirrot github repo and your github user is in your env.sh.
 * Do steps 1,2,3,4,5,6 automatically: `make first-half` (should ~always work)
 * Do steps 7,8,9,..,16 automatically - `make second-half` (can fail if you made mistake in the mirror repo setup)
