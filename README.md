@@ -120,13 +120,15 @@ The root directory of my repo has a number of bash scripts which could discourag
 
 ### Scripts from 1 to 16
 
-0. `00-init.sh`. This scripts parses the ENV vars in env.sh and sets your GCLOUD, SKAFFOLD and GKE environment for
+0. `00-init.sh`. **Initialization**
+  This scripts parses the ENV vars in env.sh and sets your GCLOUD, SKAFFOLD and GKE environment for
   success. If you leave this project, do something else with gcloud or GKE and come back to it tomorrow, its always safe
   to execute it once or even twice.
 
     🐧ricc@derek:~/clouddeploy-platinum-path$ ./00-init.sh
 
-1. Setting up GKE clusters (`./01-set-up-GKE-clusters.sh`). This script sets up 3 autopilot clusters:
+1. (`./01-set-up-GKE-clusters.sh`).  **Setting up GKE clusters**
+  This script sets up 3 autopilot clusters:
 
 * cicd-noauto-canary. It will contain canary workloads (pre-prod)
 * cicd-noauto-prod. It will contain production workloads.
@@ -136,8 +138,8 @@ Note:  Cluster Build can take several minutes to complete. You can check progres
 `Kubernetes Engine` -> `Kubernetes clusters` screen, or just have a ☕.
 
 
-2. `./02-setup-skaffold-cache-bucket.sh` Setup Skaffold Cache. This script creates a bucket which we'll use as Skaffold
-   Cache. This will make your Cloud Builds super-fast! Thanks @bielski for this tip!
+2. `./02-setup-skaffold-cache-bucket.sh` **Setup GCS + Skaffold Cache**. This script creates a bucket which we'll use as Skaffold
+   Cache. This will make your Cloud Builds super-fast! Thanks Alex the tip!
 
 
 
