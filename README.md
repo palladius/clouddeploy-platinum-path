@@ -40,9 +40,11 @@ and symlink it from/to another private repo).
     * **Linux** machine where you’ve installed `gcloud`.
     * **Max OSX** with bash v5 or more (to support hashes). To do so, just try `brew install bash` and make sure to use
       the new BASH path ~(you might have to explicitly call the scripts with `bash SCRIPTNAME.sh`).
-1. [Fork](https://github.com/palladius/clouddeploy-platinum-path/fork) the code repo:
+
+2. [Fork](https://github.com/palladius/clouddeploy-platinum-path/fork) the code repo:
     * Go to https://github.com/palladius/clouddeploy-platinum-path/
     * Click “**Fork”** to fork the code under your username.
+
 
     TODO(github scrreenshot image)
 
@@ -50,18 +52,26 @@ and symlink it from/to another private repo).
      You’ll need this username in a minute.
    * **__Note__** that if you don’t have a github account (and you don’t want to create one), you can just fork my repo in your
      GCR - more instructions later at step (6) below.
+   * To connect your github repo, follow instructions here: https://cloud.google.com/build/docs/automating-builds/github/build-repos-from-github
+   * Open **Cloud Developer Console** > **Cloud Build** > **Triggers**: https://console.cloud.google.com/cloud-build/triggers
+   * Click on **Connect repository** button (bottom of page):
 
-2. [Totally optional] Install a colorizing gem. If you won’t do it, there’s a `lolcat` fake wrapper in `bin/` (added to
+     TODO(connect repository image with arrow)
+
+    * “Select Source” > “**GitHub (Cloud Build GitHub App)**” and click “continue”.
+
+
+3. [Totally optional] Install a colorizing gem. If you won’t do it, there’s a `lolcat` fake wrapper in `bin/` (added to
    path in init script). But trust me, it’s worth it (unless you have no Ruby installed).
 
     gem install lolcat
 
 
-3. Copy the env template to a new file that we’ll modify
+4. Copy the env template to a new file that we’ll modify
 
     cp .env.sh.dist .env.sh
 
-4. Open `.env.sh` and substitute the proper values for any variable that has # changeme next to it.
+5. Open `.env.sh` and substitute the proper values for any variable that has # changeme next to it.
   (If you’re on 🖥️ **Cloud Shell**, you can try `edit .env.sh` 😎 to let the UI editor shine). For instance:
 
     * **PROJECT_ID**. This your string (non-numeric) project id -
@@ -102,39 +112,46 @@ The root directory of my repo has a number of bash scripts which could discourag
   routine will touch a file called `.executed_ok.04-status.sh.touch`. This will leave a breadcrumb trail which tells you
   where the script failed:
 
-  TODO(ricc): image
+  TODO(ricc): image on breacrumbs
 
 * Everything in this is scripted except one point which requires manual intervention between step 6 and step 7, which
   is why I called the manual intervention 6.5 which I then moved at the beginning of the instructions (so now it looks
   more lie 0.065).
 
+### Scripts from 1 to 16
 
-<--
-## Install (TODO(ricc): REMOVE once Set up paragpah is done)
+0. `00-init.sh`. This scripts parses the ENV vars in env.sh and sets your GCLOUD, SKAFFOLD and GKE environment for
+  success. If you leave this project, do something else with gcloud or GKE and come back to it tomorrow, its always safe
+  to execute it once or even twice.
 
-* Create a project on GCP and assign billing to it.
-* `cp .env.sh.dist .env.sh`
-* Edit away with your personal project ids.
-* `sh 00-init.sh` and so on.. for all steps.
-* Do steps 1,2,3,4,5,6 automatically: `make first-half`
-* Follow manual instructions for `6.5` **below**.
-* Do steps 7,8,9,..,16 automatically - `make second-half`
+    🐧ricc@derek:~/clouddeploy-platinum-path$ ./00-init.sh
+
+1. Setting up GKE clusters (`./01-set-up-GKE-clusters.sh`). This script sets up 3 autopilot clusters:
+
+* cicd-noauto-canary. It will contain canary workloads (pre-prod)
+* cicd-noauto-prod. It will contain production workloads.
+* cicd-noauto-dev. It will contain everything else (dev, staging, and my tests). It will also be the *default* cluster.
+
+Note:  Cluster Build can take several minutes to complete. You can check progress by viewing the
+`Kubernetes Engine` -> `Kubernetes clusters` screen, or just have a ☕.
+
+
+2. `./02-setup-skaffold-cache-bucket.sh` Setup Skaffold Cache. This script creates a bucket which we'll use as Skaffold
+   Cache. This will make your Cloud Builds super-fast! Thanks @bielski for this tip!
+
+
+
+
+## Express Install
+* Make sure you did the mirrot github repo and your github user is in your env.sh.
+* Do steps 1,2,3,4,5,6 automatically: `make first-half` (should ~always work)
+* Do steps 7,8,9,..,16 automatically - `make second-half` (can fail if you made mistake in the mirror repo setup)
 
 You should be good to go!
 
-For more shenaningans you might need to install `lolcat` (`gem install lolcat`) as
-it colors my life and most likely yours too. Some scripts in here can all be found
+Note: Some scripts in here can all be found
 in my [Swiss-Army Knife repo](https://github.com/palladius/sakura/), but the ones needed
-for this are all uinder `bin/`.
-
--->
-
-### Manual part (step 6.5)
-
-I'm working on it in a Google Doc ATM (go/ricc-cd-canary-doc). When finished
-I'll migrate text and images here. Meanwhile, you can follow the official docs here:
-
-* To connect your github repo: https://cloud.google.com/build/docs/automating-builds/github/build-repos-from-github
+for this are all under `bin/`.
 
 ## The apps
 
@@ -162,6 +179,8 @@ app=app02 version=2.0.7 target=canary emoji=💎
 app=app03 version=1.0.2 target=prod emoji=🧊
 app=app03 version=1.0.3 target=canary emoji=🧊
 ```
+
+<img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/canary-horizontal-render.gif?raw=true" alt="Terminal Demo" align='center' />
 
 ## Build philosophy
 
@@ -243,6 +262,9 @@ This is what you'll see when you get this to work:
 * gcloud crashed (AttributeError): 'NoneType' object has no attribute 'SelfLink' => See
   [Stackoverflow](https://stackoverflow.com/questions/57031471/gcloud-crashed-attributeerror-nonetype-object-has-no-attribute-revisiontem)
 
+* Some Org policies might prevent you from achieving your goal. For instance, a `constraints/compute.vmExternalIp`
+  policy would prevent your GKE clusters to be set up with public IPs. Feel free to file a PR to fix this which is
+  beyond the scope of this demo.
 
 ## Credits
 
