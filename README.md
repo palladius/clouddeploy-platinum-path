@@ -248,9 +248,9 @@ Note on apps and third stage (*canary**):
 * **App01**🐍 and **App02**💎 have **canary** as 3rd stage, which pushes to a **canary** GKE cluster.
   This has been done to demonstrate a complex, multi-cluster case.
 * **App03**🧊 been configured differently with **canary-production** as 3rd stage , with Canary and Production stages
-  *both* pushing to prod GKE cluster. This has been done to demonstrate a simpler use case.
+  *both* pushing to **prod** GKE cluster. This has been done to demonstrate a simpler use case.
 
-Confused? See this graph:
+Confused? Look at this graph:
 
 <img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/bifid tetra-pipeline.png?raw=true" alt="Four targets, 2 solutions depending on app" align='center' />
 
