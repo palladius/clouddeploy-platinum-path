@@ -138,7 +138,9 @@ Note:  Cluster Build can take several minutes to complete. You can check progres
 `Kubernetes Engine` -> `Kubernetes clusters` screen, or just have a ☕.
 
 
-2. `./02-setup-skaffold-cache-bucket.sh` **Setup GCS + Skaffold Cache**. This script creates a bucket which we'll use as Skaffold
+2. `./02-setup-skaffold-cache-bucket.sh` **Setup GCS + Skaffold Cache**.
+
+   This script creates a bucket which we'll use as Skaffold
    Cache. This will make your Cloud Builds super-fast! Thanks Alex the tip!
 
 

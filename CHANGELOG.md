@@ -1,3 +1,4 @@
+2022-09-15 v0.20.3  Buig progress on `README` and some cleanup on scripts, or adding images.
 2022-09-15 v0.20.2  Better `README` since a lot of googlers are now looking at my code.
 2022-08-26 v0.20.1  Going through offical releasing (go/oss-your-code)
 2022-08-26 v0.19.8  Minor fixes for prerelease `1.0alpha`
