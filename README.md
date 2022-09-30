@@ -6,16 +6,16 @@ Article on Medium: https://medium.com/@palladiusbonton/draft-canarying-on-gcp-wi
 
 This repo tries to demo a few applications (under `apps/`) and it's path to
 deployment via Google Cloud Platform's `Cloud Build` + `Cloud Deploy`.
-Since a lot of setup is needed, I took inspiration from `willisc7`'s
-[Gold Path repo](https://github.com/willisc7/next21-demo-golden-path) (see below).
+Since a lot of setup is needed, I took inspiration from `[willisc7](https://github.com/willisc7)`'s
+[Gold Path repo](https://github.com/willisc7/next21-demo-golden-path).
 
 I've tried to simplify the app and the `skaffold` part and concentrated on
 automating the installation of Service Accounts, clusters, etc. all in
 single scripts with a catchy name.
 
 Note that EVERYTHING is automated except linking the external repo to Cloud
-Build (talked to the PM, this is currently possible in alpha API and it's
-among my TODOs). All the shell scripts you see in the main directory have been
+Build (this is currently possible in Alpha API which requires whitelisting).
+All the shell scripts you see in the main directory have been
 extensively tested, all the experimental code is under
 [examples/](https://github.com/palladius/clouddeploy-platinum-path/tree/main/examples).
 
@@ -25,15 +25,99 @@ extensively tested, all the experimental code is under
 
 <img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/Ricc%20Canary%20deployment%202022.png" alt="Architecture v1.1" align='right' />
 
+## Setting things up
 
-## Install
+All scripts in the root directory are named in numerical order and describe the outcome they’re intended to achieve.
 
-* Create a project on GCP and assign billing to it. There gonna be clusterz so quota might hit you :/
+Before executing any bash script, they all source a `.env.sh` script which you’re supposed to create (from the
+`.env.sh.dist` (file) and maintain somewhere else (I personally created and use
+[git-privatize](https://github.com/palladius/sakura/blob/master/bin/git-privatize)
+and symlink it from/to another private repo).
+
+1. Choose your environment.
+    * You can use Google [Cloud Shell](https://cloud.google.com/shell) 🖥️ (leveraging the awesome integrated editor).
+      This code has been fully tested there.
+    * **Linux** machine where you’ve installed `gcloud`.
+    * **Max OSX** with bash v5 or more (to support hashes). To do so, just try `brew install bash` and make sure to use
+      the new BASH path ~(you might have to explicitly call the scripts with `bash SCRIPTNAME.sh`).
+1. [Fork](https://github.com/palladius/clouddeploy-platinum-path/fork) the code repo:
+    * Go to https://github.com/palladius/clouddeploy-platinum-path/
+    * Click “**Fork”** to fork the code under your username.
+
+    TODO(github scrreenshot image)
+
+   * New URL will look like this: https://github.com/daenerys/clouddeploy-platinum-path [with your username].
+     You’ll need this username in a minute.
+   * **__Note__** that if you don’t have a github account (and you don’t want to create one), you can just fork my repo in your
+     GCR - more instructions later at step (6) below.
+
+2. [Totally optional] Install a colorizing gem. If you won’t do it, there’s a `lolcat` fake wrapper in `bin/` (added to
+   path in init script). But trust me, it’s worth it (unless you have no Ruby installed).
+
+    gem install lolcat
+
+
+3. Copy the env template to a new file that we’ll modify
+
+    cp .env.sh.dist .env.sh
+
+4. Open `.env.sh` and substitute the proper values for any variable that has # changeme next to it.
+  (If you’re on 🖥️ **Cloud Shell**, you can try `edit .env.sh` 😎 to let the UI editor shine). For instance:
+
+    * **PROJECT_ID**. This your string (non-numeric) project id -
+      [More info](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
+    * **ACCOUNT** (eg, john.snow.kotn@gmail.com). This is the email address of your GCP identity (who you authenticate
+      with). Note that you can also set up a service account, but that’s not covered by this demo. In this case I’ll leave
+      it with you to tweak the 00-init.sh script. On 🖥️ Cloud Shell, it's already set and you can get it from
+      `gcloud config get account`.
+    * **GCLOUD_REGION**. This is the region where 90% of things will happen. Please do choose a region with more
+      capacity (my rule of thumb is to choose the oldest region in your geo, like us-central1, europe-west1, …).
+      If unsure, pick our favorite: us-central1.
+    * **GITHUB_REPO_OWNER** (eg, *“daenerys”*). This should be the user you forked the repo with in step (2). You can
+      find it also in `$ grep clouddeploy-platinum-path .git/config`
+
+Optional fields:
+
+
+* **GCLOUD_CONFIG** [optional]. This is the name of your gcloud configuration. Pretty cosmetic, it becomes important
+  when you have a lot of users/projects for different projects and you want to
+  📽️ [keep them separated](https://www.youtube.com/watch?v=1jOk8dk-qaU). Try
+  `gcloud config configurations list` to see your local environment. While not needed, I consider it a good practice to
+  isolate your configs into gcloud configs.
+
+* **MY_DOMAIN** [optional]. This is totally optional. Setting up [Cloud DNS](https://cloud.google.com/dns)
+  is very provider-dependent. If you have Cloud DNS already set up, you can be inspired by my script in
+  `examples/14-setup-DNS-Riccardo-only.sh` and tweak it to your liking.
+
+
+6. Tip (*optional*): If you want to persist your personal `.env.sh`, consider using my script `git-privatize`. If  you
+   find a better way, please tell me - as I’ve looked for the past 5 years and this is the best I came up with.
+
+### First - a note on my scripts
+
+The root directory of my repo has a number of bash scripts which could discourage most of you. A few technical and philosophical notes:
+* Scripts must be run in alpha order from `00-XXX.sh` to `16-YYY.sh`.
+* Every script is “transactional”, meaning if fails at first non-0 exit of a subcommand (this is achieved by `set -e` plus
+  `bin/proceed_if_error_matches` for which I've been nominated for a Pulitzer). At the end of the script, a common
+  routine will touch a file called `.executed_ok.04-status.sh.touch`. This will leave a breadcrumb trail which tells you
+  where the script failed:
+
+  TODO(ricc): image
+
+* Everything in this is scripted except one point which requires manual intervention between step 6 and step 7, which
+  is why I called the manual intervention 6.5 which I then moved at the beginning of the instructions (so now it looks
+  more lie 0.065).
+
+
+<--
+## Install (TODO(ricc): REMOVE once Set up paragpah is done)
+
+* Create a project on GCP and assign billing to it.
 * `cp .env.sh.dist .env.sh`
 * Edit away with your personal project ids.
 * `sh 00-init.sh` and so on.. for all steps.
 * Do steps 1,2,3,4,5,6 automatically: `make first-half`
-* Follow manual instructions for 6.5 below.
+* Follow manual instructions for `6.5` **below**.
 * Do steps 7,8,9,..,16 automatically - `make second-half`
 
 You should be good to go!
@@ -42,6 +126,8 @@ For more shenaningans you might need to install `lolcat` (`gem install lolcat`) 
 it colors my life and most likely yours too. Some scripts in here can all be found
 in my [Swiss-Army Knife repo](https://github.com/palladius/sakura/), but the ones needed
 for this are all uinder `bin/`.
+
+-->
 
 ### Manual part (step 6.5)
 
