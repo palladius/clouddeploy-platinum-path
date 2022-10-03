@@ -172,7 +172,7 @@ two identical Delivery Pipelines for app01 and app02, plus a different pipeline 
       set up by script.
 
 
-* ***🧪Testing the solution: trigger Build apps***
+**🧪Testing the solution: trigger Build apps**
 
 Now you can bump the version file of one or two apps and you should see the build making it into DEV and STAGING after
 a couple of minutes, as in this screenshot:
@@ -205,8 +205,8 @@ Let’s now go into the first repo and try to leverage Skaffold for editing code
 ```bash
 $ cd apps/app01/
 $ make dev
-# I’m lazy and I assume you're lazy too. This command is the
-# equivalent of: skaffold --default-repo “$SKAFFOLD_DEFAULT_REPO” dev
+# I’m lazy and I assume you're lazy too. This command is the equivalent of:
+# ricc@zurisack:🏡$ skaffold --default-repo “$SKAFFOLD_DEFAULT_REPO” dev
 ```
 
 If the app compiles properly, this should issue a code push to Artifact Repository.

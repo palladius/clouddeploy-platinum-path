@@ -1,3 +1,4 @@
+* 2022-10-03 v2.26 [DEV] Someone forgot to update this from 22 to 25Croatia. Well time for a cleanup :)
 * 2022-07-19 v2.22 [DEV] Statusz with trailing \n and link from home to statusz.
 * 2022-07-19 v2.21 [DEV] Cleaned up CTarget and made it smaller in kustomize and header and /statusz
 * 2022-07-19 ....  [OPS] Somewhere in between Alex fixed skaffold and now it builds it correctly. Back to business.
