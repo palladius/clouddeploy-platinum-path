@@ -45,8 +45,7 @@ and symlink it from/to another private repo).
     * Go to https://github.com/palladius/clouddeploy-platinum-path/
     * Click “**Fork”** to fork the code under your username.
 
-
-    TODO(github scrreenshot image)
+    <img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/github-fork.png?raw=true" alt="GitHub Fork" align='center' />
 
    * New URL will look like this: https://github.com/daenerys/clouddeploy-platinum-path [with your username].
      You’ll need this username in a minute.
@@ -56,20 +55,19 @@ and symlink it from/to another private repo).
    * Open **Cloud Developer Console** > **Cloud Build** > **Triggers**: https://console.cloud.google.com/cloud-build/triggers
    * Click on **Connect repository** button (bottom of page):
 
-     TODO(connect repository image with arrow)
+    <img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/cloudbuild-connect-repo.png?raw=true" alt="Connect Repository on Cloud Build" align='center' />
 
     * “Select Source” > “**GitHub (Cloud Build GitHub App)**” and click “continue”.
 
-
-3. [Totally optional] Install a colorizing gem. If you won’t do it, there’s a `lolcat` fake wrapper in `bin/` (added to
+3. *[Totally optional]* Install a colorizing gem. If you won’t do it, there’s a `lolcat` fake wrapper in `bin/` (added to
    path in init script). But trust me, it’s worth it (unless you have no Ruby installed).
 
-    gem install lolcat
+    `gem install lolcat`
 
 
 4. Copy the env template to a new file that we’ll modify
 
-    cp .env.sh.dist .env.sh
+    `cp .env.sh.dist .env.sh`
 
 5. Open `.env.sh` and substitute the proper values for any variable that has # changeme next to it.
   (If you’re on 🖥️ **Cloud Shell**, you can try `edit .env.sh` 😎 to let the UI editor shine). For instance:
@@ -107,12 +105,12 @@ Optional fields:
 
 The root directory of my repo has a number of bash scripts which could discourage most of you. A few technical and philosophical notes:
 * Scripts must be run in alpha order from `00-XXX.sh` to `16-YYY.sh`.
-* Every script is “transactional”, meaning if fails at first non-0 exit of a subcommand (this is achieved by `set -e` plus
-  `bin/proceed_if_error_matches` for which I've been nominated for a Pulitzer). At the end of the script, a common
-  routine will touch a file called `.executed_ok.04-status.sh.touch`. This will leave a breadcrumb trail which tells you
-  where the script failed:
+* Every script is “transactional”, meaning if fails at first non-0 exit of a subcommand (this is achieved by `set -e`
+  plus `bin/proceed_if_error_matches` for which I've been nominated for a Pulitzer). At the end of the script, a common
+  routine will touch a file called `.executed_ok.04-status.sh.touch`. This will leave a breadcrumb trail which tells
+  you where the script failed:
 
-  TODO(ricc): image on breacrumbs
+  <img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/cloudbuild-connect-repo.png?raw=true" alt="Carlessian Breadcrumbs" align='center' />
 
 * Everything in this is scripted except one point which requires manual intervention between step 6 and step 7, which
   is why I called the manual intervention 6.5 which I then moved at the beginning of the instructions (so now it looks
@@ -275,7 +273,8 @@ More info on historical code under `k8s/amarcord/` (Romagnolo Italian for *I rem
 
 *(formerly known as: Solution 4)*
 
-TODO(ricc): images
+TODO(ricc): solution 4 image (missing but already linked as `doc/solution4.png`)
+<img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/solution4.png?raw=true" alt="Solution 4 (simple)" align='center' />
 
 ### Complex solution: multi-cluster traffic-splitting canarying through Gateway API , envoy-backed ⚖️ XLB and 🪡 lot of weaving
 
