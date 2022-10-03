@@ -2,8 +2,7 @@
 
 This is a somewhat lengthier run through the scripts. Note that there are THREE Labs which are very useful to do.
 
-Lets see if this creates a TOC, I doubt it.
-
+- [🐤 Step-by-step guide](#-step-by-step-guide)
   - [First - a note on my scripts](#first---a-note-on-my-scripts)
   - [Scripts from 1 to 16](#scripts-from-1-to-16)
     - [`00-init.sh`](#00-initsh)
@@ -14,18 +13,20 @@ Lets see if this creates a TOC, I doubt it.
     - [`05-IAM-enable-cloud-build.sh`](#05-iam-enable-cloud-buildsh)
     - [`06-WIP-automated-cloud-build-setup.sh`](#06-wip-automated-cloud-build-setupsh)
     - [`07-create-cloud-build-triggers.sh`](#07-create-cloud-build-triggerssh)
-    - [`08-cloud-deploy-setup.sh`  **Create Cloud Deploy Infrastructure**. This sets up `clouddeploy.yaml` and creates:](#08-cloud-deploy-setupsh--create-cloud-deploy-infrastructure-this-sets-up-clouddeployyaml-and-creates)
-      - [🧪Lab🧪Testing the solution: trigger Build apps](#labtesting-the-solution-trigger-build-apps)
-      - [🧪Lab🧪Testing the solution: skaffold dev cycle [optional]](#labtesting-the-solution-skaffold-dev-cycle-optional)
-    - [`09-show-latest-successful-releases.sh`](#09-show-latest-successful-releasessh-this-is-a-convenience-script-i-wrote-to-tell-me-what-was-the-last-successful)
-    - [`10-auto-promote-APP_XX-STAGE_YY-to-STAGE_ZZ.sh`](#10-auto-promote-app_xx-stage_yy-to-stage_zzsh-this-is-another-convenience-script-which-ive-created-for-you)
+    - [`08-cloud-deploy-setup.sh`](#08-cloud-deploy-setupsh)
+      - [🧪Lab🧪 Testing the solution: trigger Build apps](#lab-testing-the-solution-trigger-build-apps)
+      - [🧪Lab🧪 Testing the solution: skaffold dev cycle [optional]](#lab-testing-the-solution-skaffold-dev-cycle-optional)
+    - [`09-show-latest-successful-releases.sh`](#09-show-latest-successful-releasessh)
+    - [`10-auto-promote-APP_XX-STAGE_YY-to-STAGE_ZZ.sh`](#10-auto-promote-app_xx-stage_yy-to-stage_zzsh)
       - [🧪Lab🧪 Testing the solution: promote to Canary and Prod](#lab-testing-the-solution-promote-to-canary-and-prod)
-    - [*redacted*](#redacted)
-    - [`15-solution2-xlb-GFE3-traffic-split.sh`](#15-solution2-xlb-gfe3-traffic-splitsh-set-up-traffic-split-solution-2)
-    - [`16-solution2-test-by-curling-N-times.sh`](#16-solution2-test-by-curling-n-timessh-once-you-set-up-the-traffic-splitting-infrastructure-this-script)
+    - [11-14: *redacted*](#11-14-redacted)
+    - [`15-solution2-xlb-GFE3-traffic-split.sh`](#15-solution2-xlb-gfe3-traffic-splitsh)
+    - [`16-solution2-test-by-curling-N-times.sh`](#16-solution2-test-by-curling-n-timessh)
   - [Other great scripts](#other-great-scripts)
 
+<!--
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
+-->
 
 ## First - a note on my scripts
 
@@ -158,7 +159,7 @@ two identical Delivery Pipelines for app01 and app02, plus a different pipeline 
 
 
 
-#### **🧪Lab🧪Testing the solution: trigger Build apps**
+#### 🧪Lab🧪 Testing the solution: trigger Build apps
 
 Now you can bump the version file of one or two apps and you should see the build making it into DEV and STAGING after
 a couple of minutes, as in this screenshot:
