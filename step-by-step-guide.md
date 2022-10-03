@@ -76,9 +76,28 @@ So you could call something like:
 SHOW_VERBOSE_STUFF="false" SHOW_GCLOUD_ENTITIES="false" SHOW_DEVCONSOLE_LINKS="true" SHOW_KUBERNETES_STUFF="false" SHOW_SKAFFOLD_STUFF=false  ./04-status.sh
 ```
 
-to only see gcloud entities and point your browser to them.
+.. to only see gcloud entities and point your browser to them.
 
 ### `05-IAM-enable-cloud-build.sh`
+
+Cloud Build needs to build images on your behalf, and possibly trigger events which push those artifacts to production.
+To do so, it needs a Service Account to authenticate as, with proper powers. Take a moment to look at the rights that
+have been granted in SUCCINCT_ROLE - most likely you will need to change them for your implementation if you use
+different technologies:
+
+**Note**: My “lazy” implementation makes Cloud Build a demiurgh, better implementations would create multiple
+Service Accounts and get CB to impersonate as one or the other depending on the actions they need to perform - to
+reduce the blast radius in case of an incident. In addition, if we were considering best practices we would not apply
+all of the roles on project-level but instead on specific resources (e.g. `artifactregistry.writer` only on the
+container repo, `iam.serviceAccountUser` only on the accounts that need to be impersonated, ..).
+
+Example code for the last part:
+
+```bash
+# food for thought to harden your demo security (courtesy of Alex)
+gcloud artifacts repositories add-iam-policy-binding $REPO_NAME --role=roles/artifactregistry.repoAdmin --member=serviceAccount:$YOUR_SERVICE_ACCOUNT_NAME@your-project.iam.gserviceaccount.com --location=$REGION
+```
+
 ### `06-WIP-automated-cloud-build-setup.sh`
 You can safely skip this.
 ### `07-create-cloud-build-triggers.sh`
