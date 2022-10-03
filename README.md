@@ -145,29 +145,112 @@ Note:  Cluster Build can take several minutes to complete. You can check progres
 
 
 
-3. boh
-4. todo
-5. todo
-6. todo
-7. todo
-8. todo
-9. todo
-10. todo
-11. todo
-12. todo
-13. a
-14. a
+3. `03-configure-artifact-repo-and-docker.sh`. ***Set up Artifact Repository and docker/k8s***.
+4. *`04-status.sh`*. Convenience script to show status of the installation.
+5. 05-IAM-enable-cloud-build.sh
+6. `06-WIP-automated-cloud-build-setup.sh`. You can safely skip this.
+7. `07-create-cloud-build-triggers.sh`. **Note** this script will fail if you didn't connect the repository as per
+   instructions. This complicated script sets up Cloud Build for a number of apps, where I subsumed the "parameter" part
+   in a Bash array (kudos for the courage). This configuration tells Cloud Build: Where to look for code, how to name
+   the trigger, plus a number of less useful parameters.
+
+```bash
+# 📘 excerpt from File: `04-status.sh`
+TEAMS[0]='T1py;app01;cloudbuild.yaml;apps/app01/;blue'
+TEAMS[1]='T2rb;app02;cloudbuild.yaml;apps/app02/;green'
+```
+
+
+
+8. `08-cloud-deploy-setup.sh`  **Create Cloud Deploy Infrastructure**. This sets up `clouddeploy.yaml` and creates:
+two identical Delivery Pipelines for app01 and app02, plus a different pipeline for app03.
+
+* For each pipeline, it creates four targets: **dev**, **staging**, **canary** (or **canary-prod** for app03) and **prod**.
+* The slight complication here is that Cloud Deploy doesn’t support “hydration” of the YAML so we need to do it manually:
+    * Look at clouddeploy.template.yaml
+    * See how the bash script sed’s variables like `MY_PROJECT_ID`, `MY_REGION`, `_MY_VERSION_` to variables
+      set up by script.
+
+
+* ***🧪Testing the solution: trigger Build apps***
+
+Now you can bump the version file of one or two apps and you should see the build making it into DEV and STAGING after
+a couple of minutes, as in this screenshot:
+
+TODO(image): doc/promo-dev-staging.png
+
+```bash
+source .env.sh # so you can use GITHUB_REPO_OWNER and other convenience vars.
+git remote add $GITHUB_REPO_OWNER git@github.com:$GITHUB_REPO_OWNER/clouddeploy-platinum-path.git
+echo 2.99test > ./apps/app01/VERSION # or whichever version it is plus one
+echo 2.99test > ./apps/app02/VERSION # or whichever version it is plus one
+git add ./apps/app01/VERSION
+git add ./apps/app02/VERSION
+git commit -m ‘bump version’
+git push $GITHUB_REPO_OWNER main
+```
+
+**🧪Testing the solution: skaffold dev cycle** [optional]
+
+**_Note_**: This was a very *Eureka* moment to me - although not strictly needed. This where you see all the power of
+*skaffold*: you enter in an infinite dev loop where you change the code and its changes get built and pushed to GKE
+as you code. Some code changes don’t even need a rebuild - but directly “scp” the changed file to prod via
+[File Sync](https://skaffold.dev/docs/pipeline-stages/filesync/), my favorite skaffold feature.
+
+Let’s now go into the first repo and try to leverage Skaffold for editing code and seeing its changes deployed to GKE (!).
+
+```bash
+$ cd apps/app01/
+$ make dev
+# I’m lazy and I assume you're lazy too. This command is the
+# equivalent of: skaffold --default-repo “$SKAFFOLD_DEFAULT_REPO” dev
+```
+
+If the app compiles properly, this should issue a code push to Artifact Repository.
+
+Plus, Skaffold should push your code to the k8s manifests as described in `skaffold.yaml` (in our cases this is
+`./k8s/_base`, hence `kustomize`). **Note** If you use *autopilot* clusters, you might encounter quota issues, until the cluster
+scales up to accommodate your new needs (which is why I removed autopilot by default).
+
+Notice that you can leverage the FILE SYNC for your app to make sure only big change force a full rebuild. For instance,
+my ruby apps take long to `Docker`ize, so to me it’s a killer feature that a small change to `main.rb` gets directly
+pushed into the living container, while a change to `Gemfile` needs to force a full clean build.
+
+
+9.  `09-show-latest-successful-releases.sh` This is a convenience script I wrote to tell me what was the last successful
+   release for an app.
+
+```bash
+$ ./09-show-latest-successful-releases.sh app01
+$ ./09-show-latest-successful-releases.sh app02
+# or for both:
+$ make show-latest-succesful-releases
+```
+
+The culprit of the code is here:
+
+```bash
+gcloud deploy releases list --delivery-pipeline "$PIPELINE" \
+  --filter renderState=SUCCEEDED \
+  --format="value(name.split())" \
+  --sort-by=~createTime --limit 1 |
+    cut -d';' -f 8
+```
+
+10. `10-auto-promote-APP_XX-STAGE_YY-to-STAGE_ZZ.sh`
+11. *redacted*
+12. *redacted*
+13. *redacted*
+14. *redacted*
 15. `15-solution2-xlb-GFE3-traffic-split.sh` **Set up traffic split (solution 2!)**
 
-TODSO(text): at least i put the image
+This is how NEGs will look for your two endpoints. The "healthy" column will help you torubleshoot it all.
 
 <img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/app02-sol2-svc-canaryprod-neg-view.png?raw=true" alt="Solution 2 NEG view on GCP GCLB page" align='center' />
 
 
-16. a
-
-
-
+16. `16-solution2-test-by-curling-N-times.sh`. Once you set up the traffic splitting "infrastructure", this script
+    will simply do a `kubectl down` and `kubectl up` and test the setup.
 
 
 
