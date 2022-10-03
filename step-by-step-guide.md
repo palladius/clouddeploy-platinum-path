@@ -17,7 +17,9 @@ The root directory of my repo has a number of bash scripts which could discourag
 
 ## Scripts from 1 to 16
 
-### `00-init.sh`. **Initialization**
+### `00-init.sh`.
+
+**Initialization**
 
   This scripts parses the ENV vars in env.sh and sets your GCLOUD, SKAFFOLD and GKE environment for
   success. If you leave this project, do something else with gcloud or GKE and come back to it tomorrow, its always safe
@@ -25,7 +27,9 @@ The root directory of my repo has a number of bash scripts which could discourag
 
     🐧ricc@derek:~/clouddeploy-platinum-path$ ./00-init.sh
 
-### (`./01-set-up-GKE-clusters.sh`).  **Setting up GKE clusters**
+### `./01-set-up-GKE-clusters.sh`
+
+**Setting up GKE clusters**
 
   This script sets up 3 autopilot clusters:
 
@@ -37,24 +41,35 @@ Note:  Cluster Build can take several minutes to complete. You can check progres
 `Kubernetes Engine` -> `Kubernetes clusters` screen, or just have a ☕.
 
 
-### `./02-setup-skaffold-cache-bucket.sh` **Setup GCS + Skaffold Cache**.
+### `./02-setup-skaffold-cache-bucket.sh`
+
+**Setup GCS + Skaffold Cache**.
 
    This script creates a bucket which we'll use as Skaffold
    Cache. This will make your Cloud Builds super-fast! Thanks Alex the tip!
 
 
 
-### `03-configure-artifact-repo-and-docker.sh`. ***Set up Artifact Repository and docker/k8s***.
-### *`04-status.sh`*. Convenience script to show status of the installation.
-### 05-IAM-enable-cloud-build.sh
-### `06-WIP-automated-cloud-build-setup.sh`. You can safely skip this.
-### `07-create-cloud-build-triggers.sh`. **Note** this script will fail if you didn't connect the repository as per
+### `03-configure-artifact-repo-and-docker.sh`
+
+**Set up Artifact Repository and docker/k8s**
+
+### `04-status.sh`
+This is a Convenience script to show status of the installation.
+Nothing esoterical here.
+
+### `05-IAM-enable-cloud-build.sh`
+### `06-WIP-automated-cloud-build-setup.sh`
+You can safely skip this.
+### `07-create-cloud-build-triggers.sh`
+
+**Note** this script will fail if you didn't connect the repository as per
    instructions. This complicated script sets up Cloud Build for a number of apps, where I subsumed the "parameter" part
    in a Bash array (kudos for the courage). This configuration tells Cloud Build: Where to look for code, how to name
    the trigger, plus a number of less useful parameters.
 
 ```bash
-# 📘 excerpt from File: `04-status.sh`
+# 📘 excerpt from File: `07-create-cloud-build-triggers.sh`
 TEAMS[0]='T1py;app01;cloudbuild.yaml;apps/app01/;blue'
 TEAMS[1]='T2rb;app02;cloudbuild.yaml;apps/app02/;green'
 ```
