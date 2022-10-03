@@ -30,7 +30,9 @@ and I'm sure you're going to enjoy it.
 <!--
 <img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/Ricc%20Canary%20deployment%202022.png" alt="Architecture v1.1" align='right' />
 -->
-<img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/bielski-nicer-architecture-diagram.png" alt="Architecture v1.4" align='right' />
+<a href="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/bielski-nicer-architecture-diagram.png">
+  <img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/bielski-nicer-architecture-diagram-excerpt.png" alt="Architecture v1.4 excerpt" align='right' />
+</a>
 
 
 ## Prerequisites
