@@ -27,6 +27,13 @@ This is a somewhat lengthier run through the scripts. Note that there are THREE 
     - [bin/kubectl-$STAGEZ](#binkubectl-stagez)
     - [bin/troubleshoot-solutionN](#bintroubleshoot-solutionn)
     - [bin/{rcg, lolcat, proceed_if_error_matches}](#binrcg-lolcat-proceed_if_error_matches)
+  - [Possible Errors](#possible-errors)
+    - [E001 Quota Issues](#e001-quota-issues)
+    - [E002 source: .env.sh: file not found](#e002-source-envsh-file-not-found)
+    - [E003 Some dependencies missing](#e003-some-dependencies-missing)
+    - [E004 MatchExpressions LabelSelectorRequirement field is immutable](#e004-matchexpressions-labelselectorrequirement-field-is-immutable)
+    - [E005 missing gcloud config](#e005-missing-gcloud-config)
+  - [Additional readings](#additional-readings)
 
 <!--
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
@@ -411,3 +418,126 @@ These are convenience scripts:
   you can't create twice a bucket or a GKE cluster, gcloud will tell you it already exists and doesn't support a
   well needed "--ignore-if-exist" flag. Therefore, I've created this scripts since most of the time the output looks lik
   "blah blah blah already exists".
+
+
+## Possible Errors
+
+### E001 Quota Issues
+
+You might incur quota issues. To see if Kubernetes is somewhat clogged, try:
+
+    `🐧$ bin/kubectl-triune get pods`
+
+And look for pending pods. This might be a signal you’re out of CPUs/RAM in your region.
+This awesome script just iterates kubectl over the 3 clusters we’ve created.
+
+
+Some tips:
+* Pick a region with high capacity (eg us-central1 , europe-west1, ..). In doubt, pick the first/top in your continent.
+* Check your [quota page](https://console.cloud.google.com/iam-admin/quotas) and ask for capacity to be increased.
+  Usually this takes less than an hour to take effect - depending on a number of factors (your reputation, region
+  capacity, …). Select orange things on top, click “edit quotas” and add your personal data for our Support reps to help
+  you out (it's free!).
+
+### E002 source: .env.sh: file not found
+
+I’ve heard from a few colleagues that they get this kind of error:
+
+```bash
+$ 00-init.sh: line 3: source: .env.sh: file not found
+```
+
+**First** make sure the file exists:
+
+    `cat.env.sh`
+
+If file exists and you still get the error, chances are the problem is in your shell (‘source’ is a bash builtin).
+While my scripts work on default Linux and Mac installations, I believe some *n*x systems might have a different shell
+by default (zsh? sh? ash?). In this case, try to explicitly call **bash**, like for example:
+
+```bash
+$ bash 00-init.sh
+$ bash 01-set-up-GKE-clusters.sh
+```
+
+Also, for troubleshooting purposes, check this:
+
+```bash
+$ echo $SHELL
+/bin/bash
+```
+
+### E003 Some dependencies missing
+
+If you get some error on script YY which is fixed by some previous script XX, chances are that one of those scripts
+didn’t complete successfully.
+That’s why I ensure that every script ends with a [touch](https://man7.org/linux/man-pages/man1/touch.1.html)
+“`.executed_ok.<SOMETHING>`”.
+Try this and see if some numbers are missing:
+
+    `make breadcrumb-navigation`
+
+```bash
+$ make breadcrumb-navigation
+I hope you're a fan of Hansel and Gretel too. As a Zoolander fan, I am.
+-rw-r--r-- 1 ricc ricc 0 Jul  9 20:39 .executed_ok.00-init.sh.touch
+-rw-r--r-- 1 ricc ricc 0 Jul  9 20:41 .executed_ok.01-set-up-GKE-clusters.sh.touch
+-rw-r--r-- 1 ricc ricc 0 Jul  9 20:43 .executed_ok.03-configure-artifact-repo-and-docker.sh.touch
+```
+
+In this example, you see that you have probably skipped the script #02 and you might want to try rerun it. I’ve made a
+serious effort to make those scripts
+[reentrant](https://www.mathworks.com/help/rtw/ug/what-is-reentrant-code-2d70b58a9a46.html) (or at least,
+re-invokable multiple times). So it shouldn’t be a problem to go back and re-execute the previous ones.
+
+*Example*. If you have a list of completed 1 2 3 5 6, I would re-execute starting from the first gap and re-execute the
+correct ones after it, so: **4 5 6**.
+
+### E004 MatchExpressions LabelSelectorRequirement field is immutable
+
+*(This is for kubectl beginners like me)*
+
+You aren’t probably going to see this, but I saw this many times. If you change your labels and selectors over time,
+your Deployment #1 will probably work, but subsequent ones will fail if some labels have changed due to immutability of
+labels. The easy solution is to kill the deployment on the GKE UI and re-trigger the deployment.
+This is a tricky bug since it won’t occur the first time.
+
+Sample error:
+
+```bash
+2022-07-16 15:17:34.704 CEST Starting deploy...
+2022-07-16 15:17:37.280 CEST - service/app01-kupython configured
+2022-07-16 15:17:37.373 CEST - The Deployment "app01-kupython" is invalid: spec.selector: Invalid value: v1.LabelSelector{MatchLabels:map[string]string{"app":"app01-kupython", "application":"riccardo-cicd-platinum-path", "github-repo":"palladius-colon-cicd-platinum-path", "is-app-in-production":"bingo", "platinum-app-id":"app01", "ricc-awesome-selector":"canary-or-prod", "ricc-env":"prod", "tier":"ricc-frontend-application"}, MatchExpressions:[]v1.LabelSelectorRequirement(nil)}: field is immutable
+2022-07-16 15:17:37.376 CEST kubectl apply: exit status 1
+```
+
+Solution: it’s simple: kill the deployment and recreate it.
+
+* **Kill the problematic deployment**. Super easy: `$ bin/kubectl-triune delete deployment app01-kupython app02-kuruby`.
+  This will kill the app01/app02 deployments in all 3 GKE clusters for all 4 targets (wow). Probably you just need a
+  subset of this 8-kill-in-a-row.
+* Restore the deployment. This is harder, if its dev or staging I just lazily bump the version in my repo
+  (eg vim apps/app01/VERSION -> from 42.42 to 42.43bump) , commit and push. This will force a new build and deploy to
+  dev/staging. Otherwise you can leverage Cloud Deploy to redeploy the same release. This should be faster.
+
+  <img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/cd-redeploy.png?raw=true" alt="How to redeploy a release" align='center' />
+
+### E005 missing gcloud config
+
+This error only came up with Cloud Shell. I believe that when your Shell environment times out, while it might remember the project id, the gcloud config forgets other important information.
+
+ERROR: (gcloud.deploy.releases.list) Error parsing [delivery_pipeline].
+The [delivery_pipeline] resource is not properly specified.
+Failed to find attribute [region]. The attribute can be set in the following ways:
+- provide the argument `--region` on the command line
+- set the property `deploy/region`
+
+Solution: run a second time the setup script:
+
+    `$ ./00-init.sh`
+
+
+## Additional readings
+
+* [Traffic management overview for global external HTTP(S) load balancers](https://cloud.google.com/load-balancing/docs/https/traffic-management-global)
+* Check for Envoy-based Global Load Balancer kubernetes support through Gateway API: see [this table](https://cloud.google.com/load-balancing/docs/features#backends).
