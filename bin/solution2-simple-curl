@@ -10,8 +10,8 @@ N_TESTS="12"
 
 #gcloud compute forwarding-rules list --filter "$FWD_RULE_FOR_MY_APP" | lolcat
 
-
-for APP in app01 app02 ; do
+# wont work for sol3..
+for APP in app01 app02 app03 ; do
     LB_NAME="$APP-$URLMAP_NAME_MTSUFFIX"
     IP_FWDRULE_FOR_MY_APP=$(gcloud compute forwarding-rules list --filter "$LB_NAME" | tail -1 | awk '{print $2}')
     _deb "IP_FWDRULE[$APP]: $IP_FWDRULE_FOR_MY_APP"

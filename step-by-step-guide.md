@@ -25,6 +25,8 @@ This is a somewhat lengthier run through the scripts. Note that there are THREE 
   - [Other great scripts](#other-great-scripts)
     - [bin/curl-them-all](#bincurl-them-all)
     - [bin/kubectl-$STAGEZ](#binkubectl-stagez)
+    - [bin/troubleshoot-solutionN](#bintroubleshoot-solutionn)
+    - [bin/{rcg, lolcat, proceed_if_error_matches}](#binrcg-lolcat-proceed_if_error_matches)
 
 <!--
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
@@ -378,3 +380,34 @@ $ bin/kubectl-triune get deployment 2>/dev/null
 # Another useful test: gets solution2 stuff in PROD
 $ bin/kubectl-prod get all,gateway,httproute | grep sol2
 ```
+
+### bin/troubleshoot-solutionN
+
+When trying to see if a solution worked or not, I wanted to *script the gcloud out of it* to get IP addresses and such.
+
+These four scripts have a lot of interesting logic and are read-only so you can always launch them lightheartedly.
+
+* `bin/troubleshoot-solution2` (**working**) This checks **Solution B** (the complex one)
+* `bin/troubleshoot-solution4` (**working**) This checks the **Solution A** (the simple one)
+
+There are also two other scripts which I left there in case you want to dig into solution 1 and 3:
+
+* bin/troubleshoot-solution0-ilb (*unmaintained*). This checks solution 0 (then renamed solution 3), with Internal LB.
+* bin/troubleshoot-solution1 (*unmaintained*). This checks a solution that I haven't documented (it's under examples/)
+
+### bin/{rcg, lolcat, proceed_if_error_matches}
+
+These are convenience scripts:
+
+* `rcg` is a perl script I copied from StackOverflow which colorizes some matched REGEXEs. Useful to colorize a 200 in
+  green and a 404 in red:
+
+<img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/curl-them-all-screenshot.png?raw=true" alt="curl-them-all script example" align='center' />
+
+* `lolcat` is a placeholder script in case you insist on not installing `gem install lolcat` as my colleagues asked me to.
+  Hwoever, what's life without ❤️ Ruby and some 🎨 color? Exactly.
+* `proceed_if_error_matches` is the heart of my bash scripts. I wanted them to stop at the first error, so I wouldn't
+  create infrastcuture which depended on something else which wouldn't be there. However, this left another problem:
+  you can't create twice a bucket or a GKE cluster, gcloud will tell you it already exists and doesn't support a
+  well needed "--ignore-if-exist" flag. Therefore, I've created this scripts since most of the time the output looks lik
+  "blah blah blah already exists".
