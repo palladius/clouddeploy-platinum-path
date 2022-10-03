@@ -172,7 +172,7 @@ two identical Delivery Pipelines for app01 and app02, plus a different pipeline 
       set up by script.
 
 
-**🧪Testing the solution: trigger Build apps**
+**🧪Lab🧪Testing the solution: trigger Build apps**
 
 Now you can bump the version file of one or two apps and you should see the build making it into DEV and STAGING after
 a couple of minutes, as in this screenshot:
@@ -192,7 +192,7 @@ git commit -m ‘bump version’
 git push $GITHUB_REPO_OWNER main
 ```
 
-**🧪Testing the solution: skaffold dev cycle** [optional]
+**🧪Lab🧪Testing the solution: skaffold dev cycle** [optional]
 
 **_Note_**: This was a very *Eureka* moment to me - although not strictly needed. This where you see all the power of
 *skaffold*: you enter in an infinite dev loop where you change the code and its changes get built and pushed to GKE
@@ -243,7 +243,7 @@ gcloud deploy releases list --delivery-pipeline "$PIPELINE" \
 
 **Note**. Scripts from now on (10 and up) will fail miserably if you didn't successfully issue a Build Trigger via UI
 or CLI as in the 08 lab. Make sure that Cloud Deploy has version deployed in Dev/Staging before proceeding. The easiest
-way is to check at this link: https://console.cloud.google.com/deploy/delivery-pipelines
+way is to check [here](https://console.cloud.google.com/deploy/delivery-pipelines).
 
 ```bash
 🐧$ ./10-auto-promote-APP_XX-STAGE_YY-to-STAGE_ZZ.sh <APP_ID> <TARGET_FROM> <TARGET_TO>
@@ -255,7 +255,7 @@ When you are familiar with it, you can use this “swiss army knife script” to
 I spent some time learning how to auto detect the latest release (hard) and then how to promote (easy).
 The code is now in this script. For example, you can try to do first (it will pick up some reasonable defaults):
 
-**🧪Testing the solution: promote to Canary and Prod**
+**🧪Lab🧪 Testing the solution: promote to Canary and Prod**
 
 The previous result (invoking the script with NO args) should be useless, as promote DEV to STAGE has already happened.
 Try now this:
@@ -318,15 +318,14 @@ a PR to fix the errors ). Some examples:
 
 ## Express Install
 
-* Make sure you did the mirrot github repo and your github user is in your env.sh.
+* Make sure you did the mirror github repo and your github user is in your `env.sh`.
 * Do steps 1,2,3,4,5,6 automatically: `make first-half` (should ~always work)
 * Do steps 7,8,9,..,16 automatically - `make second-half` (can fail if you made mistake in the mirror repo setup)
 
 You should be good to go!
 
-Note: Some scripts in here can all be found
-in my [Swiss-Army Knife repo](https://github.com/palladius/sakura/), but the ones needed
-for this are all under `bin/`.
+Note: Some scripts in here can all be found in my
+[Swiss-Army Knife repo](https://github.com/palladius/sakura/), but the ones needed for this are all under `bin/`.
 
 ## The apps
 
