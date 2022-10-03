@@ -112,9 +112,9 @@ Optional fields:
   `examples/14-setup-DNS-Riccardo-only.sh` and tweak it to your liking.
 
 
-6. Tip (*optional*): If you want to persist your personal `.env.sh`, consider using my script `git-privatize`. If  you
-   find a better way, please tell me - as I’ve looked for the past 5 years and this is the best I came up with.
-
+Tip (*optional*): If you want to persist your personal `.env.sh`, consider using
+[my script](https://github.com/palladius/sakura/blob/master/bin/git-privatize) `git-privatize`. If  you
+find a better way, please tell me - as I’ve looked for the past 5 years and this is the best I came up with.
 
 ## Bash Scripts (from 1 to 16)
 

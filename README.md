@@ -27,7 +27,11 @@ and I'm sure you're going to enjoy it.
 
 ## High-level architecture
 
+<!--
 <img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/Ricc%20Canary%20deployment%202022.png" alt="Architecture v1.1" align='right' />
+-->
+<img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/bielski-nicer-architecture-diagram.png" alt="Architecture v1.4" align='right' />
+
 
 ## Prerequisites
 
@@ -175,7 +179,10 @@ This is what you'll see when you get this to work:
 * willisc7 for https://github.com/willisc7/next21-demo-golden-path and the
    inspiring `demo-startup.sh`. Yup, this also inspired this repo name.
 * @danielmarzini for incredible help and guidance on GKE manifests.
-* Alex Bielski for his support in getting a `Cloud Build` to work with multiple
+* [Alex Bielski](https://github.com/aablsk) for his support in getting a `Cloud Build` to work with multiple
   Skaffold modules, plus Skaffold *caching* and `kustomize` erudition.
 * Yuki Furuyama for GCPDraw. Absolutely stunning. Making diagrams have never been so fun!
 * ricc@: go/ricc-cd-canary-doc
+* [cgrotz](https://github.com/cgrotz) for continuous help and feedback
+* [Sander](https://github.com/sbbogdanc) and [Nate](https://github.com/nateaveryg) for sponsorship and priceless
+  feedback.
