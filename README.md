@@ -27,6 +27,9 @@ and I'm sure you're going to enjoy it.
 
 ## High-level architecture
 
+In this diagram you can see the Build/Deploy part, while if you click you can see a high-resolution wider image
+(complete with Load Balancers and stuff).
+
 <!--
 <img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/Ricc%20Canary%20deployment%202022.png" alt="Architecture v1.1" align='right' />
 -->
@@ -43,24 +46,13 @@ and I'm sure you're going to enjoy it.
 * You can execute the scripts from your local machine, or from our awesome Google
   [Cloud Shell](https://cloud.google.com/shell) 🖥️ , which has all the dependencies you need.
 
+Now you're ready for the Step-by-step guide!
+
 ## 👣 Step by Step guide
 
 Click on this deeper
 [👣 Step by step 👣 guide](https://github.com/palladius/clouddeploy-platinum-path/blob/main/step-by-step-guide.md)
 to see how all scripts work and to find a few Labs to practice your *Cloud Deploy - fu 🥋*.
-
-## Express Install
-
-* Make sure you did the mirror github repo and your github user is in your `env.sh`.
-* Do steps 1,2,3,4,5,6 automatically: `make first-half` (should ~always work)
-* Do steps 7,8,9,..,16 automatically - `make second-half` (can fail if you made mistake in the mirror repo setup)
-
-Note that without executing the 🧪labs🧪 in the
-[👣 Step by step 👣 guide](https://github.com/palladius/clouddeploy-platinum-path/blob/main/step-by-step-guide.md),
-your pipeline will be empty, so we count on you to manually make targets have different releases.
-
-Note: Some scripts in here can be found in my personal
-[Swiss-Army Knife repo](https://github.com/palladius/sakura/), but the ones needed for this are all under `bin/`.
 
 ## The apps
 
@@ -98,7 +90,10 @@ app=app03 version=1.0.3 target=canary emoji=🧊
 * Promotion DEV -> STAGING. This is a second BUILD which also executes `make test` in the
 `app/MYAPP` folder.
 
-* *For picky people*. Note that in the real world, the promotion from DEV to STAGING wouldn't happen after Unit Tests (rather integration tests), but for this demo I wanted as many releases out as possible with minimal manual intervention, so I did it this way. In a real scenario, a failed `make test` would prevent the DEV release altogether.
+* *For picky people*. Note that in the real world, the promotion from DEV to STAGING wouldn't probably happen after
+  Unit Tests (rather integration tests), but for this demo I wanted as many releases out as possible with minimal
+  manual intervention, so I did it this way. In a real scenario, a failed `make test` would prevent the DEV release
+  altogether.
 
 ## Deploy philosophy
 
@@ -117,9 +112,10 @@ Note on apps and third stage (*canary**):
 * **App03**🧊 been configured differently with **canary-production** as 3rd stage , with Canary and Production stages
   *both* pushing to **prod** GKE cluster. This has been done to demonstrate a simpler use case.
 
-Confused? Look at this graph:
+**🤔 Confused**? Look at this graph:
 
-<img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/bifid tetra-pipeline.png?raw=true" alt="Four targets, 2 solutions depending on app" align='center' />
+<img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/bifid tetra-pipeline.png?raw=true"
+ alt="Four targets, 2 solutions depending on app" align='center' />
 
 
 ## Canary solutions
@@ -142,12 +138,14 @@ More info on historical code under `k8s/amarcord/` (Romagnolo Italian for *I rem
 
 *(formerly known as: Solution 4)*
 
-TODO(ricc): solution 4 image (missing but already linked as `doc/solution4.png`)
-<img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/solution4.png?raw=true" alt="Solution 4 (simple)" align='center' />
+<img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/solution4-from-slides.png?raw=true" alt="Solution 4 (simple)" align='center' />
 
 ### Complex solution: multi-cluster traffic-splitting canarying through Gateway API , envoy-backed ⚖️ XLB and 🪡 lot of weaving
 
 *(formerly known as: Solution 2)*
+
+<img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/solution2-from-slides.png?raw=true" alt="Solution 4 (simple)" align='center' />
+
 
 This is what you'll see when you get this to work:
 
