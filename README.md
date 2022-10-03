@@ -178,6 +178,9 @@ Now you can bump the version file of one or two apps and you should see the buil
 a couple of minutes, as in this screenshot:
 
 TODO(image): doc/promo-dev-staging.png
+<img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/promo-dev-staging.png?raw=true"
+ alt="Simple Promotion to Dev and Staging" align='center' />
+
 
 ```bash
 source .env.sh # so you can use GITHUB_REPO_OWNER and other convenience vars.
