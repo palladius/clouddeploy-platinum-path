@@ -110,7 +110,7 @@ The root directory of my repo has a number of bash scripts which could discourag
   routine will touch a file called `.executed_ok.04-status.sh.touch`. This will leave a breadcrumb trail which tells
   you where the script failed:
 
-  <img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/cloudbuild-connect-repo.png?raw=true" alt="Carlessian Breadcrumbs" align='center' />
+  <img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/breadcrumbs-screenshot.png?raw=true" alt="Carlessian Breadcrumbs" align='center' />
 
 * Everything in this is scripted except one point which requires manual intervention between step 6 and step 7, which
   is why I called the manual intervention 6.5 which I then moved at the beginning of the instructions (so now it looks
