@@ -23,6 +23,11 @@ This is a somewhat lengthier run through the scripts. Note that there are THREE 
     - [`15-solution2-xlb-GFE3-traffic-split.sh`](#15-solution2-xlb-gfe3-traffic-splitsh)
     - [`16-solution2-test-by-curling-N-times.sh`](#16-solution2-test-by-curling-n-timessh)
   - [Other great scripts](#other-great-scripts)
+    - [bin/curl-them-all](#bincurl-them-all)
+    - [bin/kubectl-XXX](#binkubectl-xxx)
+- [Enabling Vanilla, your output is good to go for your scripts](#enabling-vanilla-your-output-is-good-to-go-for-your-scripts)
+- [By doing nothing, your output gets prepended the cluster where your entity sits. Particularly nice](#by-doing-nothing-your-output-gets-prepended-the-cluster-where-your-entity-sits-particularly-nice)
+- [if invoked with TRIUNE which iterate kubectl on all 4 stages (why triune? Initially there were 3).](#if-invoked-with-triune-which-iterate-kubectl-on-all-4-stages-why-triune-initially-there-were-3)
 
 <!--
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
@@ -309,7 +314,65 @@ in "prod".
 I've disseminated `bin/` with scripts that I utilized for testing my solutions. You might find them useful (and send me
 a PR to fix the errors ). Some examples:
 
+### bin/curl-them-all
+
     🐧ricc@derek:$ bin/curl-them-all
 
 <img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/curl-them-all-screenshot.png?raw=true" alt="curl-them-all script example" align='center' />
 
+
+### bin/kubectl-XXX
+
+I've created a few scripts to call the 3 kubernetes clusters with right context:
+
+bin/kubectl-prod get all,gateway,httproute | grep sol1
+
+```bash
+bin/kubectl-dev
+bin/kubectl-staging          # Note this is the same as DEV but with different namespace.
+bin/kubectl-canary
+bin/kubectl-prod
+bin/kubectl-canary-and-prod  # C+P
+bin/kubectl-triune           # C+P+Dev
+```
+
+You can invoke these scripts in two ways:
+
+* `VANILLA=true` (**default**). This will prepend the cluster in case you risk to be confused by WHERE your pod/service is.
+* `VANILLA=false` (you need to set it). This will remove my magic prepends and is useful if you need to have the kubectl
+  output verbatim.
+
+  Example:
+
+  ```bash
+# Enabling Vanilla, your output is good to go for your scripts
+ricc@derek:$ 🐼 VANILLA=TRUE bin/kubectl-prod get svc | egrep -v none
+NAME                            TYPE           CLUSTER-IP    EXTERNAL-IP      PORT(S)          AGE
+app01-kupython                  LoadBalancer   10.21.1.102   34.76.200.115    8080:31005/TCP   49d
+app02-kuruby                    LoadBalancer   10.21.3.105   146.148.30.110   8080:30506/TCP   73d
+app03-kunode                    LoadBalancer   10.21.3.54    146.148.6.155    80:31216/TCP     44d
+app03-kunode-canary             LoadBalancer   10.21.3.245   34.76.33.177     80:31101/TCP     44d
+# By doing nothing, your output gets prepended the cluster where your entity sits. Particularly nice
+# if invoked with TRIUNE which iterate kubectl on all 4 stages (why triune? Initially [there were 3](https://en.wikipedia.org/wiki/...And_Then_There_Were_Three...)).
+$ bin/kubectl-triune get deployment 2>/dev/null
+[DEV]  NAME             READY   UP-TO-DATE   AVAILABLE   AGE
+[DEV]  app-goldennode   0/1     1            0           23d
+[DEV]  app01-kupython   1/1     1            1           73d
+[DEV]  app02-kuruby     1/1     1            1           73d
+[DEV]  app03-kunode     1/1     1            1           44d
+[STAG] NAME                                 READY   UP-TO-DATE   AVAILABLE   AGE
+[STAG] app01-kupython                       1/1     1            1           73d
+[STAG] app01-kupython-sol1d-scriptdump      0/1     1            0           48d
+[STAG] app02-kuruby                         1/1     1            1           73d
+[STAG] app02-kuruby-sol1d-ciofeca           0/1     1            0           48d
+[STAG] app03-kunode                         1/1     1            1           44d
+[STAG] sol1d-dmarzi-store-v1-depl           1/1     1            1           49d
+[STAG] sol1d-dmarzi-versionedpy22-v1-depl   0/1     1            0           48d
+[CANA] NAME             READY   UP-TO-DATE   AVAILABLE   AGE
+[CANA] app01-kupython   1/1     1            1           73d
+[CANA] app02-kuruby     1/1     1            1           49d
+[PROD] NAME                  READY   UP-TO-DATE   AVAILABLE   AGE
+[PROD] app01-kupython        4/4     4            4           49d
+[PROD] app02-kuruby          4/4     4            4           73d
+[PROD] app03-kunode          4/4     4            4           44d
+[PROD] app03-kunode-canary   1/1     1            1           44d
