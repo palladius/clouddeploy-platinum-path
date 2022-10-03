@@ -17,7 +17,7 @@ The root directory of my repo has a number of bash scripts which could discourag
 
 ## Scripts from 1 to 16
 
-0. `00-init.sh`. **Initialization**
+### `00-init.sh`. **Initialization**
 
   This scripts parses the ENV vars in env.sh and sets your GCLOUD, SKAFFOLD and GKE environment for
   success. If you leave this project, do something else with gcloud or GKE and come back to it tomorrow, its always safe
@@ -25,7 +25,7 @@ The root directory of my repo has a number of bash scripts which could discourag
 
     🐧ricc@derek:~/clouddeploy-platinum-path$ ./00-init.sh
 
-1. (`./01-set-up-GKE-clusters.sh`).  **Setting up GKE clusters**
+### (`./01-set-up-GKE-clusters.sh`).  **Setting up GKE clusters**
 
   This script sets up 3 autopilot clusters:
 
@@ -37,18 +37,18 @@ Note:  Cluster Build can take several minutes to complete. You can check progres
 `Kubernetes Engine` -> `Kubernetes clusters` screen, or just have a ☕.
 
 
-2. `./02-setup-skaffold-cache-bucket.sh` **Setup GCS + Skaffold Cache**.
+### `./02-setup-skaffold-cache-bucket.sh` **Setup GCS + Skaffold Cache**.
 
    This script creates a bucket which we'll use as Skaffold
    Cache. This will make your Cloud Builds super-fast! Thanks Alex the tip!
 
 
 
-3. `03-configure-artifact-repo-and-docker.sh`. ***Set up Artifact Repository and docker/k8s***.
-4. *`04-status.sh`*. Convenience script to show status of the installation.
-5. 05-IAM-enable-cloud-build.sh
-6. `06-WIP-automated-cloud-build-setup.sh`. You can safely skip this.
-7. `07-create-cloud-build-triggers.sh`. **Note** this script will fail if you didn't connect the repository as per
+### `03-configure-artifact-repo-and-docker.sh`. ***Set up Artifact Repository and docker/k8s***.
+### *`04-status.sh`*. Convenience script to show status of the installation.
+### 05-IAM-enable-cloud-build.sh
+### `06-WIP-automated-cloud-build-setup.sh`. You can safely skip this.
+### `07-create-cloud-build-triggers.sh`. **Note** this script will fail if you didn't connect the repository as per
    instructions. This complicated script sets up Cloud Build for a number of apps, where I subsumed the "parameter" part
    in a Bash array (kudos for the courage). This configuration tells Cloud Build: Where to look for code, how to name
    the trigger, plus a number of less useful parameters.
@@ -61,7 +61,7 @@ TEAMS[1]='T2rb;app02;cloudbuild.yaml;apps/app02/;green'
 
 
 
-8. `08-cloud-deploy-setup.sh`  **Create Cloud Deploy Infrastructure**. This sets up `clouddeploy.yaml` and creates:
+### `08-cloud-deploy-setup.sh`  **Create Cloud Deploy Infrastructure**. This sets up `clouddeploy.yaml` and creates:
 two identical Delivery Pipelines for app01 and app02, plus a different pipeline for app03.
 
 * For each pipeline, it creates four targets: **dev**, **staging**, **canary** (or **canary-prod** for app03) and **prod**.
@@ -71,7 +71,8 @@ two identical Delivery Pipelines for app01 and app02, plus a different pipeline 
       set up by script.
 
 
-**🧪Lab🧪Testing the solution: trigger Build apps**
+
+#### **🧪Lab🧪Testing the solution: trigger Build apps**
 
 Now you can bump the version file of one or two apps and you should see the build making it into DEV and STAGING after
 a couple of minutes, as in this screenshot:
@@ -91,7 +92,7 @@ git commit -m ‘bump version’
 git push $GITHUB_REPO_OWNER main
 ```
 
-**🧪Lab🧪Testing the solution: skaffold dev cycle** [optional]
+#### **🧪Lab🧪Testing the solution: skaffold dev cycle** [optional]
 
 **_Note_**: This was a very *Eureka* moment to me - although not strictly needed. This where you see all the power of
 *skaffold*: you enter in an infinite dev loop where you change the code and its changes get built and pushed to GKE
@@ -118,7 +119,7 @@ my ruby apps take long to `Docker`ize, so to me it’s a killer feature that a s
 pushed into the living container, while a change to `Gemfile` needs to force a full clean build.
 
 
-9.  `09-show-latest-successful-releases.sh` This is a convenience script I wrote to tell me what was the last successful
+###  `09-show-latest-successful-releases.sh` This is a convenience script I wrote to tell me what was the last successful
    release for an app.
 
 ```bash
@@ -138,7 +139,7 @@ gcloud deploy releases list --delivery-pipeline "$PIPELINE" \
     cut -d';' -f 8
 ```
 
-10. `10-auto-promote-APP_XX-STAGE_YY-to-STAGE_ZZ.sh`. This is another convenience script which i've created for YOU.
+### `10-auto-promote-APP_XX-STAGE_YY-to-STAGE_ZZ.sh`. This is another convenience script which i've created for YOU.
 
 **Note**. Scripts from now on (10 and up) will fail miserably if you didn't successfully issue a Build Trigger via UI
 or CLI as in the 08 lab. Make sure that Cloud Deploy has version deployed in Dev/Staging before proceeding. The easiest
@@ -154,7 +155,7 @@ When you are familiar with it, you can use this “swiss army knife script” to
 I spent some time learning how to auto detect the latest release (hard) and then how to promote (easy).
 The code is now in this script. For example, you can try to do first (it will pick up some reasonable defaults):
 
-**🧪Lab🧪 Testing the solution: promote to Canary and Prod**
+#### **🧪Lab🧪 Testing the solution: promote to Canary and Prod**
 
 The previous result (invoking the script with NO args) should be useless, as promote DEV to STAGE has already happened.
 Try now this:
@@ -189,18 +190,18 @@ For the second promotion, we will use the **UI** as it’s beautiful:
       rollout, but comes interesting from the second on. It links error to right contextual logs. So every error is
       one click away to investigate the issue.
 
-11.  *redacted*
-12.  *redacted*
-13.  *redacted*
-14.  *redacted*
-15.  `15-solution2-xlb-GFE3-traffic-split.sh` **Set up traffic split (solution 2!)**
+###  *redacted*
+
+Steps 11-14 have been redacted. If curiouis, check under `examples/`
+
+###  `15-solution2-xlb-GFE3-traffic-split.sh` **Set up traffic split (solution 2!)**
 
 This is how NEGs will look for your two endpoints. The "healthy" column will help you torubleshoot it all.
 
 <img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/app02-sol2-svc-canaryprod-neg-view.png?raw=true" alt="Solution 2 NEG view on GCP GCLB page" align='center' />
 
 
-16. `16-solution2-test-by-curling-N-times.sh`. Once you set up the traffic splitting "infrastructure", this script
+### `16-solution2-test-by-curling-N-times.sh`. Once you set up the traffic splitting "infrastructure", this script
     will simply do a `kubectl down` and `kubectl up` and test the setup.
 
 
