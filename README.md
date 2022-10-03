@@ -138,11 +138,16 @@ More info on historical code under `k8s/amarcord/` (Romagnolo Italian for *I rem
 
 *(formerly known as: Solution 4)*
 
+TODO(Ricc): add explaination of this solution 4 or point to the Medium Article.
+
 <img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/solution4-from-slides.png?raw=true" alt="Solution 4 (simple)" align='center' />
 
 ### Complex solution: multi-cluster traffic-splitting canarying through Gateway API , envoy-backed ⚖️ XLB and 🪡 lot of weaving
 
 *(formerly known as: Solution 2)*
+
+TODO(Ricc): add explaination of this solution 2 or point to the Medium Article.
+
 
 <img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/solution2-from-slides.png?raw=true" alt="Solution 4 (simple)" align='center' />
 
@@ -165,14 +170,6 @@ This is what you'll see when you get this to work:
   version of it, and so on.
 
 
-## Possible errors
-
-* gcloud crashed (AttributeError): 'NoneType' object has no attribute 'SelfLink' => See
-  [Stackoverflow](https://stackoverflow.com/questions/57031471/gcloud-crashed-attributeerror-nonetype-object-has-no-attribute-revisiontem)
-
-* Some Org policies might prevent you from achieving your goal. For instance, a `constraints/compute.vmExternalIp`
-  policy would prevent your GKE clusters to be set up with public IPs. Feel free to file a PR to fix this which is
-  beyond the scope of this demo.
 
 ## Credits
 

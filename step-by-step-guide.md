@@ -619,6 +619,15 @@ Solution: run a second time the setup script:
     `$ ./00-init.sh`
 
 
+### E006 Miscellaneous errors
+
+* gcloud crashed (AttributeError): 'NoneType' object has no attribute 'SelfLink' => See
+  [Stackoverflow](https://stackoverflow.com/questions/57031471/gcloud-crashed-attributeerror-nonetype-object-has-no-attribute-revisiontem)
+
+* Some Org policies might prevent you from achieving your goal. For instance, a `constraints/compute.vmExternalIp`
+  policy would prevent your GKE clusters to be set up with public IPs. Feel free to file a PR to fix this which is
+  beyond the scope of this demo.
+
 ## Additional readings
 
 * [Traffic management overview for global external HTTP(S) load balancers](https://cloud.google.com/load-balancing/docs/https/traffic-management-global)
