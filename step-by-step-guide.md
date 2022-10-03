@@ -48,10 +48,7 @@ and philosophical notes:
 * Every script is “transactional”, meaning if fails at first non-0 exit of a subcommand (this is achieved by `set -e`
   plus `bin/proceed_if_error_matches` for which I've been nominated for a Pulitzer). At the end of the script, a common
   routine will touch a file called `.executed_ok.04-status.sh.touch`. This will leave a breadcrumb trail which tells
-  you where the script failed:
-
-  <img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/breadcrumbs-screenshot.png?raw=true" alt="Carlessian Breadcrumbs" align='center' />
-
+  you where the script failed. For more info see  [E003 Some dependencies missing](#e003-some-dependencies-missing).
 * Everything in this is scripted except one point which requires manual intervention between step 6 and step 7, which
   is why I called the manual intervention 6.5 which I then moved at the beginning of the instructions (so now it looks
   more lie 0.065).
@@ -476,6 +473,8 @@ That’s why I ensure that every script ends with a [touch](https://man7.org/lin
 Try this and see if some numbers are missing:
 
     `make breadcrumb-navigation`
+
+  <img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/breadcrumbs-screenshot.png?raw=true" alt="Carlessian Breadcrumbs" align='center' />
 
 ```bash
 $ make breadcrumb-navigation
