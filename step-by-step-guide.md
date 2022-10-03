@@ -328,14 +328,18 @@ bin/kubectl-staging          # Note this is the same as DEV but with different n
 bin/kubectl-canary
 bin/kubectl-prod
 bin/kubectl-canary-and-prod  # C+P
-bin/kubectl-triune           # C+P+Dev
+bin/kubectl-triune           # 4 stages (*)
 ```
+
+(*) Why triune? Initially [there were 3](https://en.wikipedia.org/wiki/...And_Then_There_Were_Three...). Plus, Italians
+   are quite religious.
 
 You can invoke these scripts in two ways:
 
-* `VANILLA=true` (**default**). This will prepend the cluster in case you risk to be confused by WHERE your pod/service is.
-* `VANILLA=false` (you need to set it). This will remove my magic prepends and is useful if you need to have the kubectl
-  output verbatim.
+* `VANILLA=false` (**default**). This will prepend the cluster in case you risk to be confused by WHERE your pod/service is.
+* `VANILLA=true` (you need to set it explicitly). This will remove my *magic prepends* and is useful in case when you
+  need the original ouput, for instance inside scripts which need verbatim (think of a `awk .. $4` which becomes an
+  `awk .. $5`, very annoying).
 
   Example:
 
@@ -348,7 +352,7 @@ app02-kuruby                    LoadBalancer   10.21.3.105   146.148.30.110   80
 app03-kunode                    LoadBalancer   10.21.3.54    146.148.6.155    80:31216/TCP     44d
 app03-kunode-canary             LoadBalancer   10.21.3.245   34.76.33.177     80:31101/TCP     44d
 # By doing nothing, your output gets prepended the cluster where your entity sits. Particularly nice
-# if invoked with TRIUNE which iterate kubectl on all 4 stages (why triune? Initially [there were 3](https://en.wikipedia.org/wiki/...And_Then_There_Were_Three...)).
+# if invoked with TRIUNE which iterate kubectl on all 4 stages.
 $ bin/kubectl-triune get deployment 2>/dev/null
 [DEV]  NAME             READY   UP-TO-DATE   AVAILABLE   AGE
 [DEV]  app-goldennode   0/1     1            0           23d
