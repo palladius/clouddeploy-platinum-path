@@ -177,7 +177,6 @@ two identical Delivery Pipelines for app01 and app02, plus a different pipeline 
 Now you can bump the version file of one or two apps and you should see the build making it into DEV and STAGING after
 a couple of minutes, as in this screenshot:
 
-TODO(image): doc/promo-dev-staging.png
 <img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/promo-dev-staging.png?raw=true"
  alt="Simple Promotion to Dev and Staging" align='center' />
 
@@ -240,12 +239,62 @@ gcloud deploy releases list --delivery-pipeline "$PIPELINE" \
     cut -d';' -f 8
 ```
 
-10. `10-auto-promote-APP_XX-STAGE_YY-to-STAGE_ZZ.sh`
-11. *redacted*
-12. *redacted*
-13. *redacted*
-14. *redacted*
-15. `15-solution2-xlb-GFE3-traffic-split.sh` **Set up traffic split (solution 2!)**
+10. `10-auto-promote-APP_XX-STAGE_YY-to-STAGE_ZZ.sh`. This is another convenience script which i've created for YOU.
+
+**Note**. Scripts from now on (10 and up) will fail miserably if you didn't successfully issue a Build Trigger via UI
+or CLI as in the 08 lab. Make sure that Cloud Deploy has version deployed in Dev/Staging before proceeding. The easiest
+way is to check at this link: https://console.cloud.google.com/deploy/delivery-pipelines
+
+```bash
+🐧$ ./10-auto-promote-APP_XX-STAGE_YY-to-STAGE_ZZ.sh <APP_ID> <TARGET_FROM> <TARGET_TO>
+```
+
+**Note** this script is just myself hitting my head around Cloud Deploy and doing CLI promotion. You can do it with a
+simple click in the UI and maybe that’s what you should do the first 1-2 times.
+When you are familiar with it, you can use this “swiss army knife script” to promote an app from a target to another.
+I spent some time learning how to auto detect the latest release (hard) and then how to promote (easy).
+The code is now in this script. For example, you can try to do first (it will pick up some reasonable defaults):
+
+**🧪Testing the solution: promote to Canary and Prod**
+
+The previous result (invoking the script with NO args) should be useless, as promote DEV to STAGE has already happened.
+Try now this:
+
+```bash
+$ ./10-auto-promote-APP_XX-STAGE_YY-to-STAGE_ZZ.sh app01 staging canary
+```
+
+This should promote the release from second to third target, look:
+
+<img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/promote-to-canary.png?raw=true"
+ alt="Promotion from Staging to Canary (CLI)" align='center' />
+
+.. and it works!
+
+So this script should be your swiss army knife for promoting the latest release for appXX from any target to any target (I haven’t tested bad directions, like 2 to 4 or 3 to 2: you should only be doing from N to N+1).
+
+For the second promotion, we will use the **UI** as it’s beautiful:
+* Open the browser at: https://console.cloud.google.com/deploy/delivery-pipelines
+* Click on *App01*. You should see the first 3 stages with a green color, while no rollouts associated to prod.
+* Click **Promote** here:
+
+<img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/promote-canary-prod-ui.png?raw=true"
+ alt="Promotion from Canary to Prod (UI)" align='center' />
+
+ * Fill in a rollout description (eg "I follow riccardo README suggestions"), so you can laugh at yourself when it
+   breaks in the future :)
+
+* I really love the UI since it brings a lot of contextual data:
+    * First a rollout comment, useful in the future
+    * Second, a manifest diff so you can see what you’re really changing. This is NOT available for the very first
+      rollout, but comes interesting from the second on. It links error to right contextual logs. So every error is
+      one click away to investigate the issue.
+
+11.  *redacted*
+12.  *redacted*
+13.  *redacted*
+14.  *redacted*
+15.  `15-solution2-xlb-GFE3-traffic-split.sh` **Set up traffic split (solution 2!)**
 
 This is how NEGs will look for your two endpoints. The "healthy" column will help you torubleshoot it all.
 
