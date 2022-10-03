@@ -138,21 +138,50 @@ More info on historical code under `k8s/amarcord/` (Romagnolo Italian for *I rem
 
 *(formerly known as: Solution 4)*
 
-TODO(Ricc): add explaination of this solution 4 or point to the Medium Article.
+This is a very simple solution which was added last to show how simple it is to do Canary deployment just using
+the power of Kubernetes and the ability of Cloud Build and Cloud Deploy to deploy different versions of the same app
+in the same cluster.
+
+Canarying is here achieved through pod-splitting, which means that I have for instance:
+
+* 1 pods in **canary** with version **v1.43** (latest blazing version you're trying to test)
+* 4 pods in **prod** with version **v1.42** (same old, same old)
+* a service with "canary-or-prod" selector pointing to these 5 pods.
+
+Therefore you have a ~20% probability to hit v1.42, and a ~80% probability of hitting the stable version. This could
+not be true at all times, though: pods could die for a number of reason, altering the percentages; plus some pods could
+be busier than others: what if the new canary release has increased the response latency by 100%?
+
+Plus, how do you change from 80/20 to 81/19? Do you need 100 pods in general?
+
+This solution is simple, cheap, but probably won't work in a sophisticated productive environment.
 
 <img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/solution4-from-slides.png?raw=true" alt="Solution 4 (simple)" align='center' />
 
 ### Complex solution: multi-cluster traffic-splitting canarying through Gateway API , envoy-backed ⚖️ XLB and 🪡 lot of weaving
 
-*(formerly known as: Solution 2)*
-
-TODO(Ricc): add explaination of this solution 2 or point to the Medium Article.
-
-
 <img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/solution2-from-slides.png?raw=true" alt="Solution 4 (simple)" align='center' />
 
+*(formerly known as: Solution 2)*
 
-This is what you'll see when you get this to work:
+
+This solution solves the granularity issues of the Simple Solution, and it also allow you to have pods in multiple
+clusters (which you don't have with simple Pod/Services artifacts). To achieve this, we use:
+
+* **Gateway API** on the *kubernetes* side
+* Forarding Rules + BackendServices on *GCP* side.
+* Plus we use  **Zonal NEGs)** to connect the two. Network Endpoint Groups (NEGs) are a new, [sophisticated and flexible concept](https://cloud.google.com/load-balancing/docs/negs) in GCP:
+
+
+<img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/solution2-gcloud-part.png?raw=true" alt="Solution 2 gcloud Zoom" align='center' />
+
+This is a bit harder to set up but is much more powerful.
+
+## Solution
+
+TODO(ricc): sol4 screenshot too.
+
+This is what you'll see when you get Solution 2 to work:
 
 <img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/solution2 app01 python sample.png?raw=true" alt="Solution 2 example" align='center' />
 
