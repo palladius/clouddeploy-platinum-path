@@ -4,12 +4,6 @@ This is a somewhat lengthier run through the scripts. Note that there are THREE 
 
 Lets see if this creates a TOC, I doubt it.
 
-__TOC__
-
-## auto generated TOC
-
-- [🐤 Step-by-step guide](#-step-by-step-guide)
-  - [auto generated TOC](#auto-generated-toc)
   - [First - a note on my scripts](#first---a-note-on-my-scripts)
   - [Scripts from 1 to 16](#scripts-from-1-to-16)
     - [`00-init.sh`](#00-initsh)
@@ -151,7 +145,9 @@ TEAMS[1]='T2rb;app02;cloudbuild.yaml;apps/app02/;green'
 
 
 
-### `08-cloud-deploy-setup.sh`  **Create Cloud Deploy Infrastructure**. This sets up `clouddeploy.yaml` and creates:
+### `08-cloud-deploy-setup.sh`
+
+**Create Cloud Deploy Infrastructure**. This sets up `clouddeploy.yaml` and creates:
 two identical Delivery Pipelines for app01 and app02, plus a different pipeline for app03.
 
 * For each pipeline, it creates four targets: **dev**, **staging**, **canary** (or **canary-prod** for app03) and **prod**.
@@ -182,7 +178,7 @@ git commit -m ‘bump version’
 git push $GITHUB_REPO_OWNER main
 ```
 
-#### **🧪Lab🧪Testing the solution: skaffold dev cycle** [optional]
+#### 🧪Lab🧪 Testing the solution: skaffold dev cycle [optional]
 
 **_Note_**: This was a very *Eureka* moment to me - although not strictly needed. This where you see all the power of
 *skaffold*: you enter in an infinite dev loop where you change the code and its changes get built and pushed to GKE
@@ -209,8 +205,10 @@ my ruby apps take long to `Docker`ize, so to me it’s a killer feature that a s
 pushed into the living container, while a change to `Gemfile` needs to force a full clean build.
 
 
-###  `09-show-latest-successful-releases.sh` This is a convenience script I wrote to tell me what was the last successful
-   release for an app.
+###  `09-show-latest-successful-releases.sh`
+
+This is a convenience script I wrote to tell me what was the last successful
+release for an app.
 
 ```bash
 $ ./09-show-latest-successful-releases.sh app01
@@ -229,7 +227,9 @@ gcloud deploy releases list --delivery-pipeline "$PIPELINE" \
     cut -d';' -f 8
 ```
 
-### `10-auto-promote-APP_XX-STAGE_YY-to-STAGE_ZZ.sh`. This is another convenience script which i've created for YOU.
+### `10-auto-promote-APP_XX-STAGE_YY-to-STAGE_ZZ.sh`
+
+This is another convenience script which i've created for YOU.
 
 **Note**. Scripts from now on (10 and up) will fail miserably if you didn't successfully issue a Build Trigger via UI
 or CLI as in the 08 lab. Make sure that Cloud Deploy has version deployed in Dev/Staging before proceeding. The easiest
@@ -245,7 +245,7 @@ When you are familiar with it, you can use this “swiss army knife script” to
 I spent some time learning how to auto detect the latest release (hard) and then how to promote (easy).
 The code is now in this script. For example, you can try to do first (it will pick up some reasonable defaults):
 
-#### **🧪Lab🧪 Testing the solution: promote to Canary and Prod**
+#### 🧪Lab🧪 Testing the solution: promote to Canary and Prod
 
 The previous result (invoking the script with NO args) should be useless, as promote DEV to STAGE has already happened.
 Try now this:
@@ -280,21 +280,28 @@ For the second promotion, we will use the **UI** as it’s beautiful:
       rollout, but comes interesting from the second on. It links error to right contextual logs. So every error is
       one click away to investigate the issue.
 
-###  *redacted*
+###  11-14: *redacted*
 
 Steps 11-14 have been redacted. If curiouis, check under `examples/`
 
-###  `15-solution2-xlb-GFE3-traffic-split.sh` **Set up traffic split (solution 2!)**
+###  `15-solution2-xlb-GFE3-traffic-split.sh`
+
+**Set up traffic split (solution 2!)**
 
 This is how NEGs will look for your two endpoints. The "healthy" column will help you torubleshoot it all.
 
 <img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/app02-sol2-svc-canaryprod-neg-view.png?raw=true" alt="Solution 2 NEG view on GCP GCLB page" align='center' />
 
 
-### `16-solution2-test-by-curling-N-times.sh`. Once you set up the traffic splitting "infrastructure", this script
-    will simply do a `kubectl down` and `kubectl up` and test the setup.
+### `16-solution2-test-by-curling-N-times.sh`
 
+Once you set up the traffic splitting "infrastructure", this script
+will simply do a `kubectl down` and `kubectl up` and test the setup.
 
+*Q. Why is this split into TWO scripts?* Initially the setuip part took a long time, while the kubernetes apply took one
+second. Hence I split this in two parts to be able to edit the k8s Manifests and test the result with a click. After
+the code has stabilized, this still feels like a decent split, in case you want to edit manifests and see what changes
+in "prod".
 
 ## Other great scripts
 
