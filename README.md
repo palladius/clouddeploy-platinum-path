@@ -1,13 +1,13 @@
 # 🐤 Canary Solutions with GCP Cloud Deploy
 
-Self: https://github.com/palladius/clouddeploy-platinum-path
+Quick links:
 
-Article on Medium: https://medium.com/@palladiusbonton/draft-canarying-on-gcp-with-cloud-deploy-91b3e4d0ee9a
+* [Code](https://github.com/palladius/clouddeploy-platinum-path)
+* [Article on Medium](https://medium.com/@palladiusbonton/draft-canarying-on-gcp-with-cloud-deploy-91b3e4d0ee9a)
+* [👣 Step by step 👣 guide](https://github.com/palladius/clouddeploy-platinum-path/blob/main/step-by-step-guide.md)
 
-This repo tries to demo a few applications (under `apps/`) and it's path to
+This repo tries to demo a few applications (under `apps/`) and their path to
 deployment via Google Cloud Platform's `Cloud Build` + `Cloud Deploy`.
-Since a lot of setup is needed, I took inspiration from `[willisc7](https://github.com/willisc7)`'s
-[Gold Path repo](https://github.com/willisc7/next21-demo-golden-path).
 
 I've tried to simplify the app and the `skaffold` part and concentrated on
 automating the installation of Service Accounts, clusters, etc. all in
@@ -18,6 +18,10 @@ Build (this is currently possible in Alpha API which requires whitelisting).
 All the shell scripts you see in the main directory have been
 extensively tested, all the experimental code is under
 [examples/](https://github.com/palladius/clouddeploy-platinum-path/tree/main/examples).
+
+The only manual work you need to do are the 🧪Labs🧪 in the
+[👣 Step by step 👣 guide](https://github.com/palladius/clouddeploy-platinum-path/blob/main/step-by-step-guide.md)
+and I'm sure you're going to enjoy it.
 
 **This is _NOT_ an officially supported Google product.**
 
@@ -113,20 +117,22 @@ to see how all scripts work and to find a few Labs to practice your *Cloud Deplo
 * Do steps 1,2,3,4,5,6 automatically: `make first-half` (should ~always work)
 * Do steps 7,8,9,..,16 automatically - `make second-half` (can fail if you made mistake in the mirror repo setup)
 
-You should be good to go!
+Note that without executing the 🧪labs🧪 in the
+[👣 Step by step 👣 guide](https://github.com/palladius/clouddeploy-platinum-path/blob/main/step-by-step-guide.md),
+your pipeline will be empty, so we count on you to manually make targets have different releases.
 
-Note: Some scripts in here can all be found in my
+Note: Some scripts in here can be found in my personal
 [Swiss-Army Knife repo](https://github.com/palladius/sakura/), but the ones needed for this are all under `bin/`.
 
 ## The apps
 
 The app part is really the NON-interesting part here. I tried to keep it as simple as
-possible. You can complicate it as long as you have a Dockerfile or a Buildpack
+possible. *You* can complicate it as long as you have a Dockerfile or a Buildpack
 to build it.
 
 * `apps/app01/` This is a sample 🐍 *Python* app.
-* `apps/app02/` This is a sample 💎 *Ruby* app.
-* `apps/app03/` This is a sample 🧊 *Node.js* app.
+* `apps/app02/` This is a sample 💎 *Ruby* app (my favorite language).
+* `apps/app03/` This is a sample 🧊 *Node.js* app (courtesy of Alex).
 
 <img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/3apps.png?raw=true" alt="Three Apps" align='center' />
 

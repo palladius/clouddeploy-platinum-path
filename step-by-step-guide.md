@@ -1,4 +1,4 @@
-# 🐤 Step-by-step guide
+# 👣 Step by step 👣 guide
 
 This is a somewhat lengthier run through the scripts. Note that there are THREE Labs which are very useful to do.
 
@@ -39,7 +39,7 @@ This is a somewhat lengthier run through the scripts. Note that there are THREE 
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
 -->
 
-## First - a note on my scripts
+## A note on the *bash* scripts
 
 The root directory of my repo has a number of bash scripts which could discourage most of you. A few technical
 and philosophical notes:
@@ -49,11 +49,17 @@ and philosophical notes:
   plus `bin/proceed_if_error_matches` for which I've been nominated for a Pulitzer). At the end of the script, a common
   routine will touch a file called `.executed_ok.04-status.sh.touch`. This will leave a breadcrumb trail which tells
   you where the script failed. For more info see  [E003 Some dependencies missing](#e003-some-dependencies-missing).
-* Everything in this is scripted except one point which requires manual intervention between step 6 and step 7, which
-  is why I called the manual intervention 6.5 which I then moved at the beginning of the instructions (so now it looks
-  more lie 0.065).
+* Everything in this is scripted except one point which requires manual intervention, which is the cloning of the repo.
+  This step was originally step 6.5 which I then moved at the beginning of the instructions (so now it looks
+  more lie 0.065). So if your script 7 fails, you know where to look.
 
-## Scripts from 1 to 16
+## Bash Scripts (from 1 to 16)
+
+Originally there were 16 scripts, then with time I removed them, renamed them, moved them.
+
+Whenever I wasn't able to fully support some code but I thoguht that code would be useful to some of you, I moved it
+under `examples/`; so think of examples like a 🪦 cemetery, or a
+*Derek Zoolander's Center For Scripts Who Can't Be Read Good*.
 
 ### `00-init.sh`
 
