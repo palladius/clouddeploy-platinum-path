@@ -42,11 +42,23 @@ function show_gcloud_stuff() {
 }
 
 # Add your code here:
-SHOW_VERBOSE_STUFF="false"
-SHOW_GCLOUD_ENTITIES="true"
-SHOW_DEVCONSOLE_LINKS="true"
-SHOW_KUBERNETES_STUFF="true"
-SHOW_SKAFFOLD_STUFF="true"
+#SHOW_VERBOSE_STUFF="false" = ${1:-}
+#SHOW_GCLOUD_ENTITIES="true"
+#SHOW_DEVCONSOLE_LINKS="${SHOW_DEVCONSOLE_LINKS:-true}"
+#SHOW_KUBERNETES_STUFF="true"
+#SHOW_SKAFFOLD_STUFF="true"
+
+SHOW_VERBOSE_STUFF="${SHOW_VERBOSE_STUFF:-false}"
+SHOW_GCLOUD_ENTITIES="${SHOW_GCLOUD_ENTITIES:-true}"
+SHOW_DEVCONSOLE_LINKS="${SHOW_DEVCONSOLE_LINKS:-true}"
+SHOW_KUBERNETES_STUFF="${SHOW_KUBERNETES_STUFF:-true}"
+SHOW_SKAFFOLD_STUFF="${SHOW_SKAFFOLD_STUFF:-true}"
+
+echo "SHOW_VERBOSE_STUFF:     $SHOW_VERBOSE_STUFF"
+echo "SHOW_GCLOUD_ENTITIES:   $SHOW_GCLOUD_ENTITIES"
+echo "SHOW_DEVCONSOLE_LINKS:  $SHOW_DEVCONSOLE_LINKS"
+echo "SHOW_KUBERNETES_STUFF:  $SHOW_KUBERNETES_STUFF"
+echo "SHOW_SKAFFOLD_STUFF:    $SHOW_SKAFFOLD_STUFF"
 
 echo "+ REGION for DEPLOY:          $CLOUD_DEPLOY_REGION"
 echo "+ REGION for GKE:             $GKE_REGION"
@@ -78,20 +90,22 @@ if [ "true" = "$SHOW_DEVCONSOLE_LINKS" ]; then
 fi
 
 if [ "true" = $SHOW_KUBERNETES_STUFF ] ; then
+    echo "== Kubernetes Stuff ==" | lolcat
     show_k8s_stuff
 fi
 
 # Docs: https://cloud.google.com/sdk/gcloud/reference/beta/artifacts/docker
 if [ "true" = "$SHOW_GCLOUD_ENTITIES" ] ; then
+    echo "== GCloud entities (SHOW_GCLOUD_ENTITIES=$SHOW_GCLOUD_ENTITIES) ==" | lolcat
     show_gcloud_stuff
 fi
 if [ "true" = "$SHOW_VERBOSE_STUFF" ] ; then
+    echo "== Verbose Stuff ==" | lolcat
+
     gsutil ls -l "gs://$SKAFFOLD_BUCKET/skaffold-cache/"
     gcloud beta builds triggers list --region $REGION
     skaffold config list
 fi
-
-echo TODO get for both apps/pipelines, for every target the current release similar to https://screenshot.googleplex.com/AuKQWtQsfAvvdsb
 
 # End of your code here
 _allgood_post_script

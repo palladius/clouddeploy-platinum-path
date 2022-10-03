@@ -2,8 +2,10 @@
 
 ## First - a note on my scripts
 
-The root directory of my repo has a number of bash scripts which could discourage most of you. A few technical and philosophical notes:
-* Scripts must be run in alpha order from `00-XXX.sh` to `16-YYY.sh`.
+The root directory of my repo has a number of bash scripts which could discourage most of you. A few technical
+and philosophical notes:
+
+* Scripts must be run in alphabetical order from `00-XXX.sh` to `16-YYY.sh`.
 * Every script is “transactional”, meaning if fails at first non-0 exit of a subcommand (this is achieved by `set -e`
   plus `bin/proceed_if_error_matches` for which I've been nominated for a Pulitzer). At the end of the script, a common
   routine will touch a file called `.executed_ok.04-status.sh.touch`. This will leave a breadcrumb trail which tells
@@ -19,11 +21,9 @@ The root directory of my repo has a number of bash scripts which could discourag
 
 ### `00-init.sh`.
 
-**Initialization**
-
-  This scripts parses the ENV vars in env.sh and sets your GCLOUD, SKAFFOLD and GKE environment for
-  success. If you leave this project, do something else with gcloud or GKE and come back to it tomorrow, its always safe
-  to execute it once or even twice.
+**Initialization**. This scripts parses the ENV vars in `env.sh` and sets your `gcloud`, `skaffold` and GKE environment
+  (`kubectl`) for success. If you leave this project, do something else with gcloud or GKE and come back to it tomorrow,
+  its always safe to execute it once or even twice.
 
     🐧ricc@derek:~/clouddeploy-platinum-path$ ./00-init.sh
 
@@ -33,30 +33,50 @@ The root directory of my repo has a number of bash scripts which could discourag
 
   This script sets up 3 autopilot clusters:
 
-* cicd-noauto-canary. It will contain canary workloads (pre-prod)
-* cicd-noauto-prod. It will contain production workloads.
-* cicd-noauto-dev. It will contain everything else (dev, staging, and my tests). It will also be the *default* cluster.
+* `cicd-noauto-canary`. It will contain canary workloads (pre-prod)
+* `cicd-noauto-prod`. It will contain production workloads.
+* `cicd-noauto-dev`. It will contain **everything else** (dev, staging, and my tests). It will also be the
+  *default* cluster in case we make a mistake with `kubectl`.
 
 Note:  Cluster Build can take several minutes to complete. You can check progress by viewing the
-`Kubernetes Engine` -> `Kubernetes clusters` screen, or just have a ☕.
+`Kubernetes Engine` -> `Kubernetes clusters` screen, or just have a **☕**.
 
 
 ### `./02-setup-skaffold-cache-bucket.sh`
 
-**Setup GCS + Skaffold Cache**.
-
-   This script creates a bucket which we'll use as Skaffold
-   Cache. This will make your Cloud Builds super-fast! Thanks Alex the tip!
-
+**Setup GCS + Skaffold Cache**.  This script creates a bucket which we'll use as Skaffold
+   Cache ([more info](https://skaffold.dev/docs/references/cli/#skaffold-build)).
+   This will make your Cloud Builds blazing ⚡ fast! Thanks AlexB/BrianDA for the tip!
 
 
 ### `03-configure-artifact-repo-and-docker.sh`
 
-**Set up Artifact Repository and docker/k8s**
+**Set up Artifact Repository and docker/k8s**. This just configures:
+* `kubectl` to use the dev repo by default
+* `skaffold` to use the $ARTIFACT_REPONAME.
+
+5 seconds of your time, a couple of hours of mine to figure it out :) (*why is this not in the 00 script? Because
+some things weren't necessarily up and running at that point*).
 
 ### `04-status.sh`
-This is a Convenience script to show status of the installation.
-Nothing esoterical here.
+This is a script that I wrote to just check the status of the app and be invokable by my `Makefile`.
+Depending on what I'm troubleshooting I’ll play around with:
+
+```bash
+# 📘 excerpt from File: `04-status.sh`
+SHOW_VERBOSE_STUFF="false"
+SHOW_GCLOUD_ENTITIES="false"
+SHOW_DEVCONSOLE_LINKS="true"
+SHOW_KUBERNETES_STUFF="true"
+```
+
+So you could call something like:
+
+```bash
+SHOW_VERBOSE_STUFF="false" SHOW_GCLOUD_ENTITIES="false" SHOW_DEVCONSOLE_LINKS="true" SHOW_KUBERNETES_STUFF="false" SHOW_SKAFFOLD_STUFF=false  ./04-status.sh
+```
+
+to only see gcloud entities and point your browser to them.
 
 ### `05-IAM-enable-cloud-build.sh`
 ### `06-WIP-automated-cloud-build-setup.sh`
