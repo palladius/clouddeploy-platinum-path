@@ -95,7 +95,10 @@ Example code for the last part:
 
 ```bash
 # food for thought to harden your demo security (courtesy of Alex)
-gcloud artifacts repositories add-iam-policy-binding $REPO_NAME --role=roles/artifactregistry.repoAdmin --member=serviceAccount:$YOUR_SERVICE_ACCOUNT_NAME@your-project.iam.gserviceaccount.com --location=$REGION
+gcloud artifacts repositories add-iam-policy-binding $REPO_NAME \
+  --role=roles/artifactregistry.repoAdmin \
+  --member=serviceAccount:$YOUR_SERVICE_ACCOUNT_NAME@your-project.iam.gserviceaccount.com \
+  --location=$REGION
 ```
 
 ### `06-WIP-automated-cloud-build-setup.sh`
