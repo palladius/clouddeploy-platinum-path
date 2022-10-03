@@ -24,7 +24,7 @@ This is a somewhat lengthier run through the scripts. Note that there are THREE 
     - [`16-solution2-test-by-curling-N-times.sh`](#16-solution2-test-by-curling-n-timessh)
   - [Other great scripts](#other-great-scripts)
     - [bin/curl-them-all](#bincurl-them-all)
-    - [bin/kubectl-XXX](#binkubectl-xxx)
+    - [bin/kubectl-$STAGEZ](#binkubectl-stagez)
 
 <!--
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
@@ -318,7 +318,7 @@ a PR to fix the errors ). Some examples:
 <img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/curl-them-all-screenshot.png?raw=true" alt="curl-them-all script example" align='center' />
 
 
-### bin/kubectl-XXX
+### bin/kubectl-$STAGEZ
 
 I've created a few scripts to call the 3 kubernetes clusters with right context:
 
@@ -331,7 +331,7 @@ bin/kubectl-canary-and-prod  # C+P
 bin/kubectl-triune           # 4 stages (*)
 ```
 
-(*) Why triune? Initially [there were 3](https://en.wikipedia.org/wiki/...And_Then_There_Were_Three...). Plus, Italians
+(*)* Why triune? *Initially [there were three](https://en.wikipedia.org/wiki/...And_Then_There_Were_Three...). Plus, Italians
    are quite religious.
 
 You can invoke these scripts in two ways:
