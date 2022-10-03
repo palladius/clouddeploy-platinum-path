@@ -25,9 +25,6 @@ This is a somewhat lengthier run through the scripts. Note that there are THREE 
   - [Other great scripts](#other-great-scripts)
     - [bin/curl-them-all](#bincurl-them-all)
     - [bin/kubectl-XXX](#binkubectl-xxx)
-- [Enabling Vanilla, your output is good to go for your scripts](#enabling-vanilla-your-output-is-good-to-go-for-your-scripts)
-- [By doing nothing, your output gets prepended the cluster where your entity sits. Particularly nice](#by-doing-nothing-your-output-gets-prepended-the-cluster-where-your-entity-sits-particularly-nice)
-- [if invoked with TRIUNE which iterate kubectl on all 4 stages (why triune? Initially there were 3).](#if-invoked-with-triune-which-iterate-kubectl-on-all-4-stages-why-triune-initially-there-were-3)
 
 <!--
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
@@ -325,8 +322,6 @@ a PR to fix the errors ). Some examples:
 
 I've created a few scripts to call the 3 kubernetes clusters with right context:
 
-bin/kubectl-prod get all,gateway,httproute | grep sol1
-
 ```bash
 bin/kubectl-dev
 bin/kubectl-staging          # Note this is the same as DEV but with different namespace.
@@ -344,7 +339,7 @@ You can invoke these scripts in two ways:
 
   Example:
 
-  ```bash
+```bash
 # Enabling Vanilla, your output is good to go for your scripts
 ricc@derek:$ 🐼 VANILLA=TRUE bin/kubectl-prod get svc | egrep -v none
 NAME                            TYPE           CLUSTER-IP    EXTERNAL-IP      PORT(S)          AGE
@@ -376,3 +371,6 @@ $ bin/kubectl-triune get deployment 2>/dev/null
 [PROD] app02-kuruby          4/4     4            4           73d
 [PROD] app03-kunode          4/4     4            4           44d
 [PROD] app03-kunode-canary   1/1     1            1           44d
+# Another useful test: gets solution2 stuff in PROD
+$ bin/kubectl-prod get all,gateway,httproute | grep sol2
+```
