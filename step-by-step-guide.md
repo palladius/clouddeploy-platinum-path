@@ -2,7 +2,6 @@
 
 This is a somewhat lengthier run through the scripts. Note that there are THREE Labs which are very useful to do.
 
-- [🐤 Step-by-step guide](#-step-by-step-guide)
   - [First - a note on my scripts](#first---a-note-on-my-scripts)
   - [Scripts from 1 to 16](#scripts-from-1-to-16)
     - [`00-init.sh`](#00-initsh)
@@ -34,6 +33,7 @@ This is a somewhat lengthier run through the scripts. Note that there are THREE 
     - [E004 MatchExpressions LabelSelectorRequirement field is immutable](#e004-matchexpressions-labelselectorrequirement-field-is-immutable)
     - [E005 missing gcloud config](#e005-missing-gcloud-config)
   - [Additional readings](#additional-readings)
+
 
 <!--
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
