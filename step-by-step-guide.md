@@ -254,21 +254,24 @@ You can safely skip this.
 # 📘 excerpt from File: `07-create-cloud-build-triggers.sh`
 TEAMS[0]='T1py;app01;cloudbuild.yaml;apps/app01/;blue'
 TEAMS[1]='T2rb;app02;cloudbuild.yaml;apps/app02/;green'
+[...]
 ```
 
-
+* If you created a sample trigger, this is the time to delete or disable it (click on the 3 vertical dots and click
+  '*disable*').
 
 ### `08-cloud-deploy-setup.sh`
 
 **Create Cloud Deploy Infrastructure**. This sets up `clouddeploy.yaml` and creates:
 two identical Delivery Pipelines for app01 and app02, plus a different pipeline for app03.
 
-* For each pipeline, it creates four targets: **dev**, **staging**, **canary** (or **canary-prod** for app03) and **prod**.
-* The slight complication here is that Cloud Deploy doesn’t support “hydration” of the YAML so we need to do it manually:
-    * Look at clouddeploy.template.yaml
-    * See how the bash script sed’s variables like `MY_PROJECT_ID`, `MY_REGION`, `_MY_VERSION_` to variables
+* For each pipeline, it creates four targets: **dev**, **staging**, **canary** (or **canary-prod** for app03)
+  and **prod**.
+* The slight complication here is that Cloud Deploy doesn’t support “hydration” of the YAML so we need to do it
+  manually:
+    * Look at `clouddeploy.template.yaml`
+    * See how the bash script `sed`s variables like `MY_PROJECT_ID`, `MY_REGION`, `_MY_VERSION_` to variables
       set up by script.
-
 
 
 #### 🧪Lab🧪 Testing the solution: trigger Build apps
@@ -279,6 +282,7 @@ a couple of minutes, as in this screenshot:
 <img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/promo-dev-staging.png?raw=true"
  alt="Simple Promotion to Dev and Staging" align='center' />
 
+To achieve it, try something like this:
 
 ```bash
 source .env.sh # so you can use GITHUB_REPO_OWNER and other convenience vars.
@@ -287,9 +291,21 @@ echo 2.99test > ./apps/app01/VERSION # or whichever version it is plus one
 echo 2.99test > ./apps/app02/VERSION # or whichever version it is plus one
 git add ./apps/app01/VERSION
 git add ./apps/app02/VERSION
-git commit -m ‘bump version’
+git commit -m 'bump version' # this might require you first do some global git config'ing..
 git push $GITHUB_REPO_OWNER main
 ```
+
+Notes:
+
+* First `git commit` might require setting your name and email, no biggie.
+* Your first `git push` might require setting up a proper authentication mode. Personally, my favorite is this:
+     * `$ cd ~/.ssh`
+     * `ssh-keygen` # creates a key
+     * `cat id_rsa.pub` # => and CTRL-C content of neewly created key.
+     * Open Github > Settings > "[Ssh keys](https://github.com/settings/keys)" > "[New SSH key](https://github.com/settings/ssh/new)"
+         * Title: "My cloud shell RSA key for Riccardo Platinum Project"
+         * Key: paste the content of the key.
+     * You should be done now! Try the push again!
 
 #### 🧪Lab🧪 Testing the solution: skaffold dev cycle [optional]
 
