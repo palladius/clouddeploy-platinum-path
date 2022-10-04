@@ -3,8 +3,8 @@
   * [Setting things up](#setting-things-up)
   * [Bash Scripts (from 1 to 16)](#bash-scripts--from-1-to-16-)
     + [A note on the *bash* scripts](#a-note-on-the--bash--scripts)
-    + [`00-init.sh`](#-00-initsh-)
-    + [`01-set-up-GKE-clusters.sh`](#-01-set-up-gke-clusterssh-)
+    + [`00-init.sh` (🕰)](#-00-initsh------)
+    + [`01-set-up-GKE-clusters.sh` (🕰)](#-01-set-up-gke-clusterssh------)
     + [`02-setup-skaffold-cache-bucket.sh`](#-02-setup-skaffold-cache-bucketsh-)
     + [`03-configure-artifact-repo-and-docker.sh`](#-03-configure-artifact-repo-and-dockersh-)
     + [`04-status.sh`](#-04-statussh-)
@@ -12,7 +12,7 @@
     + [`06-WIP-automated-cloud-build-setup.sh`](#-06-wip-automated-cloud-build-setupsh-)
     + [`07-create-cloud-build-triggers.sh`](#-07-create-cloud-build-triggerssh-)
     + [`08-cloud-deploy-setup.sh`](#-08-cloud-deploy-setupsh-)
-      - [🧪Lab🧪 Testing the solution: trigger Build apps](#--lab---testing-the-solution--trigger-build-apps)
+      - [Lab 1 🧪 Testing the solution: trigger Build apps](#lab-1----testing-the-solution--trigger-build-apps)
       - [🧪Lab🧪 Testing the solution: skaffold dev cycle [optional]](#--lab---testing-the-solution--skaffold-dev-cycle--optional-)
     + [`09-show-latest-successful-releases.sh`](#-09-show-latest-successful-releasessh-)
     + [`10-auto-promote-APP_XX-STAGE_YY-to-STAGE_ZZ.sh`](#-10-auto-promote-app-xx-stage-yy-to-stage-zzsh-)
@@ -31,9 +31,8 @@
     + [E003 Some dependencies missing](#e003-some-dependencies-missing)
     + [E004 MatchExpressions LabelSelectorRequirement field is immutable](#e004-matchexpressions-labelselectorrequirement-field-is-immutable)
     + [E005 missing gcloud config](#e005-missing-gcloud-config)
+    + [E006 Miscellaneous errors](#e006-miscellaneous-errors)
   * [Additional readings](#additional-readings)
-
-
 
 <!--
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
@@ -274,7 +273,7 @@ two identical Delivery Pipelines for app01 and app02, plus a different pipeline 
       set up by script.
 
 
-#### 🧪Lab🧪 Testing the solution: trigger Build apps
+#### Lab 1 🧪 Testing the solution: trigger Build apps
 
 Now you can bump the version file of one or two apps and you should see the build making it into DEV and STAGING after
 a couple of minutes, as in this screenshot:
