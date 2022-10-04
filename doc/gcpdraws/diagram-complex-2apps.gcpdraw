@@ -7,12 +7,14 @@
 # splitting.
 #
 # Changelog:
-# 2022-08-26 v1.3 Adding App03.. anzi no
+# 2022-10-04 v1.5 Cleanup Text
+# 2022-10-04 v1.4 Mergin bielski 1.3 (fewer arrows CB + native CD icons)
+# 2022-08-26 v1.3 Adding App03
 # 2022-07-07 v1.2 Lighter colors, python/ruby icons.
 # 2022-07-07 v1.1 Added the Backendservices to both Apps.
 ##########################################################################################
 meta {
-  title "Canary Pipeline GKE+CB+CD v1.2"
+  title "Canary Pipeline GKE+CB+CD v1.5"
 }
 
 elements {
@@ -65,71 +67,67 @@ elements {
 
    # App01 Delivery Pipeline
    group app01_pipeline {
-     name "App01 Delivery Pipeline"
+     name "App01 Delivery Pipeline (Python)"
      #DOESNT WORK title_color "#000000"
      #python is green
      #background_color "#1aa260" # Google green
      background_color "#99edc3" # lighter-green
   	 icon_url "https://drive.google.com/file/d/1BHeXPeL6bhhET7QGNctupFftapYyc7Ru/view"
 
-    card dm_target as target_dev_app01 {
+    card cloud_deploy as target_dev_app01 {
       name "Dev"
-      icon_url "https://drive.google.com/file/d/10qBYxoKvZAhNJd_63eIk_jtkTUhEHJI7/view"
       display_name "target"
       #description "fyurther infolah"
     }
-    card dm_target as target_staging_app01 {
+    card cloud_deploy as target_staging_app01 {
       name "Staging"
-      icon_url "https://drive.google.com/file/d/10qBYxoKvZAhNJd_63eIk_jtkTUhEHJI7/view"
       display_name "target"
       #description "fyurther infolah"
     }
-    card dm_target as target_canary_app01 {
+    card cloud_deploy as target_canary_app01 {
       name "Canary"
-      icon_url "https://drive.google.com/file/d/10qBYxoKvZAhNJd_63eIk_jtkTUhEHJI7/view"
       display_name "target"
-      description "10% traffic"
+      #description "20% traffic"
     }
-    card dm_target as target_prod_app01 {
+    card cloud_deploy as target_prod_app01 {
       name "Prod"
-      icon_url "https://drive.google.com/file/d/10qBYxoKvZAhNJd_63eIk_jtkTUhEHJI7/view"
+      #icon_url "https://drive.google.com/file/d/10qBYxoKvZAhNJd_63eIk_jtkTUhEHJI7/view"
       display_name "target"
-      description "90% traffic"
+      #description "80% traffic"
     }
    } #/App01 pipeline
 
 
   # App02 Delivery Pipeline
    group app02_pipeline {
-     name "App02 Delivery Pipeline (ruby)"
+     name "App02 Delivery Pipeline (Ruby)"
      #ruby is red
      #background_color "#de5246" # Google red
      background_color "#ffcccc" # lighter-red
   	 icon_url "https://drive.google.com/file/d/1u0JxVUaqHXcOR-ok-EUeQd2pQEKWGpqJ/view" # Ruby icon
 
-    card dm_target as target_dev_app02 {
+    card cloud_deploy as target_dev_app02 {
       name "Dev"
-      icon_url "https://drive.google.com/file/d/10qBYxoKvZAhNJd_63eIk_jtkTUhEHJI7/view"
+      #icon_url "https://drive.google.com/file/d/10qBYxoKvZAhNJd_63eIk_jtkTUhEHJI7/view"
       display_name "target"
       #description "fyurther infolah"
     }
-    card dm_target as target_staging_app02 {
+    card cloud_deploy as target_staging_app02 {
       name "Staging"
-      icon_url "https://drive.google.com/file/d/10qBYxoKvZAhNJd_63eIk_jtkTUhEHJI7/view"
       display_name "target"
       #description "fyurther infolah"
     }
-    card dm_target as target_canary_app02 {
+    card cloud_deploy as target_canary_app02 {
       name "Canary"
       icon_url "https://drive.google.com/file/d/10qBYxoKvZAhNJd_63eIk_jtkTUhEHJI7/view"
       display_name "target"
-      description "10% traffic"
+      #description "20% traffic"
     }
-    card dm_target as target_prod_app02 {
+    card cloud_deploy as target_prod_app02 {
       name "Prod"
-      icon_url "https://drive.google.com/file/d/10qBYxoKvZAhNJd_63eIk_jtkTUhEHJI7/view"
+      #icon_url "https://drive.google.com/file/d/10qBYxoKvZAhNJd_63eIk_jtkTUhEHJI7/view"
       display_name "target"
-      description "90% traffic"
+      #description "80% traffic"
     }
    } #/App01 pipeline
 
@@ -178,37 +176,37 @@ elements {
   #    background_color "#1aa260"
       name "http://app01.example.com/"
   #    background_color "#f6f6f6"
-      description "Traffic split: 10% Canary / 90% prod"
+      description "App01 🐍 Traffic split"
 
     }
 
   card load_balancer as app02_endpoint {
     name "http://app02.example.com/"
-    description "Traffic split: 10% Canary / 90% prod"
+    description "App02 ❤️ Traffic split"
   }
 
   #  backendService 10%/90%
   card load_balancer as app01_bes_canary {
     name "App01 Canary"
     display_name "BackendService"
-    description "weight: 10%"
+    description "weight: 20%"
   }
   card load_balancer as app01_bes_prod {
     name "App01 Prod"
     display_name "BackendService"
-    description "weight: 90%"
+    description "weight: 80%"
   }
 
    #  backendService 10%/90%
   card load_balancer as app02_bes_canary {
     name "App02 Canary"
     display_name "BackendService"
-    description "weight: 10%"
+    description "weight: 20%"
   }
   card load_balancer as app02_bes_prod {
     name "App02 Prod"
     display_name "BackendService"
-    description "weight: 90%"
+    description "weight: 80%"
   }
 
   card users as app_user {
@@ -239,9 +237,6 @@ paths {
   # needed just to sort GKE from left to right
   dev_gke ..> canary_gke
   canary_gke ..> prod_gke
-  build01 -down-> dev_gke
-  build02 -down-> dev_gke
- # build03 -down-> dev_gke
   #dev_gke <-down- qa
   build01 --> target_dev_app01
   build02 --> target_dev_app02
@@ -286,9 +281,12 @@ paths {
 
   # SOLUTION2: HTTP Envoy LB
   # canary deployment split traffic across canary/prod
-  target_canary_app01  <.. app01_bes_canary
+  #target_canary_app01  <.. app01_bes_canary @bielski
+  canary_gke  <-- app01_bes_canary
   app01_bes_canary  <-- app01_endpoint
-  target_prod_app01   <.. app01_bes_prod
+
+  #target_prod_app01   <.. app01_bes_prod
+  prod_gke  <-- app01_bes_prod
   app01_bes_prod <--> app01_endpoint
 
   target_canary_app02  <.. app02_bes_canary
