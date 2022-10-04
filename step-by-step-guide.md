@@ -55,7 +55,7 @@ and symlink it from/to another private repo).
     * **Max OSX** with bash v5 or more (to support hashes). To do so, just try `brew install bash` and make sure to use
       the new BASH path ~(you might have to explicitly call the scripts with `bash SCRIPTNAME.sh`).
 
-2. [Fork](https://github.com/palladius/clouddeploy-platinum-path/fork) the code repo:
+1. [Fork](https://github.com/palladius/clouddeploy-platinum-path/fork) the code repo:
     * Go to https://github.com/palladius/clouddeploy-platinum-path/
     * Click “**Fork”** to fork the code under your username.
 
@@ -64,26 +64,39 @@ and symlink it from/to another private repo).
    * New URL will look like this: https://github.com/daenerys/clouddeploy-platinum-path [with your username].
      You’ll need this username in a minute.
    * **__Note__** that if you don’t have a github account (and you don’t want to create one), you can just fork my repo in your
-     GCR - more instructions later at step (6) below.
-   * To connect your github repo, follow instructions here: https://cloud.google.com/build/docs/automating-builds/github/build-repos-from-github
+     GCR - more instructions later in the step *07* below.
+   * To connect your github repo, extensive instructions are [here](https://cloud.google.com/build/docs/automating-builds/github/build-repos-from-github). However, following the next steps should suffice.
    * Open **Cloud Developer Console** > **Cloud Build** > **Triggers**: https://console.cloud.google.com/cloud-build/triggers
+     (the first time you will have to enable Cloud Build API).
    * Click on **Connect repository** button (bottom of page):
 
     <img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/cloudbuild-connect-repo.png?raw=true" alt="Connect Repository on Cloud Build" align='center' />
 
-    * “Select Source” > “**GitHub (Cloud Build GitHub App)**” and click “continue”.
+    * “Select Source” > “**GitHub (Cloud Build GitHub App)**” and click “continue”. Follow the authentication flow, if
+      needed. (On github side, you can find/edit the Cloud Build integration
+      [here](https://github.com/settings/installations/).)
 
-3. *[Totally optional]* Install a colorizing gem. If you won’t do it, there’s a `lolcat` fake wrapper in `bin/` (added to
+    * Type “Create a sample trigger“ because why not. We'll delete it later.
+
+1.  Now back to your client shell (Linux Bash, Mac bash, or Cloud Shell). Cloud Shell icon should be a 🖥️ terminal
+      icon on top right of your Google Cloud Console. Clone the repository you just forked:
+
+  ```bash
+  riccardo@cloudshell:~$ git clone https://github.com/palladius-uat/clouddeploy-platinum-path
+  riccardo@cloudshell:~$ cd https://github.com/palladius-uat/clouddeploy-platinum-path
+  ```
+
+1. *[Totally optional]* Install a colorizing gem. If you won’t do it, there’s a `lolcat` fake wrapper in `bin/` (added to
    path in init script). But trust me, it’s worth it (unless you have no Ruby installed).
 
     `gem install lolcat`
 
 
-4. Copy the env template to a new file that we’ll modify
+1. Copy the env template to a new file that we’ll modify
 
     `cp .env.sh.dist .env.sh`
 
-5. Open `.env.sh` and substitute the proper values for any variable that has # changeme next to it.
+1. Open `.env.sh` and substitute the proper values for any variable that has # changeme next to it.
   (If you’re on 🖥️ **Cloud Shell**, you can try `edit .env.sh` 😎 to let the UI editor shine). For instance:
 
     * **PROJECT_ID**. This your string (non-numeric) project id -

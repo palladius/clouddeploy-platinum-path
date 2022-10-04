@@ -51,6 +51,7 @@ TRIGGERVERSION="1-8"
 # 1.3           Made from regional to GLOBAL (local have QUOTA issues) #important
 # 1.2           Made better substitutions.
 touch /tmp/MyEmptyFile
+# TODO(ricc): empty the file
 
 GITHUB_REPO_NAME="clouddeploy-platinum-path"
 GCR_REPO="${GITHUB_REPO_OWNER}/clouddeploy-platinum-path"

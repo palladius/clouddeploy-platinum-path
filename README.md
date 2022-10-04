@@ -49,10 +49,10 @@ In this diagram you can see the Build/Deploy part, while if you click you can se
 
 Now you're ready for the Step-by-step guide!
 
-## 👣 Step by Step 👣 guide
+## 👣 Step by Step guide 👣
 
-Click on this deeper
-[👣 Step by step 👣 guide](https://github.com/palladius/clouddeploy-platinum-path/blob/main/step-by-step-guide.md)
+Click on the
+[👣 Step by step guide 👣](https://github.com/palladius/clouddeploy-platinum-path/blob/main/step-by-step-guide.md)
 to see how all scripts work and to find a few Labs to practice your *Cloud Deploy - fu 🥋*.
 
 ## The apps
@@ -84,6 +84,7 @@ app=app03 version=1.0.3 target=canary emoji=🧊
 
 <img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/canary-horizontal-render.gif?raw=true" alt="Terminal Demo" align='center' />
 
+
 ## Build philosophy
 
 * Every commit to `main` will trigger a Cloud Build, provided code is in some `apps/appXX/` . In particular, any change to the code to app01 will trigger a build in the APP01 pipeline, and so on. **Yes**, it's that beautiful.
@@ -91,22 +92,25 @@ app=app03 version=1.0.3 target=canary emoji=🧊
 * Promotion DEV -> STAGING. This is a second BUILD which also executes `make test` in the
 `app/MYAPP` folder.
 
-* *For picky people*. Note that in the real world, the promotion from DEV to STAGING wouldn't probably happen after
-  Unit Tests (rather integration tests), but for this demo I wanted as many releases out as possible with minimal
-  manual intervention, so I did it this way. In a real scenario, a failed `make test` would prevent the DEV release
-  altogether.
+
+*For picky people*. Note that in the real world, the promotion from *DEV* to *STAGING* wouldn't probably happen as an
+  effect of Unit Tests (rather Integration/Acceptance tests); however, in this demo I wanted as many releases out as
+  possible with minimal manual intervention, so I did it this way.
+  In a real scenario, a failed `make test` would prevent the DEV release
+  altogether. Feel free to make the `Makefile` point to the code you need to execute in everystage and *voila*!
+
 
 ## Deploy philosophy
 
-4 targets have been created:
+4 Deployment Targets have been created:
 
 1. **dev**. Every successful commit lands here. Deploys to **dev** GKE cluster.
 1. **staging**. Also deploys to **dev** GKE cluster.
-1. **canary** *OR* **canary-production** (depends on app, see below). A release in this state will get a small
-  percentage of traffic.
+1. **canary** *OR* **canary-production** (*depending on app*, see below). A release in this state will get a small
+  amount of traffic (eg, 20%).
 2. **production**. A release in this state will get *most* traffic. Deploys to **prod** GKE cluster.
 
-Note on apps and third stage (*canary**):
+Third stage (*canary**) depends on the application number:
 
 * **App01**🐍 and **App02**💎 have **canary** as 3rd stage, which pushes to a **canary** GKE cluster.
   This has been done to demonstrate a complex, multi-cluster case.
