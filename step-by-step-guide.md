@@ -240,7 +240,9 @@ gcloud artifacts repositories add-iam-policy-binding $REPO_NAME \
 ```
 
 ### `06-WIP-automated-cloud-build-setup.sh`
+
 You can safely skip this.
+
 ### `07-create-cloud-build-triggers.sh`
 
 **Note** this script will fail if you didn't connect the repository as per

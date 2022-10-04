@@ -94,11 +94,8 @@ metadata:
     ricc_app_id: '03'
     author_username: bielski
 description: |
-    Delivery pipeline for CI/CD App03 (in node) and then
+    Delivery pipeline for CI/CD App03 (in node.js) and then
     packaged via Docker.
-
-    Note: Under extensive TEST
-
     CDTv _MY_VERSION_
 serialPipeline:
   stages:
