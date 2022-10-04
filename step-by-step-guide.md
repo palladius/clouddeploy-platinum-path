@@ -151,7 +151,7 @@ and philosophical notes:
   This step was originally step 6.5 which I then moved at the beginning of the instructions (so now it looks
   more lie 0.065). So if your script 7 fails, you know where to look.
 
-### `00-init.sh`
+### `00-init.sh` (🕰)
 
 **Initialization**. This scripts parses the ENV vars in `env.sh` and sets your `gcloud`, `skaffold` and GKE environment
   (`kubectl`) for success. If you leave this project, do something else with gcloud or GKE and come back to it tomorrow,
@@ -159,11 +159,17 @@ and philosophical notes:
 
     🐧ricc@derek:~/clouddeploy-platinum-path$ ./00-init.sh
 
-### `01-set-up-GKE-clusters.sh`
+Notes:
 
-**Setting up GKE clusters**
+* The first time you execute, depending on your execution environment, you might receive a request to authenticate via
+  a mouse click, and/or a suggestion to call `gcloud auth login`. Make sure to follow the flow until your local
+  environment is able to authenticate as you.
+* If you have been interrupted, make sure to execute the script again (wghen in doubt, follow the *breadcrumbs*).
+* First execution might take a while (🕰)
 
-  This script sets up 3 autopilot clusters:
+### `01-set-up-GKE-clusters.sh` (🕰)
+
+**Setting up GKE clusters**. This script sets up 3 autopilot clusters:
 
 * `cicd-noauto-canary`. It will contain canary workloads (pre-prod)
 * `cicd-noauto-prod`. It will contain production workloads.
