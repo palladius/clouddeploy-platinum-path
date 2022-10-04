@@ -41,7 +41,7 @@ gcloud auth configure-docker $REGION-docker.pkg.dev
 
 # DEV
 echo
-white 'Creating THREE Clusters. This might take 5-10min... good time for a coffee 🕰'
+white 'Creating THREE Clusters in Standard Mode. This might take 5-10min... good time for a coffee 🕰'
 echo
 
 set -x
@@ -59,39 +59,29 @@ for STANDARD_CLUSTER_NAME in "cicd-dev" "cicd-canary" "cicd-prod" ; do
 done
 set +x
 
+##############################################################################
+# Uncomment this if you want to create the 3 clusters in Autopilot (cheaper,
+# but less responsive to pods creation). Of course comment or rename the clusters
+# above.
+##############################################################################
+
+# # 1. DEV
 # proceed_if_error_matches 'ResponseError: code=409, message=Already exists:' \
-# gcloud container --project "$PROJECT_ID" clusters create "cicd-dev" --region "$REGION" \
-#   --release-channel "regular" --network "projects/$PROJECT_ID/global/networks/default" --subnetwork "projects/$PROJECT_ID/regions/$REGION/subnetworks/default" \
-#   --cluster-ipv4-cidr "/17" --services-ipv4-cidr "/22" --enable-ip-alias
-# # CANARY
-# gcloud container --project "$PROJECT_ID" clusters create "cicd-canary" --region "$REGION" \
-#   --release-channel "regular" --network "projects/$PROJECT_ID/global/networks/default" --subnetwork "projects/$PROJECT_ID/regions/$REGION/subnetworks/default" \
-#   --cluster-ipv4-cidr "/17" --services-ipv4-cidr "/22" --enable-ip-alias
-# PROD
-# gcloud container --project "$PROJECT_ID" clusters create "cicd-noauto-prod" --region "$REGION" \
-#   --release-channel "regular" --network "projects/$PROJECT_ID/global/networks/default" --subnetwork "projects/$PROJECT_ID/regions/$REGION/subnetworks/default" \
-#   --cluster-ipv4-cidr "/17" --services-ipv4-cidr "/22" --enable-ip-alias
+# gcloud container --project "$PROJECT_ID" clusters create-auto "cicd-dev" --region "$GKE_REGION" \
+#   --release-channel "regular" --network "projects/$PROJECT_ID/global/networks/default" --subnetwork "projects/$PROJECT_ID/regions/$GKE_REGION/subnetworks/default" \
+#   --cluster-ipv4-cidr "/17" --services-ipv4-cidr "/22"
 
-#############################################################
-# Create 3 clusters in autopilot (the ones we use for our demo)
-#############################################################
-# 1. DEV
-proceed_if_error_matches 'ResponseError: code=409, message=Already exists:' \
-gcloud container --project "$PROJECT_ID" clusters create-auto "cicd-dev" --region "$GKE_REGION" \
-  --release-channel "regular" --network "projects/$PROJECT_ID/global/networks/default" --subnetwork "projects/$PROJECT_ID/regions/$GKE_REGION/subnetworks/default" \
-  --cluster-ipv4-cidr "/17" --services-ipv4-cidr "/22"
+# # 2. CANARY (Similar to prod but smaller)
+# proceed_if_error_matches 'ResponseError: code=409, message=Already exists:' \
+#   gcloud container --project "$PROJECT_ID" clusters create-auto "cicd-canary" --region "$GKE_REGION" \
+#     --release-channel "regular" --network "projects/$PROJECT_ID/global/networks/default" --subnetwork "projects/$PROJECT_ID/regions/$GKE_REGION/subnetworks/default" \
+#     --cluster-ipv4-cidr "/17" --services-ipv4-cidr "/22" # --labels "env=prod"
 
-# 2. CANARY (Similar to prod but smaller)
-proceed_if_error_matches 'ResponseError: code=409, message=Already exists:' \
-  gcloud container --project "$PROJECT_ID" clusters create-auto "cicd-canary" --region "$GKE_REGION" \
-    --release-channel "regular" --network "projects/$PROJECT_ID/global/networks/default" --subnetwork "projects/$PROJECT_ID/regions/$GKE_REGION/subnetworks/default" \
-    --cluster-ipv4-cidr "/17" --services-ipv4-cidr "/22" # --labels "env=prod"
-
-# 3. PROD
-proceed_if_error_matches 'ResponseError: code=409, message=Already exists:' \
-gcloud container --project "$PROJECT_ID" clusters create-auto "cicd-prod" --region "$GKE_REGION" \
-  --release-channel "regular" --network "projects/$PROJECT_ID/global/networks/default" --subnetwork "projects/$PROJECT_ID/regions/$GKE_REGION/subnetworks/default" \
-  --cluster-ipv4-cidr "/17" --services-ipv4-cidr "/22" # --labels "env=prod"
+# # 3. PROD
+# proceed_if_error_matches 'ResponseError: code=409, message=Already exists:' \
+# gcloud container --project "$PROJECT_ID" clusters create-auto "cicd-prod" --region "$GKE_REGION" \
+#   --release-channel "regular" --network "projects/$PROJECT_ID/global/networks/default" --subnetwork "projects/$PROJECT_ID/regions/$GKE_REGION/subnetworks/default" \
+#   --cluster-ipv4-cidr "/17" --services-ipv4-cidr "/22" # --labels "env=prod"
 
 
 for ITER_CLUSTER in cicd-canary cicd-prod cicd-dev ; do
