@@ -329,6 +329,11 @@ $ make dev
 # ricc@zurisack:🏡$ skaffold --default-repo “$SKAFFOLD_DEFAULT_REPO” dev
 ```
 
+* Try to change some code, for instance put your name somewhere in the `main.py` and bump again
+  the `VERSION` (from 2.99 to 2.100, for instance).
+* On 🐚 Cloud Shell, you can achieve this by clicking `📝 Open Editor` button. You can alwatys come back with
+  `Open Terminal` button when you need your 🐚 shell back.
+
 If the app compiles properly, this should issue a code push to Artifact Repository.
 
 Plus, Skaffold should push your code to the k8s manifests as described in `skaffold.yaml` (in our cases this is
@@ -336,9 +341,10 @@ Plus, Skaffold should push your code to the k8s manifests as described in `skaff
 scales up to accommodate your new needs (which is why I removed autopilot by default).
 
 Notice that you can leverage the FILE SYNC for your app to make sure only big change force a full rebuild. For instance,
-my ruby apps take long to `Docker`ize, so to me it’s a killer feature that a small change to `main.rb` gets directly
-pushed into the living container, while a change to `Gemfile` needs to force a full clean build.
+for `app02`, my ruby apps take long to `Docker`ize, so to me it’s a killer feature that a small change to `main.rb` gets
+directly pushed into the living container, while a change to `Gemfile` needs to force a full clean build.
 
+* Now do another `git commit`, so you have TWO versions for app01.
 
 ###  `09-show-latest-successful-releases.sh`
 
