@@ -41,14 +41,15 @@ In this diagram you can see the Build/Deploy part, while if you click you can se
 ## Prerequisites
 
 * A **Google Cloud Platform** account with billing enabled. Note that you can get started with a 300 USD credits
-  [here](https://cloud.google.com/free).
+  [here](https://cloud.google.com/free) and you won't be charged after their depletion.
 * A GitHub user (you can workaround to this).
 * You can execute the scripts from your local machine, or from our awesome Google
   [Cloud Shell](https://cloud.google.com/shell) 🖥️ , which has all the dependencies you need.
+* Some familiarity with CLI tools like `git`, `bash`, `kubectl`.
 
 Now you're ready for the Step-by-step guide!
 
-## 👣 Step by Step guide
+## 👣 Step by Step 👣 guide
 
 Click on this deeper
 [👣 Step by step 👣 guide](https://github.com/palladius/clouddeploy-platinum-path/blob/main/step-by-step-guide.md)
