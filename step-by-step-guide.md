@@ -309,7 +309,7 @@ echo 2.99test > ./apps/app01/VERSION # or whichever version it is plus one
 echo 2.99test > ./apps/app02/VERSION # or whichever version it is plus one
 git add ./apps/app01/VERSION
 git add ./apps/app02/VERSION
-git commit -m 'bump version' # this might require you first do some global git config'ing..
+git commit -m 'bump PRODUCTION version' # this might require you first do some global git config'ing..
 git push $GITHUB_REPO_OWNER main
 ```
 
@@ -318,7 +318,16 @@ This should trigger `app01` and `app02` trigger, but not app03:
 <img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/lab1-cloudbuild-app12.png?raw=true"
  alt="Lab1: Cloud Build" align='center' />
 
-Now change the `./apps/app03/VERSION`, commit and push to see that a new build trigger with
+* Now change the `./apps/app03/VERSION`, commit and push to see that a new build trigger with
+* **IMPORTANT**. Repeat exactly the same process again, since we need TWO versions "in the cloud" ☁️.
+
+```bash
+echo 2.100 > ./apps/app01/VERSION
+echo 2.100 > ./apps/app02/VERSION
+echo 2.100 > ./apps/app03/VERSION
+git commit -a -m 'trying a new super duper experimental feature'
+git push $GITHUB_REPO_OWNER main
+```
 
 Notes:
 
