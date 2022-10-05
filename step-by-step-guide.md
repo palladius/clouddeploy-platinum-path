@@ -318,7 +318,8 @@ This should trigger `app01` and `app02` trigger, but not app03:
 <img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/lab1-cloudbuild-app12.png?raw=true"
  alt="Lab1: Cloud Build" align='center' />
 
-* Now change the `./apps/app03/VERSION`, commit and push to see that a new build trigger with
+* Now change the `./apps/app03/VERSION`, commit and push to see that a new build trigger with app03 is actually
+  executed. Don't you love Cloud Build? Thanks to the file GLOB selector, it only builds the changed directories!
 * **IMPORTANT**. Repeat exactly the same process again, since we need TWO versions "in the cloud" ☁️.
 
 ```bash
