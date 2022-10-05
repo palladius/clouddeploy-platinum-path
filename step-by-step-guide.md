@@ -561,9 +561,20 @@ If you observe empty output, check the Cloud Deploy Pipeline page for app01 and 
 version in both CANARY and PROD targets. If you don't, go back to labs 1-4 and ensure you loaded enough versions in both
 apps (tip: most scripts defaulty to `app01` in `ARGV[1]` so make sure you give `app02` ❤️ some love too).
 
-Example of a poorly configured app:
+For exmaple:
 
 <img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/bad-pipeline-missing-prod.png?raw=true" alt="This Delivery Pipeline clearly misses a PROD target" align='right' />
+
+Here you clearly missed deploying to prod, so you can fix by promoting STAGING to PROD. However, this would be ugly
+since you'd have the same version but it would be a first good step. After this you might want to:
+
+* EDIT `app/app01/VERSION`  to 2.100
+* git commit
+* Wait until Cloud Build does its part and dev/staging get the 2.100.
+* promote v2.100 from STAG to CANARY.
+* relaunch the `bin/solution2-simple-curl`
+* If this still fails, chances are Gateway API isnt ready yet. Try again in 90 minutes.
+* If that stil fails, please open an issue on my repo with the output.
 
 ## Other great scripts
 
