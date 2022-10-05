@@ -15,41 +15,41 @@ BUGS
 <!--
 - [👣 Step by step 👣 guide](#-step-by-step--guide)
 -->
-  - [Setting things up](#setting-things-up)
-  - [Bash Scripts (from 1 to 16)](#bash-scripts-from-1-to-16)
-    - [A note on the *bash* scripts](#a-note-on-the-bash-scripts)
-    - [`00-init.sh` (🕰)](#00-initsh-)
-    - [`01-set-up-GKE-clusters.sh` (🕰)](#01-set-up-gke-clusterssh-)
-    - [`02-setup-skaffold-cache-bucket.sh`](#02-setup-skaffold-cache-bucketsh)
-    - [`03-configure-artifact-repo-and-docker.sh`](#03-configure-artifact-repo-and-dockersh)
-    - [`04-status.sh`](#04-statussh)
-    - [`05-IAM-enable-cloud-build.sh`](#05-iam-enable-cloud-buildsh)
-    - [`06-WIP-automated-cloud-build-setup.sh`](#06-wip-automated-cloud-build-setupsh)
-    - [`07-create-cloud-build-triggers.sh`](#07-create-cloud-build-triggerssh)
-    - [`08-cloud-deploy-setup.sh`](#08-cloud-deploy-setupsh)
-      - [Lab 1 🧪 Trigger Build apps](#lab-1--trigger-build-apps)
-      - [Lab 2 🧪 Testing skaffold dev cycle [optional]](#lab-2--testing-skaffold-dev-cycle-optional)
-    - [`09-show-latest-successful-releases.sh`](#09-show-latest-successful-releasessh)
-    - [`10-auto-promote-APP_XX-STAGE_YY-to-STAGE_ZZ.sh`](#10-auto-promote-app_xx-stage_yy-to-stage_zzsh)
-      - [Lab 3 🧪 Promote to Canary and Prod](#lab-3--promote-to-canary-and-prod)
-      - [Lab 4 🧪 Observe Simple Solution for app03](#lab-4--observe-simple-solution-for-app03)
-    - [11-14: *redacted*](#11-14-redacted)
-    - [`15-solution2-xlb-GFE3-traffic-split.sh`](#15-solution2-xlb-gfe3-traffic-splitsh)
-    - [`16-solution2-test-by-curling-N-times.sh`](#16-solution2-test-by-curling-n-timessh)
-  - [Other great scripts](#other-great-scripts)
-    - [bin/curl-them-all](#bincurl-them-all)
-    - [bin/kubectl-$STAGEZ](#binkubectl-stagez)
-    - [bin/troubleshoot-solutionN](#bintroubleshoot-solutionn)
-    - [bin/{rcg, lolcat, proceed_if_error_matches}](#binrcg-lolcat-proceed_if_error_matches)
-  - [Possible Errors](#possible-errors)
-    - [E001 Quota Issues](#e001-quota-issues)
-    - [E002 source: .env.sh: file not found](#e002-source-envsh-file-not-found)
-    - [E003 Some dependencies missing](#e003-some-dependencies-missing)
-    - [E004 MatchExpressions LabelSelectorRequirement field is immutable](#e004-matchexpressions-labelselectorrequirement-field-is-immutable)
-    - [E005 missing gcloud config](#e005-missing-gcloud-config)
-    - [E006 Miscellaneous errors](#e006-miscellaneous-errors)
-  - [Additional readings](#additional-readings)
-
+  * [Setting things up](#setting-things-up)
+  * [Bash Scripts (from 1 to 16)](#bash-scripts--from-1-to-16-)
+    + [A note on the *bash* scripts](#a-note-on-the--bash--scripts)
+    + [`00-init.sh` (🕰)](#-00-initsh------)
+    + [`01-set-up-GKE-clusters.sh` (🕰)](#-01-set-up-gke-clusterssh------)
+    + [`02-setup-skaffold-cache-bucket.sh`](#-02-setup-skaffold-cache-bucketsh-)
+    + [`03-configure-artifact-repo-and-docker.sh`](#-03-configure-artifact-repo-and-dockersh-)
+    + [`04-status.sh`](#-04-statussh-)
+    + [`05-IAM-enable-cloud-build.sh`](#-05-iam-enable-cloud-buildsh-)
+    + [`06-WIP-automated-cloud-build-setup.sh`](#-06-wip-automated-cloud-build-setupsh-)
+    + [`07-create-cloud-build-triggers.sh`](#-07-create-cloud-build-triggerssh-)
+    + [`08-cloud-deploy-setup.sh`](#-08-cloud-deploy-setupsh-)
+      - [Lab 1 🧪 Trigger Build apps](#lab-1----trigger-build-apps)
+      - [Lab 2 🧪 Testing skaffold dev cycle [optional]](#lab-2----testing-skaffold-dev-cycle--optional-)
+    + [`09-show-latest-successful-releases.sh`](#-09-show-latest-successful-releasessh-)
+    + [`10-auto-promote-APP_XX-STAGE_YY-to-STAGE_ZZ.sh`](#-10-auto-promote-app-xx-stage-yy-to-stage-zzsh-)
+      - [Lab 3 🧪 Promote to Canary and Prod](#lab-3----promote-to-canary-and-prod)
+      - [Lab 4 🧪 Observe Simple Solution for app03](#lab-4----observe-simple-solution-for-app03)
+    + [11-14: *redacted*](#11-14---redacted-)
+    + [`15-solution2-xlb-GFE3-traffic-split.sh` (🕰)](#-15-solution2-xlb-gfe3-traffic-splitsh------)
+    + [`16-solution2-test-by-curling-N-times.sh`](#-16-solution2-test-by-curling-n-timessh-)
+      - [Lab 5 Test solution2](#lab-5-test-solution2)
+  * [Other great scripts](#other-great-scripts)
+    + [bin/curl-them-all](#bin-curl-them-all)
+    + [bin/kubectl-$STAGEZ](#bin-kubectl--stagez)
+    + [bin/troubleshoot-solutionN](#bin-troubleshoot-solutionn)
+    + [bin/{rcg, lolcat, proceed_if_error_matches}](#bin--rcg--lolcat--proceed-if-error-matches-)
+  * [Possible Errors](#possible-errors)
+    + [E001 Quota Issues](#e001-quota-issues)
+    + [E002 source: .env.sh: file not found](#e002-source--envsh--file-not-found)
+    + [E003 Some dependencies missing](#e003-some-dependencies-missing)
+    + [E004 MatchExpressions LabelSelectorRequirement field is immutable](#e004-matchexpressions-labelselectorrequirement-field-is-immutable)
+    + [E005 missing gcloud config](#e005-missing-gcloud-config)
+    + [E006 Miscellaneous errors](#e006-miscellaneous-errors)
+  * [Additional readings](#additional-readings)
 
 
 
@@ -471,24 +471,19 @@ Instructions:
 * Use **Lab 1** instructions to change version in `app03` twice (eg `v2.99` and `2.100`) and deploy both.
 * Promote 2.99 to prod/canary, then 2.100 to canary using instyructions in script **10**.
 * go to GKE > [Services](https://console.cloud.google.com/kubernetes/discovery?e=-13802955&project=cicd-platinum-test008&pageState=(%22savedViews%22:(%22i%22:%226fade9ce3eaf42d2ac125fc083079c14%22,%22c%22:%5B%5D,%22n%22:%5B%5D))) page and observe the Prod and Canary version public IPs.
-* You can also test the solution with this amazing script:
-
-```bash
-bin/troubleshoot-solution4
-```
+* You can also test the solution with this amazing script: `bin/troubleshoot-solution4`. I know, right?
 
 ###  11-14: *redacted*
 
 Steps 11-14 have been redacted. If curious, check under `examples/`
 
-
-### `15-solution2-xlb-GFE3-traffic-split.sh`
+### `15-solution2-xlb-GFE3-traffic-split.sh` (🕰)
 
 **Set up traffic split (solution 2!)**. This quite complex script will make intensive use of `gcloud` and `kubectl` to
 set up the Traffic Splitting. If this code is confusing to you, you can look at the instructions I used from my mentor
 Daniel to set it up, under
 [`k8s/amarcord/original-solution2-dmarzi/`](https://github.com/palladius/clouddeploy-platinum-path/blob/main/k8s/amarcord/original-solution2-dmarzi/readme.md)
-.
+. While the 15 script sets up just the `gcloud` part (🕰), the 16 scripts runs the needed `kubectl apply` (fast).
 
 This is how [NEGs](https://cloud.google.com/load-balancing/docs/negs) will look for your two endpoints.
 The "healthy" column will help you troubleshoot it all.
@@ -499,7 +494,9 @@ The "healthy" column will help you troubleshoot it all.
 
 * This script only works for app01 and appp02. app03 is designed to work only for the Simple Solution and is already
   working without any script.
-* You should launch this script only if you app01 or app02
+* You should launch this script only if you app01 or app02.
+* **Important** The first time you execute it, you need to wait ~one hour (🕰) for
+Gateway APIs to be 'installed' and fully functional in your GKE clusters.
 
 ### `16-solution2-test-by-curling-N-times.sh`
 
@@ -510,6 +507,58 @@ will simply do a `kubectl down` and `kubectl up` and test the setup.
 second. Hence I split this in two parts to be able to edit the k8s Manifests and test the result with a click. After
 the code has stabilized, this still feels like a decent split, in case you want to edit manifests and see what changes
 in "prod".
+
+Notes:
+
+* If the solution 2 doesn't work, make sure that 60-90 minutes have passed from the first invocation of script 15. You
+  can use my *Grimms*-ian breadcrumbs:
+
+```bash
+$ 🐼 make breadcrumb-navigation  | grep 15-solution2
+-rw-r--r-- 1 ricc primarygroup 7 Sep  6 13:29 .executed_ok.15-solution2-xlb-GFE3-traffic-split.sh.touch
+```
+
+#### Lab 5 Test solution2
+
+Now if everythign works fine, you should be able to observe the proper traffic split by sending numerous curls.
+
+the easiest is to use my script:
+
+```bash
+ricc@derek:~/clouddeploy-platinum-path$ bin/solution2-simple-curl
+[DEBUG] IP_FWDRULE[app01]: 35.244.160.220
+app=app01 version=2.25croatia target=prod emoji=🐍
+app=app01 version=2.25croatia target=canary emoji=🐍
+app=app01 version=2.25croatia target=canary emoji=🐍
+app=app01 version=2.25croatia target=prod emoji=🐍
+app=app01 version=2.25croatia target=prod emoji=🐍
+app=app01 version=2.25croatia target=prod emoji=🐍
+app=app01 version=2.25croatia target=prod emoji=🐍
+app=app01 version=2.25croatia target=prod emoji=🐍
+app=app01 version=2.25croatia target=prod emoji=🐍
+app=app01 version=2.25croatia target=prod emoji=🐍
+app=app01 version=2.25croatia target=prod emoji=🐍
+app=app01 version=2.25croatia target=canary emoji=🐍
+[DEBUG] IP_FWDRULE[app02]: 34.111.249.225
+app=app02 version=2.0.7 target=canary emoji=💎
+app=app02 version=2.0.7 target=canary emoji=💎
+app=app02 emoji=💎 target=prod version=2.0.8
+app=app02 emoji=💎 target=prod version=2.0.8
+app=app02 emoji=💎 target=prod version=2.0.8
+app=app02 version=2.0.7 target=canary emoji=💎
+app=app02 emoji=💎 target=prod version=2.0.8
+app=app02 version=2.0.7 target=canary emoji=💎
+app=app02 emoji=💎 target=prod version=2.0.8
+app=app02 emoji=💎 target=prod version=2.0.8
+app=app02 emoji=💎 target=prod version=2.0.8
+app=app02 emoji=💎 target=prod version=2.0.8
+```
+
+You should observe a majority of PROD pods in app01 and app02.
+
+If you observe empty output, check the Cloud Deploy Pipeline page for app01 and app02, and make sure they have a proper
+version in both CANARY and PROD targets. If you don't, go back to labs 1-4 and ensure you loaded enough versions in both
+apps (tip: most scripts defaulty to `app01` in `ARGV[1]` so make sure you give `app02` ❤️ some love too).
 
 ## Other great scripts
 
