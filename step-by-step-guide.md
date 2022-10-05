@@ -49,12 +49,14 @@ and symlink it from/to another private repo).
 
 1. Choose your environment.
     * You can use Google [Cloud Shell](https://cloud.google.com/shell) 🖥️ (leveraging the awesome integrated editor).
-      This code has been fully tested there.
+      This code has been fully tested there. Note Cloud Shell is an ephemeral machine. If you come back from lunch and
+      the machine is lost, you can always reload it. When you do, some ENV variables are lost so it's **important** for
+      you to re-run the `00-init.sh` every time you *come back from lunch*.
     * **Linux** machine where you’ve installed `gcloud`.
     * **Max OSX** with bash v5 or more (to support hashes). To do so, just try `brew install bash` and make sure to use
       the new BASH path ~(you might have to explicitly call the scripts with `bash SCRIPTNAME.sh`).
 
-1. [Fork](https://github.com/palladius/clouddeploy-platinum-path/fork) the code repo:
+2. [Fork](https://github.com/palladius/clouddeploy-platinum-path/fork) the code repo:
     * Go to https://github.com/palladius/clouddeploy-platinum-path/
     * Click “**Fork”** to fork the code under your username.
 
@@ -77,7 +79,7 @@ and symlink it from/to another private repo).
 
     * Type “Create a sample trigger“ because why not. We'll delete it later.
 
-1.  Now back to your client shell (Linux Bash, Mac bash, or Cloud Shell). Cloud Shell icon should be a 🖥️ terminal
+3.  Now back to your client shell (Linux Bash, Mac bash, or Cloud Shell). Cloud Shell icon should be a 🖥️ terminal
       icon on top right of your Google Cloud Console. Clone the repository you just forked:
 
   ```bash
@@ -340,9 +342,10 @@ Plus, Skaffold should push your code to the k8s manifests as described in `skaff
 `./k8s/_base`, hence `kustomize`). **Note** If you use *autopilot* clusters, you might encounter quota issues, until the cluster
 scales up to accommodate your new needs (which is why I removed autopilot by default).
 
-Notice that you can leverage the FILE SYNC for your app to make sure only big change force a full rebuild. For instance,
+Notice that you can leverage the `FILESYNC` for your app to make sure only big change force a full rebuild. For instance,
 for `app02`, my ruby apps take long to `Docker`ize, so to me it’s a killer feature that a small change to `main.rb` gets
-directly pushed into the living container, while a change to `Gemfile` needs to force a full clean build.
+directly pushed into the living container, while a change to `Gemfile` needs to force a full clean build. In other words,
+FileSync allows you to re-build the minimum necessary at every change in the dev cycle, a dream for developers!
 
 * Now do another `git commit`, so you have TWO versions for app01.
 
@@ -368,9 +371,17 @@ gcloud deploy releases list --delivery-pipeline "$PIPELINE" \
     cut -d';' -f 8
 ```
 
+You can try this:
+
+* Now try to invoke it for `app01` or whatever app you've changed and observe the LATEST_SUCCESSFUL_RELEASE to be output
+  from the terminal (`./09-show-latest-successful-releases.sh app01`). You might want to note the code to achieve that.
+* Now find the exact same information delving in the "Cloud Deploy" UI > `app01`
+  "[Delivery Pipeline](https://console.cloud.google.com/deploy/delivery-pipelines/us-central1/app01)"
+  > "Rollouts" tab.
+
 ### `10-auto-promote-APP_XX-STAGE_YY-to-STAGE_ZZ.sh`
 
-This is another convenience script which i've created for YOU.
+This is another convenience script which i've created for 🎩 *YOU*.
 
 **Note**. Scripts from now on (10 and up) will fail miserably if you didn't successfully issue a Build Trigger via UI
 or CLI as in the 08 lab. Make sure that Cloud Deploy has version deployed in Dev/Staging before proceeding. The easiest
@@ -382,11 +393,16 @@ way is to check [here](https://console.cloud.google.com/deploy/delivery-pipeline
 
 **Note** this script is just myself hitting my head around Cloud Deploy and doing CLI promotion. You can do it with a
 simple click in the UI and maybe that’s what you should do the first 1-2 times.
+
 When you are familiar with it, you can use this “swiss army knife script” to promote an app from a target to another.
-I spent some time learning how to auto detect the latest release (hard) and then how to promote (easy).
+I spent some time learning how to auto detect the latest release (hard, so I put in the 09 script) and then how to
+promote (easy).
 The code is now in this script. For example, you can try to do first (it will pick up some reasonable defaults):
 
 #### 🧪Lab🧪 Testing the solution: promote to Canary and Prod
+
+
+**1. Staging to Canary promotion via CLI**
 
 The previous result (invoking the script with NO args) should be useless, as promote DEV to STAGE has already happened.
 Try now this:
@@ -404,7 +420,10 @@ This should promote the release from second to third target, look:
 
 So this script should be your swiss army knife for promoting the latest release for appXX from any target to any target (I haven’t tested bad directions, like 2 to 4 or 3 to 2: you should only be doing from N to N+1).
 
-For the second promotion, we will use the **UI** as it’s beautiful:
+**2. Canary to Prod promotion via UI**
+
+For the second promotion, we will use the **UI** as it’s simple and beautiful:
+
 * Open the browser at: https://console.cloud.google.com/deploy/delivery-pipelines
 * Click on *App01*. You should see the first 3 stages with a green color, while no rollouts associated to prod.
 * Click **Promote** here:
@@ -412,27 +431,52 @@ For the second promotion, we will use the **UI** as it’s beautiful:
 <img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/promote-canary-prod-ui.png?raw=true"
  alt="Promotion from Canary to Prod (UI)" align='center' />
 
- * Fill in a rollout description (eg "I follow riccardo README suggestions"), so you can laugh at yourself when it
+ * Fill in a rollout description (eg "I follow Riccardo README suggestions"), so you can laugh at yourself when it
    breaks in the future :)
 
 * I really love the UI since it brings a lot of contextual data:
     * First a rollout comment, useful in the future
-    * Second, a manifest diff so you can see what you’re really changing. This is NOT available for the very first
-      rollout, but comes interesting from the second on. It links error to right contextual logs. So every error is
-      one click away to investigate the issue.
+    * Second, a manifest `diff` so you can see what you’re really changing. This is NOT available for the very first
+      rollout (for obvious reasons), but becomes interesting from the second on. It links error to right contextual
+      logs. So every error is one click away to investigate the issue. The Google way 🦚 :)
 
-###  11-14: *redacted*
+###  11-14: redacted
 
-Steps 11-14 have been redacted. If curiouis, check under `examples/`
+Steps 11-14 have been redacted. If curious, check under `examples/`
 
-###  `15-solution2-xlb-GFE3-traffic-split.sh`
+#### Lab 4: observe Simple Solution for app03
 
-**Set up traffic split (solution 2!)**
+`app03` should work out of the box, once you manage to get TWO different versions to canary and prod.
 
-This is how NEGs will look for your two endpoints. The "healthy" column will help you torubleshoot it all.
+Instructions:
+
+* Use **Lab 1** instructions to change version in `app03` twice (eg `v2.99` and `2.100`) and deploy both.
+* Promote 2.99 to prod/canary, then 2.100 to canary using instyructions in script **10**.
+* go to GKE > [Services](https://console.cloud.google.com/kubernetes/discovery?e=-13802955&project=cicd-platinum-test008&pageState=(%22savedViews%22:(%22i%22:%226fade9ce3eaf42d2ac125fc083079c14%22,%22c%22:%5B%5D,%22n%22:%5B%5D))) page and observe the Prod and Canary version public IPs.
+* You can also test the solution with this amazing script:
+
+```bash
+bin/troubleshoot-solution4
+```
+
+###  15-solution2-xlb-GFE3-traffic-split.sh
+
+**Set up traffic split (solution 2!)**. This quite complex script will make intensive use of `gcloud` and `kubectl` to
+set up the Traffic Splitting. If this code is confusing to you, you can look at the instructions I used from my mentor
+Daniel to set it up, under
+[`k8s/amarcord/original-solution2-dmarzi/`](https://github.com/palladius/clouddeploy-platinum-path/blob/main/k8s/amarcord/original-solution2-dmarzi/readme.md)
+.
+
+This is how [NEGs](https://cloud.google.com/load-balancing/docs/negs) will look for your two endpoints.
+The "healthy" column will help you troubleshoot it all.
 
 <img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/app02-sol2-svc-canaryprod-neg-view.png?raw=true" alt="Solution 2 NEG view on GCP GCLB page" align='center' />
 
+**Notes**.
+
+* This script only works for app01 and appp02. app03 is designed to work only for the Simple Solution and is already
+  working without any script.
+* You should launch this script only if you app01 or app02
 
 ### `16-solution2-test-by-curling-N-times.sh`
 
