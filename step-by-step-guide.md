@@ -36,7 +36,7 @@ BUGS
     + [11-14: *redacted*](#11-14---redacted-)
     + [`15-solution2-xlb-GFE3-traffic-split.sh` (🕰)](#-15-solution2-xlb-gfe3-traffic-splitsh------)
     + [`16-solution2-test-by-curling-N-times.sh`](#-16-solution2-test-by-curling-n-timessh-)
-      - [Lab 5 Test solution2](#lab-5-test-solution2)
+      - [Lab 5 🧪 Test solution2](#lab-5-test-solution2)
   * [Other great scripts](#other-great-scripts)
     + [bin/curl-them-all](#bin-curl-them-all)
     + [bin/kubectl-$STAGEZ](#bin-kubectl--stagez)
@@ -518,7 +518,7 @@ $ 🐼 make breadcrumb-navigation  | grep 15-solution2
 -rw-r--r-- 1 ricc primarygroup 7 Sep  6 13:29 .executed_ok.15-solution2-xlb-GFE3-traffic-split.sh.touch
 ```
 
-#### Lab 5 Test solution2
+#### Lab 5 🧪 Test solution2
 
 Now if everythign works fine, you should be able to observe the proper traffic split by sending numerous curls.
 
