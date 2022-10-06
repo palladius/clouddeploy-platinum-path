@@ -50,6 +50,7 @@ BUGS
     - [E004 MatchExpressions LabelSelectorRequirement field is immutable](#e004-matchexpressions-labelselectorrequirement-field-is-immutable)
     - [E005 missing gcloud config](#e005-missing-gcloud-config)
     - [E006 Miscellaneous errors](#e006-miscellaneous-errors)
+    - [E007 Code is still broken!](#e007-code-is-still-broken)
   - [Additional readings](#additional-readings)
 
 
@@ -834,6 +835,15 @@ Solution: run a second time the setup script:
 * Some Org policies might prevent you from achieving your goal. For instance, a `constraints/compute.vmExternalIp`
   policy would prevent your GKE clusters to be set up with public IPs. Feel free to file a PR to fix this which is
   beyond the scope of this demo.
+
+### E007 Code is still broken!
+
+I've extensively ran the code 8 times. But bugs happen. Try these:
+
+* Download / use the v.0 version https://github.com/palladius/clouddeploy-platinum-path/releases/tag/1.0
+* Make sure your local code is always up to date to latest/stablest version. Particularly your fork could have been from
+  former/unfixed code.
+* If everything still fails, please file a bug with a paste of your error, and possibly a list of your *breadcrumbs*.
 
 ## Additional readings
 
