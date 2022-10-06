@@ -1,4 +1,5 @@
-2022-10-04 v1.21.0  `v0.21.0` (`#82fa3d7`) Docs freeze for publication and tagging. Now I'll test my code and ensure not to change
+2022-10-06 v1.0.0   `tag=1.0` Apart from minor docs amendments, I hereby declare this code stable.
+2022-10-04 v0.21.0  `v0.21.0` (`#82fa3d7`) Docs freeze for publication and tagging. Now I'll test my code and ensure not to change
                     code until a fortunate dry run, so I can tag and promote this to `v1.0`.
 2022-09-23 v0.20.3  Better docs of GKE cluster config: autopilot vs standard mode.
 2022-09-15 v0.20.3  Bug progress on `README` and some cleanup on scripts, or adding images.
