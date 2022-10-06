@@ -590,17 +590,16 @@ since you'd have the same version but it would be a first good step. After this 
 * If this still fails, chances are Gateway API isnt ready yet. Try again in 90 minutes.
 * If that stil fails, please open an issue on my repo with the output.
 
-If you only see app01 and **not app02** on the GKE page, you might have forgotten to run script 15 and 16 for app02, as
-in figure.
-
-<img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/gke-ui-with-3apps-but-only-app01-sol2.png?raw=true" alt="we forgot solution 2 plumbing for app02" align='center' />
-
-If so, please try:
+**Note**. If you only see app01 and **not app02** on the GKE page 9as in figure below), you might have forgotten to run
+script 15 and 16 for app02. If so, please try:
 
 ```bash
 ./15-solution2-xlb-GFE3-traffic-split.sh  app02
 ./16-solution2-test-by-curling-N-times.sh app02
 ```
+
+<img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/gke-ui-with-3apps-but-only-app01-sol2.png?raw=true" alt="we forgot solution 2 plumbing for app02" align='center' />
+
 
 ## Other great scripts
 
@@ -627,7 +626,8 @@ bin/kubectl-canary-and-prod  # C+P
 bin/kubectl-triune           # 4 stages (*)
 ```
 
-(*)* Why triune? *Initially [there were three](https://en.wikipedia.org/wiki/...And_Then_There_Were_Three...). Plus, Italians
+(*) *Why triune?* Good question. Well, like in all great bands, initially
+   [there were three](https://en.wikipedia.org/wiki/...And_Then_There_Were_Three...). Plus, Italians
    are quite religious.
 
 You can invoke these scripts in two ways:
