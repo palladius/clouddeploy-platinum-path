@@ -341,6 +341,10 @@ Notes:
          * Title: "My cloud shell RSA key for Riccardo Platinum Project"
          * Key: paste the content of the key.
      * You should be done now! Try the push again!
+* Check the apps on your GKE Services dashboard: you should see the following applications:
+    * `app01-kupython`
+    * `app02-kuruby`
+    * `app03-kunode` (yup, plenty of fantasy here. `ku` stands for Kustomize).
 
 #### Lab 2 🧪 Testing skaffold dev cycle [optional]
 
@@ -573,7 +577,7 @@ apps (tip: most scripts defaulty to `app01` in `ARGV[1]` so make sure you give `
 
 For exmaple:
 
-<img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/bad-pipeline-missing-prod.png?raw=true" alt="This Delivery Pipeline clearly misses a PROD target" align='right' />
+<img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/bad-pipeline-missing-prod.png?raw=true" alt="This Delivery Pipeline clearly misses a PROD target" align='center' />
 
 Here you clearly missed deploying to prod, so you can fix by promoting STAGING to PROD. However, this would be ugly
 since you'd have the same version but it would be a first good step. After this you might want to:
@@ -585,6 +589,18 @@ since you'd have the same version but it would be a first good step. After this 
 * relaunch the `bin/solution2-simple-curl`
 * If this still fails, chances are Gateway API isnt ready yet. Try again in 90 minutes.
 * If that stil fails, please open an issue on my repo with the output.
+
+If you only see app01 and **not app02** on the GKE page, you might have forgotten to run script 15 and 16 for app02, as
+in figure.
+
+<img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/gke-ui-with-3apps-but-only-app01-sol2.png?raw=true" alt="we forgot solution 2 plumbing for app02" align='center' />
+
+If so, please try:
+
+```bash
+./15-solution2-xlb-GFE3-traffic-split.sh  app02
+./16-solution2-test-by-curling-N-times.sh app02
+```
 
 ## Other great scripts
 
