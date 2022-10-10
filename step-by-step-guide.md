@@ -82,11 +82,12 @@ and symlink it from/to another private repo).
 
    * New URL will look like this: https://github.com/daenerys/clouddeploy-platinum-path [with your username].
      You’ll need this username in a minute.
-   * **__Note__** that if you don’t have a github account (and you don’t want to create one), you can just fork my repo in your
+       * **__Note:__** that if you don’t have a github account (and you don’t want to create one), you can just fork my repo in your
      GCR - more instructions later in the step *07* below.
    * To connect your github repo, extensive instructions are [here](https://cloud.google.com/build/docs/automating-builds/github/build-repos-from-github). However, following the next steps should suffice.
+   * Open **Cloud Developer Console** > **Cloud Build** and click on **ENABLE API**
+       * **__Note:__** this screen may not appear if the API is already enabled
    * Open **Cloud Developer Console** > **Cloud Build** > **Triggers**: https://console.cloud.google.com/cloud-build/triggers
-     (the first time you will have to enable Cloud Build API).
    * Click on **Connect repository** button (bottom of page):
 
     <img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/cloudbuild-connect-repo.png?raw=true" alt="Connect Repository on Cloud Build" align='center' />
