@@ -66,7 +66,7 @@ Before executing any bash script, they all source a `.env.sh` script which you�
 and symlink it from/to another private repo).
 
 1. Choose your environment.
-    * You can use Google [Cloud Shell](https://ide.cloud.google.com/shell) 🖥️ (leveraging the awesome integrated editor).
+    * You can use Google [Cloud Shell IDE](https://ide.cloud.google.com) 🖥️ (leveraging the awesome integrated editor).
       This code has been fully tested there. Note Cloud Shell is an ephemeral machine. If you come back from lunch and
       the machine is lost, you can always reload it. When you do, some ENV variables are lost so it's **important** for
       you to re-run the `00-init.sh` every time you *come back from lunch*.
