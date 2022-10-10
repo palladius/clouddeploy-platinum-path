@@ -103,7 +103,7 @@ and symlink it from/to another private repo).
 
   ```bash
   riccardo@cloudshell:~$ git clone https://github.com/palladius-uat/clouddeploy-platinum-path
-  riccardo@cloudshell:~$ cd https://github.com/palladius-uat/clouddeploy-platinum-path
+  riccardo@cloudshell:~$ cd clouddeploy-platinum-path
   ```
 
 1. *[Totally optional]* Install a colorizing gem. If you won’t do it, there’s a `lolcat` fake wrapper in `bin/` (added to
