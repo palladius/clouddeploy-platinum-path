@@ -516,7 +516,7 @@ The "healthy" column will help you troubleshoot it all. To get to the following 
 
 * This script only works for app01 and appp02. app03 is designed to work only for the Simple Solution and is already
   working without any script.
-* You should launch this script only if you app01 or app02.
+* You should launch this script only if you deployed app01 or app02.
 * **Important** The first time you execute it, you need to wait ~one hour (🕰) for
 Gateway APIs to be 'installed' and fully functional in your GKE clusters.
 
