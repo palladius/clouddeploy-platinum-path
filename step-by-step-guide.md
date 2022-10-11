@@ -468,8 +468,10 @@ For the second promotion, we will use the **UI** as it’s simple and beautiful:
 <img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/promote-canary-prod-ui.png?raw=true"
  alt="Promotion from Canary to Prod (UI)" align='center' />
 
- * Fill in a rollout description (eg "I follow Riccardo README suggestions"), so you can laugh at yourself when it
+* Fill in a rollout description (eg "I follow Riccardo README suggestions"), so you can laugh at yourself when it
    breaks in the future :)
+
+* Click `PROMOTE`
 
 * I really love the UI since it brings a lot of contextual data:
     * First a rollout comment, useful in the future
