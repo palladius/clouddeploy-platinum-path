@@ -544,6 +544,8 @@ $ 🐼 make breadcrumb-navigation  | grep 15-solution2
 
 Now if everythign works fine, you should be able to observe the proper traffic split by sending numerous curls.
 
+**Note:** before continuing, navigate to the Cloud Deploy interface and make sure for both app01 and app02 that the app is deployed to prod.
+
 the easiest is to use my script:
 
 ```bash
