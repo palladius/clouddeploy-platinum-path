@@ -445,7 +445,7 @@ The previous result (invoking the script with NO args) should be useless, as pro
 Try now this:
 
 ```bash
-$ ./10-auto-promote-APP_XX-STAGE_YY-to-STAGE_ZZ.sh app01 staging canary
+$ ./10-auto-promote-APP_XX-STAGE_YY-to-STAGE_ZZ.sh <APP_ID> <TARGET_FROM> <TARGET_TO>
 ```
 
 This should promote the release from second to third target, look:
