@@ -399,6 +399,7 @@ $ make show-latest-succesful-releases
 The culprit of the code is here:
 
 ```bash
+PIPELINE=app01
 gcloud deploy releases list --delivery-pipeline "$PIPELINE" \
   --filter renderState=SUCCEEDED \
   --format="value(name.split())" \
