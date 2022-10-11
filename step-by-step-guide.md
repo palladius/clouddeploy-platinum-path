@@ -424,7 +424,7 @@ or CLI as in the 08 lab. Make sure that Cloud Deploy has version deployed in Dev
 way is to check [here](https://console.cloud.google.com/deploy/delivery-pipelines).
 
 ```bash
-🐧$ ./10-auto-promote-APP_XX-STAGE_YY-to-STAGE_ZZ.sh <APP_ID> <TARGET_FROM> <TARGET_TO>
+🐧$ ./10-auto-promote-APP_XX-STAGE_YY-to-STAGE_ZZ.sh app01 staging canary
 ```
 
 **Note** this script is just myself hitting my head around Cloud Deploy and doing CLI promotion. You can do it with a
