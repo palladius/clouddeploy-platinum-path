@@ -360,17 +360,16 @@ as you code. Some code changes don’t even need a rebuild - but directly “scp
 
 Let’s now go into the first repo and try to leverage Skaffold for editing code and seeing its changes deployed to GKE (!).
 
-```bash
-$ cd apps/app01/
-$ make dev
-# I’m lazy and I assume you're lazy too. This command is the equivalent of:
-# ricc@zurisack:🏡$ skaffold --default-repo “$SKAFFOLD_DEFAULT_REPO” dev
-```
-
-* Try to change some code, for instance put your name somewhere in the `main.py` and bump again
-  the `VERSION` (from 2.99 to 2.100, for instance).
-* On 🐚 Cloud Shell, you can achieve this by clicking `📝 Open Editor` button. You can alwatys come back with
-  `Open Terminal` button when you need your 🐚 shell back.
+1. Start skaffold
+    ```bash
+    $ cd apps/app01/
+    $ make dev
+    # I’m lazy and I assume you're lazy too. This command is the equivalent of:
+    # ricc@zurisack:🏡$ skaffold --default-repo “$SKAFFOLD_DEFAULT_REPO” dev
+    ```
+1. Edit web.py and replace `Hello world from Skaffold in python!` with `Hello world!`
+    * **Note:** On 🐚 Cloud Shell, you can achieve this by clicking `📝 Open Editor` button. You can always come back with `Open Terminal` button when you need your 🐚 shell back.
+1. Switch back to the shell and you'll see the app is being rebuilt
 
 If the app compiles properly, this should issue a code push to Artifact Repository.
 
