@@ -508,7 +508,7 @@ Daniel to set it up, under
 . While the 15 script sets up just the `gcloud` part (🕰), the 16 scripts runs the needed `kubectl apply` (fast).
 
 This is how [NEGs](https://cloud.google.com/load-balancing/docs/negs) will look for your two endpoints.
-The "healthy" column will help you troubleshoot it all.
+The "healthy" column will help you troubleshoot it all. To get to the following page search for `load balancing` in the Cloud Console search and click on `app01-sol2-ummt-sol2`.
 
 <img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/app02-sol2-svc-canaryprod-neg-view.png?raw=true" alt="Solution 2 NEG view on GCP GCLB page" align='center' />
 
