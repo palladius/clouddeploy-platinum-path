@@ -302,7 +302,21 @@ a couple of minutes, as in this screenshot:
 <img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/promo-dev-staging.png?raw=true"
  alt="Simple Promotion to Dev and Staging" align='center' />
 
-To achieve it, try something like this:
+**Pre-requisites:**
+* First `git commit` might require setting your name and email, no biggie. Use the following:
+    ```
+    git config --global user.name "FIRST_NAME LAST_NAME"
+    git config --global user.email "GITHUB_EMAIL@example.com"
+    ```
+* Your first `git push` might require setting up a proper authentication mode. Personally, my favorite is this:
+     * `$ cd ~/.ssh`
+     * `ssh-keygen` # creates a key
+     * `cat id_rsa.pub` # => and CTRL-C content of neewly created key.
+     * Open Github > Settings > "[Ssh keys](https://github.com/settings/keys)" > "[New SSH key](https://github.com/settings/ssh/new)"
+         * Title: "My cloud shell RSA key for Riccardo Platinum Project"
+         * Key: paste the content of the key.
+
+To start, try something like this:
 
 ```bash
 source .env.sh # so you can use GITHUB_REPO_OWNER and other convenience vars.
@@ -332,21 +346,10 @@ git commit -a -m 'trying a new super duper experimental feature'
 git push $GITHUB_REPO_OWNER main
 ```
 
-Notes:
-
-* First `git commit` might require setting your name and email, no biggie.
-* Your first `git push` might require setting up a proper authentication mode. Personally, my favorite is this:
-     * `$ cd ~/.ssh`
-     * `ssh-keygen` # creates a key
-     * `cat id_rsa.pub` # => and CTRL-C content of neewly created key.
-     * Open Github > Settings > "[Ssh keys](https://github.com/settings/keys)" > "[New SSH key](https://github.com/settings/ssh/new)"
-         * Title: "My cloud shell RSA key for Riccardo Platinum Project"
-         * Key: paste the content of the key.
-     * You should be done now! Try the push again!
-* Check the apps on your GKE Services dashboard: you should see the following applications:
-    * `app01-kupython`
-    * `app02-kuruby`
-    * `app03-kunode` (yup, plenty of fantasy here. `ku` stands for Kustomize).
+**Note:** check the apps on your GKE Services dashboard. You should see the following applications:
+  * `app01-kupython`
+  * `app02-kuruby`
+  * `app03-kunode` (yup, plenty of fantasy here. `ku` stands for Kustomize).
 
 #### Lab 2 🧪 Testing skaffold dev cycle [optional]
 
