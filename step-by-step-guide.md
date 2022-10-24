@@ -66,7 +66,7 @@ Before executing any bash script, they all source a `.env.sh` script which you�
 and symlink it from/to another private repo).
 
 1. Choose your environment.
-    * You can use Google [Cloud Shell](https://cloud.google.com/shell) 🖥️ (leveraging the awesome integrated editor).
+    * You can use Google [Cloud Shell IDE](https://ide.cloud.google.com) 🖥️ (leveraging the awesome integrated editor).
       This code has been fully tested there. Note Cloud Shell is an ephemeral machine. If you come back from lunch and
       the machine is lost, you can always reload it. When you do, some ENV variables are lost so it's **important** for
       you to re-run the `00-init.sh` every time you *come back from lunch*.
@@ -82,11 +82,12 @@ and symlink it from/to another private repo).
 
    * New URL will look like this: https://github.com/daenerys/clouddeploy-platinum-path [with your username].
      You’ll need this username in a minute.
-   * **__Note__** that if you don’t have a github account (and you don’t want to create one), you can just fork my repo in your
+       * **__Note:__** that if you don’t have a github account (and you don’t want to create one), you can just fork my repo in your
      GCR - more instructions later in the step *07* below.
    * To connect your github repo, extensive instructions are [here](https://cloud.google.com/build/docs/automating-builds/github/build-repos-from-github). However, following the next steps should suffice.
+   * Open **Cloud Developer Console** > **Cloud Build** and click on **ENABLE API**
+       * **__Note:__** this screen may not appear if the API is already enabled
    * Open **Cloud Developer Console** > **Cloud Build** > **Triggers**: https://console.cloud.google.com/cloud-build/triggers
-     (the first time you will have to enable Cloud Build API).
    * Click on **Connect repository** button (bottom of page):
 
     <img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/cloudbuild-connect-repo.png?raw=true" alt="Connect Repository on Cloud Build" align='center' />
@@ -102,7 +103,7 @@ and symlink it from/to another private repo).
 
   ```bash
   riccardo@cloudshell:~$ git clone https://github.com/palladius-uat/clouddeploy-platinum-path
-  riccardo@cloudshell:~$ cd https://github.com/palladius-uat/clouddeploy-platinum-path
+  riccardo@cloudshell:~$ cd clouddeploy-platinum-path
   ```
 
 1. *[Totally optional]* Install a colorizing gem. If you won’t do it, there’s a `lolcat` fake wrapper in `bin/` (added to
@@ -301,7 +302,21 @@ a couple of minutes, as in this screenshot:
 <img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/promo-dev-staging.png?raw=true"
  alt="Simple Promotion to Dev and Staging" align='center' />
 
-To achieve it, try something like this:
+**Pre-requisites:**
+* First `git commit` might require setting your name and email, no biggie. Use the following:
+    ```
+    git config --global user.name "FIRST_NAME LAST_NAME"
+    git config --global user.email "GITHUB_EMAIL@example.com"
+    ```
+* Your first `git push` might require setting up a proper authentication mode. Personally, my favorite is this:
+     * `$ cd ~/.ssh`
+     * `ssh-keygen` # creates a key
+     * `cat id_rsa.pub` # => and CTRL-C content of neewly created key.
+     * Open Github > Settings > "[Ssh keys](https://github.com/settings/keys)" > "[New SSH key](https://github.com/settings/ssh/new)"
+         * Title: "My cloud shell RSA key for Riccardo Platinum Project"
+         * Key: paste the content of the key.
+
+To start, try something like this:
 
 ```bash
 source .env.sh # so you can use GITHUB_REPO_OWNER and other convenience vars.
@@ -331,21 +346,10 @@ git commit -a -m 'trying a new super duper experimental feature'
 git push $GITHUB_REPO_OWNER main
 ```
 
-Notes:
-
-* First `git commit` might require setting your name and email, no biggie.
-* Your first `git push` might require setting up a proper authentication mode. Personally, my favorite is this:
-     * `$ cd ~/.ssh`
-     * `ssh-keygen` # creates a key
-     * `cat id_rsa.pub` # => and CTRL-C content of neewly created key.
-     * Open Github > Settings > "[Ssh keys](https://github.com/settings/keys)" > "[New SSH key](https://github.com/settings/ssh/new)"
-         * Title: "My cloud shell RSA key for Riccardo Platinum Project"
-         * Key: paste the content of the key.
-     * You should be done now! Try the push again!
-* Check the apps on your GKE Services dashboard: you should see the following applications:
-    * `app01-kupython`
-    * `app02-kuruby`
-    * `app03-kunode` (yup, plenty of fantasy here. `ku` stands for Kustomize).
+**Note:** check the apps on your GKE Services dashboard. You should see the following applications:
+  * `app01-kupython`
+  * `app02-kuruby`
+  * `app03-kunode` (yup, plenty of fantasy here. `ku` stands for Kustomize).
 
 #### Lab 2 🧪 Testing skaffold dev cycle [optional]
 
@@ -356,17 +360,16 @@ as you code. Some code changes don’t even need a rebuild - but directly “scp
 
 Let’s now go into the first repo and try to leverage Skaffold for editing code and seeing its changes deployed to GKE (!).
 
-```bash
-$ cd apps/app01/
-$ make dev
-# I’m lazy and I assume you're lazy too. This command is the equivalent of:
-# ricc@zurisack:🏡$ skaffold --default-repo “$SKAFFOLD_DEFAULT_REPO” dev
-```
-
-* Try to change some code, for instance put your name somewhere in the `main.py` and bump again
-  the `VERSION` (from 2.99 to 2.100, for instance).
-* On 🐚 Cloud Shell, you can achieve this by clicking `📝 Open Editor` button. You can alwatys come back with
-  `Open Terminal` button when you need your 🐚 shell back.
+1. Start skaffold
+    ```bash
+    $ cd apps/app01/
+    $ make dev
+    # I’m lazy and I assume you're lazy too. This command is the equivalent of:
+    # ricc@zurisack:🏡$ skaffold --default-repo “$SKAFFOLD_DEFAULT_REPO” dev
+    ```
+1. Edit web.py and replace `Hello world from Skaffold in python!` with `Hello world!`
+    * **Note:** On 🐚 Cloud Shell, you can achieve this by clicking `📝 Open Editor` button. You can always come back with `Open Terminal` button when you need your 🐚 shell back.
+1. Switch back to the shell and you'll see the app is being rebuilt
 
 If the app compiles properly, this should issue a code push to Artifact Repository.
 
@@ -396,6 +399,7 @@ $ make show-latest-succesful-releases
 The culprit of the code is here:
 
 ```bash
+PIPELINE=app01
 gcloud deploy releases list --delivery-pipeline "$PIPELINE" \
   --filter renderState=SUCCEEDED \
   --format="value(name.split())" \
@@ -464,8 +468,10 @@ For the second promotion, we will use the **UI** as it’s simple and beautiful:
 <img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/promote-canary-prod-ui.png?raw=true"
  alt="Promotion from Canary to Prod (UI)" align='center' />
 
- * Fill in a rollout description (eg "I follow Riccardo README suggestions"), so you can laugh at yourself when it
+* Fill in a rollout description (eg "I follow Riccardo README suggestions"), so you can laugh at yourself when it
    breaks in the future :)
+
+* Click `PROMOTE`
 
 * I really love the UI since it brings a lot of contextual data:
     * First a rollout comment, useful in the future
@@ -502,7 +508,7 @@ Daniel to set it up, under
 . While the 15 script sets up just the `gcloud` part (🕰), the 16 scripts runs the needed `kubectl apply` (fast).
 
 This is how [NEGs](https://cloud.google.com/load-balancing/docs/negs) will look for your two endpoints.
-The "healthy" column will help you troubleshoot it all.
+The "healthy" column will help you troubleshoot it all. To get to the following page search for `load balancing` in the Cloud Console search and click on `app01-sol2-ummt-sol2`.
 
 <img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/app02-sol2-svc-canaryprod-neg-view.png?raw=true" alt="Solution 2 NEG view on GCP GCLB page" align='center' />
 
@@ -510,7 +516,7 @@ The "healthy" column will help you troubleshoot it all.
 
 * This script only works for app01 and appp02. app03 is designed to work only for the Simple Solution and is already
   working without any script.
-* You should launch this script only if you app01 or app02.
+* You should launch this script only if you deployed app01 or app02.
 * **Important** The first time you execute it, you need to wait ~one hour (🕰) for
 Gateway APIs to be 'installed' and fully functional in your GKE clusters.
 
@@ -537,6 +543,8 @@ $ 🐼 make breadcrumb-navigation  | grep 15-solution2
 #### Lab 5 🧪 Test solution2
 
 Now if everythign works fine, you should be able to observe the proper traffic split by sending numerous curls.
+
+**Note:** before continuing, navigate to the Cloud Deploy interface and make sure for both app01 and app02 that the app is deployed to prod.
 
 the easiest is to use my script:
 
