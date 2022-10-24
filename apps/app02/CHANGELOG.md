@@ -1,3 +1,4 @@
+* 2022-10-24 v2.0.9 [DEV] After Will PR #33 merge.
 * 2022-08-16 v2.0.8 [DEV] Scrambling /statusz order which seems to make more sense.
 * 2022-08-16 v2.0.7 [DEV] Simple bump with update of docs, nothing more.
 * 2022-07-23 v2.0.5 [DEV] v2-0-5slashn commit 30163926b67c04b4232da94b19b79f8d034d4b83 fixed the \n in /statusz
