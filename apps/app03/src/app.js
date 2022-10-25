@@ -24,7 +24,7 @@ const appName = process.env.APP_NAME
 const favoriteColor = process.env.FAVORITE_COLOR || '#03fca9'
 const favoriteColorCommon = process.env.FAVORITE_COLOR_COMMON || '#282828'
 const deployStage = process.env.COMMON_CLOUD_DEPLOY_TARGET
-const deployStageCommonShort = process.env.CLOUD_DEPLOY_TARGET_SHORT_COMMON || '🥹🥹🥹'
+const deployStageCommonShort = process.env.CLOUD_DEPLOY_TARGET_SHORT_COMMON || '😢😭😢 '
 const message = process.env.RICCARDO_MESSAGE
 
 // Former icons:🚀✨🫶🧊 STATUSZ
@@ -56,12 +56,12 @@ app.get('/', (req, res) => {
            <!-- /statusz --> ${getStatuszMessage()}
           </center>
     `)
-    console.log("/ (root) invoked");
+    console.log(`/ (root) invoked: ${getStatuszMessage().replace(/[\n\r]+/g, '')}`);
 })
 
 app.get('/statusz', (req, res) => {
     res.send(getStatuszMessage());
-    console.log("/statusz (easter egg) invoked");
+    console.log(`/statusz (easter egg) invoked: ${getStatuszMessage().replace(/[\n\r]+/g, '')}`);
 })
 
 app.listen(8080)
