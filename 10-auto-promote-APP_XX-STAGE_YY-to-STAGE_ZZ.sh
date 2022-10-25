@@ -27,7 +27,7 @@ DESIRED_STAGE="${3:-staging}"
 #gcloud config set deploy/region "$CLOUD_DEPLOY_REGION"
 
 if [ $# -eq 0 ]; then
-    yellow "Usage: $0 [appXX] [STAGE_FROM] [STAGE_TO] (STAGES can be: dev, staging, canary, production)"
+    yellow "Usage: $0 [appXX] [STAGE_FROM] [STAGE_TO] (STAGES can be: dev, staging, canary, production). Note: for APP03 remember the 3rd stage is 'canary-production'"
 #else
 fi
 

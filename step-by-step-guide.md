@@ -384,6 +384,9 @@ FileSync allows you to re-build the minimum necessary at every change in the dev
 
 * Now do another `git commit`, so you have TWO versions for app01.
 
+⚠️ACHTUNG!⚠️ This lab *could* trigger the `The Deployment "app01-kupython" is invalid: spec.selector: Invalid value:` error.
+Not a big problem, see below under `E004` how to fix it.
+
 ###  `09-show-latest-successful-releases.sh`
 
 This is a convenience script I wrote to tell me what was the last successful
@@ -394,6 +397,17 @@ $ ./09-show-latest-successful-releases.sh app01
 $ ./09-show-latest-successful-releases.sh app02
 # or for both:
 $ make show-latest-succesful-releases
+```
+
+They should give you output like this:
+
+```bash
+[..]
+20. Lets now print out just the release name..
+the LATEST_SUCCESSFUL_RELEASE for this PIPELINE app01 is: 'app01-20221025-1343-v2-27a' !!
+[..]
+20. Lets now print out just the release name..
+the LATEST_SUCCESSFUL_RELEASE for this PIPELINE app02 is: 'app02-20221025-1343-v2-0-9a' !!
 ```
 
 The culprit of the code is here:
@@ -413,7 +427,7 @@ You can try this:
   from the terminal (`./09-show-latest-successful-releases.sh app01`). You might want to note the code to achieve that.
 * Now find the exact same information delving in the "Cloud Deploy" UI > `app01`
   "[Delivery Pipeline](https://console.cloud.google.com/deploy/delivery-pipelines/us-central1/app01)"
-  > "Rollouts" tab.
+  > "Rollouts" tab. Cool, uh?
 
 ### `10-auto-promote-APP_XX-STAGE_YY-to-STAGE_ZZ.sh`
 
@@ -442,10 +456,12 @@ We will perform two actions, one with command line and one from UI. You get to d
 **1. Staging to Canary promotion (via CLI)**
 
 The previous result (invoking the script with NO args) should be useless, as promote DEV to STAGE has already happened.
-Try now this:
+Try now this (we promote from stage 2 to 3 via CLI for all aps, note that app03 has a different stage 3):
 
 ```bash
 $ ./10-auto-promote-APP_XX-STAGE_YY-to-STAGE_ZZ.sh app01 staging canary
+$ ./10-auto-promote-APP_XX-STAGE_YY-to-STAGE_ZZ.sh app02 staging canary
+$ ./10-auto-promote-APP_XX-STAGE_YY-to-STAGE_ZZ.sh app03 staging canary-production
 ```
 
 This should promote the release from second to third target, look:
