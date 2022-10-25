@@ -56,10 +56,12 @@ app.get('/', (req, res) => {
            <!-- /statusz --> ${getStatuszMessage()}
           </center>
     `)
+    console.log("/ (root) invoked");
 })
 
 app.get('/statusz', (req, res) => {
-    res.send(getStatuszMessage())
+    res.send(getStatuszMessage());
+    console.log("/statusz (easter egg) invoked");
 })
 
 app.listen(8080)
