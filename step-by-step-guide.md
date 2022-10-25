@@ -530,18 +530,19 @@ The "healthy" column will help you troubleshoot it all. To get to the following 
 
 **Notes**.
 
-* This script only works for app01 and appp02. app03 is designed to work only for the Simple Solution and is already
-  working without any script.
-* You should launch this script only if you deployed app01 or app02.
-* **Important** The first time you execute it, you need to wait ~one hour (🕰) for
-Gateway APIs to be 'installed' and fully functional in your GKE clusters.
+* This script only works for **app01** and **appp02**: *app03* is designed to work only for the Simple Solution and is
+  already working without any script.
+* You should launch this script **only** if you deployed `app01` or `app02` all the way to CANARY and PROD, with
+  different versions.
+* **Important** The first time you execute it, you need to wait ~one hour (🕰) for Gateway APIs to be 'installed' and
+  fully functional in your GKE clusters.
 
 ### `16-solution2-test-by-curling-N-times.sh`
 
-Once you set up the traffic splitting "infrastructure", this script
-will simply do a `kubectl down` and `kubectl up` and test the setup.
+Once you set up the traffic splitting "infrastructure", this script will simply do a `kubectl down` and `kubectl up` and
+test the setup.
 
-*Q. Why is this split into TWO scripts?* Initially the setuip part took a long time, while the kubernetes apply took one
+*Q. Why is this split into TWO scripts?* Initially the setup part took a long time, while the kubernetes apply took one
 second. Hence I split this in two parts to be able to edit the k8s Manifests and test the result with a click. After
 the code has stabilized, this still feels like a decent split, in case you want to edit manifests and see what changes
 in "prod".
