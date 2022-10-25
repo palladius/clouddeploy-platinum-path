@@ -56,12 +56,12 @@ app.get('/', (req, res) => {
            <!-- /statusz --> ${getStatuszMessage()}
           </center>
     `)
-    console.log(`/ (root) invoked: ${getStatuszMessage().replace(/[\n\r]+/g, '')}`);
+    console.log(`/ (root) invoked in ${deployStageCommonShort}: ${getStatuszMessage().replace(/[\n\r]+/g, '')}`);
 })
 
 app.get('/statusz', (req, res) => {
     res.send(getStatuszMessage());
-    console.log(`/statusz (easter egg) invoked: ${getStatuszMessage().replace(/[\n\r]+/g, '')}`);
+    console.log(`/statusz (easter egg) invoked in ${deployStageCommonShort}: ${getStatuszMessage().replace(/[\n\r]+/g, '')}`);
 })
 
 app.listen(8080)
