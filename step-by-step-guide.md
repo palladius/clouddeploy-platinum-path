@@ -359,6 +359,9 @@ git push $GITHUB_REPO_OWNER main
 
 #### Lab 2 🧪 Testing skaffold dev cycle [optional]
 
+<details>
+  <summary>Commentary on Lab 2 🧪</summary>
+
 **_Note_**: This was a very *Eureka* moment to me - although not strictly needed. This where you see all the power of
 *skaffold*: you enter in an infinite dev loop where you change the code and its changes get built and pushed to GKE
 as you code. Some code changes don’t even need a rebuild - but directly “scp” the changed file to prod via
@@ -392,6 +395,8 @@ FileSync allows you to re-build the minimum necessary at every change in the dev
 
 ⚠️ACHTUNG!⚠️ This lab *could* trigger the `The Deployment "app01-kupython" is invalid: spec.selector: Invalid value:` error.
 Not a big problem, see below under `E004` how to fix it.
+
+</details>
 
 ###  `09-show-latest-successful-releases.sh`
 
@@ -517,9 +522,13 @@ Instructions:
 * go to GKE > [Services](https://console.cloud.google.com/kubernetes/discovery?e=-13802955&project=cicd-platinum-test008&pageState=(%22savedViews%22:(%22i%22:%226fade9ce3eaf42d2ac125fc083079c14%22,%22c%22:%5B%5D,%22n%22:%5B%5D))) page and observe the Prod and Canary version public IPs.
 * You can also test the solution with this amazing script: `bin/troubleshoot-solution4`. I know, right?
 
+<details>
+  <summary>Commentary on Steps 11-14</summary>
 ###  11-14: *redacted*
 
 Steps 11-14 have been redacted. If curious, check under `examples/`
+
+</details>
 
 ### `15-solution2-xlb-GFE3-traffic-split.sh` (🕰)
 
@@ -565,7 +574,7 @@ $ 🐼 make breadcrumb-navigation  | grep 15-solution2
 
 #### Lab 5 🧪 Test solution2
 
-Now if everythign works fine, you should be able to observe the proper traffic split by sending numerous curls.
+Now if everything works fine, you should be able to observe the proper traffic split by sending numerous curls.
 
 **Note:** before continuing, navigate to the Cloud Deploy interface and make sure for both app01 and app02 that the app is deployed to prod.
 
@@ -607,7 +616,7 @@ If you observe empty output, check the Cloud Deploy Pipeline page for app01 and 
 version in both CANARY and PROD targets. If you don't, go back to labs 1-4 and ensure you loaded enough versions in both
 apps (tip: most scripts defaulty to `app01` in `ARGV[1]` so make sure you give `app02` ❤️ some love too).
 
-For exmaple:
+For example:
 
 <img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/bad-pipeline-missing-prod.png?raw=true" alt="This Delivery Pipeline clearly misses a PROD target" align='center' />
 
@@ -657,6 +666,8 @@ bin/kubectl-prod
 bin/kubectl-canary-and-prod  # C+P
 bin/kubectl-triune           # 4 stages (*)
 ```
+<details>
+  <summary>Commentary on bin/kubectl-$STAGEZ</summary>
 
 (*) *Why triune?* Good question. Well, like in all great bands, initially
    [there were three](https://en.wikipedia.org/wiki/...And_Then_There_Were_Three...). Plus, Italians
@@ -706,6 +717,7 @@ $ bin/kubectl-triune get deployment 2>/dev/null
 # Another useful test: gets solution2 stuff in PROD
 $ bin/kubectl-prod get all,gateway,httproute | grep sol2
 ```
+</details>
 
 ### bin/troubleshoot-solutionN
 
