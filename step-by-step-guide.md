@@ -153,6 +153,10 @@ find a better way, please tell me - as I’ve looked for the past 5 years and th
 
 Originally there were 16 scripts, then with time I removed them, renamed them, moved them.
 
+
+<details>
+  <summary>Commentary on Bash Scripts</summary>
+
 Whenever I wasn't able to fully support some code but I thoguht that code would be useful to some of you, I moved it
 under `examples/`; so think of examples like a 🪦 cemetery, or a
 *Derek Zoolander's Center For Scripts Who Can't Be Read Good*.
@@ -170,6 +174,8 @@ and philosophical notes:
 * Everything in this is scripted except one point which requires manual intervention, which is the cloning of the repo.
   This step was originally step 6.5 which I then moved at the beginning of the instructions (so now it looks
   more lie 0.065). So if your script 7 fails, you know where to look.
+
+</details>
 
 ### `00-init.sh` (🕰)
 
