@@ -69,48 +69,50 @@ and symlink it from/to another private repo).
 1. Choose your environment. eg, [Cloud Shell](https://ide.cloud.google.com) 🖥️.
 
 <details>
-  <summary>Table of content (don't be scared!)</summary>
+  <summary>Other environments (🐧🍎)</summary>
 
-    * You can use Google [Cloud Shell IDE](https://ide.cloud.google.com) 🖥️ (leveraging the awesome integrated editor).
-      This code has been fully tested there. Note Cloud Shell is an ephemeral machine. If you come back from lunch and
-      the machine is lost, you can always reload it. When you do, some ENV variables are lost so it's **important** for
-      you to re-run the `00-init.sh` every time you *come back from lunch*.
-    * **Linux** machine where you’ve installed `gcloud`.
-    * **Max OSX** with bash v5 or more (to support hashes). To do so, just try `brew install bash` and make sure to use
-      the new BASH path ~(you might have to explicitly call the scripts with `bash SCRIPTNAME.sh`).
+ * You can use Google [Cloud Shell IDE](https://ide.cloud.google.com) 🖥️ (leveraging the awesome integrated editor).
+   This code has been fully tested there. Note Cloud Shell is an ephemeral machine. If you come back from lunch and
+   the machine is lost, you can always reload it. When you do, some ENV variables are lost so it's **important** for
+   you to re-run the `00-init.sh` every time you *come back from lunch*.
+ * **Linux** machine where you’ve installed `gcloud`.
+ * **Max OSX** with bash v5 or more (to support hashes). To do so, just try `brew install bash` and make sure to use
+   the new BASH path ~(you might have to explicitly call the scripts with `bash SCRIPTNAME.sh`).
+
 </details>
 
-2. [Fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo) my
+1. [Fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo) my
    [code repo](https://github.com/palladius/clouddeploy-platinum-path/fork) and note your username:
 
 <details>
   <summary>More detailed instructions on 🍴 forking</summary>
 
-    * Go to https://github.com/palladius/clouddeploy-platinum-path/
-    * Click “**Fork”** to fork the code under your username ([how to fork a repo](https://docs.github.com/en/get-started/quickstart/fork-a-repo)).
+ * Go to https://github.com/palladius/clouddeploy-platinum-path/
+ * Click “**Fork”** to fork the code under your username ([how to fork a repo](https://docs.github.com/en/get-started/quickstart/fork-a-repo)).
 
-    <img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/github-fork.png?raw=true" alt="GitHub Fork" align='center' />
+ <img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/github-fork.png?raw=true" alt="GitHub Fork" align='center' />
 
-   * New URL will look like this: https://github.com/daenerys/clouddeploy-platinum-path [with your username].
-     You’ll need this username in a minute.
-       * **__Note:__** that if you don’t have a github account (and you don’t want to create one), you can just fork my repo in your
-     GCR - more instructions later in the step *07* below.
-   * To connect your github repo, extensive instructions are [here](https://cloud.google.com/build/docs/automating-builds/github/build-repos-from-github). However, following the next steps should suffice.
-   * Open **Cloud Developer Console** > **Cloud Build** and click on **ENABLE API**
-       * **__Note:__** this screen may not appear if the API is already enabled
-   * Open **Cloud Developer Console** > **Cloud Build** > **Triggers**: https://console.cloud.google.com/cloud-build/triggers
-   * Click on **Connect repository** button (bottom of page):
+* New URL will look like this: https://github.com/daenerys/clouddeploy-platinum-path [with your username].
+  You’ll need this username in a minute.
+    * **__Note:__** that if you don’t have a github account (and you don’t want to create one), you can just fork my repo in your
+  GCR - more instructions later in the step *07* below.
+* To connect your github repo, extensive instructions are [here](https://cloud.google.com/build/docs/automating-builds/github/build-repos-from-github). However, following the next steps should suffice.
+* Open **Cloud Developer Console** > **Cloud Build** and click on **ENABLE API**
+    * **__Note:__** this screen may not appear if the API is already enabled
+* Open **Cloud Developer Console** > **Cloud Build** > **Triggers**: https://console.cloud.google.com/cloud-build/triggers
+* Click on **Connect repository** button (bottom of page):
 
-    <img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/cloudbuild-connect-repo.png?raw=true" alt="Connect Repository on Cloud Build" align='center' />
+ <img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/cloudbuild-connect-repo.png?raw=true" alt="Connect Repository on Cloud Build" align='center' />
 
-    * “Select Source” > “**GitHub (Cloud Build GitHub App)**” and click “continue”. Follow the authentication flow, if
-      needed. (On github side, you can find/edit the Cloud Build integration
-      [here](https://github.com/settings/installations/).)
+ * “Select Source” > “**GitHub (Cloud Build GitHub App)**” and click “continue”. Follow the authentication flow, if
+   needed. (On github side, you can find/edit the Cloud Build integration
+   [here](https://github.com/settings/installations/).)
 
-    * Type “Create a sample trigger“ because why not. We'll delete it later.
+ * Type “Create a sample trigger“ because why not. We'll delete it later.
+
 </details>
 
-4.  Now back to your client shell (Linux Bash, Mac bash, or Cloud Shell). Cloud Shell icon should be a 🖥️ terminal
+1.  Now back to your client shell (Linux Bash, Mac bash, or Cloud Shell). Cloud Shell icon should be a 🖥️ terminal
       icon on top right of your Google Cloud Console. Clone the repository you just forked:
 
   ```bash
