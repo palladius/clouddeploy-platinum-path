@@ -66,7 +66,11 @@ Before executing any bash script, they all source a `.env.sh` script which you�
 [git-privatize](https://github.com/palladius/sakura/blob/master/bin/git-privatize)
 and symlink it from/to another private repo).
 
-1. Choose your environment.
+1. Choose your environment. eg, [Cloud Shell](https://ide.cloud.google.com) 🖥️.
+
+<details>
+  <summary>Table of content (don't be scared!)</summary>
+
     * You can use Google [Cloud Shell IDE](https://ide.cloud.google.com) 🖥️ (leveraging the awesome integrated editor).
       This code has been fully tested there. Note Cloud Shell is an ephemeral machine. If you come back from lunch and
       the machine is lost, you can always reload it. When you do, some ENV variables are lost so it's **important** for
@@ -74,10 +78,16 @@ and symlink it from/to another private repo).
     * **Linux** machine where you’ve installed `gcloud`.
     * **Max OSX** with bash v5 or more (to support hashes). To do so, just try `brew install bash` and make sure to use
       the new BASH path ~(you might have to explicitly call the scripts with `bash SCRIPTNAME.sh`).
+</details>
 
-2. [Fork](https://github.com/palladius/clouddeploy-platinum-path/fork) the code repo:
+2. [Fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo) my
+   [code repo](https://github.com/palladius/clouddeploy-platinum-path/fork) and note your username:
+
+<details>
+  <summary>More detailed instructions on 🍴 forking</summary>
+
     * Go to https://github.com/palladius/clouddeploy-platinum-path/
-    * Click “**Fork”** to fork the code under your username.
+    * Click “**Fork”** to fork the code under your username ([how to fork a repo](https://docs.github.com/en/get-started/quickstart/fork-a-repo)).
 
     <img src="https://github.com/palladius/clouddeploy-platinum-path/blob/main/doc/github-fork.png?raw=true" alt="GitHub Fork" align='center' />
 
@@ -98,8 +108,9 @@ and symlink it from/to another private repo).
       [here](https://github.com/settings/installations/).)
 
     * Type “Create a sample trigger“ because why not. We'll delete it later.
+</details>
 
-3.  Now back to your client shell (Linux Bash, Mac bash, or Cloud Shell). Cloud Shell icon should be a 🖥️ terminal
+4.  Now back to your client shell (Linux Bash, Mac bash, or Cloud Shell). Cloud Shell icon should be a 🖥️ terminal
       icon on top right of your Google Cloud Console. Clone the repository you just forked:
 
   ```bash
