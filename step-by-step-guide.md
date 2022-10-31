@@ -1,6 +1,7 @@
 # 👣 Step by step 👣 guide
 
-
+<details>
+  <summary>Table of content (don't be scared!)</summary>
 <!--
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
 Riccardo instructions:
@@ -54,7 +55,7 @@ BUGS
   - [Additional readings](#additional-readings)
 
 
-
+</details>
 
 ## Setting things up
 
