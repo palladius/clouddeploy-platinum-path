@@ -69,7 +69,7 @@ and symlink it from/to another private repo).
 1. Choose your environment. eg, [Cloud Shell](https://ide.cloud.google.com) 🖥️.
 
 <details>
-  <summary>Other environments (🐧🍎)</summary>
+  <summary>💡More on: other environments (🐧🍎)</summary>
 
  * You can use Google [Cloud Shell IDE](https://ide.cloud.google.com) 🖥️ (leveraging the awesome integrated editor).
    This code has been fully tested there. Note Cloud Shell is an ephemeral machine. If you come back from lunch and
@@ -85,7 +85,7 @@ and symlink it from/to another private repo).
    [code repo](https://github.com/palladius/clouddeploy-platinum-path/fork) and note your username:
 
 <details>
-  <summary>More detailed instructions on 🍴 forking</summary>
+  <summary>💡More detailed instructions on 🍴 forking</summary>
 
  * Go to https://github.com/palladius/clouddeploy-platinum-path/
  * Click “**Fork”** to fork the code under your username ([how to fork a repo](https://docs.github.com/en/get-started/quickstart/fork-a-repo)).
@@ -122,7 +122,7 @@ and symlink it from/to another private repo).
 
 3. *[optional]* Add some color: `gem install lolcat`
 <details>
-  <summary>More on: Why 🌈 colors?</summary>
+  <summary>💡More on: Why 🌈 colors?</summary>
 
 Install a [colorizing Ruby gem](https://github.com/busyloop/lolcat). If you won’t do it, there’s a `lolcat` fake
 wrapper in `bin/` (added to path in init script). But trust me, it’s worth it (unless you have no Ruby installed).
@@ -151,7 +151,7 @@ wrapper in `bin/` (added to path in init script). But trust me, it’s worth it 
       find it also in `$ grep clouddeploy-platinum-path .git/config`
 
 <details>
-  <summary>Optional fields</summary>
+  <summary>💡More on: optional fields</summary>
 Optional fields:
 
 * **GCLOUD_CONFIG** [optional]. This is the name of your gcloud configuration. Pretty cosmetic, it becomes important
@@ -177,7 +177,7 @@ Originally there were 16 scripts, then with time I removed them, renamed them, m
 
 
 <details>
-  <summary>Commentary on Bash Scripts</summary>
+  <summary>💡Commentary on Bash Scripts</summary>
 
 Whenever I wasn't able to fully support some code but I thoguht that code would be useful to some of you, I moved it
 under `examples/`; so think of examples like a 🪦 cemetery, or a
@@ -250,7 +250,7 @@ some things weren't necessarily up and running at that point*).
 ### `04-status.sh`
 
 <details>
-  <summary>Script 04 is totally optional</summary>
+  <summary>💡More on: Script 04 (which is optional)</summary>
 
 This is a script that I wrote to just check the status of the app and be invokable by my `Makefile`.
 Depending on what I'm troubleshooting I’ll play around with:
@@ -279,7 +279,7 @@ Cloud Build needs to build images on your behalf, and possibly trigger events wh
 To do so, it needs a Service Account to authenticate as, with proper powers.
 
 <details>
-  <summary>More on: Script 05</summary>
+  <summary>💡More on: Script 05</summary>
 Take a moment to look at the rights that
 have been granted in SUCCINCT_ROLE - most likely you will need to change them for your implementation if you use
 different technologies:
@@ -304,7 +304,7 @@ gcloud artifacts repositories add-iam-policy-binding $REPO_NAME \
 
 ### `06-WIP-automated-cloud-build-setup.sh`
 
-You can safely skip this.
+You can safely skip this. This is 🚧 work in progress.
 
 ### `07-create-cloud-build-triggers.sh`
 
