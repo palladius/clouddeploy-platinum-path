@@ -122,7 +122,7 @@ and symlink it from/to another private repo).
 
 3. *[optional]* Add some color: `gem install lolcat`
 <details>
-  <summary>Why 🌈?</summary>
+  <summary>More on: Why 🌈 colors?</summary>
 
 Install a [colorizing Ruby gem](https://github.com/busyloop/lolcat). If you won’t do it, there’s a `lolcat` fake
 wrapper in `bin/` (added to path in init script). But trust me, it’s worth it (unless you have no Ruby installed).
@@ -201,12 +201,14 @@ and philosophical notes:
 
 ### `00-init.sh` (🕰)
 
-**Initialization**. This scripts parses the ENV vars in `env.sh` and sets your `gcloud`, `skaffold` and GKE environment
+**Initialization**. This scripts parses the ENV vars in `env.sh` and sets up your `gcloud`, `skaffold` and GKE environment
   (`kubectl`) for success. If you leave this project, do something else with gcloud or GKE and come back to it tomorrow,
   its always safe to execute it once or even twice.
 
     🐧ricc@derek:~/clouddeploy-platinum-path$ ./00-init.sh
 
+<details>
+  <summary>More on: script 00</summary>
 Notes:
 
 * The first time you execute, depending on your execution environment, you might receive a request to authenticate via
@@ -214,6 +216,7 @@ Notes:
   environment is able to authenticate as you.
 * If you have been interrupted, make sure to execute the script again (wghen in doubt, follow the *breadcrumbs*).
 * First execution might take a while (🕰)
+</details>
 
 ### `01-set-up-GKE-clusters.sh` (🕰)
 
@@ -245,6 +248,10 @@ Note:  Cluster Build can take several minutes to complete. You can check progres
 some things weren't necessarily up and running at that point*).
 
 ### `04-status.sh`
+
+<details>
+  <summary>Script 04 is totally optional</summary>
+
 This is a script that I wrote to just check the status of the app and be invokable by my `Makefile`.
 Depending on what I'm troubleshooting I’ll play around with:
 
@@ -264,10 +271,16 @@ SHOW_VERBOSE_STUFF="false" SHOW_GCLOUD_ENTITIES="false" SHOW_DEVCONSOLE_LINKS="t
 
 .. to only see gcloud entities and point your browser to them.
 
+</details>
+
 ### `05-IAM-enable-cloud-build.sh`
 
 Cloud Build needs to build images on your behalf, and possibly trigger events which push those artifacts to production.
-To do so, it needs a Service Account to authenticate as, with proper powers. Take a moment to look at the rights that
+To do so, it needs a Service Account to authenticate as, with proper powers.
+
+<details>
+  <summary>More on: Script 05</summary>
+Take a moment to look at the rights that
 have been granted in SUCCINCT_ROLE - most likely you will need to change them for your implementation if you use
 different technologies:
 
@@ -286,6 +299,8 @@ gcloud artifacts repositories add-iam-policy-binding $REPO_NAME \
   --member=serviceAccount:$YOUR_SERVICE_ACCOUNT_NAME@your-project.iam.gserviceaccount.com \
   --location=$REGION
 ```
+
+</details>
 
 ### `06-WIP-automated-cloud-build-setup.sh`
 
