@@ -5,7 +5,7 @@ Quick links:
 * [👨‍💻 Code](https://github.com/palladius/clouddeploy-platinum-path)
 * [📰 Article on Medium](https://medium.com/@palladiusbonton/draft-canarying-on-gcp-with-cloud-deploy-91b3e4d0ee9a)
 * [👣 Step by step 👣 guide](https://github.com/palladius/clouddeploy-platinum-path/blob/main/step-by-step-guide.md)
-* [📹 Video on YouTube](https://youtu.be/IwagLko6NQc)
+* [📹 Video on YouTube](https://youtu.be/0GfV5iMGG64)
 
 This repo tries to demo a few applications (under `apps/`) and their path to
 deployment via Google Cloud Platform's `Cloud Build` + `Cloud Deploy`.
