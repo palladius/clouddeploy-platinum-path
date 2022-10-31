@@ -112,7 +112,7 @@ and symlink it from/to another private repo).
 
 </details>
 
-1.  Now back to your client shell (Linux Bash, Mac bash, or Cloud Shell). Cloud Shell icon should be a 🖥️ terminal
+2.  Now back to your client shell (Linux Bash, Mac bash, or Cloud Shell). Cloud Shell icon should be a 🖥️ terminal
       icon on top right of your Google Cloud Console. Clone the repository you just forked:
 
   ```bash
@@ -120,17 +120,22 @@ and symlink it from/to another private repo).
   riccardo@cloudshell:~$ cd clouddeploy-platinum-path
   ```
 
-1. *[Totally optional]* Install a colorizing gem. If you won’t do it, there’s a `lolcat` fake wrapper in `bin/` (added to
-   path in init script). But trust me, it’s worth it (unless you have no Ruby installed).
+3. *[optional]* Add some color: `gem install lolcat`
+<details>
+  <summary>Why 🌈?</summary>
+
+Install a [colorizing Ruby gem](https://github.com/busyloop/lolcat). If you won’t do it, there’s a `lolcat` fake
+wrapper in `bin/` (added to path in init script). But trust me, it’s worth it (unless you have no Ruby installed).
 
     `gem install lolcat`
 
+</details>
 
-1. Copy the env template to a new file that we’ll modify
+1. Copy the env template to a new file that we’ll modify on next step:
 
     `cp .env.sh.dist .env.sh`
 
-1. Open `.env.sh` and substitute the proper values for any variable that has # changeme next to it.
+2. Open `.env.sh` and substitute the proper values for any variable that has # changeme next to it.
   (If you’re on 🖥️ **Cloud Shell**, you can try `edit .env.sh` 😎 to let the UI editor shine). For instance:
 
     * **PROJECT_ID**. This your string (non-numeric) project id -
@@ -145,8 +150,9 @@ and symlink it from/to another private repo).
     * **GITHUB_REPO_OWNER** (eg, *“daenerys”*). This should be the user you forked the repo with in step (2). You can
       find it also in `$ grep clouddeploy-platinum-path .git/config`
 
+<details>
+  <summary>Optional fields</summary>
 Optional fields:
-
 
 * **GCLOUD_CONFIG** [optional]. This is the name of your gcloud configuration. Pretty cosmetic, it becomes important
   when you have a lot of users/projects for different projects and you want to
@@ -162,6 +168,8 @@ Optional fields:
 Tip (*optional*): If you want to persist your personal `.env.sh`, consider using
 [my script](https://github.com/palladius/sakura/blob/master/bin/git-privatize) `git-privatize`. If  you
 find a better way, please tell me - as I’ve looked for the past 5 years and this is the best I came up with.
+
+</details>
 
 ## Bash Scripts (from 1 to 16)
 
