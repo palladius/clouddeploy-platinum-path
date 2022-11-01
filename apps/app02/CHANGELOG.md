@@ -1,3 +1,4 @@
+* 2022-10-24 v2.1.0 [DEV] IMPORTANT: from now it logs statusz content for both endpoints
 * 2022-10-24 v2.0.9 [DEV] After Will PR #33 merge.
 * 2022-08-16 v2.0.8 [DEV] Scrambling /statusz order which seems to make more sense.
 * 2022-08-16 v2.0.7 [DEV] Simple bump with update of docs, nothing more.

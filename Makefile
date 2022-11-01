@@ -117,8 +117,8 @@ second-half:
 	./10-auto-promote-APP_XX-STAGE_YY-to-STAGE_ZZ.sh app01 dev canary
 	./10-auto-promote-APP_XX-STAGE_YY-to-STAGE_ZZ.sh app01 dev production
 	# Apply solution1 to app02
-	./13-solution1-setup-gateway-API.sh        app02
-	./14-solution1-check.sh                    app02
+	examples/13-solution1-setup-gateway-API.sh        app02
+	examples/14-solution1-check.sh                    app02
 	# Apply solution2 to app01.
 	./15-solution2-xlb-GFE3-traffic-split.sh   app01
 	./16-solution2-test-by-curling-N-times.sh  app01

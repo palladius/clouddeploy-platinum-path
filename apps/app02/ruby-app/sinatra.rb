@@ -17,7 +17,7 @@ require 'sinatra'
 $VERSION = File.read("VERSION").chomp
 # Removing RACK_ENV because its always DEV and its confusing! :)
 $interesting_envs = %w{ CLOUD_DEPLOY_TARGET RICCARDO_MESSAGE FAVORITE_COLOR  APP_NAME
-  CLOUD_DEPLOY_TARGET_COMMON FAVORITE_COLOR_COMMON CLOUD_DEPLOY_TARGET_SHORT_COMMON}
+  CLOUD_DEPLOY_TARGET_COMMON FAVORITE_COLOR_COMMON CLOUD_DEPLOY_TARGET_SHORT_COMMON PROJECT_ID}
 
 
 class App < Sinatra::Base
@@ -28,6 +28,10 @@ class App < Sinatra::Base
 
   def favorite_color()
     ENV.fetch 'FAVORITE_COLOR_COMMON', 'black'  # default to black
+  end
+
+  def statusz_string()
+    "app=app02 emoji=💎 target=#{cloud_deploy_target} version=#{$VERSION}\n"
   end
 
 
@@ -67,6 +71,7 @@ class App < Sinatra::Base
     CLOUD_DEPLOY_TARGET (often works): <tt><b>#{ENV['CLOUD_DEPLOY_TARGET']}</b></tt> <br/>
     CLOUD_DEPLOY_TARGET_COMMON: <tt><b>#{ENV.fetch 'CLOUD_DEPLOY_TARGET_COMMON', 'variabilis non datur'}</b></tt> <br/>
     CLOUD_DEPLOY_TARGET_SHORT_COMMON: <tt><b>#{cloud_deploy_target()}</b></tt> <br/>
+    PROJECT_ID (WIP): <tt><b>#{ENV.fetch 'PROJECT_ID', 'projectum non datur'}</b></tt> <br/>
 
     <h2>Interesting Info 😎</h2>
 
@@ -87,11 +92,15 @@ class App < Sinatra::Base
       <!-- directly from kustomize CLOUD_DEPLOY_TARGET_COMMON variable ! -->
     </center>
     "
-
+#    puts statusz_string()
+    puts "GET / (root) => #{statusz_string()}"
     return html_string
   end
+
   get '/statusz' do
-    "app=app02 emoji=💎 target=#{cloud_deploy_target} version=#{$VERSION}\n"
+    #"app=app02 emoji=💎 target=#{cloud_deploy_target} version=#{$VERSION}\n"
+    puts "GET /statusz => #{statusz_string()}"
+    return statusz_string()
   end
 end
 

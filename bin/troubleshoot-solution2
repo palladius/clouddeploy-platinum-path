@@ -69,6 +69,6 @@ for APP in app01 app02 ; do
     echo "== Application $(yellow $APP) =="
     gcloud compute forwarding-rules list | grep sol2 | grep "$APP" | sort |uniq| while read NAME IP PROTOCOL TARGET ; do
         _curl_http_code http://$IP/ "FWDRULE=$NAME TARGET=$TARGET"
-        echo Check LB interesting URL: "$DEVCONSOLE/net-services/loadbalancing/details/httpAdvanced/$TARGET"
+        echo Check LB interesting URL: "$DEVCONSOLE/net-services/loadbalancing/details/httpAdvanced/$TARGET&project=$PROJECT_ID"
     done
 done
