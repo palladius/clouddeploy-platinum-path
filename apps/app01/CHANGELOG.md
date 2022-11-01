@@ -1,3 +1,5 @@
+* 2022-11-01 v2.28 [DEV] #HalloweenFix now both / and /statusz log proper statusz info. Good for canary vs prod
+                    metric composition.
 * 2022-10-24 v2.27 [DEV] After Will PR #33 merge.
 * 2022-10-03 v2.26 [DEV] Someone forgot to update this from 22 to 25Croatia. Well time for a cleanup :)
 * 2022-07-19 v2.22 [DEV] Statusz with trailing \n and link from home to statusz.

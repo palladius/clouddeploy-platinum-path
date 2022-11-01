@@ -41,7 +41,9 @@ def index():
   cloud_deploy_target_common = os.environ.get('CLOUD_DEPLOY_TARGET_COMMON', 'CDTC non datur')
   #cloud_deploy_target_short_common =
 
-  print("[ricc][web.py] INDEX: the super-duper vanilla server in python to say HelloWorld - v{}!\n".format(version))
+  #print("[ricc][web.py] INDEX: the super-duper vanilla server in python to say HelloWorld - v{}!\n".format(version))
+  print("GET / (root) => {}".format(statusz_content()))
+
   return """<h1>App01 (🐍) v<b>{ver}</b></h1>
 
         Hello world from Skaffold in python! This is a demonstrative app to demonstrate CI/CD with Cloud Deploy and Cloud Build<br/>
@@ -76,9 +78,18 @@ def index():
     ric_msg=ric_msg,
     cloud_deploy_target_short_common=cloud_deploy_target_short_common())
 
-@app.route('/statusz')
-def statusz_page():
+def statusz_content():
     return """app=app01 version={version} target={cloud_deploy_target_common} emoji=🐍\n""".format(
       version=  version_from_file() ,
       cloud_deploy_target_common=cloud_deploy_target_short_common(),
     )
+
+@app.route('/statusz')
+def statusz_page():
+      content = statusz_content()
+      print("GET /statusz => {}".format(content))
+      return content
+    # return """app=app01 version={version} target={cloud_deploy_target_common} emoji=🐍\n""".format(
+    #   version=  version_from_file() ,
+    #   cloud_deploy_target_common=cloud_deploy_target_short_common(),
+    # )
