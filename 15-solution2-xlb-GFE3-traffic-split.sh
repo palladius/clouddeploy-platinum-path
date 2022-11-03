@@ -93,6 +93,7 @@ export MYAPP_URLMAP_NAME="$(_urlmap_name_by_app "$APP_NAME" )" # "${APP_NAME}-${
 export MYAPP_FWD_RULE="$(_fwd_rule_by_app $APP_NAME)"
 
 # should all be TRUE :) just deactivating as LAZY
+# If everything works except one piece, you can put to TRUE only the part you want to try.
 STEP0_APPLY_MANIFESTS="true"
 STEP1_CREATE_BACKEND_SERVICES="true"
 STEP2_CREATE_LOADS_OF_NEGS="true"
@@ -246,6 +247,8 @@ if "$STEP0_APPLY_MANIFESTS" ; then
 
     # 2022-08-19 #CHECK_BEFORE_APPLY this needs to be applied BEFORE the check :)
     solution2_kubectl_apply "$APP_NAME" # kubectl apply buridone :)
+else
+  white "STEP0_APPLY_MANIFESTS: SKIPPING"
 fi
 
 if "$STEP1_CREATE_BACKEND_SERVICES"; then
@@ -364,7 +367,7 @@ END_OF_URLMAP_GCLOUD_YAML_CONFIG
         gcloud compute url-maps import "$MYAPP_URLMAP_NAME" --source=- --quiet
 fi
 
-if "$STEP4_FINAL_HTTPLB"; then
+#if "$STEP4_FINAL_HTTPLB"; then
 
     white "RIC010: create UrlMap='$MYAPP_URLMAP_NAME' and FwdRule='$MYAPP_FWD_RULE'"
 
@@ -378,7 +381,7 @@ if "$STEP4_FINAL_HTTPLB"; then
         --target-http-proxy="$MYAPP_URLMAP_NAME" \
         --ports=80
 
-fi
+#fi
 
 
 # final part from script1:
