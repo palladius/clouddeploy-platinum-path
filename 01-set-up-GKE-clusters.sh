@@ -41,7 +41,7 @@ gcloud auth configure-docker $REGION-docker.pkg.dev
 
 # DEV
 echo
-white 'Creating THREE Clusters in Standard Mode. This might take 5-10min... good time for a coffee 🕰'
+white '01. Creating THREE Clusters in Standard Mode. This might take 5-10min... good time for a coffee 🕰'
 echo
 
 set -x
@@ -83,6 +83,7 @@ set +x
 #   --release-channel "regular" --network "projects/$PROJECT_ID/global/networks/default" --subnetwork "projects/$PROJECT_ID/regions/$GKE_REGION/subnetworks/default" \
 #   --cluster-ipv4-cidr "/17" --services-ipv4-cidr "/22" # --labels "env=prod"
 
+white 02. Getting GKE cluster contexts for the 3 clusters now..
 
 for ITER_CLUSTER in cicd-canary cicd-prod cicd-dev ; do
    gcloud container clusters get-credentials "$ITER_CLUSTER" --region "$GKE_REGION"

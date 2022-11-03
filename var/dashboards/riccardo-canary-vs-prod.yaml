@@ -1,0 +1,104 @@
+# Created manually and then dumped via `gcloud monitoring dashboards list  > var/dashboards/riccardo-canary-vs-prod.yaml`
+# I presume you can upload it by just changing the project number at the end.
+#
+# $ gcloud monitoring dashboards create --config-from-file var/dashboards/riccardo-canary-vs-prod.yaml
+# works
+# But maybe needs to create the metric `cli_statusz_count` first
+---
+displayName: '[Makefile] Riccardo Canary vs Prod'
+#etag: 74980e4c51b7cdc40e52937e134cc5ae
+mosaicLayout:
+  columns: 12
+  tiles:
+  - height: 4
+    widget:
+      title: cli_statusz_count QPS by Target
+      xyChart:
+        chartOptions:
+          mode: COLOR
+        dataSets:
+        - minAlignmentPeriod: 120s
+          plotType: STACKED_AREA
+          targetAxis: Y1
+          timeSeriesQuery:
+            timeSeriesFilter:
+              aggregation:
+                alignmentPeriod: 120s
+                crossSeriesReducer: REDUCE_SUM
+                groupByFields:
+                - metric.label."Target"
+                perSeriesAligner: ALIGN_RATE
+              filter: metric.type="logging.googleapis.com/user/cli_statusz_count"
+                resource.type="k8s_container"
+              secondaryAggregation:
+                alignmentPeriod: 60s
+        timeshiftDuration: 0s
+        yAxis:
+          label: y1Axis
+          scale: LINEAR
+    width: 6
+    yPos: 4
+  - height: 4
+    widget:
+      title: '[app03] Canary traffic '
+      xyChart:
+        chartOptions:
+          mode: COLOR
+        dataSets:
+        - plotType: STACKED_AREA
+          targetAxis: Y1
+          timeSeriesQuery:
+            timeSeriesQueryLanguage: |-
+              {fetch k8s_container
+              | metric 'logging.googleapis.com/user/cli_statusz_count'
+              | filter metric.Target="canary-production"
+              | align rate(1m)
+              | every 1m
+              | group_by [], sum(val())
+              ;
+              fetch k8s_container
+              | metric 'logging.googleapis.com/user/cli_statusz_count'
+              | align rate(1m)
+              | every 1m
+              | group_by [], sum(val())
+              } | join
+              | div
+              | scale('%')
+        timeshiftDuration: 0s
+        yAxis:
+          label: y1Axis
+          scale: LINEAR
+    width: 6
+  - height: 4
+    widget:
+      title: '[app03] Prod traffic'
+      xyChart:
+        chartOptions:
+          mode: COLOR
+        dataSets:
+        - plotType: STACKED_AREA
+          targetAxis: Y1
+          timeSeriesQuery:
+            timeSeriesQueryLanguage: |-
+              {fetch k8s_container
+              | metric 'logging.googleapis.com/user/cli_statusz_count'
+              | filter metric.Target="production"
+              | align rate(1m)
+              | every 1m
+              | group_by [], sum(val())
+              ;
+              fetch k8s_container
+              | metric 'logging.googleapis.com/user/cli_statusz_count'
+              | align rate(1m)
+              | every 1m
+              | group_by [], sum(val())
+              } | join
+              | div
+              | scale('%')
+        timeshiftDuration: 0s
+        yAxis:
+          label: y1Axis
+          scale: LINEAR
+    width: 6
+    xPos: 6
+name: projects/133380571425/dashboards/25e7e537-5413-49c1-8ccf-b1d667c98943

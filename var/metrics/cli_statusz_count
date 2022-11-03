@@ -1,0 +1,24 @@
+# Created manually, dumped this way.
+# gcloud logging metrics describe cli_statusz_count >  var/metrics/cli_statusz_count
+#
+# Try to add with:
+#
+# $  gcloud logging metrics create blah --config-from-file var/metrics/cli_statusz_count
+createTime: '2022-10-25T16:01:46.639851747Z'
+description: |
+  metric with extractor created by Riccardo to simulate UI made stuff.
+filter: textPayload=~"^/statusz .easter egg. invoked"
+labelExtractors:
+  Target: EXTRACT(labels."k8s-pod/deploy_cloud_google_com/target-id")
+metricDescriptor:
+  description: |
+    metric with extractor created by Riccardo to simulate UI made stuff.
+  labels:
+  - key: Target
+  metricKind: DELTA
+  name: projects/cicd-platinum-test031/metricDescriptors/logging.googleapis.com/user/cli_statusz_count
+  type: logging.googleapis.com/user/cli_statusz_count
+  unit: '1'
+  valueType: INT64
+name: cli_statusz_count
+updateTime: '2022-10-25T16:01:46.639851747Z'

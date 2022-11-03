@@ -299,6 +299,8 @@ fi
                         EXTRACTED_ZONE=$(echo $NEG_RESOURCE | cut -f 9 -d/ ) # changes
                         EXTRACTED_NEG_NAME=$(echo $NEG_RESOURCE | cut -f 11 -d/ )   # always the same
                         #_deb "TODO stuff with it: zone=$EXTRACTED_ZONE NEG=$EXTRACTED_NEG_NAME"
+                        verde "TODO stuff with it: zone=$EXTRACTED_ZONE NEG=$EXTRACTED_NEG_NAME"
+
                         proceed_if_error_matches "Duplicate network endpoint groups in backend service." \
                           gcloud compute backend-services add-backend "$SERVICE_NAME" \
                               --network-endpoint-group="$EXTRACTED_NEG_NAME" \

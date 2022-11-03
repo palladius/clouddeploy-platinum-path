@@ -141,3 +141,12 @@ observe-endpoints:
 	bin/show-endpoints
 endpoints-show: observe-endpoints
 ip-address: observe-endpoints
+
+# testing it now. Seems to work! For app03.
+create-dashboard:
+	# to be tested yet, might have to change name of metric or dashboard to adapt.
+	# 1. creates a metric called cli_statusz_count (see gcloud not filename which is coincidential)
+	gcloud logging metrics create cli_statusz_count --config-from-file var/metrics/cli_statusz_count
+	# 2. create dashboard based on dashboard id (might have to change project number for different project)
+	# like `cat var/dashboards/riccardo-canary-vs-prod.yaml | sed -i s/133380571425/$PROJECT_NUMBER/ | blah..`
+	gcloud monitoring dashboards create --config-from-file var/dashboards/riccardo-canary-vs-prod.yaml
