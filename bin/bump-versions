@@ -1,9 +1,7 @@
 #!/usr/bin/env ruby
 
+#Unused yet
 ACCEPTABLE_APPS = %w{ app01 app02 app03 }
-puts :todo
-
-
 
 def bump_version(app_id, opts = {})
     # a couple of options.. which I can enable from ENV.
@@ -28,14 +26,22 @@ end
 
 
 def main()
-    puts "👊 Welcome to #{$0}. Use ENV[DRYRUN] and ENV[ADD_AUTOBUMP] to tweak the behaviour of this" # TODO
+    scriptname = File.basename $0
+    puts "👊 Welcome to #{scriptname}. Use ENV[DRYRUN] and ENV[ADD_AUTOBUMP] to tweak the behaviour of this" # TODO
+    puts "Usage: ADD_AUTOBUMP=TRUE|FALSE DRYRUN=TRUE|FALSE #{scriptname} [all|#{ACCEPTABLE_APPS.join '|'}]"
+    dryrun = ENV.fetch( 'DRYRUN', 'TRUE' ).upcase.to_s == 'TRUE'
+    add_autobump = ENV.fetch('ADD_AUTOBUMP', 'TRUE' ).upcase.to_s == 'TRUE'
     ARGV.each do |argument|
-        bump_version(argument, :dryrun => false)
+        if argument == 'all'
+            ACCEPTABLE_APPS.each { |app| bump_version(app, :dryrun => false) }
+        else
+            bump_version(argument, :dryrun => false)
+        end
     #bump_version :app01
     #bump_version :app02
     #bump_version :app03
     end
-    puts "Done. To undo, just type: 😉 git restore apps/*/VERSION 😉"
+    puts "Done. To undo, just type: 😉 git restore apps/*/VERSION apps/app02/ruby-app/VERSION 😉"
 end
 
 
