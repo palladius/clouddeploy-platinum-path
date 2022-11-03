@@ -379,8 +379,8 @@ To start, try something like this:
 ```bash
 source .env.sh # so you can use GITHUB_REPO_OWNER and other convenience vars.
 git remote add $GITHUB_REPO_OWNER git@github.com:$GITHUB_REPO_OWNER/clouddeploy-platinum-path.git
-echo 2.99test > ./apps/app01/VERSION # or whichever version it is plus one
-echo 2.99test > ./apps/app02/VERSION # or whichever version it is plus one
+bin/bump-versions app01 # increments app01 version by 1, eg 1.2.3 to 1.2.4
+bin/bump-versions app02 # increments app01 version by 1, eg 4.2 to 4.3
 git add ./apps/app01/VERSION
 git add ./apps/app02/VERSION
 git commit -m 'bump PRODUCTION version' # this might require you first do some global git config'ing..
@@ -397,9 +397,7 @@ This should trigger `app01` and `app02` trigger, but not app03:
 * **IMPORTANT**. Repeat exactly the same process again, since we need TWO versions "in the cloud" ☁️.
 
 ```bash
-echo 2.100 > ./apps/app01/VERSION
-echo 2.100 > ./apps/app02/VERSION
-echo 2.100 > ./apps/app03/VERSION
+bin/bump-versions app01 app02 app03 # increments versions of all 3 apps.
 git commit -a -m 'trying a new super duper experimental feature'
 git push $GITHUB_REPO_OWNER main
 ```
