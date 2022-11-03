@@ -331,6 +331,7 @@ hostRules:
   - sol2-passepartout.example.io
   - passepartout.example.io
   - www.example.io
+  - ${APP_NAME}.example.io
   pathMatcher: path-matcher-1
 pathMatchers:
 - defaultRouteAction:
