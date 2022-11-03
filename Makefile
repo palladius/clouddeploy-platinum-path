@@ -150,3 +150,7 @@ create-dashboard:
 	# 2. create dashboard based on dashboard id (might have to change project number for different project)
 	# like `cat var/dashboards/riccardo-canary-vs-prod.yaml | sed -i s/133380571425/$PROJECT_NUMBER/ | blah..`
 	gcloud monitoring dashboards create --config-from-file var/dashboards/riccardo-canary-vs-prod.yaml
+
+
+bump-all-versions:
+	bin/bump-versions all
