@@ -96,7 +96,14 @@ and symlink it from/to another private repo).
   You’ll need this username in a minute.
     * **__Note:__** that if you don’t have a github account (and you don’t want to create one), you can just fork my repo in your
   GCR - more instructions later in the step *07* below.
+
+</details>
+
 * To connect your github repo, extensive instructions are [here](https://cloud.google.com/build/docs/automating-builds/github/build-repos-from-github). However, following the next steps should suffice.
+
+<details>
+  <summary>💡More detailed instructions on connecting 🏗 Cloud Build to your repo</summary>
+
 * Open **Cloud Developer Console** > **Cloud Build** and click on **ENABLE API**
     * **__Note:__** this screen may not appear if the API is already enabled
 * Open **Cloud Developer Console** > **Cloud Build** > **Triggers**: https://console.cloud.google.com/cloud-build/triggers
@@ -308,8 +315,14 @@ You can safely skip this. This is 🚧 work in progress.
 
 ### `07-create-cloud-build-triggers.sh`
 
-**Note** this script will fail if you didn't connect the repository as per
-   instructions. This complicated script sets up Cloud Build for a number of apps, where I subsumed the "parameter" part
+This scripts will generate 3 Build triggers.
+
+**Note** this script will fail if you didn't connect the repository as per instructions.
+
+<details>
+  <summary>💡More on: Script 07</summary>
+
+This complicated script sets up Cloud Build for a number of apps, where I subsumed the "parameter" part
    in a Bash array (kudos for the courage). This configuration tells Cloud Build: Where to look for code, how to name
    the trigger, plus a number of less useful parameters.
 
@@ -322,6 +335,12 @@ TEAMS[1]='T2rb;app02;cloudbuild.yaml;apps/app02/;green'
 
 * If you created a sample trigger, this is the time to delete or disable it (click on the 3 vertical dots and click
   '*disable*').
+* Note you can trigger the build manually with this awesome one-liner
+  ([docs](https://cloud.google.com/sdk/gcloud/reference/beta/builds/triggers/run)):
+
+    gcloud --project $PROJECT_ID beta builds triggers run --branch=main T2rb-CLIv1-8-app02  # or another of the 3
+
+</details>
 
 ### `08-cloud-deploy-setup.sh`
 
@@ -364,8 +383,8 @@ To start, try something like this:
 ```bash
 source .env.sh # so you can use GITHUB_REPO_OWNER and other convenience vars.
 git remote add $GITHUB_REPO_OWNER git@github.com:$GITHUB_REPO_OWNER/clouddeploy-platinum-path.git
-echo 2.99test > ./apps/app01/VERSION # or whichever version it is plus one
-echo 2.99test > ./apps/app02/VERSION # or whichever version it is plus one
+bin/bump-versions app01 # increments app01 version by 1, eg 1.2.3 to 1.2.4
+bin/bump-versions app02 # increments app01 version by 1, eg 4.2 to 4.3
 git add ./apps/app01/VERSION
 git add ./apps/app02/VERSION
 git commit -m 'bump PRODUCTION version' # this might require you first do some global git config'ing..
@@ -382,9 +401,7 @@ This should trigger `app01` and `app02` trigger, but not app03:
 * **IMPORTANT**. Repeat exactly the same process again, since we need TWO versions "in the cloud" ☁️.
 
 ```bash
-echo 2.100 > ./apps/app01/VERSION
-echo 2.100 > ./apps/app02/VERSION
-echo 2.100 > ./apps/app03/VERSION
+bin/bump-versions app01 app02 app03 # increments versions of all 3 apps.
 git commit -a -m 'trying a new super duper experimental feature'
 git push $GITHUB_REPO_OWNER main
 ```
