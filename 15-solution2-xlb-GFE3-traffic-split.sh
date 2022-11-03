@@ -240,18 +240,18 @@ echo
 # 2022-07-22 1.0 first functional version.
 
 
-if "$STEP0_APPLY_MANIFESTS" ; then
+#if "$STEP0_APPLY_MANIFESTS" ; then
 
     kubectl --context="$GKE_CANARY_CLUSTER_CONTEXT" apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
     kubectl --context="$GKE_PROD_CLUSTER_CONTEXT" apply -k "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v0.4.3"
 
     # 2022-08-19 #CHECK_BEFORE_APPLY this needs to be applied BEFORE the check :)
     solution2_kubectl_apply "$APP_NAME" # kubectl apply buridone :)
-else
-  white "STEP0_APPLY_MANIFESTS: SKIPPING"
-fi
+#else
+#  white "STEP0_APPLY_MANIFESTS: SKIPPING"
+#fi
 
-if "$STEP1_CREATE_BACKEND_SERVICES"; then
+#if "$STEP1_CREATE_BACKEND_SERVICES"; then
     for TYPE_OF_TRAFFIC in canary prod ; do
         SERVICE_NAME="${APP_NAME}-sol2-svc-$TYPE_OF_TRAFFIC"
         proceed_if_error_matches "The resource 'projects/$PROJECT_ID/global/backendServices/$SERVICE_NAME' already exists" \
@@ -262,7 +262,7 @@ if "$STEP1_CREATE_BACKEND_SERVICES"; then
                 --health-checks='http-neg-check' \
                 --global
     done
-fi
+#fi
 # $APP_NAME
 
 # This is the HARDEST part of the script to comprehend. Big shoutout to dmarzi for helping on this. In a nutshell,
@@ -270,7 +270,7 @@ fi
 # (and maybe it is already as a friend in Cloud PSO has created a NEG k8s provider IIRC). But I'm divagating.
 
 
-  if "$STEP2_CREATE_LOADS_OF_NEGS" ; then
+ # if "$STEP2_CREATE_LOADS_OF_NEGS" ; then
     echo 'Now we do something complicated. For both Canary and Prod clusters, and both C/P types of traffix, we find the'
     echo 'NEG names and we link them to the SERVICE_NAME which is f(AppXX,TypeOfTraffic), eg "app01-sol2-svc-prod"'
 
@@ -314,10 +314,10 @@ fi
                     done
         done
     done
-  fi
+#  fi
 
 
-if "$STEP3_CREATE_URLMAP" ; then
+#if "$STEP3_CREATE_URLMAP" ; then
 
     proceed_if_error_matches "The resource 'projects/$PROJECT_ID/global/urlMaps/$MYAPP_URLMAP_NAME' already exists" \
         gcloud compute url-maps create "$MYAPP_URLMAP_NAME" --default-service "$APPDEPENDENT_SOL2_SERVICE_PROD"
@@ -367,7 +367,7 @@ END_OF_URLMAP_GCLOUD_YAML_CONFIG
     cat k8s/solution2-xlb-gfe3-traffic-split/.tmp-urlmap-v2.yaml |
         # take from STDIN
         gcloud compute url-maps import "$MYAPP_URLMAP_NAME" --source=- --quiet
-fi
+#fi
 
 #if "$STEP4_FINAL_HTTPLB"; then
 
