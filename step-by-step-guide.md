@@ -335,6 +335,10 @@ TEAMS[1]='T2rb;app02;cloudbuild.yaml;apps/app02/;green'
 
 * If you created a sample trigger, this is the time to delete or disable it (click on the 3 vertical dots and click
   '*disable*').
+* Note you can trigger the build manually with this awesome one-liner
+  ([docs](https://cloud.google.com/sdk/gcloud/reference/beta/builds/triggers/run)):
+
+    gcloud --project $PROJECT_ID beta builds triggers run --branch=main T2rb-CLIv1-8-app02  # or another of the 3
 
 </details>
 
