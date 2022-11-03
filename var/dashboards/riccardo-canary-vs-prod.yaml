@@ -101,4 +101,6 @@ mosaicLayout:
           scale: LINEAR
     width: 6
     xPos: 6
+# Note Riccardo: project_number needs to be changed
 name: projects/133380571425/dashboards/25e7e537-5413-49c1-8ccf-b1d667c98943
+#name: dashboards/25e7e537-5413-49c1-8ccf-b1d667c98943

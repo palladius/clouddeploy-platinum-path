@@ -1,3 +1,4 @@
+2022-11-02 v1.0.2   Added script 17 to add dashboard. Seems to work.
 2022-11-02 v1.0.1   Added bump version commodity script. Plus changed step by step guide to use it.
 2022-10-06 v1.0.0   `tag=1.0` Apart from minor docs amendments, I hereby declare this code stable.
 2022-10-04 v0.21.0  `v0.21.0` (`#82fa3d7`) Docs freeze for publication and tagging. Now I'll test my code and ensure not to change
