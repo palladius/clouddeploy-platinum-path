@@ -96,7 +96,14 @@ and symlink it from/to another private repo).
   You’ll need this username in a minute.
     * **__Note:__** that if you don’t have a github account (and you don’t want to create one), you can just fork my repo in your
   GCR - more instructions later in the step *07* below.
+
+</details>
+
 * To connect your github repo, extensive instructions are [here](https://cloud.google.com/build/docs/automating-builds/github/build-repos-from-github). However, following the next steps should suffice.
+
+<details>
+  <summary>💡More detailed instructions on connecting 🏗 Cloud Build to your repo</summary>
+
 * Open **Cloud Developer Console** > **Cloud Build** and click on **ENABLE API**
     * **__Note:__** this screen may not appear if the API is already enabled
 * Open **Cloud Developer Console** > **Cloud Build** > **Triggers**: https://console.cloud.google.com/cloud-build/triggers
