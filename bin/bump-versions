@@ -1,0 +1,42 @@
+#!/usr/bin/env ruby
+
+ACCEPTABLE_APPS = %w{ app01 app02 app03 }
+puts :todo
+
+
+
+def bump_version(app_id, opts = {})
+    # a couple of options.. which I can enable from ENV.
+    opts_dryrun  = opts.fetch :dryrun, true
+    opts_add_autobump  = opts.fetch :add_autobump, true
+
+    dir = "./apps/#{app_id}"
+    version_file = "#{dir}/VERSION"
+    current_version = File.read(version_file).chomp
+    # mephistofelic logic: s;plit by dots, and increment the last value
+    last_value_incremented = current_version.split('.').last.to_i + 1 # last incremented
+    all_other_values = current_version.split('.')[0..-2] # all but last
+    new_value = all_other_values.append(last_value_incremented).join('.')
+    new_value = new_value + 'autobump' if opts_add_autobump
+    #puts all_other_values, last_value_incremented
+    puts "[#{app_id}] Bumping version for file: #{version_file}: '#{current_version}' -> #{new_value}"
+    unless opts_dryrun
+        puts "WARNING! Now writing file with new version"
+        File.write(version_file, new_value)
+    end
+end
+
+
+def main()
+    puts "👊 Welcome to #{$0}. Use ENV[DRYRUN] and ENV[ADD_AUTOBUMP] to tweak the behaviour of this" # TODO
+    ARGV.each do |argument|
+        bump_version(argument, :dryrun => false)
+    #bump_version :app01
+    #bump_version :app02
+    #bump_version :app03
+    end
+    puts "Done. To undo, just type: 😉 git restore apps/*/VERSION 😉"
+end
+
+
+main() if __FILE__ == $0
