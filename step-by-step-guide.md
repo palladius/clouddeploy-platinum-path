@@ -315,8 +315,14 @@ You can safely skip this. This is 🚧 work in progress.
 
 ### `07-create-cloud-build-triggers.sh`
 
-**Note** this script will fail if you didn't connect the repository as per
-   instructions. This complicated script sets up Cloud Build for a number of apps, where I subsumed the "parameter" part
+This scripts will generate 3 Build triggers.
+
+**Note** this script will fail if you didn't connect the repository as per instructions.
+
+<details>
+  <summary>💡More on: Script 07</summary>
+
+This complicated script sets up Cloud Build for a number of apps, where I subsumed the "parameter" part
    in a Bash array (kudos for the courage). This configuration tells Cloud Build: Where to look for code, how to name
    the trigger, plus a number of less useful parameters.
 
@@ -329,6 +335,8 @@ TEAMS[1]='T2rb;app02;cloudbuild.yaml;apps/app02/;green'
 
 * If you created a sample trigger, this is the time to delete or disable it (click on the 3 vertical dots and click
   '*disable*').
+
+</details>
 
 ### `08-cloud-deploy-setup.sh`
 
