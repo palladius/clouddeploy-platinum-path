@@ -29,12 +29,10 @@ patches:
       value:
         name: CLOUD_DEPLOY_TARGET #RICCARDO_KUSTOMIZE_ENV
         value: "04 Prod - Production"
-# - patch: |-
-#     - op: add
-#       path: "/spec/template/spec/containers/0/env/-"
-#       value:
-#         name: FAVORITE_COLOR
-#         value: white # prod is WHITE :)
   target:
     kind: Deployment
     name: app02-kuruby
+commonLabels:
+  # only app01/app02
+  ricc-env: prod
+  solution-type: two # app01/app02 use this

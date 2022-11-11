@@ -32,3 +32,5 @@ patches:
   target:
     kind: Deployment
     name: app03-kunode
+#commonLabels:
+#  solution-type: four # app03 only. Do not add it! Unless you also add it to Canary too, or the selector will stop selecting both.

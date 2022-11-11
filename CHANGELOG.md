@@ -1,3 +1,4 @@
+2022-11-11 v1.0.4   [BUGFIX] Alex helping me
 2022-11-11 v1.0.3   [BUGFIX] Fixing `#34`.. and trying again until it works.
 2022-11-02 v1.0.2   Added script 17 to add dashboard. Seems to work.
 2022-11-02 v1.0.1   Added bump version commodity script. Plus changed step by step guide to use it.

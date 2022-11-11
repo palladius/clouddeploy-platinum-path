@@ -22,3 +22,10 @@ replicas:
   - name: app01-kupython
     #count: 9
     count: 4 # moved to 4 - nicer on my cluster :)
+commonLabels:
+  # only app01/app02
+  ricc-env: prod
+  solution-type: two # app01/app02 use this
+
+# solutions it to put         ricc-env: prod
+# ricc-env: prod

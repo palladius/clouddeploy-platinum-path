@@ -20,13 +20,13 @@ kind: Component
 commonLabels:
   #is-app-in-production: bingo
   ricc-awesome-selector: canary-or-prod
-  # this was missing and preventing PROD from selecting the 4 pods.
-  #ricc-env: prod
+  # this was missing and preventing PROD from selecting the 4 pods for App01 and App02
+  ricc-env: prod
 # To use in 3.
 # If you add a common label, this label will also be used for the Selector for services.
 labels:
   - pairs:
-       ricc-env: prod
+      ricc-env: prod
     ### Add it but dont include in selector  part of the service
     includeSelectors: false
 commonAnnotations:
