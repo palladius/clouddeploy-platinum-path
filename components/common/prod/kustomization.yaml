@@ -18,10 +18,12 @@ kind: Component
 #namespace: my-namespace
 #nameSuffix: "-prod"
 commonLabels:
-  is-app-in-production: bingo
+  #is-app-in-production: bingo
   ricc-awesome-selector: canary-or-prod
+  # this was missing and preventing PROD from selecting the 4 pods.
+  ricc-env: prod
 labels:
-  - pairs: 
+  - pairs:
       ricc-env: prod
     includeSelectors: false
 commonAnnotations:

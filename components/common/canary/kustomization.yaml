@@ -16,7 +16,7 @@ apiVersion: kustomize.config.k8s.io/v1alpha1
 kind: Component
 # https://kubernetes.io/docs/tasks/manage-kubernetes-objects/kustomization/#setting-cross-cutting-fields
 commonLabels:
-  is-app-in-production: bingo
+  #is-app-in-production: bingo
   ricc-awesome-selector: canary-or-prod
   ricc-env: canary
 commonAnnotations:
