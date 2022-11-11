@@ -33,7 +33,7 @@ proceed_if_error_matches "A Cloud Storage bucket named '$SKAFFOLD_BUCKET' alread
 # TODO security maniacs - make sure it doesnt exist, could be a rm -f before? But then it could fail...
 touch /tmp/EmptyFile
 
-ls apps/| grep -v README | while read MODULE ; do
+ls apps/| egrep -v "README|Makefile|kustomize-dump" | while read MODULE ; do
   #TODO Skip if not DIR test -d $MODULE
   gsutil cp /tmp/EmptyFile gs://$SKAFFOLD_BUCKET/skaffold-cache/$MODULE.txt
 done
