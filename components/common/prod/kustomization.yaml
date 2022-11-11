@@ -22,10 +22,10 @@ commonLabels:
   ricc-awesome-selector: canary-or-prod
   # this was missing and preventing PROD from selecting the 4 pods.
   ricc-env: prod
-labels:
-  - pairs:
-      ricc-env: prod
-    includeSelectors: false
+#labels:
+#   - pairs:
+#       ricc-env: prod
+#    includeSelectors: false
 commonAnnotations:
   oncallPager: 800-555-1234 (for Production outages only)
   developer: Riccardo Carlesso
