@@ -218,3 +218,8 @@ This is what you'll see when you get Solution 2 to work:
 * [cgrotz](https://github.com/cgrotz) for continuous help and feedback
 * [Sander](https://github.com/sbbogdanc) and [Nate](https://github.com/nateaveryg) for sponsorship and priceless
   feedback.
+
+## Architecture Diagram
+
+![Architecture Diagram](architecture_diagram.png)
+
