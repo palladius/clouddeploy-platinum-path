@@ -50,3 +50,11 @@ profiles:
     deploy:
       kustomize:
         paths: ["k8s/overlays/production"]
+  - name: canary-sol2
+    deploy:
+      kustomize:
+        paths: [./k8s/overlays/canary-sol2]
+  - name: production-sol2
+    deploy:
+      kustomize:
+        paths: [./k8s/overlays/production-sol2]

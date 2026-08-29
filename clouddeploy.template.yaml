@@ -48,9 +48,9 @@ serialPipeline:
  - targetId: staging
    profiles: [staging]
  - targetId: canary
-   profiles: [canary]
+   profiles: [canary-sol2]
  - targetId: production
-   profiles: [production]
+   profiles: [production-sol2]
 ---
 apiVersion: deploy.cloud.google.com/v1
 kind: DeliveryPipeline

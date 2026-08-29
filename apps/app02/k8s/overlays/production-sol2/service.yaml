@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: app02-sol2-svc-prod
+  annotations:
+    networking.gke.io/max-rate-per-endpoint: "10"
+    cloud.google.com/neg: '{"exposed_ports": {"8080":{"name": "app02-sol2-svc-prod-neg"}}}'
+spec:
+  selector:
+    app: app02-kuruby
+    ricc-env: prod
+  ports:
+  - port: 8080
+    targetPort: 8080
